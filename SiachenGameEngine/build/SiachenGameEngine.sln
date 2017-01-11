@@ -4,8 +4,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Game.Desktop.DirectX", "..\source\Game.Desktop.DirectX\Game.Desktop.DirectX.vcxproj", "{E6A86907-94EE-4260-978B-83EE9BF9B5B7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B4AEEE5C-BD77-4339-887B-3176A57768B3} = {B4AEEE5C-BD77-4339-887B-3176A57768B3}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Game.Desktop.OpenGL", "..\source\Game.Desktop.OpenGL\Game.Desktop.OpenGL.vcxproj", "{9B29BB41-BB6E-46FD-9A4A-30F3D7D92390}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B4AEEE5C-BD77-4339-887B-3176A57768B3} = {B4AEEE5C-BD77-4339-887B-3176A57768B3}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Library.Desktop", "..\source\Library.Desktop\Library.Desktop.vcxproj", "{B4AEEE5C-BD77-4339-887B-3176A57768B3}"
 EndProject
