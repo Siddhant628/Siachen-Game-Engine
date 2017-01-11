@@ -5,8 +5,6 @@
 //#include <d3dx11.h>
 //#include <d3dx10.h>
 
-
-
 // Global declarations (The first step of actually coding Direct3D is to create these three COM (Component Object Model) objects and initialize them)
 IDXGISwapChain *g_pSwapChain;								// Pointer to the swap chain interface (A pointer to the series of buffers which take turns being rendered)
 ID3D11Device *g_pDevice;									// Pointer to the Direct 3D device interface (A virtual representation of the video adapter)
@@ -16,8 +14,7 @@ ID3D11DeviceContext *g_pDeviceContext;						// Pointer to the Direct 3D device c
 // Function prototypes
 void InitD3D(HWND hWnd);																// Initializes Direct 3D and prepares it for use
 void CleanD3D(void);																	// Closes Direct 3D and releases memory for windows
-LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
-
+LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);		// This is the main message handler for the program
 
 // WINAPI reverses the order in which the parameters are passed. They're normally passed from right to left, but with WINAPI, they are passed from left to right.
 
@@ -49,6 +46,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	// Register the window class (1/3 step of building a window)
 	RegisterClassEx(&wc);
 
+	RECT wr = { 0, 0, 1600, 900 };							// Set the size, but not the position
+	AdjustWindowRect(&wr, WS_OVERLAPPEDWINDOW, FALSE);    // Adjust the size
+
 	// Create the window and use the result as the handle (2/3 step of building a window)
 	hWnd = CreateWindowEx
 	(
@@ -58,8 +58,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		WS_OVERLAPPEDWINDOW,				// Window style
 		0,									// X-position of the window
 		0,									// Y-position of the window
-		1600,								// Width of the window
-		900,								// Height of the window
+		wr.right - wr.left,					// Width of the window
+		wr.bottom - wr.top,					// Height of the window
 		NULL,								// We have no parent window, NULL
 		NULL,								// We aren't using menus, NULL
 		hInstance,							// Application handle
@@ -88,7 +88,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	return msg.wParam;
 }
 
-// This is the main message handler for the program
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	// Sort through and find what code to run for the message given
