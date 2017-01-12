@@ -10,11 +10,13 @@ IDXGISwapChain *g_pSwapChain;								// Pointer to the swap chain interface (A p
 ID3D11Device *g_pDevice;									// Pointer to the Direct 3D device interface (A virtual representation of the video adapter)
 ID3D11DeviceContext *g_pDeviceContext;						// Pointer to the Direct 3D device context (This object is used to render graphics and to determine how they will be rendered, manages the GPU)
 
+ID3D11RenderTargetView *g_pBackBuffer;						// Pointer to a location in video memory where we need to render (holds all the information about the render target)
 
 // Function prototypes
 void InitD3D(HWND hWnd);																// Initializes Direct 3D and prepares it for use
 void CleanD3D(void);																	// Closes Direct 3D and releases memory for windows
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);		// This is the main message handler for the program
+void RenderFrame(void);																	// Render a single frame
 
 // WINAPI reverses the order in which the parameters are passed. They're normally passed from right to left, but with WINAPI, they are passed from left to right.
 
@@ -46,7 +48,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	// Register the window class (1/3 step of building a window)
 	RegisterClassEx(&wc);
 
-	RECT wr = { 0, 0, 1600, 900 };							// Set the size, but not the position
+	// TODO Set appropriate resolution
+	RECT wr = { 0, 0, 1280, 720 };							// Set the size, but not the position
 	AdjustWindowRect(&wr, WS_OVERLAPPEDWINDOW, FALSE);    // Adjust the size
 
 	// Create the window and use the result as the handle (2/3 step of building a window)
@@ -69,23 +72,36 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	// Display the window on the screen (3/3 step of building a window)
 	ShowWindow(hWnd, nCmdShow);
 
-	// Enter the main loop
+	// Setup and initialize Direct3D
+	InitD3D(hWnd);
 
 	// This struct holds Windows event messages
-	MSG msg;
+	MSG msg = {0};
 
-	// Wait for the next message in the queue, store the result in msg
-	while (GetMessage(&msg, NULL, 0, 0))
+	// Enter the infinite message loop
+	while (TRUE)
 	{
-		// Translate keystroke messages into the right format
-		TranslateMessage(&msg);
-
-		// Send the message to the WindowProc function
-		DispatchMessage(&msg);
+		// Check to see if any messages are waiting in the queue
+		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+		{
+			TranslateMessage(&msg);							// Translate keystroke messages into the right format
+			DispatchMessage(&msg);							// Send the message to the WindowProc function
+			if (msg.message == WM_QUIT)						// Check to see if it's time to quit
+			{
+				break;
+			}
+		}
+		// Game loop code goes here
+		else
+		{
+			RenderFrame();
+		}
 	}
+	// Cleanup DirectX and COM Objects
+	CleanD3D();
 
 	// Return this part of the WM_QUIT message to Windows
-	return msg.wParam;
+	return (int)msg.wParam;
 }
 
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -123,18 +139,65 @@ void InitD3D(HWND hWnd)
 	// Create a device, device context and swap chain using the information in the scd struct
 	D3D11CreateDeviceAndSwapChain
 	(
-		NULL,						//Let DXGI handle finding the best graphics card
-		D3D_DRIVER_TYPE_HARDWARE,	//Only systems with hardware(graphics card) for Dx11 will be able to run this game
-		NULL,						//Not using since this is slow
-		NULL,						//Flags for making Direct3D behave in a certain way, not needed
-		NULL,						//Not getting into specific features of the hardware, may be used to notify Direct3D about requirements that the hardware meets
-		NULL,						//Number of feature levels in the list above
-		D3D11_SDK_VERSION,			//Notifies which version of DirectX you worked on
-		&scd,						//A pointer to the swap chain description object
-		&g_pSwapChain,				//A pointer to a pointer to the swap chain object
-		&g_pDevice,					//A pointer to a pointer to the device object
-		NULL,						//A pointer to a feature level variable
-		&g_pDeviceContext			//A pointer to the device context object
+		NULL,						// Let DXGI handle finding the best graphics card
+		D3D_DRIVER_TYPE_HARDWARE,	// Only systems with hardware(graphics card) for Dx11 will be able to run this game
+		NULL,						// Not using since this is slow
+		NULL,						// Flags for making Direct3D behave in a certain way, not needed
+		NULL,						// Not getting into specific features of the hardware, may be used to notify Direct3D about requirements that the hardware meets
+		NULL,						// Number of feature levels in the list above
+		D3D11_SDK_VERSION,			// Notifies which version of DirectX you worked on
+		&scd,						// A pointer to the swap chain description object
+		&g_pSwapChain,				// A pointer to a pointer to the swap chain object
+		&g_pDevice,					// A pointer to a pointer to the device object
+		NULL,						// A pointer to a feature level variable
+		&g_pDeviceContext			// A pointer to the device context object
+	);
+
+	// The above code initialized Direct3D, from here onwards we set the render targets
+	
+
+	// Get the address of the back buffer
+	ID3D11Texture2D *pBackBuffer;				//An object that stores a flat image (2D Texture)
+	g_pSwapChain->GetBuffer
+	(
+		0,										// Number of the back buffer to get
+		__uuidof(ID3D11Texture2D),				// A number identifying the ID3D11Texture2D COM object, different COM objects can be identified by using similar IDs
+		(LPVOID*)&pBackBuffer					// Pointer to the flat image (a void pointer since we could have had other type of object)
+	);
+
+	// Use the back buffer address to create the render target
+	g_pDevice->CreateRenderTargetView
+	(
+		pBackBuffer,							// Pointer to the texture
+		NULL,									// A struct that describes the render target
+		&g_pBackBuffer							// Pointer to the COM object
+	);
+
+	pBackBuffer->Release();						// Frees all memory and closes all threads used by a COM object (not required anymore)
+
+	// Set the render target as the back buffer
+	g_pDeviceContext->OMSetRenderTargets
+	(
+		1,										// Number of render targets
+		&g_pBackBuffer,							// Pointer to a list of render target objects
+		NULL
+	);
+
+	// Render targets are set, now we set the viewport
+
+	D3D11_VIEWPORT viewport;
+	ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
+
+	viewport.TopLeftX = 0;
+	viewport.TopLeftY = 0;
+	// TODO Set width and height of the viewport
+	viewport.Width = 1280;
+	viewport.Height = 720;
+
+	g_pDeviceContext->RSSetViewports
+	(
+		1,										// The number of viewports
+		&viewport								// Pointer to the list of viewports
 	);
 }
 
@@ -142,7 +205,18 @@ void CleanD3D()
 {
 	// Close and release all COM objects
 	g_pSwapChain->Release();
+	g_pBackBuffer->Release();
 	g_pDevice->Release();
 	g_pDeviceContext->Release();
 }
 
+void RenderFrame(void)
+{
+	float color[4] = { 0.0f, 0.2f, 0.4f, 1.0f };
+
+	g_pDeviceContext->ClearRenderTargetView(g_pBackBuffer, color);				// Clear the back buffer and set it to a specific color
+	
+	// Do 3D rendering on the back buffer here
+
+	g_pSwapChain->Present(0, 0);												// Switch the back buffer and the front buffer
+}
