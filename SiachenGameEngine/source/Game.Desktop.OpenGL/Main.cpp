@@ -1,5 +1,8 @@
 #include "pch.h"
 
+
+#include "glfw3.h"
+
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	UNREFERENCED_PARAMETER(hInstance);

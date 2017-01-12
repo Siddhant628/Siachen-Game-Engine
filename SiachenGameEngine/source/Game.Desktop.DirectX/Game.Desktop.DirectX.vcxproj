@@ -99,7 +99,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(WindowsSDK_IncludePath);$(SolutionDir)..\source\Library.Desktop;$(SolutionDir)packages\directxtk_desktop_2015.2016.12.5.1\build\native\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WindowsSDK_IncludePath);$(SolutionDir)..\source\Library.Desktop;$(SolutionDir)packages\directxtk_desktop_2015.2016.12.5.1\build\native\include;$(SolutionDir)..\source\Library.Shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -118,7 +118,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(WindowsSDK_IncludePath);$(SolutionDir)..\source\Library.Desktop;$(SolutionDir)packages\directxtk_desktop_2015.2016.12.5.1\build\native\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WindowsSDK_IncludePath);$(SolutionDir)..\source\Library.Desktop;$(SolutionDir)packages\directxtk_desktop_2015.2016.12.5.1\build\native\include;$(SolutionDir)..\source\Library.Shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -139,7 +139,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(WindowsSDK_IncludePath);$(SolutionDir)..\source\Library.Desktop;$(SolutionDir)packages\directxtk_desktop_2015.2016.12.5.1\build\native\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WindowsSDK_IncludePath);$(SolutionDir)..\source\Library.Desktop;$(SolutionDir)packages\directxtk_desktop_2015.2016.12.5.1\build\native\include;$(SolutionDir)..\source\Library.Shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -162,7 +162,7 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(WindowsSDK_IncludePath);$(SolutionDir)..\source\Library.Desktop;$(SolutionDir)packages\directxtk_desktop_2015.2016.12.5.1\build\native\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WindowsSDK_IncludePath);$(SolutionDir)..\source\Library.Desktop;$(SolutionDir)packages\directxtk_desktop_2015.2016.12.5.1\build\native\include;$(SolutionDir)..\source\Library.Shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

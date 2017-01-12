@@ -17,7 +17,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Library.Desktop", "..\sourc
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTest.Library.Desktop", "..\source\UnitTest.Library.Desktop\UnitTest.Library.Desktop.vcxproj", "{21828F61-C326-4AC8-B414-4E38B18D612C}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Library.Shared", "..\source\Library.Shared\Library.Shared.vcxitems", "{45D41ACC-2C3C-43D2-BC10-02AA73FFC7C7}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\source\Library.Shared\Library.Shared.vcxitems*{45d41acc-2c3c-43d2-bc10-02aa73ffc7c7}*SharedItemsImports = 9
+		..\source\Library.Shared\Library.Shared.vcxitems*{b4aeee5c-bd77-4339-887b-3176a57768b3}*SharedItemsImports = 4
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
