@@ -9,10 +9,12 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)SList.cpp">
       <Filter>Containers</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)pch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)SList.h">
       <Filter>Containers</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
   </ItemGroup>
 </Project>
