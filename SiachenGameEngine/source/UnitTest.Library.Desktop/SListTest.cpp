@@ -13,7 +13,7 @@ namespace UnitTestLibraryDesktop
 		TEST_METHOD(SListConstructors)
 		{
 			int data = 1;
-			SList list(data);
+			SiachenGameEngine::SList list(data);
 			Assert::AreEqual(data, list.GetData());
 		}
 

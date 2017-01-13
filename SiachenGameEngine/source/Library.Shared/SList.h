@@ -1,11 +1,14 @@
 #pragma once
 
-class SList
+namespace SiachenGameEngine
 {
-public:
-	SList(int data);
+	class SList
+	{
+	public:
+		SList(int data);
 
-	int GetData();
-private:
-	int m_iData;
-};
+		int GetData();
+	private:
+		int m_iData;
+	};
+}
