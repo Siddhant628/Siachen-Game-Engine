@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "SList.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
@@ -50,6 +51,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	// Cleanup and close the application
 	glfwDestroyWindow(window);
 	glfwTerminate();
+
+	// Demonstrating SList class
+	SiachenGameEngine::SList myList(10);
 
 	return 0;
 }

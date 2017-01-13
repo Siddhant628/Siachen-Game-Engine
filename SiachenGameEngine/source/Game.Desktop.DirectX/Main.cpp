@@ -1,6 +1,6 @@
 // Precompiled header file incudes the Windows and Direct 3D header files
 #include "pch.h"
-
+#include "SList.h"
 // TODO Lookup
 //#include <d3dx11.h>
 //#include <d3dx10.h>
@@ -99,6 +99,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	}
 	// Cleanup DirectX and COM Objects
 	CleanD3D();
+
+	// Demonstrating SList class
+	SiachenGameEngine::SList myList(10);
 
 	// Return this part of the WM_QUIT message to Windows
 	return (int)msg.wParam;
