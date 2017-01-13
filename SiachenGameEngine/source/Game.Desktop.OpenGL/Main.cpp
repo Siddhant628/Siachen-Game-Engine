@@ -7,14 +7,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	UNREFERENCED_PARAMETER(lpCmdLine);
 	UNREFERENCED_PARAMETER(nCmdShow);
 	
-	//const glm::vec4 CornflowerBlue = glm::vec4(0.392f, 0.584f, 0.929f, 1.0f);
-
 	if (!glfwInit())
 	{
 		return -1;
 	}
 
-	GLFWwindow* window = glfwCreateWindow(800, 600, "OpenGL Essentials", nullptr, nullptr);
+	GLFWwindow* window = glfwCreateWindow(1280, 720, "SiachenGameEngine", nullptr, nullptr);
 	if (window == nullptr)
 	{
 		return -1;
@@ -31,7 +29,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	while (!glfwWindowShouldClose(window))
 	{
-		//glClearBufferfv(GL_COLOR, 0, &CornflowerBlue[0]);
+		float cornFlowerBlueColor[4] = { 0.392f, 0.584f, 0.929f, 1.0f };
+		glClearBufferfv(GL_COLOR, 0, &cornFlowerBlueColor[0]);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

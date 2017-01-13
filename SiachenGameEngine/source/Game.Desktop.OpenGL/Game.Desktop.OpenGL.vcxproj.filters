@@ -3,6 +3,7 @@
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="gl3w.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
