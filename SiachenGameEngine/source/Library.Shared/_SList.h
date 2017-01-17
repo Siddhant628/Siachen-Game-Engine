@@ -16,8 +16,8 @@ namespace SiachenGameEngine
 		void PushFront(int32_t);
 		// Insert given number at the end of the list
 		void PushBack(int32_t);
-		// Removes the first number of the list and returns it
-		int32_t PopFront();
+		// Removes the first number of the list
+		void PopFront();
 		// Indicates whether a list contains any items
 		bool IsEmpty() const;
 		// Returns the first item in the list

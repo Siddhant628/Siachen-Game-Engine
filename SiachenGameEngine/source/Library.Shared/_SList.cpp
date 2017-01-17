@@ -10,28 +10,12 @@ namespace SiachenGameEngine
 
 	}
 
-	_SList::_SList(const _SList & _list)
+	_SList::_SList(const _SList & _list) : m_pFront(nullptr), m_pBack(nullptr), m_iSize(0)
 	{
 		Node* listFront = _list.m_pFront;
 		while (listFront != nullptr)
 		{
-			// Copy value to new node
-			Node* newNode = new Node();
-			newNode->value = listFront->value;
-			// If the list is empty, then the new node is back as well
-			if (m_iSize == 0)
-			{
-				m_pBack = newNode;
-				newNode->nextNode = nullptr;
-			}
-			else
-			{
-				newNode->nextNode = m_pFront;
-			}
-			// Update the front and the size
-			m_pFront = newNode;
-			m_iSize++;
-			// Proceed to next item in the list
+			PushBack(listFront->value);
 			listFront = listFront->nextNode;
 		}
 	}
@@ -77,21 +61,17 @@ namespace SiachenGameEngine
 		m_iSize++;
 	}
 
-	int32_t _SList::PopFront()
+	void _SList::PopFront()
 	{
-		if (m_pFront == nullptr)
+		// Return if the list is already empty
+		if (IsEmpty())
 		{
-			throw std::runtime_error("The list is empty, front is a null pointer.\n");
+			return;
 		}
-		// Store front node in temp variable
 		Node* frontNode = m_pFront;
-		int32_t value = frontNode->value;
-		// Update front and delete node
 		m_pFront = m_pFront->nextNode;
 		delete frontNode;
 		m_iSize--;
-
-		return value;
 	}
 
 	bool _SList::IsEmpty() const
@@ -101,7 +81,7 @@ namespace SiachenGameEngine
 
 	int32_t _SList::Front() const
 	{
-		if (m_pFront == nullptr)
+		if (IsEmpty())
 		{
 			throw std::runtime_error("The list is empty, front is a null pointer.\n");
 		}
@@ -110,7 +90,7 @@ namespace SiachenGameEngine
 
 	int32_t _SList::Back() const
 	{
-		if (m_pBack == nullptr)
+		if (IsEmpty())
 		{
 			throw std::runtime_error("The list is empty, back is null pointer.\n");
 		}
@@ -125,7 +105,7 @@ namespace SiachenGameEngine
 	void _SList::Clear()
 	{
 		// If list is empty then return
-		if (m_iSize == 0)
+		if (IsEmpty())
 		{
 			return;
 		}
