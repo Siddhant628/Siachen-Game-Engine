@@ -8,15 +8,16 @@ namespace SiachenGameEngine
 	public:
 		// Initializes an empty list
 		_SList();
+		// Copy constructor
+		_SList(const _SList &_list);
+		// Destructor
+		_SList::~_SList();
 		// Insert given number into the list
 		void PushFront(int32_t);
 		// Insert given number at the end of the list
 		void PushBack(int32_t);
-		
-		// TODO Decide whether you want to return the item (The item must be deleted)
-		
-		// Removes the first number of the list
-		void PopFront();
+		// Removes the first number of the list and returns it
+		int32_t PopFront();
 		// Indicates whether a list contains any items
 		bool IsEmpty() const;
 		// Returns the first item in the list

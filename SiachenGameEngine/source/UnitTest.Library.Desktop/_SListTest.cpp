@@ -26,13 +26,14 @@ namespace UnitTestLibraryDesktop
 			}
 		}
 
-		TEST_METHOD(_SListPush)
+		TEST_METHOD(_SList_Push)
 		{
 			SiachenGameEngine::_SList _list;
 			
 			int32_t data = 5;
 			_list.PushFront(data);
 			Assert::AreEqual(data, _list.Front());
+			Assert::AreEqual(data, _list.Back());
 			_list.PopFront();
 		}
 	private:
