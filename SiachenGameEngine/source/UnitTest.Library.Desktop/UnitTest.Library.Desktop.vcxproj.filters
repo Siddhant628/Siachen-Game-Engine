@@ -6,5 +6,6 @@
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="SListTest.cpp" />
+    <ClCompile Include="_SListTest.cpp" />
   </ItemGroup>
 </Project>

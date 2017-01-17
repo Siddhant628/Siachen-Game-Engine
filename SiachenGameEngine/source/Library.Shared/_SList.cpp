@@ -1,4 +1,6 @@
+#include"pch.h"
 #include "_SList.h"
+#include <stdexcept>
 
 namespace SiachenGameEngine
 {
@@ -10,15 +12,31 @@ namespace SiachenGameEngine
 	void _SList::PushFront(int32_t value)
 	{
 		Node* newNode = new Node();
-		
+		newNode->value = value;
+
 		if (m_iSize == 0)
 		{
 			m_pBack = newNode;
 		}
 		newNode->nextNode = m_pFront;
-		newNode->value = value;
 
 		m_pFront = newNode;
+		m_iSize++;
+	}
+
+	void _SList::PushBack(int32_t value)
+	{
+		Node* newNode = new Node();
+		newNode->value = value;
+		newNode->nextNode = nullptr;
+		if (m_iSize == 0)
+		{
+			m_pFront = newNode;
+		}
+		m_pBack->nextNode = newNode;
+		
+		m_pBack = newNode;
+		m_iSize++;
 	}
 
 	void _SList::PopFront()
@@ -36,11 +54,19 @@ namespace SiachenGameEngine
 
 	int32_t _SList::Front() const
 	{
+		if (m_pFront == nullptr)
+		{
+			throw std::exception("The list is empty, front is null pointer.\n");
+		}
 		return m_pFront->value;
 	}
 
 	int32_t _SList::Back() const
 	{
+		if (m_pFront == nullptr)
+		{
+			throw std::exception("The list is empty, back is null pointer.\n");
+		}
 		return m_pBack->value;
 	}
 
@@ -51,11 +77,11 @@ namespace SiachenGameEngine
 
 	void _SList::Clear()
 	{
-		Node* nextNode;
 		if (m_iSize == 0)
 		{
 			return;
 		}
+		Node* nextNode = m_pFront;
 		if(m_iSize > 1)
 		{
 			do

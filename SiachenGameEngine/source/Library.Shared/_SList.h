@@ -1,5 +1,4 @@
 #pragma once
-#include"pch.h"
 
 namespace SiachenGameEngine
 {
@@ -11,6 +10,9 @@ namespace SiachenGameEngine
 		_SList();
 		// Insert given number into the list
 		void PushFront(int32_t);
+		// Insert given number at the end of the list
+		void PushBack(int32_t);
+		
 		// TODO Decide whether you want to return the item (The item must be deleted)
 		
 		// Removes the first number of the list
