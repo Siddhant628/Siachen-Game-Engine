@@ -104,22 +104,14 @@ namespace SiachenGameEngine
 
 	void _SList::Clear()
 	{
-		// If list is empty then return
 		if (IsEmpty())
 		{
 			return;
 		}
-		// Loop through the nodes and delete them
-		Node* nextNode = m_pFront;
-		do
+		while (m_iSize > 0)
 		{
-			nextNode = m_pFront->nextNode;
-			delete m_pFront;
-			m_pFront = nextNode;
-		} while (m_pFront != nullptr);
-		// Update member variables
-		m_pBack = nullptr;
-		m_iSize = 0;
+			PopFront();
+		}
 	}
 
 	_SList::~_SList()
