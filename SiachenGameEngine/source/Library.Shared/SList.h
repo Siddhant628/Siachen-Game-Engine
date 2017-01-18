@@ -3,7 +3,7 @@
 
 namespace SiachenGameEngine
 {
-	template <class T>
+	template <typename T>
 	class SList
 	{
 	public:
@@ -35,6 +35,7 @@ namespace SiachenGameEngine
 		// Clears all items in the list
 		void Clear();
 		// TODO operator=
+		SList& operator=(const SList &rhs);
 
 	private:
 		struct Node

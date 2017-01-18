@@ -29,7 +29,7 @@ namespace UnitTestLibraryDesktop
 		TEST_METHOD(SList_Constructors)
 		{
 			// Default constructor
-			SiachenGameEngine::SList<int> list;
+			SiachenGameEngine::SList<int32_t> list;
 			Assert::AreEqual(list.IsEmpty(), true);
 
 			auto expression = [&list] { list.Front(); };
@@ -51,9 +51,9 @@ namespace UnitTestLibraryDesktop
 			Assert::AreEqual(list2.Size(), 4);
 		}
 
-		TEST_METHOD(_SList_PushFront)
+		TEST_METHOD(SList_PushFront)
 		{
-			SiachenGameEngine::SList<int*> list;
+			SiachenGameEngine::SList<int32_t*> list;
 
 			// Pushing the first item
 			int32_t data = 5;
@@ -71,7 +71,7 @@ namespace UnitTestLibraryDesktop
 			Assert::AreEqual(&data3, list.Front());
 		}
 
-		TEST_METHOD(_SList_PushBack)
+		TEST_METHOD(SList_PushBack)
 		{
 			SiachenGameEngine::SList<char> list;
 
@@ -91,9 +91,9 @@ namespace UnitTestLibraryDesktop
 			Assert::AreEqual(data3, list.Back());
 		}
 
-		TEST_METHOD(_SList_PopFront)
+		TEST_METHOD(SList_PopFront)
 		{
-			SiachenGameEngine::SList<int> list;
+			SiachenGameEngine::SList<int32_t> list;
 
 			list.PopFront();
 
@@ -128,74 +128,88 @@ namespace UnitTestLibraryDesktop
 			Assert::AreEqual(list.IsEmpty(), true);
 		}
 
-		//TEST_METHOD(_SList_IsEmpty)
-		//{
-		//	SiachenGameEngine::_SList _list;
+		TEST_METHOD(SList_IsEmpty)
+		{
+			SiachenGameEngine::SList<int32_t> list;
 
-		//	Assert::AreEqual(_list.IsEmpty(), true);
-		//	_list.PushBack(10);
-		//	Assert::AreEqual(_list.IsEmpty(), false);
-		//	_list.PopFront();
-		//	Assert::AreEqual(_list.IsEmpty(), true);
-		//}
+			Assert::AreEqual(list.IsEmpty(), true);
+			list.PushBack(10);
+			Assert::AreEqual(list.IsEmpty(), false);
+			list.PopFront();
+			Assert::AreEqual(list.IsEmpty(), true);
+		}
 
-		//TEST_METHOD(_SList_Front)
-		//{
-		//	SiachenGameEngine::_SList _list;
+		TEST_METHOD(SList_Front)
+		{
+			SiachenGameEngine::SList<int32_t> list;
 
-		//	// For no items
-		//	auto expression = [&_list] {_list.Front(); };
-		//	Assert::ExpectException<std::runtime_error>(expression);
+			// For no items
+			auto expression = [&list] {list.Front(); };
+			Assert::ExpectException<std::runtime_error>(expression);
 
-		//	// For the first item
-		//	_list.PushBack(10);
-		//	Assert::AreEqual(_list.Front(), 10);
+			// For the first item
+			list.PushBack(10);
+			Assert::AreEqual(list.Front(), 10);
 
-		//	// For new item at the front
-		//	_list.PushFront(0);
-		//	Assert::AreEqual(_list.Front(), 0);
+			// For new item at the front
+			list.PushFront(0);
+			Assert::AreEqual(list.Front(), 0);
 
-		//	// For removed item from front
-		//	_list.PopFront();
-		//	Assert::AreEqual(_list.Front(), 10);
-		//}
+			// For removed item from front
+			list.PopFront();
+			Assert::AreEqual(list.Front(), 10);
+		}
 
-		//TEST_METHOD(_SList_Back)
-		//{
-		//	SiachenGameEngine::_SList _list;
+		TEST_METHOD(SList_Back)
+		{
+			SiachenGameEngine::SList<int32_t> list;
 
-		//	// For no items
-		//	auto expression = [&_list] {_list.Back(); };
-		//	Assert::ExpectException<std::runtime_error>(expression);
+			// For no items
+			auto expression = [&list] {list.Back(); };
+			Assert::ExpectException<std::runtime_error>(expression);
 
-		//	// For the first item
-		//	_list.PushBack(10);
-		//	Assert::AreEqual(_list.Back(), 10);
+			// For the first item
+			list.PushBack(10);
+			Assert::AreEqual(list.Back(), 10);
 
-		//	// For new item at the back
-		//	_list.PushBack(0);
-		//	Assert::AreEqual(_list.Back(), 0);
-		//}
+			// For new item at the back
+			list.PushBack(0);
+			Assert::AreEqual(list.Back(), 0);
+		}
 
-		//TEST_METHOD(_SList_Size)
-		//{
-		//	SiachenGameEngine::_SList _list;
+		TEST_METHOD(SList_Size)
+		{
+			SiachenGameEngine::SList<int32_t> list;
 
-		//	// When the list is empty
-		//	Assert::AreEqual(_list.Size(), 0);
+			// When the list is empty
+			Assert::AreEqual(list.Size(), 0);
 
-		//	_list.PushBack(10);
-		//	Assert::AreEqual(_list.Size(), 1);
+			list.PushBack(10);
+			Assert::AreEqual(list.Size(), 1);
 
-		//	_list.PushFront(0);
-		//	Assert::AreEqual(_list.Size(), 2);
+			list.PushFront(0);
+			Assert::AreEqual(list.Size(), 2);
 
-		//	_list.PopFront();
-		//	Assert::AreEqual(_list.Size(), 1);
+			list.PopFront();
+			Assert::AreEqual(list.Size(), 1);
 
-		//	_list.PopFront();
-		//	Assert::AreEqual(_list.Size(), 0);
-		//}
+			list.PopFront();
+			Assert::AreEqual(list.Size(), 0);
+		}
+
+		TEST_METHOD(SList_Clean)
+		{
+			SiachenGameEngine::SList<int32_t> list;
+
+			int32_t data = 5;
+			
+			list.PushFront(data);
+			Assert::AreEqual(data, list.Front());
+			Assert::AreEqual(data, list.Back());
+			
+			list.Clear();
+		}
+
 	private:
 		static _CrtMemState sStartMemState;
 	};
