@@ -100,8 +100,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	// Cleanup DirectX and COM Objects
 	CleanD3D();
 
-	// Demonstrating SList class
-	SiachenGameEngine::SList myList(10);
 
 	// Return this part of the WM_QUIT message to Windows
 	return (int)msg.wParam;

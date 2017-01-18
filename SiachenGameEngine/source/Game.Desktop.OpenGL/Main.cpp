@@ -52,8 +52,5 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	glfwDestroyWindow(window);
 	glfwTerminate();
 
-	// Demonstrating SList class
-	SiachenGameEngine::SList myList(10);
-
 	return 0;
 }

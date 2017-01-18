@@ -10,8 +10,8 @@ namespace SiachenGameEngine
 		_SList();
 		// Copy constructor
 		_SList(const _SList &_list);
-		// Destructor
-		_SList::~_SList();
+
+		~_SList();
 		// Insert given number into the list
 		void PushFront(int32_t);
 		// Insert given number at the end of the list

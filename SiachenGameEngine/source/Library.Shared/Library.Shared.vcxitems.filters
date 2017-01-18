@@ -6,9 +6,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="$(MSBuildThisFileDirectory)SList.cpp">
-      <Filter>Containers</Filter>
-    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)pch.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)_SList.cpp">
       <Filter>Containers</Filter>
@@ -22,5 +19,10 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)_SList.h">
       <Filter>Containers</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)SList.inl">
+      <Filter>Containers</Filter>
+    </None>
   </ItemGroup>
 </Project>

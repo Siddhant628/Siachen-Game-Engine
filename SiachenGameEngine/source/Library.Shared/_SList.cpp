@@ -104,10 +104,6 @@ namespace SiachenGameEngine
 
 	void _SList::Clear()
 	{
-		if (IsEmpty())
-		{
-			return;
-		}
 		while (m_iSize > 0)
 		{
 			PopFront();
