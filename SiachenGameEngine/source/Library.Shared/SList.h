@@ -9,8 +9,7 @@ namespace SiachenGameEngine
 	public:
 		// Initializes an empty list
 		SList();
-		
-		// Copy constructor (to perform a deep copy)
+		// Copy constructor (performs a deep copy)
 		SList(const SList &list);
 		
 		~SList();

@@ -26,7 +26,7 @@ SiachenGameEngine::SList<T>::~SList()
 template<class T>
 void SiachenGameEngine::SList<T>::PushFront(const T &value)
 {
-	// Create a new node and set it's value
+	// Create a new node and set its value
 	Node* newNode = new Node();
 	newNode->value = value;
 	// If it's the first node, it is the back item as well
@@ -41,18 +41,18 @@ void SiachenGameEngine::SList<T>::PushFront(const T &value)
 	}
 	// Set this node as the front
 	m_pFront = newNode;
-	// Increment the size of list
+
 	m_iSize++;
 }
 
 template<class T>
 void SiachenGameEngine::SList<T>::PushBack(const T &value)
 {
-	// Create a new node and set it's value
+	// Create a new node and set its value
 	Node* newNode = new Node();
 	newNode->value = value;
 	newNode->nextNode = nullptr;
-	// // If it's the first node, it is the front item as well
+	// If it's the first node, it is the front item as well
 	if (m_iSize == 0)
 	{
 		m_pFront = newNode;
@@ -62,7 +62,7 @@ void SiachenGameEngine::SList<T>::PushBack(const T &value)
 		m_pBack->nextNode = newNode;
 	}
 	m_pBack = newNode;
-	// Increment the size of list
+
 	m_iSize++;
 }
 
