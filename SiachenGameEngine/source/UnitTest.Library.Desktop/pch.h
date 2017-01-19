@@ -10,4 +10,5 @@
 // Headers for CppUnitTest
 #include "CppUnitTest.h"
 
+#include <cstdint>
 // TODO: reference additional headers your program requires here

@@ -9,7 +9,7 @@ namespace SiachenGameEngine
 	}
 
 	template<typename T>
-	SList<T>::SList(const SList &list) : m_pFront(nullptr), m_pBack(nullptr), m_iSize(0)
+	SList<T>::SList(const SList<T> &list) : m_pFront(nullptr), m_pBack(nullptr), m_iSize(0)
 	{
 		Node* listFront = list.m_pFront;
 		while (listFront != nullptr)
@@ -151,7 +151,7 @@ namespace SiachenGameEngine
 	}
 
 	template<typename T>
-	SList<T>& SList<T>::operator=(const SList& rhs)
+	SList<T>& SList<T>::operator=(const SList<T>& rhs)
 	{
 		if (this != &rhs)
 		{
@@ -165,4 +165,5 @@ namespace SiachenGameEngine
 		}
 		return *this;
 	}
+
 }

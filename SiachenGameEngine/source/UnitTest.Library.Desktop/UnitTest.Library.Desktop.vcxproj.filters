@@ -2,9 +2,25 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Foo.h">
+      <Filter>Helper Classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="SListTest.cpp" />
+    <ClCompile Include="Foo.cpp">
+      <Filter>Helper Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="SListTest.cpp">
+      <Filter>Test Classes</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Helper Classes">
+      <UniqueIdentifier>{91834fdc-040f-4c5a-8781-c900434ae178}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test Classes">
+      <UniqueIdentifier>{2f07125e-92fc-42e2-834f-19a2c555ac1f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
