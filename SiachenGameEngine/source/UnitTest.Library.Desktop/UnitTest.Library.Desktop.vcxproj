@@ -180,6 +180,7 @@
   <ItemGroup>
     <ClInclude Include="Foo.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="ToStringTemplates.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Foo.cpp" />

@@ -1,5 +1,4 @@
 #include "pch.h"
-//#include "SList.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {

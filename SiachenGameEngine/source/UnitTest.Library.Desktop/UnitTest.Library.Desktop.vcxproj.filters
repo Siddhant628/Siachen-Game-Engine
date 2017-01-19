@@ -5,6 +5,7 @@
     <ClInclude Include="Foo.h">
       <Filter>Helper Classes</Filter>
     </ClInclude>
+    <ClInclude Include="ToStringTemplates.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
