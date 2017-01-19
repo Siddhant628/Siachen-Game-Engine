@@ -1,14 +1,10 @@
-// stdafx.h : include file for standard system include files,
-// or project specific include files that are used frequently, but
-// are changed infrequently
-//
-
 #pragma once
 
+// Windows libraries
 #include <SDKDDKVer.h>
 
-// Headers for CppUnitTest
+// Header for unit testing
 #include "CppUnitTest.h"
 
+// Standard libraries
 #include <cstdint>
-// TODO: reference additional headers your program requires here

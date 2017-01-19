@@ -7,6 +7,7 @@ namespace HelperClasses
 	{
 
 	}
+
 	Foo::Foo(int32_t value)
 	{
 		m_pInteger = new int32_t(value);
