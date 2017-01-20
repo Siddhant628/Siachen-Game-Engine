@@ -1,3 +1,7 @@
+/**
+* A templated class which implements a singly-linked list.
+*/
+
 #pragma once
 #include "pch.h"
 
@@ -7,34 +11,73 @@ namespace SiachenGameEngine
 	class SList
 	{
 	public:
-		// Initializes an empty list
+		/**
+		* Default constructor - Initializes an empty list.
+		*/
 		SList();
-		// Copy constructor (performs a deep copy)
+		/**
+		* Copy constructor - Performs a deep copy of the passed list object into this list object.
+		*/
 		SList(const SList &list);
-		
+		/**
+		* Destructor - Deallocates all the dynamically allocated list nodes.
+		*/
 		~SList();
-		
-		// Insert given number into the list
-		void PushFront(const T &);
-		// Insert given number at the end of the list
-		void PushBack(const T &);
-		// Removes the first number of the list
+		/**
+		* Inserts an item at the front of the list.
+		* @param obj The item to insert at the front.
+		* @see PushBack()
+		*/
+		void PushFront(const T& obj);
+		/**
+		* Inserts an item at the back of the list.
+		* @param obj The item to insert at the back.
+		* @see PushFront()
+		*/
+		void PushBack(const T& obj);
+		/**
+		* Removes the item at front of the list
+		*/
 		void PopFront();
-		// Indicates whether a list contains any items
+		/**
+		* Check whether the list is empty.
+		* @return True if the list is empty.
+		*/
 		bool IsEmpty() const;
-		// Returns the first item in the list
+		/**
+		* Get the item at the front of the list.
+		* @return The item at the front.
+		*/
 		T& Front();
-		// Returns the last item in the list
+		/**
+		* Get the item at the back of the list.
+		* @return The item at the back.
+		*/
 		T& Back();
-		// Returns the first item in the list
+		/**
+		* Get the item at the front of the list.
+		* @return The item at the front.
+		*/
 		const T& Front() const;
-		// Returns the last item in the list
+		/**
+		* Get the item at the back of the list.
+		* @return The item at the back.
+		*/
 		const T& Back() const;
-		// Returns the number of items in the list
+		/**
+		* Get the current size of the list.
+		* @return The number of items in the list (an integer).
+		*/
 		int32_t Size() const;
-		// Clears all items in the list
+		/**
+		* Deallocates all the dynamically allocated list items and initializes list's member variables.
+		*/
 		void Clear();
-		// TODO operator=
+		/**
+		* Assignment operator overloaded to perform a deep copy of list rhs into this list.
+		* @param rhs The other list which has to be copied.
+		* @return The deep copy list rhs.
+		*/
 		SList& operator=(const SList &rhs);
 
 	private:
