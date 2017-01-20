@@ -1,12 +1,13 @@
-/**
-* A templated class which implements a singly-linked list.
-*/
+// A templated class which implements a singly - linked list.
 
 #pragma once
 #include "pch.h"
 
 namespace SiachenGameEngine
 {
+	/**
+	* A templated class which implements a singly-linked list.
+	*/
 	template <typename T>
 	class SList
 	{
@@ -76,7 +77,7 @@ namespace SiachenGameEngine
 		/**
 		* Assignment operator overloaded to perform a deep copy of list rhs into this list.
 		* @param rhs The other list which has to be copied.
-		* @return The deep copy list rhs.
+		* @return A deep copy of list rhs.
 		*/
 		SList& operator=(const SList &rhs);
 
