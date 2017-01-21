@@ -11,6 +11,18 @@ namespace SiachenGameEngine
 	template <typename T>
 	class SList
 	{
+	private:
+		struct Node
+		{
+			Node* nextNode;
+			T value;
+		};
+
+		Node* m_pFront;
+		Node* m_pBack;
+
+		int32_t m_iSize;
+
 	public:
 		/**
 		* Default constructor - Initializes an empty list.
@@ -80,18 +92,75 @@ namespace SiachenGameEngine
 		* @return A deep copy of list rhs.
 		*/
 		SList& operator=(const SList &rhs);
-
-	private:
-		struct Node
+		// Embedded iterator class
+		// 
+		// Will have a pointer to a node.
+		// Overload == to see if two iterators point at the same node.
+		// Also implement != for above.
+		// Overload ++ to reassign the iterator to the next node.
+		// Must implement both postfix and prefix with same result.
+		// Dereference operator * to return the item contained by the node the iterator points to (T&). (Also have a const version)
+		// 
+		// Modifications in SList
+		//
+		// Begin, returns an iterator which points to the head of the list.
+		// End, returns an iterator which points past the end of list (THINK).
+		// InsertAfter, append the given item after the item the given iterator points to.
+		// Find(const T & ) const, returns an iterator pointing to a given item.
+		// Remove, shall remove the item associated with the given data maintain list integrity (Calling it on non-existing item shouldn't cause harm).
+		//
+		// Doxygen formatting, const correctness, unit testing, builds for all platforms and configurations.
+		//
+		// In Class Discussion
+		//
+		// A pointer to a node of the list.
+		// A pointer to the owning list. (A const pointer)
+		// A copy constructor
+		// A assignment operator
+		// 
+		class Iterator
 		{
-			Node* nextNode;
-			T value;
+		public:
+			/**
+			* Default constructor - Initializes an iterator with no owning list or pointed node.
+			*/
+			Iterator();
+			/**
+			* Compares if two iterators point to the same node.
+			* @return True if two iterators point to the same node.
+			*/
+			bool operator==(const Iterator & It) const;
+			/**
+			* Compares if two iterators don't point to the same node.
+			* @return True if two iterators don't point to the same node.
+			*/
+			bool operator!=(const Iterator & It) const;
+			/**
+			* Overloaded pre-increment operator increments the node to which it points in the list.
+			* @return Iterator pointing to the next node.
+			*/
+			Iterator& operator++();
+			/**
+			* Overloaded post-increment operator increments the node to which it points in the list.
+			* @return Iterator pointing to the same node as before incrementing.
+			*/			
+			Iterator& operator++(int32_t postfix);
+			/**
+			* Dereference the item value the iterator points to.
+			* @return Item in the list referred to by the iterator(T&).
+			*/
+			T& operator*();
+			/**
+			* Dereference the item value the iterator points to.
+			* @return Item in the list referred to by the iterator(T&).
+			*/
+			const T& operator*() const;
+
+		private:
+			Node* m_pListNode;
+			const SList* m_pOwnerList;
+
 		};
-
-		Node* m_pFront;
-		Node* m_pBack;
-
-		int32_t m_iSize;
 	};
 
 }

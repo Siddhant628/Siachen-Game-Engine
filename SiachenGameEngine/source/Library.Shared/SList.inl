@@ -166,4 +166,65 @@ namespace SiachenGameEngine
 		return *this;
 	}
 
+	template<typename T>
+	SList <T>::Iterator::Iterator() : m_pListNode(nullptr), m_pOwnerList(nullptr)
+	{
+	
+	}
+
+	template<typename T>
+	bool SList<T>::Iterator::operator==(const Iterator & It) const
+	{
+		return (It.m_pListNode == m_pListNode);
+	}
+
+	template<typename T>
+	bool SList<T>::Iterator::operator!=(const Iterator & It) const
+	{
+		return (It.m_pListNode != m_pListNode);
+	}
+
+	template<typename T>
+	typename SList<T>::Iterator& SList<T>::Iterator::operator++()
+	{
+		if (m_pListNode == nullptr)
+		{
+			throw std::runtime_error("Iterator cannot pre-increment, end has been reached.\n");
+		}
+		m_pListNode = m_pListNode->nextNode;
+		return *this;
+	}
+
+	template<typename T>
+	typename SList<T>::Iterator& SList<T>::Iterator::operator++(int32_t postfix)
+	{
+		if (m_pListNode == nullptr)
+		{
+			throw std::runtime_error("Iterator cannot post-increment, end has been reached.\n");
+		}
+		Iterator iteratorToReturn = *this;
+		m_pListNode = m_pListNode->nextNode;
+		return iteratorToReturn;
+	}
+
+	template<typename T>
+	T& SList<T>::Iterator::operator*()
+	{
+		if (m_pListNode == nullptr)
+		{
+			throw std::runtime_error("Iterator points at the end of the list, cannot return an item.");
+		}
+		return m_pListNode->value;
+	}
+
+	template<typename T>
+	const T& SList<T>::Iterator::operator*() const
+	{
+		if (m_pListNode == nullptr)
+		{
+			throw std::runtime_error("Iterator points at the end of the list, cannot return an item.");
+		}
+		return m_pListNode->value;
+	}
+
 }
