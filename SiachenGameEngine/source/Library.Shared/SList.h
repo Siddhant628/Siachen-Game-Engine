@@ -92,6 +92,8 @@ namespace SiachenGameEngine
 		* @return A deep copy of list rhs.
 		*/
 		SList& operator=(const SList &rhs);
+
+		
 		// Embedded iterator class
 		// 
 		// Will have a pointer to a node.
@@ -118,6 +120,10 @@ namespace SiachenGameEngine
 		// A copy constructor
 		// A assignment operator
 		// 
+
+		/**
+		* An Iterator for the SList class, each object is associated with a specific node in a specific list.
+		*/
 		class Iterator
 		{
 		public:
@@ -125,6 +131,19 @@ namespace SiachenGameEngine
 			* Default constructor - Initializes an iterator with no owning list or pointed node.
 			*/
 			Iterator();
+			/**
+			* Copy constructor - Performs a deep copy of the passed iterator object into this iterator object.
+			* @param It The iterator to copy.
+			*/
+			Iterator(const Iterator& It);
+			// TODO Find a better way to do this
+			Iterator(const Node* node, const SList* list);
+			/**
+			* Assignment operator overloaded to perform a deep copy of an iterator into this iterator.
+			* @param It The iterator which has to be copied.
+			* @return A deep copy of iterator It.
+			*/
+			Iterator& operator=(const Iterator& It);
 			/**
 			* Compares if two iterators point to the same node.
 			* @return True if two iterators point to the same node.
@@ -161,6 +180,12 @@ namespace SiachenGameEngine
 			const SList* m_pOwnerList;
 
 		};
+
+		typename SList::Iterator& Begin() const;
+		typename SList::Iterator& End() const;
+		void InsertAfter(const T& listItem, const typename SList::Iterator& It);
+		typename SList::Iterator& Find(const T& listItem) const;
+		void Remove(T& listItem);
 	};
 
 }
