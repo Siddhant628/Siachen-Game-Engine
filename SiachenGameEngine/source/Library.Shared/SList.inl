@@ -169,13 +169,13 @@ namespace SiachenGameEngine
 	template<typename T>
 	typename SList<T>::Iterator& SList<T>::Begin() const
 	{
-		return new Iterator(m_pFront, this);
+		return Iterator(m_pFront, this);
 	}
 
 	template<typename T>
 	typename SList<T>::Iterator& SList<T>::End() const
 	{
-		return new Iterator(m_pBack, this);
+		return Iterator(m_pBack, this);
 	}
 
 	template<typename T>
@@ -193,13 +193,31 @@ namespace SiachenGameEngine
 	template<typename T>
 	typename SList<T>::Iterator& SList<T>::Find(const T& listItem) const
 	{
-		
+		for (SList<T>::Iterator It = Begin(); It != End(); ++It)
+		{
+			if (It.m_pListNode->value == listItem)
+			{
+				return It;
+			}
+		}
+		return Iterator(nullptr, this);
 	}
 
 	template<typename T>
-	void SList<T>::Remove(T& listItem)
+	bool SList<T>::Remove(const T& listItem)
 	{
-
+		for (SList<T>::Iterator It = Begin(); It != End(); ++It)
+		{
+			if (It.m_pListNode->nextNode->value == listItem)
+			{
+				Node* nodeBefore = It.m_pListNode;
+				Node* nodeAfter = nodeBefore->nextNode->nextNode;
+				delete nodeBefore->nextNode;
+				nodeBefore->nextNode = nodeAfter;
+				return true;
+			}
+		}
+		return false;
 	}
 
 	template<typename T>

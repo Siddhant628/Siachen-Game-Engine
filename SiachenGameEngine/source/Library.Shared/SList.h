@@ -180,12 +180,34 @@ namespace SiachenGameEngine
 			const SList* m_pOwnerList;
 
 		};
-
+		/**
+		* Returns an iterator which points to the item at the beginning of this list.
+		* @return Iterator associated with the front node of this list.
+		*/
 		typename SList::Iterator& Begin() const;
+		/**
+		* Returns an iterator which points to the item at the end of this list.
+		* @return Iterator associated with the back node of this list.
+		*/
 		typename SList::Iterator& End() const;
+		/**
+		* Insert a node after a specific item in the list.
+		* @param listItem The T type item which has to be inserted in the list.
+		* @param It The iterator associated with the item in the list after which listItem has to be inserted.
+		*/
 		void InsertAfter(const T& listItem, const typename SList::Iterator& It);
+		/**
+		* Searches for an item in the list and provide an iterator associated with it.
+		* @param listItem The item which has to be found in the list.
+		* @return An iterator associated with a the item searched for in the list.
+		*/
 		typename SList::Iterator& Find(const T& listItem) const;
-		void Remove(T& listItem);
+		/**
+		* Removes the argument item from the list, if it is present.
+		* @param listItem The item in this list which has to be removed.
+		* @return True if an item was removed.
+		*/
+		bool Remove(const T& listItem);
 	};
 
 }
