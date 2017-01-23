@@ -168,14 +168,15 @@ namespace SiachenGameEngine
 			return *this;
 		}
 
+		// Methods associated with Iterator
 		template<typename T>
-		typename SList<T>::Iterator& SList<T>::Begin() const
+		typename SList<T>::Iterator SList<T>::Begin() const
 		{
 			return Iterator(m_pFront, this);
 		}
 
 		template<typename T>
-		typename SList<T>::Iterator& SList<T>::End() const
+		typename SList<T>::Iterator SList<T>::End() const
 		{
 			return Iterator(m_pBack, this);
 		}
@@ -183,6 +184,10 @@ namespace SiachenGameEngine
 		template<typename T>
 		void SList<T>::InsertAfter(const T& listItem, typename const SList::Iterator& It)
 		{
+			if (It.m_pOwnerList != this)
+			{
+				throw std::runtime_error("Cannot insert node in another list.");
+			}
 			// Create a new node
 			Node* newNode = new Node();
 			newNode->value = listItem;
@@ -222,6 +227,7 @@ namespace SiachenGameEngine
 			return false;
 		}
 
+		// Constructors for Iterator
 		template<typename T>
 		SList <T>::Iterator::Iterator() : m_pListNode(nullptr), m_pOwnerList(nullptr)
 		{
@@ -235,11 +241,12 @@ namespace SiachenGameEngine
 		}
 
 		template<typename T>
-		SList<T>::Iterator::Iterator(const Node * node, const SList * list) : m_pListNode(node), m_pOwnerList(list)
+		SList<T>::Iterator::Iterator(Node* node, const SList* list) : m_pListNode(node), m_pOwnerList(list)
 		{
 
 		}
 
+		// Overloaded operators for the Iterator
 		template<typename T>
 		typename SList<T>::Iterator& SList<T>::Iterator::operator=(const Iterator& It)
 		{
@@ -254,13 +261,13 @@ namespace SiachenGameEngine
 		template<typename T>
 		bool SList<T>::Iterator::operator==(const Iterator& It) const
 		{
-			return (It.m_pListNode == m_pListNode);
+			return ((It.m_pListNode == m_pListNode) && (It.m_pOwnerList == m_pOwnerList));
 		}
 
 		template<typename T>
 		bool SList<T>::Iterator::operator!=(const Iterator& It) const
 		{
-			return (It.m_pListNode != m_pListNode);
+			return ((It.m_pListNode != m_pListNode) || (It.m_pOwnerList != m_pOwnerList));
 		}
 
 		template<typename T>
@@ -275,7 +282,7 @@ namespace SiachenGameEngine
 		}
 
 		template<typename T>
-		typename SList<T>::Iterator& SList<T>::Iterator::operator++(int32_t postfix)
+		typename SList<T>::Iterator SList<T>::Iterator::operator++(int32_t)
 		{
 			if (m_pListNode == nullptr)
 			{

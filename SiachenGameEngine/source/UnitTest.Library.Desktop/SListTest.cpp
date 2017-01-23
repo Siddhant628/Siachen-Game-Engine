@@ -410,7 +410,7 @@ namespace UnitTestLibraryDesktop
 			intListLHS = intListRHS;
 			Assert::AreEqual(intListLHS.Front(), data);
 			Assert::AreEqual(intListLHS.Back(), data2);
-			
+
 			// Assignment operator for lists of pointers to integers
 			SList<int32_t*> intPtrListLHS;
 			SList<int32_t*> intPtrListRHS;
@@ -453,6 +453,51 @@ namespace UnitTestLibraryDesktop
 			fooList.Clear();
 		}
 
+		TEST_METHOD(SList_Iterator_Constructors)
+		{
+			int32_t data = 10, data2 = 20;
+			
+			// Default constructor
+			SList<int32_t>::Iterator It, It2;
+			Assert::AreEqual(It, It2);
+			auto expression = [&It] { It++; };
+			Assert::ExpectException<std::runtime_error>(expression);
+			auto expression2 = [&It2] { ++It2; };
+			Assert::ExpectException<std::runtime_error>(expression2);
+			auto expression3 = [&It2] { *It2; };
+			Assert::ExpectException<std::runtime_error>(expression3);
+			
+			SList<int32_t> intList;
+			// Copy constructor
+			intList.PushBack(data2);
+			intList.PushFront(data);
+			It = intList.Begin();
+			SList<int32_t>::Iterator It3(It);
+			Assert::AreEqual(It, It3);
+			Assert::AreEqual(*It3, data);
+			Assert::AreNotEqual(It, It2);
+
+			SList<int32_t*> intPtrList;
+			// Copy constructor
+			intPtrList.PushBack(&data2);
+			intPtrList.PushFront(&data);
+			SList<int32_t*>::Iterator It4 = intPtrList.Begin();
+			SList<int32_t*>::Iterator It5(It4);
+			Assert::AreEqual(It4, It5);
+			Assert::AreEqual(*It5, &data);
+
+			Foo foo(data), foo2(data2);
+			SList<Foo> fooList;
+			// Copy constructor
+			fooList.PushBack(foo2);
+			fooList.PushFront(foo);
+			SList<Foo>::Iterator It6 = fooList.Begin();
+			SList<Foo>::Iterator It7(It6);
+			Assert::AreEqual(It6, It7);
+			Assert::AreEqual(*It7, foo);
+
+		}
+	
 	private:
 		static _CrtMemState sStartMemState;
 	};

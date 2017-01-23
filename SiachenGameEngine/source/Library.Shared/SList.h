@@ -128,6 +128,8 @@ namespace SiachenGameEngine
 			*/
 			class Iterator
 			{
+				friend class SList;
+
 			public:
 				/**
 				* Default constructor - Initializes an iterator with no owning list or pointed node.
@@ -138,8 +140,8 @@ namespace SiachenGameEngine
 				* @param It The iterator to copy.
 				*/
 				Iterator(const Iterator& It);
-				// TODO Find a better way to do this
-				Iterator(const Node* node, const SList* list);
+
+
 				/**
 				* Assignment operator overloaded to perform a deep copy of an iterator into this iterator.
 				* @param It The iterator which has to be copied.
@@ -165,7 +167,7 @@ namespace SiachenGameEngine
 				* Overloaded post-increment operator increments the node to which it points in the list.
 				* @return Iterator pointing to the same node as before incrementing.
 				*/
-				Iterator& operator++(int32_t postfix);
+				Iterator operator++(int32_t postfix);
 				/**
 				* Dereference the item value the iterator points to.
 				* @return Item in the list referred to by the iterator(T&).
@@ -178,6 +180,9 @@ namespace SiachenGameEngine
 				const T& operator*() const;
 
 			private:
+				// TODO Find a better way to do this
+				Iterator(Node* node, const SList* list);
+
 				Node* m_pListNode;
 				const SList* m_pOwnerList;
 
@@ -186,12 +191,12 @@ namespace SiachenGameEngine
 			* Returns an iterator which points to the item at the beginning of this list.
 			* @return Iterator associated with the front node of this list.
 			*/
-			typename SList::Iterator& Begin() const;
+			typename SList::Iterator Begin() const;
 			/**
 			* Returns an iterator which points to the item at the end of this list.
 			* @return Iterator associated with the back node of this list.
 			*/
-			typename SList::Iterator& End() const;
+			typename SList::Iterator End() const;
 			/**
 			* Insert a node after a specific item in the list.
 			* @param listItem The T type item which has to be inserted in the list.
