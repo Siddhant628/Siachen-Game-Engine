@@ -9,7 +9,7 @@ namespace Microsoft
 		{
 
 			template<>
-			std::wstring ToString<HelperClasses::Foo>(const HelperClasses::Foo  & foo)
+			std::wstring ToString<SiachenGameEngine::HelperClasses::Foo>(const SiachenGameEngine::HelperClasses::Foo  & foo)
 			{
 				int32_t value = foo.GetValue();
 				std::string str = std::to_string(value);

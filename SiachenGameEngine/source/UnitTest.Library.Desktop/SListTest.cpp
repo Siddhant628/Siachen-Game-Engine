@@ -5,6 +5,8 @@
 #include "ToStringTemplates.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+using namespace SiachenGameEngine::Containers;
+using namespace SiachenGameEngine::HelperClasses;
 
 namespace UnitTestLibraryDesktop
 {
@@ -32,7 +34,7 @@ namespace UnitTestLibraryDesktop
 		{
 			int32_t zero = 0, one = 1, two = 2;
 
-			SiachenGameEngine::SList<int32_t> intList;
+			SList<int32_t> intList;
 			// Testing initialization for list of integers
 			Assert::AreEqual(intList.IsEmpty(), true);
 			auto expression = [&intList] { intList.Front(); };
@@ -43,12 +45,12 @@ namespace UnitTestLibraryDesktop
 			intList.PushBack(one);
 			intList.PushBack(two);
 			intList.PushFront(zero);
-			SiachenGameEngine::SList<int32_t> intList2(intList);
+			SList<int32_t> intList2(intList);
 			Assert::AreEqual(intList2.Front(), 0);
 			Assert::AreEqual(intList2.Back(), 2);
 			Assert::AreEqual(intList2.Size(), 3);
 
-			SiachenGameEngine::SList<int32_t*> intPtrList;
+			SList<int32_t*> intPtrList;
 			// Testing initialization for list of pointers
 			Assert::AreEqual(intPtrList.IsEmpty(), true);
 			auto expression2 = [&intPtrList] {intPtrList.Front(); };
@@ -59,12 +61,12 @@ namespace UnitTestLibraryDesktop
 			intPtrList.PushBack(&one);
 			intPtrList.PushBack(&two);
 			intPtrList.PushFront(&zero);
-			SiachenGameEngine::SList<int32_t*> intPtrList2(intPtrList);
+			SList<int32_t*> intPtrList2(intPtrList);
 			Assert::AreEqual(intPtrList2.Front(), &zero);
 			Assert::AreEqual(intPtrList2.Back(), &two);
 			Assert::AreEqual(intPtrList2.Size(), 3);
 
-			SiachenGameEngine::SList<HelperClasses::Foo> fooList;
+			SList<Foo> fooList;
 			// Testing initialization for list of Foos
 			Assert::AreEqual(fooList.IsEmpty(), true);
 			auto expression5 = [&fooList] {fooList.Front(); };
@@ -72,11 +74,11 @@ namespace UnitTestLibraryDesktop
 			auto expression6 = [&fooList] {fooList.Back(); };
 			Assert::ExpectException<std::runtime_error>(expression6);
 			// Testing copy constructor
-			HelperClasses::Foo fooZero(zero), fooOne(one), fooTwo(two);
+			Foo fooZero(zero), fooOne(one), fooTwo(two);
 			fooList.PushBack(fooOne);
 			fooList.PushBack(fooTwo);
 			fooList.PushFront(fooZero);
-			SiachenGameEngine::SList<HelperClasses::Foo> fooList2(fooList);
+			SList<Foo> fooList2(fooList);
 			Assert::AreEqual(fooZero, fooList2.Front());
 			Assert::AreEqual(fooTwo, fooList2.Back());
 			Assert::AreEqual(fooList2.Size(), 3);
@@ -86,7 +88,7 @@ namespace UnitTestLibraryDesktop
 		{
 			int32_t data = 5, data2 = 10, data3 = 15;
 
-			SiachenGameEngine::SList<int32_t> intList;
+			SList<int32_t> intList;
 			// Pushing items into an empty list
 			intList.PushFront(data);
 			Assert::AreEqual(data, intList.Front());
@@ -97,7 +99,7 @@ namespace UnitTestLibraryDesktop
 			intList.PushFront(data3);
 			Assert::AreEqual(data3, intList.Front());
 
-			SiachenGameEngine::SList<int32_t*> intPtrList;
+			SList<int32_t*> intPtrList;
 			// Pushing items into an empty list
 			intPtrList.PushFront(&data);
 			Assert::AreEqual(&data, intPtrList.Front());
@@ -108,8 +110,8 @@ namespace UnitTestLibraryDesktop
 			intPtrList.PushFront(&data3);
 			Assert::AreEqual(&data3, intPtrList.Front());
 
-			SiachenGameEngine::SList<HelperClasses::Foo> fooList;
-			HelperClasses::Foo fooFive(data), fooTen(data2), fooFifteen(data3);
+			SList<Foo> fooList;
+			Foo fooFive(data), fooTen(data2), fooFifteen(data3);
 			// Pushing items into an empty list
 			fooList.PushFront(fooFive);
 			Assert::AreEqual(fooFive, fooList.Front());
@@ -125,7 +127,7 @@ namespace UnitTestLibraryDesktop
 		{
 			int32_t data = 0, data2 = 1;
 
-			SiachenGameEngine::SList<int32_t> intList;
+			SList<int32_t> intList;
 			// Pushing items into an empty list
 			intList.PushBack(data);
 			Assert::AreEqual(data, intList.Front());
@@ -134,7 +136,7 @@ namespace UnitTestLibraryDesktop
 			intList.PushBack(data2);
 			Assert::AreEqual(data2, intList.Back());
 
-			SiachenGameEngine::SList<int32_t*> intPtrList;
+			SList<int32_t*> intPtrList;
 			// Pushing items into an empty list
 			intPtrList.PushBack(&data);
 			Assert::AreEqual(&data, intPtrList.Front());
@@ -143,8 +145,8 @@ namespace UnitTestLibraryDesktop
 			intPtrList.PushBack(&data2);
 			Assert::AreEqual(&data2, intPtrList.Back());
 
-			SiachenGameEngine::SList<HelperClasses::Foo> fooList;
-			HelperClasses::Foo fooZero(data), fooOne(data2);
+			SList<Foo> fooList;
+			Foo fooZero(data), fooOne(data2);
 			// Pushing items into an empty list
 			fooList.PushBack(fooZero);
 			Assert::AreEqual(fooZero, fooList.Front());
@@ -158,7 +160,7 @@ namespace UnitTestLibraryDesktop
 		{
 			int32_t data = 0, data1 = 5;
 
-			SiachenGameEngine::SList<int32_t> intList;
+			SList<int32_t> intList;
 			// Pop for an empty list
 			intList.PopFront();
 			// Pop for an non-empty list till it has no items left
@@ -172,7 +174,7 @@ namespace UnitTestLibraryDesktop
 			intList.PopFront();
 			Assert::AreEqual(intList.IsEmpty(), true);
 
-			SiachenGameEngine::SList<int32_t*> intPtrList;
+			SList<int32_t*> intPtrList;
 			// Pop for an empty list
 			intPtrList.PopFront();
 			// Pop for an non-empty list till it has no items left
@@ -186,8 +188,8 @@ namespace UnitTestLibraryDesktop
 			intPtrList.PopFront();
 			Assert::AreEqual(intPtrList.IsEmpty(), true);
 
-			SiachenGameEngine::SList<HelperClasses::Foo> fooList;
-			HelperClasses::Foo fooZero(data), fooFive(data1);
+			SList<Foo> fooList;
+			Foo fooZero(data), fooFive(data1);
 			// Pop for an empty list
 			fooList.PopFront();
 			// Pop for an non-empty list till it has no items left
@@ -206,22 +208,22 @@ namespace UnitTestLibraryDesktop
 		{
 			int data = 10;
 
-			SiachenGameEngine::SList<int32_t> intList;
+			SList<int32_t> intList;
 			Assert::AreEqual(intList.IsEmpty(), true);
 			intList.PushBack(data);
 			Assert::AreEqual(intList.IsEmpty(), false);
 			intList.PopFront();
 			Assert::AreEqual(intList.IsEmpty(), true);
 
-			SiachenGameEngine::SList<int32_t*> intPtrList;
+			SList<int32_t*> intPtrList;
 			Assert::AreEqual(intPtrList.IsEmpty(), true);
 			intPtrList.PushBack(&data);
 			Assert::AreEqual(intPtrList.IsEmpty(), false);
 			intPtrList.PopFront();
 			Assert::AreEqual(intPtrList.IsEmpty(), true);
 
-			SiachenGameEngine::SList<HelperClasses::Foo> fooList;
-			HelperClasses::Foo fooTen(data);
+			SList<Foo> fooList;
+			Foo fooTen(data);
 			Assert::AreEqual(fooList.IsEmpty(), true);
 			fooList.PushBack(fooTen);
 			Assert::AreEqual(fooList.IsEmpty(), false);
@@ -233,7 +235,7 @@ namespace UnitTestLibraryDesktop
 		{
 			int data = 0, data2 = 10;
 
-			SiachenGameEngine::SList<int32_t> intList;
+			SList<int32_t> intList;
 			// In case the list is empty
 			auto expression = [&intList] {intList.Front(); };
 			Assert::ExpectException<std::runtime_error>(expression);
@@ -250,10 +252,10 @@ namespace UnitTestLibraryDesktop
 			// Testing const function
 			intList.PushBack(data);
 			intList.PushBack(data2);
-			const SiachenGameEngine::SList<int32_t> intList2(intList);
+			const SList<int32_t> intList2(intList);
 			Assert::AreEqual(intList2.Front(), data);
 
-			SiachenGameEngine::SList<int32_t*> intPtrList;
+			SList<int32_t*> intPtrList;
 			// In case the list is empty
 			auto expression2 = [&intPtrList] {intPtrList.Front(); };
 			Assert::ExpectException<std::runtime_error>(expression2);
@@ -270,11 +272,11 @@ namespace UnitTestLibraryDesktop
 			// Testing const function
 			intPtrList.PushBack(&data);
 			intPtrList.PushBack(&data2);
-			const SiachenGameEngine::SList<int32_t*> intPtrList2(intPtrList);
+			const SList<int32_t*> intPtrList2(intPtrList);
 			Assert::AreEqual(intPtrList.Front(), &data);
 
-			SiachenGameEngine::SList<HelperClasses::Foo> fooList;
-			HelperClasses::Foo fooZero(data), fooTen(data2);
+			SList<Foo> fooList;
+			Foo fooZero(data), fooTen(data2);
 			// In case the list is empty
 			auto expression3 = [&fooList] {fooList.Front(); };
 			Assert::ExpectException<std::runtime_error>(expression3);
@@ -291,7 +293,7 @@ namespace UnitTestLibraryDesktop
 			// Testing const function
 			fooList.PushBack(fooTen);
 			fooList.PushFront(fooZero);
-			const SiachenGameEngine::SList<HelperClasses::Foo> fooList2(fooList);
+			const SList<Foo> fooList2(fooList);
 			Assert::AreEqual(fooList2.Front(), fooZero);
 
 		}
@@ -300,7 +302,7 @@ namespace UnitTestLibraryDesktop
 		{
 			int data = 0, data2 = 10;
 
-			SiachenGameEngine::SList<int32_t> intList;
+			SList<int32_t> intList;
 			// If the list is empty
 			auto expression = [&intList] {intList.Back(); };
 			Assert::ExpectException<std::runtime_error>(expression);
@@ -315,10 +317,10 @@ namespace UnitTestLibraryDesktop
 			// Testing const function
 			intList.PushBack(data);
 			intList.PushBack(data2);
-			const SiachenGameEngine::SList<int32_t> intList2(intList);
+			const SList<int32_t> intList2(intList);
 			Assert::AreEqual(intList2.Back(), data2);
 
-			SiachenGameEngine::SList<int32_t*> intPtrList;
+			SList<int32_t*> intPtrList;
 			// If the list is empty
 			auto expression2 = [&intPtrList] {intPtrList.Back(); };
 			Assert::ExpectException<std::runtime_error>(expression2);
@@ -333,11 +335,11 @@ namespace UnitTestLibraryDesktop
 			// Testing const function
 			intPtrList.PushBack(&data);
 			intPtrList.PushBack(&data2);
-			const SiachenGameEngine::SList<int32_t*> intPtrList2(intPtrList);
+			const SList<int32_t*> intPtrList2(intPtrList);
 			Assert::AreEqual(intPtrList.Back(), &data2);
 
-			SiachenGameEngine::SList<HelperClasses::Foo> fooList;
-			HelperClasses::Foo fooZero(data), fooTen(data2);
+			SList<Foo> fooList;
+			Foo fooZero(data), fooTen(data2);
 			// If the list is empty
 			auto expression3 = [&fooList] {fooList.Back(); };
 			Assert::ExpectException<std::runtime_error>(expression3);
@@ -352,7 +354,7 @@ namespace UnitTestLibraryDesktop
 			// Testing const function
 			fooList.PushBack(fooTen);
 			fooList.PushFront(fooZero);
-			const SiachenGameEngine::SList<HelperClasses::Foo> fooList2(fooList);
+			const SList<Foo> fooList2(fooList);
 			Assert::AreEqual(fooList2.Back(), fooTen);
 		}
 
@@ -360,7 +362,7 @@ namespace UnitTestLibraryDesktop
 		{
 			int data = 0, data2 = 10;
 
-			SiachenGameEngine::SList<int32_t> intList;
+			SList<int32_t> intList;
 			// If the list is empty
 			Assert::AreEqual(intList.Size(), 0);
 			// If the list isn't empty
@@ -371,7 +373,7 @@ namespace UnitTestLibraryDesktop
 			intList.PopFront();
 			Assert::AreEqual(intList.Size(), 1);
 
-			SiachenGameEngine::SList<int32_t*> intPtrList;
+			SList<int32_t*> intPtrList;
 			// If the list is empty
 			Assert::AreEqual(intPtrList.Size(), 0);
 			// If the list isn't empty
@@ -382,8 +384,8 @@ namespace UnitTestLibraryDesktop
 			intPtrList.PopFront();
 			Assert::AreEqual(intPtrList.Size(), 1);
 
-			SiachenGameEngine::SList<HelperClasses::Foo> fooList;
-			HelperClasses::Foo fooZero(data), fooTen(data2);
+			SList<Foo> fooList;
+			Foo fooZero(data), fooTen(data2);
 			// If the list is empty
 			Assert::AreEqual(fooList.Size(), 0);
 			// If the list isn't empty
@@ -399,8 +401,8 @@ namespace UnitTestLibraryDesktop
 		{
 			int data = 5, data2 = 10;
 			// Assignment operator for lists of integers
-			SiachenGameEngine::SList<int32_t> intListLHS;
-			SiachenGameEngine::SList<int32_t> intListRHS;
+			SList<int32_t> intListLHS;
+			SList<int32_t> intListRHS;
 			intListLHS.PushFront(data);
 			intListLHS.PushFront(data2);
 			intListRHS.PushFront(data2);
@@ -410,8 +412,8 @@ namespace UnitTestLibraryDesktop
 			Assert::AreEqual(intListLHS.Back(), data2);
 			
 			// Assignment operator for lists of pointers to integers
-			SiachenGameEngine::SList<int32_t*> intPtrListLHS;
-			SiachenGameEngine::SList<int32_t*> intPtrListRHS;
+			SList<int32_t*> intPtrListLHS;
+			SList<int32_t*> intPtrListRHS;
 			intPtrListLHS.PushFront(&data);
 			intPtrListLHS.PushFront(&data2);
 			intPtrListRHS.PushFront(&data2);
@@ -421,9 +423,9 @@ namespace UnitTestLibraryDesktop
 			Assert::AreEqual(intPtrListLHS.Back(), &data2);
 
 			// Assignment operator for lists of pointers to Foos
-			HelperClasses::Foo fooZero(data), fooTen(data2);
-			SiachenGameEngine::SList<HelperClasses::Foo> fooListLHS;
-			SiachenGameEngine::SList<HelperClasses::Foo> fooListRHS;
+			Foo fooZero(data), fooTen(data2);
+			SList<Foo> fooListLHS;
+			SList<Foo> fooListRHS;
 			fooListLHS.PushFront(fooZero);
 			fooListLHS.PushFront(fooTen);
 			fooListRHS.PushFront(fooTen);
@@ -437,16 +439,16 @@ namespace UnitTestLibraryDesktop
 		{
 			int32_t data = 5;
 
-			SiachenGameEngine::SList<int32_t> intList;
+			SList<int32_t> intList;
 			intList.PushFront(data);
 			intList.Clear();
 
-			SiachenGameEngine::SList<int32_t*> intPtrList;
+			SList<int32_t*> intPtrList;
 			intPtrList.PushFront(&data);
 			intPtrList.Clear();
 
-			HelperClasses::Foo fooFive(data);
-			SiachenGameEngine::SList<HelperClasses::Foo> fooList;
+			Foo fooFive(data);
+			SList<Foo> fooList;
 			fooList.PushFront(fooFive);
 			fooList.Clear();
 		}
