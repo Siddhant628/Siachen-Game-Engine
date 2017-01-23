@@ -39,18 +39,6 @@ namespace SiachenGameEngine
 			*/
 			~SList();
 			/**
-			* Inserts an item at the front of the list.
-			* @param obj The item to insert at the front.
-			* @see PushBack()
-			*/
-			void PushFront(const T& obj);
-			/**
-			* Inserts an item at the back of the list.
-			* @param obj The item to insert at the back.
-			* @see PushFront()
-			*/
-			void PushBack(const T& obj);
-			/**
 			* Removes the item at front of the list
 			*/
 			void PopFront();
@@ -141,7 +129,6 @@ namespace SiachenGameEngine
 				*/
 				Iterator(const Iterator& It);
 
-
 				/**
 				* Assignment operator overloaded to perform a deep copy of an iterator into this iterator.
 				* @param It The iterator which has to be copied.
@@ -180,13 +167,25 @@ namespace SiachenGameEngine
 				const T& operator*() const;
 
 			private:
-				// TODO Find a better way to do this
 				Iterator(Node* node, const SList* list);
 
 				Node* m_pListNode;
 				const SList* m_pOwnerList;
 
 			};
+
+			/**
+			* Inserts an item at the front of the list.
+			* @param obj The item to insert at the front.
+			* @see PushBack()
+			*/
+			typename SList::Iterator PushFront(const T& obj);
+			/**
+			* Inserts an item at the back of the list.
+			* @param obj The item to insert at the back.
+			* @see PushFront()
+			*/
+			typename SList::Iterator PushBack(const T& obj);
 			/**
 			* Returns an iterator which points to the item at the beginning of this list.
 			* @return Iterator associated with the front node of this list.
@@ -202,7 +201,7 @@ namespace SiachenGameEngine
 			* @param listItem The T type item which has to be inserted in the list.
 			* @param It The iterator associated with the item in the list after which listItem has to be inserted.
 			*/
-			void InsertAfter(const T& listItem, const typename SList::Iterator& It);
+			typename SList::Iterator InsertAfter(const T& listItem, const typename SList::Iterator& It);
 			/**
 			* Searches for an item in the list and provide an iterator associated with it.
 			* @param listItem The item which has to be found in the list.

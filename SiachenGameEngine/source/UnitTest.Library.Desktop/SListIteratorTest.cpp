@@ -35,62 +35,106 @@ namespace UnitTestLibraryDesktop
 			int32_t data = 10, data2 = 20;
 
 			// Default constructor
-			SList<int32_t>::Iterator It, It2;
-			Assert::AreEqual(It, It2);
-			auto intExpression = [&It] { It++; };
+			SList<int32_t>::Iterator it, it2;
+			Assert::AreEqual(it, it2);
+			auto intExpression = [&it] { it++; };
 			Assert::ExpectException<std::runtime_error>(intExpression);
-			auto intExpression2 = [&It2] { ++It2; };
+			auto intExpression2 = [&it2] { ++it2; };
 			Assert::ExpectException<std::runtime_error>(intExpression2);
-			auto intExpression3 = [&It2] { *It2; };
+			auto intExpression3 = [&it2] { *it2; };
 			Assert::ExpectException<std::runtime_error>(intExpression3);
 			// Copy constructor
 			SList<int32_t> intList;
 			intList.PushBack(data2);
-			intList.PushFront(data);
-			It = intList.Begin();
-			SList<int32_t>::Iterator It3(It);
-			Assert::AreEqual(It, It3);
-			Assert::AreEqual(*It3, data);
-			Assert::AreNotEqual(It, It2);
+			SList<int32_t>::Iterator intItFront = intList.PushFront(data);
+			SList<int32_t>::Iterator it3(intItFront);
+			Assert::AreEqual(intItFront, it3);
+			Assert::AreEqual(*it3, data);
+			Assert::AreNotEqual(intItFront, it2);
 
 			// Default constructor
-			SList<int32_t*>::Iterator It4, It5;
-			Assert::AreEqual(It4, It5);
-			auto intPrtExpression = [&It4] { It4++; };
+			SList<int32_t*>::Iterator it4, it5;
+			Assert::AreEqual(it4, it5);
+			auto intPrtExpression = [&it4] { it4++; };
 			Assert::ExpectException<std::runtime_error>(intPrtExpression);
-			auto intPrtExpression2 = [&It5] { ++It5; };
+			auto intPrtExpression2 = [&it5] { ++it5; };
 			Assert::ExpectException<std::runtime_error>(intPrtExpression2);
-			auto intPrtExpression3 = [&It5] { *It5; };
+			auto intPrtExpression3 = [&it5] { *it5; };
 			Assert::ExpectException<std::runtime_error>(intPrtExpression3);
 			// Copy constructor
 			SList<int32_t*> intPtrList;
 			intPtrList.PushBack(&data2);
-			intPtrList.PushFront(&data);
-			SList<int32_t*>::Iterator It6 = intPtrList.Begin();
-			SList<int32_t*>::Iterator It7(It6);
-			Assert::AreEqual(It6, It7);
-			Assert::AreEqual(*It7, &data);
+			SList<int32_t*>::Iterator it6 = intPtrList.PushFront(&data);
+			SList<int32_t*>::Iterator it7(it6);
+			Assert::AreEqual(it6, it7);
+			Assert::AreEqual(*it7, &data);
 
 			// Default constructor
-			SList<int32_t>::Iterator It8, It9;
-			Assert::AreEqual(It8, It9);
-			auto fooExpression = [&It8] { It8++; };
+			SList<Foo>::Iterator it8, it9;
+			Assert::AreEqual(it8, it9);
+			auto fooExpression = [&it8] { it8++; };
 			Assert::ExpectException<std::runtime_error>(fooExpression);
-			auto fooExpression2 = [&It9] { ++It9; };
+			auto fooExpression2 = [&it9] { ++it9; };
 			Assert::ExpectException<std::runtime_error>(fooExpression2);
-			auto fooExpression3 = [&It9] { *It9; };
+			auto fooExpression3 = [&it9] { *it9; };
 			Assert::ExpectException<std::runtime_error>(fooExpression3);
 			// Copy constructor
 			Foo foo(data), foo2(data2);
 			SList<Foo> fooList;
 			fooList.PushBack(foo2);
-			fooList.PushFront(foo);
-			SList<Foo>::Iterator It10 = fooList.Begin();
-			SList<Foo>::Iterator It11(It10);
-			Assert::AreEqual(It10, It11);
-			Assert::AreEqual(*It11, foo);
+			SList<Foo>::Iterator it10 = fooList.PushFront(foo);
+			SList<Foo>::Iterator it11(it10);
+			Assert::AreEqual(it10, it11);
+			Assert::AreEqual(*it11, foo);
 
 		}
+
+		TEST_METHOD(Iterator_Assignment_Operator)
+		{
+			int32_t data = 10, data2 = 20;
+			
+			SList<int32_t> intList;
+			SList<int32_t>::Iterator it = intList.PushFront(data);
+			SList<int32_t>::Iterator it2 = intList.PushBack(data2);
+			Assert::AreNotEqual(it, it2);
+			Assert::AreEqual(*it, data);
+			Assert::AreEqual(*it2, data2);
+			it2 = it;
+			Assert::AreEqual(it, it2);
+			Assert::AreEqual(*it2, data);
+
+			SList<int32_t*> intPtrList;
+			SList<int32_t*>::Iterator it3 = intPtrList.PushFront(&data);
+			SList<int32_t*>::Iterator it4 = intPtrList.PushBack(&data2);
+			Assert::AreNotEqual(it3, it4);
+			Assert::AreEqual(*it3, &data);
+			Assert::AreEqual(*it4, &data2);
+			it4 = it3;
+			Assert::AreEqual(it3, it4);
+			Assert::AreEqual(*it4, &data);
+
+			SList<Foo> fooList;
+			Foo foo(data), foo2(data2);
+			SList<Foo>::Iterator it5 = fooList.PushFront(foo);
+			SList<Foo>::Iterator it6 = fooList.PushBack(foo2);
+			Assert::AreNotEqual(it5, it6);
+			Assert::AreEqual(*it5, foo);
+			Assert::AreEqual(*it6, foo2);
+			it6 = it5;
+			Assert::AreEqual(it5, it6);
+			Assert::AreEqual(*it6, foo);
+		}
+
+		TEST_METHOD(Iterator_Equals_Operator) {}
+
+		TEST_METHOD(Iterator_InEquals_Operator) {}
+
+		TEST_METHOD(Iterator_PreIncrement_Operator) {}
+
+		TEST_METHOD(Iterator_PostIncrement_Operator) {}
+
+		// TODO Const version
+		TEST_METHOD(Iterator_Indirection_Operator) {}
 
 	private:
 		static _CrtMemState sStartMemState;

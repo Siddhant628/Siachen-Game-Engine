@@ -13,12 +13,17 @@ namespace SiachenGameEngine
 		template<typename T>
 		SList<T>::SList(const SList<T>& list) : m_pFront(nullptr), m_pBack(nullptr), m_iSize(0)
 		{
-			Node* listFront = list.m_pFront;
-			while (listFront != nullptr)
+			
+			for (Iterator It = list.Begin(); It != list.End(); ++It)
 			{
-				PushBack(listFront->value);
-				listFront = listFront->nextNode;
+				PushBack(*It);
 			}
+			//Node* listFront = list.m_pFront;
+			//while (listFront != nullptr)
+			//{
+			//	PushBack(listFront->value);
+			//	listFront = listFront->nextNode;
+			//}
 		}
 
 		template<typename T>
@@ -28,7 +33,7 @@ namespace SiachenGameEngine
 		}
 
 		template<typename T>
-		void SList<T>::PushFront(const T& value)
+		typename SList<T>::Iterator SList<T>::PushFront(const T& value)
 		{
 			// Create a new node and set its value
 			Node* newNode = new Node();
@@ -45,12 +50,12 @@ namespace SiachenGameEngine
 			}
 			// Set this node as the front
 			m_pFront = newNode;
-
 			m_iSize++;
+			return Iterator(m_pFront, this);
 		}
 
 		template<typename T>
-		void SList<T>::PushBack(const T& value)
+		typename SList<T>::Iterator SList<T>::PushBack(const T& value)
 		{
 			// Create a new node and set its value
 			Node* newNode = new Node();
@@ -66,8 +71,8 @@ namespace SiachenGameEngine
 				m_pBack->nextNode = newNode;
 			}
 			m_pBack = newNode;
-
 			m_iSize++;
+			return Iterator(m_pBack, this);
 		}
 
 		template<typename T>
@@ -158,17 +163,21 @@ namespace SiachenGameEngine
 			if (this != &rhs)
 			{
 				Clear();
-				Node* listFront = rhs.m_pFront;
-				while (listFront != nullptr)
+				for (Iterator It = rhs.Begin(); It != rhs.End(); ++It)
 				{
-					PushBack(listFront->value);
-					listFront = listFront->nextNode;
+					PushBack(*It);
 				}
+				//Node* listFront = rhs.m_pFront;
+				//while (listFront != nullptr)
+				//{
+				//	PushBack(listFront->value);
+				//	listFront = listFront->nextNode;
+				//}
 			}
 			return *this;
 		}
 
-		// Methods associated with Iterator
+		// Methods of the list associated with its Iterator
 		template<typename T>
 		typename SList<T>::Iterator SList<T>::Begin() const
 		{
@@ -178,15 +187,19 @@ namespace SiachenGameEngine
 		template<typename T>
 		typename SList<T>::Iterator SList<T>::End() const
 		{
-			return Iterator(m_pBack, this);
+			return Iterator(nullptr, this);
 		}
 
 		template<typename T>
-		void SList<T>::InsertAfter(const T& listItem, typename const SList::Iterator& It)
+		typename SList<T>::Iterator SList<T>::InsertAfter(const T& listItem, typename const SList::Iterator& It)
 		{
 			if (It.m_pOwnerList != this)
 			{
 				throw std::runtime_error("Cannot insert node in another list.");
+			}
+			if (It.m_pListNode == nullptr)
+			{
+				throw std::runtime_error("Cannot insert node beyond the end of the list.");
 			}
 			// Create a new node
 			Node* newNode = new Node();
@@ -195,6 +208,8 @@ namespace SiachenGameEngine
 			Node* nodeToInsertBefore = It.m_pListNode->nextNode;
 			It.m_pListNode->nextNode = newNode;
 			newNode->nextNode = nodeToInsertBefore;
+
+			return Iterator(newNode, this);
 		}
 
 		template<typename T>
@@ -202,7 +217,7 @@ namespace SiachenGameEngine
 		{
 			for (SList<T>::Iterator It = Begin(); It != End(); ++It)
 			{
-				if (It.m_pListNode->value == listItem)
+				if (*It == listItem)
 				{
 					return It;
 				}
