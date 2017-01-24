@@ -18,12 +18,6 @@ namespace SiachenGameEngine
 			{
 				PushBack(*It);
 			}
-			//Node* listFront = list.m_pFront;
-			//while (listFront != nullptr)
-			//{
-			//	PushBack(listFront->value);
-			//	listFront = listFront->nextNode;
-			//}
 		}
 
 		template<typename T>
@@ -167,12 +161,6 @@ namespace SiachenGameEngine
 				{
 					PushBack(*It);
 				}
-				//Node* listFront = rhs.m_pFront;
-				//while (listFront != nullptr)
-				//{
-				//	PushBack(listFront->value);
-				//	listFront = listFront->nextNode;
-				//}
 			}
 			return *this;
 		}

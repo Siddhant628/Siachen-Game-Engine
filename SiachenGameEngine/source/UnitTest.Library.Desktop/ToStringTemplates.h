@@ -1,6 +1,5 @@
 #pragma once
 
-// To String implementation for helper class Foo.
 namespace Microsoft
 {
 	namespace VisualStudio

@@ -409,7 +409,7 @@ namespace UnitTestLibraryDesktop
 			Assert::AreEqual(fooList.Size(), 1);
 		}
 
-		TEST_METHOD(SList_AssignmentOperator)
+		TEST_METHOD(SList_Assignment_Operator)
 		{
 			int data = 5, data2 = 10;
 			// Assignment operator for lists of integers
