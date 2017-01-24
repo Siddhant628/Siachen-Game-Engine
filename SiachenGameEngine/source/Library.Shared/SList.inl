@@ -276,13 +276,13 @@ namespace SiachenGameEngine
 		template<typename T>
 		bool SList<T>::Iterator::operator==(const Iterator& It) const
 		{
-			return ((It.m_pListNode == m_pListNode) && (It.m_pOwnerList == m_pOwnerList));
+			return ((It.m_pOwnerList == m_pOwnerList) && (It.m_pListNode == m_pListNode));
 		}
 
 		template<typename T>
 		bool SList<T>::Iterator::operator!=(const Iterator& It) const
 		{
-			return ((It.m_pListNode != m_pListNode) || (It.m_pOwnerList != m_pOwnerList));
+			return ((It.m_pOwnerList != m_pOwnerList) || (It.m_pListNode != m_pListNode));
 		}
 
 		template<typename T>
