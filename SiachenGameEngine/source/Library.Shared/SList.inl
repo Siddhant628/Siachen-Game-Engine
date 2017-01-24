@@ -13,7 +13,7 @@ namespace SiachenGameEngine
 		template<typename T>
 		SList<T>::SList(const SList<T>& list) : m_pFront(nullptr), m_pBack(nullptr), m_iSize(0)
 		{
-			
+
 			for (Iterator It = list.Begin(); It != list.End(); ++It)
 			{
 				PushBack(*It);
@@ -205,15 +205,23 @@ namespace SiachenGameEngine
 			Node* newNode = new Node();
 			newNode->value = listItem;
 			// Insert the node at the appropriate place
-			Node* nodeToInsertBefore = It.m_pListNode->nextNode;
+			if (It.m_pListNode->nextNode == nullptr)
+			{
+				m_pBack = newNode;
+			}
+			else
+			{
+				Node* nodeToInsertBefore = It.m_pListNode->nextNode;
+				newNode->nextNode = nodeToInsertBefore;
+			}
 			It.m_pListNode->nextNode = newNode;
-			newNode->nextNode = nodeToInsertBefore;
+			++m_iSize;
 
 			return Iterator(newNode, this);
 		}
 
 		template<typename T>
-		typename SList<T>::Iterator& SList<T>::Find(const T& listItem) const
+		typename SList<T>::Iterator SList<T>::Find(const T& listItem) const
 		{
 			for (SList<T>::Iterator It = Begin(); It != End(); ++It)
 			{
@@ -228,16 +236,38 @@ namespace SiachenGameEngine
 		template<typename T>
 		bool SList<T>::Remove(const T& listItem)
 		{
+			if (IsEmpty())
+			{
+				return false;
+			}
+			if (m_pFront->value == listItem)
+			{
+				PopFront();
+				return true;
+			}
 			for (SList<T>::Iterator It = Begin(); It != End(); ++It)
 			{
-				if (It.m_pListNode->nextNode->value == listItem)
-				{
-					Node* nodeBefore = It.m_pListNode;
-					Node* nodeAfter = nodeBefore->nextNode->nextNode;
-					delete nodeBefore->nextNode;
-					nodeBefore->nextNode = nodeAfter;
-					return true;
-				}
+					if (It.m_pListNode->nextNode != nullptr && It.m_pListNode->nextNode->value == listItem)
+					{
+						Node* nodeBefore = It.m_pListNode;
+						Node* nodeToRemove = It.m_pListNode->nextNode;
+						
+						if (nodeBefore->nextNode->nextNode == nullptr)
+						{
+							m_pBack = nodeBefore;
+							nodeBefore->nextNode = nullptr;
+						}
+						else
+						{
+							Node* nodeAfter = nodeBefore->nextNode->nextNode;
+							nodeBefore->nextNode = nodeAfter;
+						}
+						
+						delete nodeToRemove;
+						--m_iSize;
+						
+						return true;
+					}
 			}
 			return false;
 		}

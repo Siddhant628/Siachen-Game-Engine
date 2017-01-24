@@ -207,7 +207,7 @@ namespace SiachenGameEngine
 			* @param listItem The item which has to be found in the list.
 			* @return An iterator associated with a the item searched for in the list.
 			*/
-			typename SList::Iterator& Find(const T& listItem) const;
+			typename SList::Iterator Find(const T& listItem) const;
 			/**
 			* Removes the argument item from the list, if it is present.
 			* @param listItem The item in this list which has to be removed.

@@ -90,22 +90,26 @@ namespace UnitTestLibraryDesktop
 
 			SList<int32_t> intList;
 			// Pushing items into an empty list
-			intList.PushFront(data);
+			SList<int32_t>::Iterator it = intList.PushFront(data);
+			Assert::AreEqual(*it, intList.Front());
 			Assert::AreEqual(data, intList.Front());
 			Assert::AreEqual(data, intList.Back());
 			// Pushing items to non-empty list
-			intList.PushFront(data2);
+			SList<int32_t>::Iterator it2 = intList.PushFront(data2);
+			Assert::AreEqual(*it2, intList.Front());
 			Assert::AreEqual(data2, intList.Front());
 			intList.PushFront(data3);
 			Assert::AreEqual(data3, intList.Front());
 
 			SList<int32_t*> intPtrList;
 			// Pushing items into an empty list
-			intPtrList.PushFront(&data);
+			SList<int32_t*>::Iterator it3 = intPtrList.PushFront(&data);
+			Assert::AreEqual(*it3, intPtrList.Front());
 			Assert::AreEqual(&data, intPtrList.Front());
 			Assert::AreEqual(&data, intPtrList.Back());
 			// Pushing items to non-empty list
-			intPtrList.PushFront(&data2);
+			SList<int32_t*>::Iterator it4 = intPtrList.PushFront(&data2);
+			Assert::AreEqual(*it4, intPtrList.Front());
 			Assert::AreEqual(&data2, intPtrList.Front());
 			intPtrList.PushFront(&data3);
 			Assert::AreEqual(&data3, intPtrList.Front());
@@ -113,11 +117,13 @@ namespace UnitTestLibraryDesktop
 			SList<Foo> fooList;
 			Foo fooFive(data), fooTen(data2), fooFifteen(data3);
 			// Pushing items into an empty list
-			fooList.PushFront(fooFive);
+			SList<Foo>::Iterator it5 = fooList.PushFront(fooFive);
+			Assert::AreEqual(*it5, fooList.Front());
 			Assert::AreEqual(fooFive, fooList.Front());
 			Assert::AreEqual(fooFive, fooList.Back());
 			// Pushing items to non-empty list
-			fooList.PushFront(fooTen);
+			SList<Foo>::Iterator it6 = fooList.PushFront(fooTen);
+			Assert::AreEqual(*it6, fooList.Front());
 			Assert::AreEqual(fooTen, fooList.Front());
 			fooList.PushFront(fooFifteen);
 			Assert::AreEqual(fooFifteen, fooList.Front());
@@ -129,30 +135,36 @@ namespace UnitTestLibraryDesktop
 
 			SList<int32_t> intList;
 			// Pushing items into an empty list
-			intList.PushBack(data);
+			SList<int32_t>::Iterator it = intList.PushBack(data);
+			Assert::AreEqual(*it, intList.Back());
 			Assert::AreEqual(data, intList.Front());
 			Assert::AreEqual(data, intList.Back());
 			// Pushing items to non-empty list
-			intList.PushBack(data2);
+			SList<int32_t>::Iterator it2 = intList.PushBack(data2);
+			Assert::AreEqual(*it2, intList.Back());
 			Assert::AreEqual(data2, intList.Back());
 
 			SList<int32_t*> intPtrList;
 			// Pushing items into an empty list
-			intPtrList.PushBack(&data);
+			SList<int32_t*>::Iterator it3 = intPtrList.PushBack(&data);
+			Assert::AreEqual(*it3, intPtrList.Back());
 			Assert::AreEqual(&data, intPtrList.Front());
 			Assert::AreEqual(&data, intPtrList.Back());
 			// Pushing items to non-empty list
-			intPtrList.PushBack(&data2);
+			SList<int32_t*>::Iterator it4 = intPtrList.PushBack(&data2);
+			Assert::AreEqual(*it4, intPtrList.Back());
 			Assert::AreEqual(&data2, intPtrList.Back());
 
 			SList<Foo> fooList;
 			Foo fooZero(data), fooOne(data2);
 			// Pushing items into an empty list
-			fooList.PushBack(fooZero);
+			SList<Foo>::Iterator it5 = fooList.PushBack(fooZero);
+			Assert::AreEqual(*it5, fooList.Back());
 			Assert::AreEqual(fooZero, fooList.Front());
 			Assert::AreEqual(fooZero, fooList.Back());
 			// Pushing items to non-empty list
-			fooList.PushBack(fooOne);
+			SList<Foo>::Iterator it6 = fooList.PushBack(fooOne);
+			Assert::AreEqual(*it6, fooList.Back());
 			Assert::AreEqual(fooOne, fooList.Back());
 		}
 
@@ -453,65 +465,188 @@ namespace UnitTestLibraryDesktop
 			fooList.Clear();
 		}
 
-		TEST_METHOD(SList_Iterator_Constructors)
+		TEST_METHOD(SList_Begin)
+		{
+			int data = 10;
+
+			SList<int32_t> intList;
+			// For empty list
+			SList<int32_t>::Iterator it = intList.Begin();
+			auto intExpression = [&it] { *it; };
+			Assert::ExpectException<std::runtime_error>(intExpression);
+			// For non-empty list
+			SList<int32_t>::Iterator it2 = intList.PushFront(data);
+			SList<int32_t>::Iterator it3 = intList.Begin();
+			Assert::AreEqual(it2, it3);
+
+			SList<int32_t*> intPtrList;
+			// For empty list
+			SList<int32_t*>::Iterator it4 = intPtrList.Begin();
+			auto intPtrExpression = [&it4] { *it4; };
+			Assert::ExpectException<std::runtime_error>(intPtrExpression);
+			// For non-empty list
+			SList<int32_t*>::Iterator it5 = intPtrList.PushFront(&data);
+			SList<int32_t*>::Iterator it6 = intPtrList.Begin();
+			Assert::AreEqual(it5, it6);
+
+			SList<Foo> fooList;
+			Foo foo(data);
+			// For empty list
+			SList<Foo>::Iterator it7 = fooList.Begin();
+			auto fooExpression = [&it7] { *it7; };
+			Assert::ExpectException<std::runtime_error>(fooExpression);
+			// For non-empty list
+			SList<Foo>::Iterator it8 = fooList.PushBack(foo);
+			SList<Foo>::Iterator it9 = fooList.Begin();
+			Assert::AreEqual(it8, it9);
+
+		}
+
+		TEST_METHOD(SList_End)
+		{
+
+			SList<int32_t> intList, otherIntList;
+			SList<int32_t>::Iterator it = intList.End();
+			auto intExpression = [&it] { *it; };
+			Assert::ExpectException<std::runtime_error>(intExpression);
+			SList<int32_t>::Iterator it2 = otherIntList.End();
+			Assert::AreNotEqual(it, it2);
+
+			SList<int32_t*> intPtrList, otherIntPtrList;
+			SList<int32_t*>::Iterator it3 = intPtrList.End();
+			auto intPtrExpression = [&it3] { *it3; };
+			Assert::ExpectException<std::runtime_error>(intPtrExpression);
+			SList<int32_t*>::Iterator it4 = otherIntPtrList.End();
+			Assert::AreNotEqual(it3, it4);
+
+			SList<Foo> fooList, otherFooList;
+			SList<Foo>::Iterator it5 = fooList.End();
+			auto fooExpression = [&it5] { *it5; };
+			Assert::ExpectException<std::runtime_error>(fooExpression);
+			SList<Foo>::Iterator it6 = otherFooList.End();
+			Assert::AreNotEqual(it5, it6);
+
+		}
+
+		TEST_METHOD(SList_InsertAfter)
+		{
+			int data = 10, data2;
+
+			SList<int32_t> intList;
+			SList<int32_t>::Iterator it;
+			// When Iterator isn't owned by the list
+			auto intExpression = [&intList, &data, &it] { intList.InsertAfter(data, it); };
+			Assert::ExpectException<std::runtime_error>(intExpression);
+			// Regular insert
+			SList<int32_t>::Iterator it2 = intList.PushBack(data);
+			SList<int32_t>::Iterator it3 = intList.InsertAfter(data2, it2);
+			Assert::AreEqual(data2, intList.Back());
+			Assert::AreEqual(data2, *it3);
+			// When inserting beyond the list
+			auto intExpression2 = [&intList, &data, &it3] { intList.InsertAfter(data, ++it3);  };
+			Assert::ExpectException<std::runtime_error>(intExpression2);
+
+			SList<int32_t*> intPtrList;
+			SList<int32_t*>::Iterator it4;
+			// When Iterator isn't owned by the list
+			auto intPtrExpression = [&intPtrList, &data, &it4] { intPtrList.InsertAfter(&data, it4); };
+			Assert::ExpectException<std::runtime_error>(intPtrExpression);
+			// Regular insert
+			SList<int32_t*>::Iterator it5 = intPtrList.PushBack(&data);
+			SList<int32_t*>::Iterator it6 = intPtrList.InsertAfter(&data2, it5);
+			Assert::AreEqual(&data2, intPtrList.Back());
+			Assert::AreEqual(&data2, *it6);
+			// When inserting beyond the list
+			auto intPtrExpression2 = [&intPtrList, &data, &it6] { intPtrList.InsertAfter(&data, ++it6);  };
+			Assert::ExpectException<std::runtime_error>(intPtrExpression2);
+
+			SList<Foo> fooList;
+			Foo foo(data), foo2(data2);
+			SList<Foo>::Iterator it7;
+			// When Iterator isn't owned by the list
+			auto fooExpression = [&fooList, &foo, &it7] { fooList.InsertAfter(foo, it7); };
+			Assert::ExpectException<std::runtime_error>(fooExpression);
+			// Regular insert
+			SList<Foo>::Iterator it8 = fooList.PushBack(foo);
+			SList<Foo>::Iterator it9 = fooList.InsertAfter(foo2, it8);
+			Assert::AreEqual(foo2, fooList.Back());
+			Assert::AreEqual(foo2, *it9);
+			// When inserting beyond the list
+			auto fooExpression2 = [&fooList, &foo, &it9] { fooList.InsertAfter(foo, ++it9);  };
+			Assert::ExpectException<std::runtime_error>(fooExpression2);
+		}
+
+		TEST_METHOD(SList_Find)
 		{
 			int32_t data = 10, data2 = 20;
 
-			// Default constructor
-			SList<int32_t>::Iterator it, it2;
-			Assert::AreEqual(it, it2);
-			auto intExpression = [&it] { it++; };
-			Assert::ExpectException<std::runtime_error>(intExpression);
-			auto intExpression2 = [&it2] { ++it2; };
-			Assert::ExpectException<std::runtime_error>(intExpression2);
-			auto intExpression3 = [&it2] { *it2; };
-			Assert::ExpectException<std::runtime_error>(intExpression3);
-			// Copy constructor
 			SList<int32_t> intList;
-			intList.PushBack(data2);
-			SList<int32_t>::Iterator intItFront = intList.PushFront(data);
-			SList<int32_t>::Iterator it3(intItFront);
-			Assert::AreEqual(intItFront, it3);
-			Assert::AreEqual(*it3, data);
-			Assert::AreNotEqual(intItFront, it2);
+			SList<int32_t>::Iterator it = intList.PushFront(data);
+			SList<int32_t>::Iterator it2 = intList.Find(data2);
+			auto intExpression = [&it2] { *it2; };
+			Assert::ExpectException<std::runtime_error>(intExpression);
+			Assert::AreEqual(it, intList.Find(data));
 
-			// Default constructor
-			SList<int32_t*>::Iterator it4, it5;
-			Assert::AreEqual(it4, it5);
-			auto intPrtExpression = [&it4] { it4++; };
-			Assert::ExpectException<std::runtime_error>(intPrtExpression);
-			auto intPrtExpression2 = [&it5] { ++it5; };
-			Assert::ExpectException<std::runtime_error>(intPrtExpression2);
-			auto intPrtExpression3 = [&it5] { *it5; };
-			Assert::ExpectException<std::runtime_error>(intPrtExpression3);
-			// Copy constructor
 			SList<int32_t*> intPtrList;
-			intPtrList.PushBack(&data2);
-			SList<int32_t*>::Iterator it6 = intPtrList.PushFront(&data);
-			SList<int32_t*>::Iterator it7(it6);
-			Assert::AreEqual(it6, it7);
-			Assert::AreEqual(*it7, &data);
+			SList<int32_t*>::Iterator it3 = intPtrList.PushFront(&data);
+			SList<int32_t*>::Iterator it4 = intPtrList.Find(&data2);
+			auto intPtrExpression = [&it4] { *it4; };
+			Assert::ExpectException<std::runtime_error>(intPtrExpression);
+			Assert::AreEqual(it3, intPtrList.Find(&data));
 
-			// Default constructor
-			SList<int32_t>::Iterator it8, it9;
-			Assert::AreEqual(it8, it9);
-			auto fooExpression = [&it8] { it8++; };
-			Assert::ExpectException<std::runtime_error>(fooExpression);
-			auto fooExpression2 = [&it9] { ++it9; };
-			Assert::ExpectException<std::runtime_error>(fooExpression2);
-			auto fooExpression3 = [&it9] { *it9; };
-			Assert::ExpectException<std::runtime_error>(fooExpression3);
-			// Copy constructor
-			Foo foo(data), foo2(data2);
 			SList<Foo> fooList;
-			fooList.PushBack(foo2);
-			SList<Foo>::Iterator it10 = fooList.PushFront(foo);
-			SList<Foo>::Iterator it11(it10);
-			Assert::AreEqual(it10, it11);
-			Assert::AreEqual(*it11, foo);
-
+			Foo foo(data), foo2(data2);
+			SList<Foo>::Iterator it5 = fooList.PushFront(foo);
+			SList<Foo>::Iterator it6 = fooList.Find(foo2);
+			auto fooExpression = [&it6] { *it6; };
+			Assert::ExpectException<std::runtime_error>(fooExpression);
+			Assert::AreEqual(it5, fooList.Find(foo));
 		}
 	
+		TEST_METHOD(SList_Remove)
+		{
+			int32_t data = 10, data2 = 20, data3 = 30;
+
+			SList<int32_t> intList;
+			// When item is absent
+			Assert::IsFalse(intList.Remove(data));
+			// Removing last item
+			intList.PushBack(data);
+			intList.PushBack(data2);
+			intList.PushBack(data3);
+			Assert::IsTrue(intList.Remove(data3));
+			Assert::AreEqual(intList.Back(), data2);
+			// Removing intermediate item
+			intList.PushBack(data3);
+			Assert::IsTrue(intList.Remove(data2));
+			
+			SList<int32_t*> intPtrList;
+			// When item is absent
+			Assert::IsFalse(intPtrList.Remove(&data));
+			// Removing last item
+			intPtrList.PushBack(&data);
+			intPtrList.PushBack(&data2);
+			intPtrList.PushBack(&data3);
+			Assert::IsTrue(intPtrList.Remove(&data3));
+			Assert::AreEqual(intPtrList.Back(), &data2);
+			// Removing intermediate item
+			intPtrList.PushBack(&data3);
+			Assert::IsTrue(intPtrList.Remove(&data2));
+
+			SList<Foo> fooList;
+			Foo foo(data), foo2(data2), foo3(data3);
+			// When item is absent
+			Assert::IsFalse(fooList.Remove(foo));
+			// Removing last item
+			fooList.PushBack(foo);
+			fooList.PushBack(foo2);
+			fooList.PushBack(foo3);
+			Assert::IsTrue(fooList.Remove(foo3));
+			Assert::AreEqual(fooList.Back(), foo2);
+			// Removing intermediate item
+			fooList.PushBack(foo3);
+			Assert::IsTrue(fooList.Remove(foo2));
+		}
 	private:
 		static _CrtMemState sStartMemState;
 	};
