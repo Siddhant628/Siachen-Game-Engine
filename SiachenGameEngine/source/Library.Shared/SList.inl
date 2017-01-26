@@ -181,7 +181,7 @@ namespace SiachenGameEngine
 		template<typename T>
 		typename SList<T>::Iterator SList<T>::InsertAfter(const T& listItem, typename const SList::Iterator& It)
 		{
-			if (It.m_pOwnerList != this)
+			if (It.mOwnerList != this)
 			{
 				throw std::runtime_error("Cannot insert node in another list.");
 			}
@@ -190,16 +190,16 @@ namespace SiachenGameEngine
 			newNode->value = listItem;
 
 			// Insert the node at the appropriate place
-			if (It.m_pListNode == nullptr || It.m_pListNode->nextNode == nullptr)
+			if (It.mListNode == nullptr || It.mListNode->nextNode == nullptr)
 			{
 				mBack->nextNode = newNode;
 				mBack = newNode;
 			}
 			else
 			{
-				Node* nodeToInsertBefore = It.m_pListNode->nextNode;
+				Node* nodeToInsertBefore = It.mListNode->nextNode;
 				newNode->nextNode = nodeToInsertBefore;
-				It.m_pListNode->nextNode = newNode;
+				It.mListNode->nextNode = newNode;
 			}
 			
 			++mSize;
@@ -234,10 +234,10 @@ namespace SiachenGameEngine
 			}
 			for (SList<T>::Iterator It = begin(); It != end(); ++It)
 			{
-					if (It.m_pListNode->nextNode != nullptr && It.m_pListNode->nextNode->value == listItem)
+					if (It.mListNode->nextNode != nullptr && It.mListNode->nextNode->value == listItem)
 					{
-						Node* nodeBefore = It.m_pListNode;
-						Node* nodeToRemove = It.m_pListNode->nextNode;
+						Node* nodeBefore = It.mListNode;
+						Node* nodeToRemove = It.mListNode->nextNode;
 						
 						if (nodeBefore->nextNode->nextNode == nullptr)
 						{
@@ -261,19 +261,19 @@ namespace SiachenGameEngine
 
 		// Constructors for Iterator
 		template<typename T>
-		SList <T>::Iterator::Iterator() : m_pListNode(nullptr), m_pOwnerList(nullptr)
+		SList <T>::Iterator::Iterator() : mListNode(nullptr), mOwnerList(nullptr)
 		{
 
 		}
 
 		template<typename T>
-		SList<T>::Iterator::Iterator(const Iterator& It) : m_pOwnerList(It.m_pOwnerList), m_pListNode(It.m_pListNode)
+		SList<T>::Iterator::Iterator(const Iterator& It) : mOwnerList(It.mOwnerList), mListNode(It.mListNode)
 		{
 
 		}
 
 		template<typename T>
-		SList<T>::Iterator::Iterator(Node* node, const SList* list) : m_pListNode(node), m_pOwnerList(list)
+		SList<T>::Iterator::Iterator(Node* node, const SList* list) : mListNode(node), mOwnerList(list)
 		{
 
 		}
@@ -284,8 +284,8 @@ namespace SiachenGameEngine
 		{
 			if (this != &It)
 			{
-				m_pListNode = It.m_pListNode;
-				m_pOwnerList = It.m_pOwnerList;
+				mListNode = It.mListNode;
+				mOwnerList = It.mOwnerList;
 			}
 			return *this;
 		}
@@ -293,25 +293,25 @@ namespace SiachenGameEngine
 		template<typename T>
 		bool SList<T>::Iterator::operator==(const Iterator& It) const
 		{
-			return ((It.m_pOwnerList == m_pOwnerList) && (It.m_pListNode == m_pListNode));
+			return ((It.mOwnerList == mOwnerList) && (It.mListNode == mListNode));
 		}
 
 		template<typename T>
 		bool SList<T>::Iterator::operator!=(const Iterator& It) const
 		{
-			return ((It.m_pOwnerList != m_pOwnerList) || (It.m_pListNode != m_pListNode));
+			return ((It.mOwnerList != mOwnerList) || (It.mListNode != mListNode));
 		}
 
 		template<typename T>
 		typename SList<T>::Iterator& SList<T>::Iterator::operator++()
 		{
-			if (m_pListNode == nullptr)
+			if (mListNode == nullptr)
 			{
 				throw std::runtime_error("Iterator cannot pre-increment, end has been reached.\n");
 			}
-			if(m_pListNode != nullptr)
+			if(mListNode != nullptr)
 			{
-				m_pListNode = m_pListNode->nextNode;
+				mListNode = mListNode->nextNode;
 			}
 			return *this;
 		}
@@ -319,14 +319,14 @@ namespace SiachenGameEngine
 		template<typename T>
 		typename SList<T>::Iterator SList<T>::Iterator::operator++(int32_t)
 		{
-			if (m_pListNode == nullptr)
+			if (mListNode == nullptr)
 			{
 				throw std::runtime_error("Iterator cannot post-increment, end has been reached.\n");
 			}
 			Iterator iteratorToReturn = *this;
-			if (m_pListNode != nullptr)
+			if (mListNode != nullptr)
 			{
-				m_pListNode = m_pListNode->nextNode;
+				mListNode = mListNode->nextNode;
 			}
 			return iteratorToReturn;
 		}
@@ -334,21 +334,21 @@ namespace SiachenGameEngine
 		template<typename T>
 		T& SList<T>::Iterator::operator*()
 		{
-			if (m_pListNode == nullptr)
+			if (mListNode == nullptr)
 			{
 				throw std::runtime_error("Iterator points at the end of the list, cannot return an item.");
 			}
-			return m_pListNode->value;
+			return mListNode->value;
 		}
 
 		template<typename T>
 		const T& SList<T>::Iterator::operator*() const
 		{
-			if (m_pListNode == nullptr)
+			if (mListNode == nullptr)
 			{
 				throw std::runtime_error("Iterator points at the end of the list, cannot return an item.");
 			}
-			return m_pListNode->value;
+			return mListNode->value;
 		}
 	}
 }

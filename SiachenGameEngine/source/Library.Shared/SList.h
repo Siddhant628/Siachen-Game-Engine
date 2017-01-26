@@ -140,8 +140,8 @@ namespace SiachenGameEngine
 			private:
 				Iterator(Node* node, const SList* list);
 
-				Node* m_pListNode;
-				const SList* m_pOwnerList;
+				Node* mListNode;
+				const SList* mOwnerList;
 
 			};
 
