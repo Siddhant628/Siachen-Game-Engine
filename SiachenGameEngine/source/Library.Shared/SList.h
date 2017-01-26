@@ -1,7 +1,6 @@
-// A templated class which implements a singly - linked list.
+// A templated class which implements a singly - linked list container.
 
 #pragma once
-#include "pch.h"
 
 namespace SiachenGameEngine
 {
@@ -20,10 +19,10 @@ namespace SiachenGameEngine
 				T value;
 			};
 
-			Node* m_pFront;
-			Node* m_pBack;
+			Node* mFront;
+			Node* mBack;
 
-			int32_t m_iSize;
+			int32_t mSize;
 
 		public:
 			/**
@@ -82,34 +81,6 @@ namespace SiachenGameEngine
 			* @return A deep copy of list rhs.
 			*/
 			SList& operator=(const SList &rhs);
-
-
-			// Embedded iterator class
-			// 
-			// Will have a pointer to a node.
-			// Overload == to see if two iterators point at the same node.
-			// Also implement != for above.
-			// Overload ++ to reassign the iterator to the next node.
-			// Must implement both postfix and prefix with same result.
-			// Dereference operator * to return the item contained by the node the iterator points to (T&). (Also have a const version)
-			// 
-			// Modifications in SList
-			//
-			// Begin, returns an iterator which points to the head of the list.
-			// End, returns an iterator which points past the end of list (THINK).
-			// InsertAfter, append the given item after the item the given iterator points to.
-			// Find(const T & ) const, returns an iterator pointing to a given item.
-			// Remove, shall remove the item associated with the given data maintain list integrity (Calling it on non-existing item shouldn't cause harm).
-			//
-			// Doxygen formatting, const correctness, unit testing, builds for all platforms and configurations.
-			//
-			// In Class Discussion
-			//
-			// A pointer to a node of the list.
-			// A pointer to the owning list. (A const pointer)
-			// A copy constructor
-			// A assignment operator
-			// 
 
 			/**
 			* An Iterator for the SList class, each object is associated with a specific node in a specific list.
@@ -190,12 +161,12 @@ namespace SiachenGameEngine
 			* Returns an iterator which points to the item at the beginning of this list.
 			* @return Iterator associated with the front node of this list.
 			*/
-			typename SList::Iterator Begin() const;
+			typename SList::Iterator begin() const;
 			/**
 			* Returns an iterator which points to the item at the end of this list.
 			* @return Iterator associated with the back node of this list.
 			*/
-			typename SList::Iterator End() const;
+			typename SList::Iterator end() const;
 			/**
 			* Insert a node after a specific item in the list.
 			* @param listItem The T type item which has to be inserted in the list.

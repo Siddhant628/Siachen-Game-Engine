@@ -208,7 +208,7 @@ namespace UnitTestLibraryDesktop
 			SList<int32_t>::Iterator it;
 			auto intExpression = [&it] { ++it; };
 			Assert::ExpectException<std::runtime_error>(intExpression);
-			it = intList.Begin();
+			it = intList.begin();
 			Assert::AreEqual(*(++it), data2);
 			Assert::AreEqual(*it, data2);
 
@@ -218,7 +218,7 @@ namespace UnitTestLibraryDesktop
 			SList<int32_t*>::Iterator it2;
 			auto intPtrExpression = [&it2] { ++it2; };
 			Assert::ExpectException<std::runtime_error>(intPtrExpression);
-			it2 = intPtrList.Begin();
+			it2 = intPtrList.begin();
 			Assert::AreEqual(*(++it2), &data2);
 			Assert::AreEqual(*it2, &data2);
 
@@ -229,7 +229,7 @@ namespace UnitTestLibraryDesktop
 			SList<Foo>::Iterator it3;
 			auto fooExpression = [&it3] { ++it3; };
 			Assert::ExpectException<std::runtime_error>(fooExpression);
-			it3 = fooList.Begin();
+			it3 = fooList.begin();
 			Assert::AreEqual(*(++it3), foo2);
 			Assert::AreEqual(*it3, foo2);
 		}
@@ -244,7 +244,7 @@ namespace UnitTestLibraryDesktop
 			SList<int32_t>::Iterator it;
 			auto intExpression = [&it] { it++; };
 			Assert::ExpectException<std::runtime_error>(intExpression);
-			it = intList.Begin();
+			it = intList.begin();
 			Assert::AreNotEqual(*(it++), data2);
 			Assert::AreEqual(*it, data2);
 
@@ -254,7 +254,7 @@ namespace UnitTestLibraryDesktop
 			SList<int32_t*>::Iterator it2;
 			auto intPtrExpression = [&it2] { it2++; };
 			Assert::ExpectException<std::runtime_error>(intPtrExpression);
-			it2 = intPtrList.Begin();
+			it2 = intPtrList.begin();
 			Assert::AreNotEqual(*(it2++), &data2);
 			Assert::AreEqual(*it2, &data2);
 
@@ -265,7 +265,7 @@ namespace UnitTestLibraryDesktop
 			SList<Foo>::Iterator it3;
 			auto fooExpression = [&it3] { it3++; };
 			Assert::ExpectException<std::runtime_error>(fooExpression);
-			it3 = fooList.Begin();
+			it3 = fooList.begin();
 			Assert::AreNotEqual(*(it3++), foo2);
 			Assert::AreEqual(*it3, foo2);
 		}
@@ -287,7 +287,7 @@ namespace UnitTestLibraryDesktop
 			const SList<int32_t>::Iterator it3;
 			auto intExpression2 = [&it3] { *it3; };
 			Assert::ExpectException<std::runtime_error>(intExpression2);
-			const SList<int32_t>::Iterator it4 = intList.Begin();
+			const SList<int32_t>::Iterator it4 = intList.begin();
 			Assert::AreEqual(*it4, data);
 
 			// Non-const dereference
@@ -303,7 +303,7 @@ namespace UnitTestLibraryDesktop
 			const SList<int32_t*>::Iterator it7;
 			auto intPtrExpression2 = [&it7] { *it7; };
 			Assert::ExpectException<std::runtime_error>(intPtrExpression2);
-			const SList<int32_t*>::Iterator it8 = intPtrList.Begin();
+			const SList<int32_t*>::Iterator it8 = intPtrList.begin();
 			Assert::AreEqual(*it8, &data);
 
 			// Non-const dereference
@@ -320,7 +320,7 @@ namespace UnitTestLibraryDesktop
 			const SList<Foo>::Iterator it11;
 			auto fooExpression2 = [&it11] { *it11; };
 			Assert::ExpectException<std::runtime_error>(fooExpression2);
-			const SList<Foo>::Iterator it12 = fooList.Begin();
+			const SList<Foo>::Iterator it12 = fooList.begin();
 			Assert::AreEqual(*it12, foo);
 		}
 

@@ -5,16 +5,16 @@ namespace SiachenGameEngine
 	namespace Containers
 	{
 		template<typename T>
-		SList<T>::SList() : m_pFront(nullptr), m_pBack(nullptr), m_iSize(0)
+		SList<T>::SList() : mFront(nullptr), mBack(nullptr), mSize(0)
 		{
 
 		}
 
 		template<typename T>
-		SList<T>::SList(const SList<T>& list) : m_pFront(nullptr), m_pBack(nullptr), m_iSize(0)
+		SList<T>::SList(const SList<T>& list) : mFront(nullptr), mBack(nullptr), mSize(0)
 		{
 
-			for (Iterator It = list.Begin(); It != list.End(); ++It)
+			for (Iterator It = list.begin(); It != list.end(); ++It)
 			{
 				PushBack(*It);
 			}
@@ -33,19 +33,19 @@ namespace SiachenGameEngine
 			Node* newNode = new Node();
 			newNode->value = value;
 			// If it's the first node, it is the back item as well
-			if (m_iSize == 0)
+			if (mSize == 0)
 			{
-				m_pBack = newNode;
+				mBack = newNode;
 				newNode->nextNode = nullptr;
 			}
 			else
 			{
-				newNode->nextNode = m_pFront;
+				newNode->nextNode = mFront;
 			}
 			// Set this node as the front
-			m_pFront = newNode;
-			m_iSize++;
-			return Iterator(m_pFront, this);
+			mFront = newNode;
+			mSize++;
+			return Iterator(mFront, this);
 		}
 
 		template<typename T>
@@ -56,17 +56,17 @@ namespace SiachenGameEngine
 			newNode->value = value;
 			newNode->nextNode = nullptr;
 			// If it's the first node, it is the front item as well
-			if (m_iSize == 0)
+			if (mSize == 0)
 			{
-				m_pFront = newNode;
+				mFront = newNode;
 			}
 			else
 			{
-				m_pBack->nextNode = newNode;
+				mBack->nextNode = newNode;
 			}
-			m_pBack = newNode;
-			m_iSize++;
-			return Iterator(m_pBack, this);
+			mBack = newNode;
+			mSize++;
+			return Iterator(mBack, this);
 		}
 
 		template<typename T>
@@ -76,24 +76,24 @@ namespace SiachenGameEngine
 			{
 				return;
 			}
-			Node* frontNode = m_pFront;
-			if (m_iSize > 1)
+			Node* frontNode = mFront;
+			if (mSize > 1)
 			{
-				m_pFront = m_pFront->nextNode;
+				mFront = mFront->nextNode;
 			}
 			else
 			{
-				m_pFront = nullptr;
-				m_pBack = nullptr;
+				mFront = nullptr;
+				mBack = nullptr;
 			}
 			delete frontNode;
-			m_iSize--;
+			mSize--;
 		}
 
 		template<typename T>
 		bool SList<T>::IsEmpty() const
 		{
-			return (m_iSize == 0);
+			return (mSize == 0);
 		}
 
 		template<typename T>
@@ -103,7 +103,7 @@ namespace SiachenGameEngine
 			{
 				throw std::runtime_error("The list is empty, front is a null pointer.\n");
 			}
-			return m_pFront->value;
+			return mFront->value;
 		}
 
 		template<typename T>
@@ -113,7 +113,7 @@ namespace SiachenGameEngine
 			{
 				throw std::runtime_error("The list is empty, back is null pointer.\n");
 			}
-			return m_pBack->value;
+			return mBack->value;
 		}
 
 		template<typename T>
@@ -123,7 +123,7 @@ namespace SiachenGameEngine
 			{
 				throw std::runtime_error("The list is empty, front is a null pointer.\n");
 			}
-			return m_pFront->value;
+			return mFront->value;
 		}
 
 		template<typename T>
@@ -133,19 +133,19 @@ namespace SiachenGameEngine
 			{
 				throw std::runtime_error("The list is empty, back is null pointer.\n");
 			}
-			return m_pBack->value;
+			return mBack->value;
 		}
 
 		template<typename T>
 		int32_t SList<T>::Size() const
 		{
-			return m_iSize;
+			return mSize;
 		}
 
 		template<typename T>
 		void SList<T>::Clear()
 		{
-			while (m_iSize > 0)
+			while (mSize > 0)
 			{
 				PopFront();
 			}
@@ -157,7 +157,7 @@ namespace SiachenGameEngine
 			if (this != &rhs)
 			{
 				Clear();
-				for (Iterator It = rhs.Begin(); It != rhs.End(); ++It)
+				for (Iterator It = rhs.begin(); It != rhs.end(); ++It)
 				{
 					PushBack(*It);
 				}
@@ -167,13 +167,13 @@ namespace SiachenGameEngine
 
 		// Methods of the list associated with its Iterator
 		template<typename T>
-		typename SList<T>::Iterator SList<T>::Begin() const
+		typename SList<T>::Iterator SList<T>::begin() const
 		{
-			return Iterator(m_pFront, this);
+			return Iterator(mFront, this);
 		}
 
 		template<typename T>
-		typename SList<T>::Iterator SList<T>::End() const
+		typename SList<T>::Iterator SList<T>::end() const
 		{
 			return Iterator(nullptr, this);
 		}
@@ -185,25 +185,24 @@ namespace SiachenGameEngine
 			{
 				throw std::runtime_error("Cannot insert node in another list.");
 			}
-			if (It.m_pListNode == nullptr)
-			{
-				throw std::runtime_error("Cannot insert node beyond the end of the list.");
-			}
 			// Create a new node
 			Node* newNode = new Node();
 			newNode->value = listItem;
+
 			// Insert the node at the appropriate place
-			if (It.m_pListNode->nextNode == nullptr)
+			if (It.m_pListNode == nullptr || It.m_pListNode->nextNode == nullptr)
 			{
-				m_pBack = newNode;
+				mBack->nextNode = newNode;
+				mBack = newNode;
 			}
 			else
 			{
 				Node* nodeToInsertBefore = It.m_pListNode->nextNode;
 				newNode->nextNode = nodeToInsertBefore;
+				It.m_pListNode->nextNode = newNode;
 			}
-			It.m_pListNode->nextNode = newNode;
-			++m_iSize;
+			
+			++mSize;
 
 			return Iterator(newNode, this);
 		}
@@ -211,7 +210,7 @@ namespace SiachenGameEngine
 		template<typename T>
 		typename SList<T>::Iterator SList<T>::Find(const T& listItem) const
 		{
-			for (SList<T>::Iterator It = Begin(); It != End(); ++It)
+			for (SList<T>::Iterator It = begin(); It != end(); ++It)
 			{
 				if (*It == listItem)
 				{
@@ -228,12 +227,12 @@ namespace SiachenGameEngine
 			{
 				return false;
 			}
-			if (m_pFront->value == listItem)
+			if (mFront->value == listItem)
 			{
 				PopFront();
 				return true;
 			}
-			for (SList<T>::Iterator It = Begin(); It != End(); ++It)
+			for (SList<T>::Iterator It = begin(); It != end(); ++It)
 			{
 					if (It.m_pListNode->nextNode != nullptr && It.m_pListNode->nextNode->value == listItem)
 					{
@@ -242,7 +241,7 @@ namespace SiachenGameEngine
 						
 						if (nodeBefore->nextNode->nextNode == nullptr)
 						{
-							m_pBack = nodeBefore;
+							mBack = nodeBefore;
 							nodeBefore->nextNode = nullptr;
 						}
 						else
@@ -252,7 +251,7 @@ namespace SiachenGameEngine
 						}
 						
 						delete nodeToRemove;
-						--m_iSize;
+						--mSize;
 						
 						return true;
 					}
@@ -310,7 +309,10 @@ namespace SiachenGameEngine
 			{
 				throw std::runtime_error("Iterator cannot pre-increment, end has been reached.\n");
 			}
-			m_pListNode = m_pListNode->nextNode;
+			if(m_pListNode != nullptr)
+			{
+				m_pListNode = m_pListNode->nextNode;
+			}
 			return *this;
 		}
 
@@ -322,7 +324,10 @@ namespace SiachenGameEngine
 				throw std::runtime_error("Iterator cannot post-increment, end has been reached.\n");
 			}
 			Iterator iteratorToReturn = *this;
-			m_pListNode = m_pListNode->nextNode;
+			if (m_pListNode != nullptr)
+			{
+				m_pListNode = m_pListNode->nextNode;
+			}
 			return iteratorToReturn;
 		}
 

@@ -471,33 +471,33 @@ namespace UnitTestLibraryDesktop
 
 			SList<int32_t> intList;
 			// For empty list
-			SList<int32_t>::Iterator it = intList.Begin();
+			SList<int32_t>::Iterator it = intList.begin();
 			auto intExpression = [&it] { *it; };
 			Assert::ExpectException<std::runtime_error>(intExpression);
 			// For non-empty list
 			SList<int32_t>::Iterator it2 = intList.PushFront(data);
-			SList<int32_t>::Iterator it3 = intList.Begin();
+			SList<int32_t>::Iterator it3 = intList.begin();
 			Assert::AreEqual(it2, it3);
 
 			SList<int32_t*> intPtrList;
 			// For empty list
-			SList<int32_t*>::Iterator it4 = intPtrList.Begin();
+			SList<int32_t*>::Iterator it4 = intPtrList.begin();
 			auto intPtrExpression = [&it4] { *it4; };
 			Assert::ExpectException<std::runtime_error>(intPtrExpression);
 			// For non-empty list
 			SList<int32_t*>::Iterator it5 = intPtrList.PushFront(&data);
-			SList<int32_t*>::Iterator it6 = intPtrList.Begin();
+			SList<int32_t*>::Iterator it6 = intPtrList.begin();
 			Assert::AreEqual(it5, it6);
 
 			SList<Foo> fooList;
 			Foo foo(data);
 			// For empty list
-			SList<Foo>::Iterator it7 = fooList.Begin();
+			SList<Foo>::Iterator it7 = fooList.begin();
 			auto fooExpression = [&it7] { *it7; };
 			Assert::ExpectException<std::runtime_error>(fooExpression);
 			// For non-empty list
 			SList<Foo>::Iterator it8 = fooList.PushBack(foo);
-			SList<Foo>::Iterator it9 = fooList.Begin();
+			SList<Foo>::Iterator it9 = fooList.begin();
 			Assert::AreEqual(it8, it9);
 
 		}
@@ -506,59 +506,67 @@ namespace UnitTestLibraryDesktop
 		{
 
 			SList<int32_t> intList, otherIntList;
-			SList<int32_t>::Iterator it = intList.End();
+			SList<int32_t>::Iterator it = intList.end();
 			auto intExpression = [&it] { *it; };
 			Assert::ExpectException<std::runtime_error>(intExpression);
-			SList<int32_t>::Iterator it2 = otherIntList.End();
+			SList<int32_t>::Iterator it2 = otherIntList.end();
 			Assert::AreNotEqual(it, it2);
 
 			SList<int32_t*> intPtrList, otherIntPtrList;
-			SList<int32_t*>::Iterator it3 = intPtrList.End();
+			SList<int32_t*>::Iterator it3 = intPtrList.end();
 			auto intPtrExpression = [&it3] { *it3; };
 			Assert::ExpectException<std::runtime_error>(intPtrExpression);
-			SList<int32_t*>::Iterator it4 = otherIntPtrList.End();
+			SList<int32_t*>::Iterator it4 = otherIntPtrList.end();
 			Assert::AreNotEqual(it3, it4);
 
 			SList<Foo> fooList, otherFooList;
-			SList<Foo>::Iterator it5 = fooList.End();
+			SList<Foo>::Iterator it5 = fooList.end();
 			auto fooExpression = [&it5] { *it5; };
 			Assert::ExpectException<std::runtime_error>(fooExpression);
-			SList<Foo>::Iterator it6 = otherFooList.End();
+			SList<Foo>::Iterator it6 = otherFooList.end();
 			Assert::AreNotEqual(it5, it6);
 
 		}
 
 		TEST_METHOD(SList_InsertAfter)
 		{
-			int data = 10, data2;
+			int data = 10, data2 = 20;
 
 			SList<int32_t> intList;
 			SList<int32_t>::Iterator it;
 			// When Iterator isn't owned by the list
 			auto intExpression = [&intList, &data, &it] { intList.InsertAfter(data, it); };
 			Assert::ExpectException<std::runtime_error>(intExpression);
-			// Regular insert
+			// Inserting at the end
 			SList<int32_t>::Iterator it2 = intList.PushBack(data);
 			SList<int32_t>::Iterator it3 = intList.InsertAfter(data2, it2);
 			Assert::AreEqual(data2, intList.Back());
 			Assert::AreEqual(data2, *it3);
+			// Inserting in the middle
+			intList.InsertAfter(data, it2);
+			intList.PopFront();
+			Assert::AreEqual(data, intList.Front());
 			// When inserting beyond the list
-			auto intExpression2 = [&intList, &data, &it3] { intList.InsertAfter(data, ++it3);  };
-			Assert::ExpectException<std::runtime_error>(intExpression2);
+			intList.InsertAfter(data, ++it3);
+			Assert::AreEqual(data, intList.Back());
 
 			SList<int32_t*> intPtrList;
 			SList<int32_t*>::Iterator it4;
 			// When Iterator isn't owned by the list
 			auto intPtrExpression = [&intPtrList, &data, &it4] { intPtrList.InsertAfter(&data, it4); };
 			Assert::ExpectException<std::runtime_error>(intPtrExpression);
-			// Regular insert
+			// Inserting at the end
 			SList<int32_t*>::Iterator it5 = intPtrList.PushBack(&data);
 			SList<int32_t*>::Iterator it6 = intPtrList.InsertAfter(&data2, it5);
 			Assert::AreEqual(&data2, intPtrList.Back());
 			Assert::AreEqual(&data2, *it6);
+			// Inserting in the middle
+			intPtrList.InsertAfter(&data, it5);
+			intPtrList.PopFront();
+			Assert::AreEqual(&data, intPtrList.Front());
 			// When inserting beyond the list
-			auto intPtrExpression2 = [&intPtrList, &data, &it6] { intPtrList.InsertAfter(&data, ++it6);  };
-			Assert::ExpectException<std::runtime_error>(intPtrExpression2);
+			intPtrList.InsertAfter(&data, ++it6);
+			Assert::AreEqual(intPtrList.Back(), &data);
 
 			SList<Foo> fooList;
 			Foo foo(data), foo2(data2);
@@ -566,14 +574,18 @@ namespace UnitTestLibraryDesktop
 			// When Iterator isn't owned by the list
 			auto fooExpression = [&fooList, &foo, &it7] { fooList.InsertAfter(foo, it7); };
 			Assert::ExpectException<std::runtime_error>(fooExpression);
-			// Regular insert
+			// Inserting at the end
 			SList<Foo>::Iterator it8 = fooList.PushBack(foo);
 			SList<Foo>::Iterator it9 = fooList.InsertAfter(foo2, it8);
 			Assert::AreEqual(foo2, fooList.Back());
 			Assert::AreEqual(foo2, *it9);
+			// Inserting in the middle
+			fooList.InsertAfter(foo, it8);
+			fooList.PopFront();
+			Assert::AreEqual(foo, fooList.Front());
 			// When inserting beyond the list
-			auto fooExpression2 = [&fooList, &foo, &it9] { fooList.InsertAfter(foo, ++it9);  };
-			Assert::ExpectException<std::runtime_error>(fooExpression2);
+			fooList.InsertAfter(foo, ++it9);
+			Assert::AreEqual(foo, fooList.Back());
 		}
 
 		TEST_METHOD(SList_Find)
