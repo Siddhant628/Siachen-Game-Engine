@@ -3,18 +3,11 @@
 #pragma once
 #include <cstdint>
 
-// Find - Take a const reference to an item and return an iterator pointing to the first item in the container that matches the argument. 
-	// If no match found, return end. This must work even if the sought item is not found, and even if the list is empty.
 // Remove - Write a Remove method that allows the removal of any element in the list. 
 	// Consider including an overload of Remove that accepts first and last iterators to remove a range of contiguous elements. 
 	// Should removing an element auto-shrink the vector? What impact would this have on access to the vector? What performance implications are there? 
 	// Describe your implementation and its trade offs in a Canvas comment.
-
-// All methods const correct
-// Unit tests
-// Copy constructor - Deep copy
-// Operator= - Deep copy
-// end
+// Modify functions which didn't have iterator logic before
 
 namespace SiachenGameEngine
 {
@@ -75,20 +68,18 @@ namespace SiachenGameEngine
 			std::uint32_t Size() const;
 			
 			std::uint32_t Capacity() const;
-			
-			void PushBack(const T& data);
 
 			void PopBack();
 
 			T& At(std::uint32_t index) const;
 			
 			void Reserve(std::uint32_t newCapacity);
-			
+
 			void Clear();
-			
+
 			void ClearAndFree();
 
-			//Iterator begin() const;
+			
 
 			// Overloaded operators
 
@@ -180,6 +171,7 @@ namespace SiachenGameEngine
 				const Vector* mOwnerVector;
 			};
 			public:
+				Iterator PushBack(const T& data);
 				/**
 				* Returns an iterator which points to the item at the beginning of this vector.
 				* @return Iterator associated with the front item of this vector.
@@ -190,6 +182,15 @@ namespace SiachenGameEngine
 				* @return Iterator associated with the item location beyond the last item of this vector.
 				*/
 				Iterator end() const;
+
+				Iterator Find(const T& data) const;
+
+				bool Remove(const T& data);
+
+				bool Remove(Iterator& beginIt, Iterator& endIt);
+
+				
+
 		};
 	}
 }

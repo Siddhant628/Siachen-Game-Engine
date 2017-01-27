@@ -89,7 +89,7 @@ namespace SiachenGameEngine
 		}
 
 		template <typename T>
-		void Vector<T>::PushBack(const T& data)
+		typename Vector<T>::Iterator Vector<T>::PushBack(const T& data)
 		{
 			if (mSize == mCapacity)
 			{
@@ -97,6 +97,7 @@ namespace SiachenGameEngine
 			}
 			mFront[mSize] = data;
 			++mSize;
+			return Iterator(mSize-1, this);
 		}
 
 		template<typename T>
@@ -115,7 +116,7 @@ namespace SiachenGameEngine
 		template<typename T>
 		T& Vector<T>::At(std::uint32_t index) const
 		{
-			if (index > mSize - 1)
+			if (index >= mSize)
 			{
 				throw std::out_of_range("Invalid index, cannot access item beyond the vector.");
 			}
@@ -157,11 +158,15 @@ namespace SiachenGameEngine
 		template<typename T>
 		void Vector<T>::Clear()
 		{
-			for (std::uint32_t index = 0; index < mSize; ++index)
+			/*for (std::uint32_t index = 0; index < mSize; ++index)
 			{
 				mFront[index].~T();
 			}
-			mSize = 0;
+			mSize = 0;*/
+			while (mSize > 0)
+			{
+				PopBack();
+			}
 		}
 
 		template<typename T>
@@ -189,16 +194,79 @@ namespace SiachenGameEngine
 			return  Vector<T>::Iterator(mSize, this);
 		}
 
+		template<typename T>
+		typename Vector<T>::Iterator Vector<T>::Find(const T& data) const
+		{
+			for (Vector<T>::Iterator it = begin(); it != end(); ++it)
+			{
+				if (*it == data)
+				{
+					return it;
+				}
+			}
+			return Vector<T>::Iterator(mSize, this);;
+		}
+
+		template<typename T>
+		bool Vector<T>::Remove(const T& data)
+		{
+			if (IsEmpty())
+			{
+				return false;
+			}
+			for (Vector<T>::Iterator it = begin(); it != end(); ++it)
+			{
+				if (*it == data)
+				{
+					Remove(it, ++it);
+					return true;
+				}
+			}
+			return false;
+		}
+
+		template<typename T>
+		bool Vector<T>::Remove(Iterator& beginIt, Iterator& endIt)
+		{
+			if ((beginIt.mOwnerVector != endIt.mOwnerVector) || (beginIt.mOwnerVector != this))
+			{
+				throw std::runtime_error("Invalid iterators for removing from the list.");
+			}
+			if ((beginIt.mIndexOffset > mSize) || (endIt.mIndexOffset > mSize) || (beginIt.mIndexOffset > endIt.mIndexOffset))
+			{
+				throw std::out_of_range("Invalid iterator's for deletion.");
+			}
+			if (IsEmpty() || (beginIt == endIt))
+			{
+				return false;
+			}
+
+			std::uint32_t beginIndex = beginIt.mIndexOffset;
+			std::uint32_t endIndex = endIt.mIndexOffset;
+
+			for (Vector<T>::Iterator it = beginIt; it != endIt; ++it)
+			{
+				*it.~T();
+			}
+
+			T* destination = mFront + beginIndex;
+			T* source = mFront + endIndex;
+			memcpy(destination, source, sizeof(T)*(mSize - endIndex));
+			mSize = mSize - (endIndex - beginIndex);
+
+			return true;
+		}
+
 		// Overloaded operators
 
 		template<typename T>
 		Vector<T>& Vector<T>::operator=(const Vector& rhs)
 		{
-			if (this != rhs)
+			if (this != &rhs)
 			{
 				ClearAndFree();
 				T* mFront = static_cast<T*>(malloc(rhs.mCapacity * sizeof(T)));
-				for (std::int32_t index = 0; index < mSize; ++index)
+				for (std::int32_t index = 0; index < rhs.mSize; ++index)
 				{
 					new (mFront + index)T(rhs.mFront[index]);
 				}
@@ -211,7 +279,7 @@ namespace SiachenGameEngine
 		template<typename T>
 		T& Vector<T>::operator[](std::uint32_t index)
 		{
-			if (index > (mSize - 1))
+			if (index >= mSize)
 			{
 				throw std::out_of_range("The index is invalid for this vector.\n");
 			}
@@ -221,7 +289,7 @@ namespace SiachenGameEngine
 		template<typename T>
 		const T& Vector<T>::operator[](std::uint32_t index) const
 		{
-			if (index > (mSize - 1))
+			if (index >= mSize)
 			{
 				throw std::out_of_range("The index is invalid for this vector.\n");
 			}
@@ -279,9 +347,9 @@ namespace SiachenGameEngine
 				throw std::runtime_error("Iterator cannot pre-increment, doesn't belong to any vector.");
 			}
 			// Including the case where the iterator points beyond the vector
-			if (mIndexOffset == mSize)
+			if (mIndexOffset >= mOwnerVector->mSize)
 			{
-				return *this;
+				throw std::runtime_error("Incrementing the iterator out of the bounds.");
 			}
 			++mIndexOffset;
 			return *this;
@@ -295,9 +363,9 @@ namespace SiachenGameEngine
 				throw std::runtime_error("Iterator cannot post-increment, doesn't belong to any vector.");
 			}
 			// Including the case where the iterator points beyond the vector
-			if (mIndexOffset == mSize)
+			if (mIndexOffset >= mOwnerVector->mSize)
 			{
-				return *this;
+				throw std::runtime_error("Incrementing the iterator out of the bounds.");
 			}
 			Iterator tempIt = *this;
 			++mIndexOffset;
@@ -311,7 +379,7 @@ namespace SiachenGameEngine
 			{
 				throw std::runtime_error("Cannot dereference an iterator which isn't associated with a vector.");
 			}
-			if (mIndexOffset > (mOwnerVector->mSize - 1))
+			if (mIndexOffset >= mOwnerVector->mSize)
 			{
 				throw std::out_of_range("Cannot dereference an items outside the vector.");
 			}
@@ -325,7 +393,7 @@ namespace SiachenGameEngine
 			{
 				throw std::runtime_error("Cannot dereference an iterator which isn't associated with a vector.");
 			}
-			if (mIndexOffset > (mOwnerVector->mSize - 1))
+			if (mIndexOffset >= mOwnerVector->mSize)
 			{
 				throw std::out_of_range("Cannot dereference an items outside the vector.");
 			}
