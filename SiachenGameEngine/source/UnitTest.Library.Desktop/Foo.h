@@ -22,11 +22,11 @@ namespace SiachenGameEngine
 			Foo& operator=(const Foo&);
 			// Overloaded comparison operator
 			bool operator==(const Foo&) const;
-			// Get the integer value stored at m_pInteger
+			// Get the integer value stored at mIntegerPointer
 			int32_t GetValue() const;
 
 		private:
-			int32_t* m_pInteger;
+			int32_t* mIntegerPointer;
 		};
 	}
 }

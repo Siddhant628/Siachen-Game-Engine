@@ -4,40 +4,40 @@ namespace SiachenGameEngine
 {
 	namespace HelperClasses
 	{
-		Foo::Foo() : m_pInteger(new int32_t(0))
+		Foo::Foo() : mIntegerPointer(new int32_t(0))
 		{
 
 		}
 
 		Foo::Foo(int32_t value)
 		{
-			m_pInteger = new int32_t(value);
+			mIntegerPointer = new int32_t(value);
 		}
 
 		Foo::Foo(const Foo& obj)
 		{
-			m_pInteger = new int32_t(*(obj.m_pInteger));
+			mIntegerPointer = new int32_t(*(obj.mIntegerPointer));
 		}
 
 		Foo::~Foo()
 		{
-			delete m_pInteger;
+			delete mIntegerPointer;
 		}
 
 		Foo& Foo::operator=(const Foo& rhs)
 		{
-			*m_pInteger = *(rhs.m_pInteger);
+			*mIntegerPointer = *(rhs.mIntegerPointer);
 			return *this;
 		}
 
 		bool Foo::operator==(const Foo& rhs) const
 		{
-			return (*m_pInteger == *(rhs.m_pInteger));
+			return (*mIntegerPointer == *(rhs.mIntegerPointer));
 		}
 
 		int32_t Foo::GetValue() const
 		{
-			return *m_pInteger;
+			return *mIntegerPointer;
 		}
 	}
 }

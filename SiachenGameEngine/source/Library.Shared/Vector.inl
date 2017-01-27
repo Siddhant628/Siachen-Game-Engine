@@ -138,7 +138,7 @@ namespace SiachenGameEngine
 			// Allocate the memory
 			T* newBuffer = (T*)malloc(newCapacity*sizeof(T));
 			// In case memory was allocated before
-			if (newCapacity > 1)
+			if (mSize > 0)
 			{
 				memcpy(newBuffer, mFront, sizeof(T)*mSize);		// Move the data to new memory
 				free(mFront);									// Deallocate old memory
@@ -152,11 +152,6 @@ namespace SiachenGameEngine
 		template<typename T>
 		void Vector<T>::Clear()
 		{
-			/*for (std::uint32_t index = 0; index < mSize; ++index)
-			{
-				mFront[index].~T();
-			}
-			mSize = 0;*/
 			while (mSize > 0)
 			{
 				PopBack();

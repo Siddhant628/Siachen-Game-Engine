@@ -12,7 +12,7 @@ namespace Microsoft
 			{
 				std::wstringstream bufferStream;
 				int32_t value = foo.GetValue();
-				bufferStream << "Foo_SList_" << value;
+				bufferStream << "Foo_" << value;
 				return bufferStream.str();
 			}
 
