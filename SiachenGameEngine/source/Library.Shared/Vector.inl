@@ -15,7 +15,7 @@ namespace SiachenGameEngine
 		template<typename T>
 		Vector<T>::Vector(const Vector& rhs) : mCapacity(rhs.mCapacity), mSize(rhs.mSize)
 		{
-			T* mFront = static_cast<T*>(malloc(mCapacity * sizeof(T)));
+			mFront = static_cast<T*>(malloc(mCapacity * sizeof(T)));
 			for (std::uint32_t index = 0; index < mSize; ++index)
 			{
 				new (mFront + index)T(rhs.mFront[index]);
@@ -95,7 +95,7 @@ namespace SiachenGameEngine
 			{
 				Reserve(mCapacity * 2);
 			}
-			mFront[mSize] = data;
+			new (mFront + mSize)T(data);
 			++mSize;
 			return Iterator(mSize-1, this);
 		}
@@ -138,15 +138,9 @@ namespace SiachenGameEngine
 			// Allocate the memory
 			T* newBuffer = (T*)malloc(newCapacity*sizeof(T));
 			// In case memory was allocated before
-			if (mCapacity > 1)
+			if (newCapacity > 1)
 			{
 				memcpy(newBuffer, mFront, sizeof(T)*mSize);		// Move the data to new memory
-				
-				for (std::int32_t index = 0; index < mSize; ++index)
-				{
-					mFront[index].~T();
-				}
-
 				free(mFront);									// Deallocate old memory
 			}
 			// Update vector fields
