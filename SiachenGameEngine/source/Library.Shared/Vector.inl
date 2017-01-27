@@ -15,21 +15,17 @@ namespace SiachenGameEngine
 		template<typename T>
 		Vector<T>::Vector(const Vector& rhs) : mCapacity(rhs.mCapacity), mSize(rhs.mSize)
 		{
-			T* newBuffer = (T*)malloc(mCapacity * sizeof(T));
-			mFront = newBuffer;
-
-			//memcpy(mFront, rhs.mFront, mSize * sizeof(T));
-
-			for (std::int32_t index = 0; index < mSize; ++index)
+			T* mFront = static_cast<T*>(malloc(mCapacity * sizeof(T)));
+			for (std::uint32_t index = 0; index < mSize; ++index)
 			{
-				new (mFront + index)T(*(rhs.mFront + index));
+				new (mFront + index)T(rhs.mFront[index]);
 			}
 		}
 
 		template <typename T>
 		Vector<T>::~Vector()
 		{
-			Clear();
+			ClearAndFree();
 		}
 
 		// Methods
@@ -67,7 +63,7 @@ namespace SiachenGameEngine
 			{
 				throw std::runtime_error("The vector is empty.\n");
 			}
-			return *(mFront + mSize - 1);
+			return mFront[mSize - 1];
 		}
 
 		template<typename T>
@@ -77,7 +73,7 @@ namespace SiachenGameEngine
 			{
 				throw std::runtime_error("The vector is empty.\n");
 			}
-			return *(mFront + mSize - 1);
+			return mFront[mSize - 1];
 		}
 
 		template<typename T>
@@ -99,7 +95,7 @@ namespace SiachenGameEngine
 			{
 				Reserve(mCapacity * 2);
 			}
-			*(mFront + mSize) = data;
+			mFront[mSize] = data;
 			++mSize;
 		}
 
@@ -112,8 +108,7 @@ namespace SiachenGameEngine
 			}
 			else
 			{
-				--mSize;
-				*(mFront + mSize).~T();
+				mFront[--mSize].~T();
 			}
 		}
 
@@ -146,9 +141,9 @@ namespace SiachenGameEngine
 			{
 				memcpy(newBuffer, mFront, sizeof(T)*mSize);		// Move the data to new memory
 				
-				for (std::int32_t it = 0; it < mSize; it++)
+				for (std::int32_t index = 0; index < mSize; ++index)
 				{
-					mFront[it].~T();
+					mFront[index].~T();
 				}
 
 				free(mFront);									// Deallocate old memory
@@ -162,14 +157,36 @@ namespace SiachenGameEngine
 		template<typename T>
 		void Vector<T>::Clear()
 		{
-			for (std::int32_t index = 0; index < mSize; ++index)
+			for (std::uint32_t index = 0; index < mSize; ++index)
 			{
 				mFront[index].~T();
 			}
+			mSize = 0;
+		}
+
+		template<typename T>
+		void Vector<T>::ClearAndFree()
+		{
+			Clear();
+			if (mFront == nullptr)
+			{
+				return;
+			}
 			free(mFront);
 			mFront = nullptr;
-			mSize = 0;
 			mCapacity = 0;
+		}
+
+		template<typename T>
+		typename Vector<T>::Iterator Vector<T>::begin() const
+		{
+			return  Vector<T>::Iterator(0, this);
+		}
+
+		template<typename T>
+		typename Vector<T>::Iterator Vector<T>::end() const
+		{
+			return  Vector<T>::Iterator(mSize, this);
 		}
 
 		// Overloaded operators
@@ -179,17 +196,14 @@ namespace SiachenGameEngine
 		{
 			if (this != rhs)
 			{
-				Clear();
-
-				T* newBuffer = (T*)malloc(rhs.mCapacity * sizeof(T));
-				mFront = newBuffer;
-
-				//memcpy(mFront, rhs.mFront, rhs.mSize * sizeof(T));
-
+				ClearAndFree();
+				T* mFront = static_cast<T*>(malloc(rhs.mCapacity * sizeof(T)));
 				for (std::int32_t index = 0; index < mSize; ++index)
 				{
-					new (mFront + index)T(*(rhs.mFront + index));
+					new (mFront + index)T(rhs.mFront[index]);
 				}
+				mCapacity = rhs.mCapacity;
+				mSize = rhs.mSize;
 			}
 			return *this;
 		}
@@ -223,29 +237,24 @@ namespace SiachenGameEngine
 		}
 
 		template<typename T>
-		Vector<T>::Iterator::Iterator(const Iterator& rhs) : mIndexOffset(rhs.mIndexOffset), mOwnerVector(mOwnerVector)
+		Vector<T>::Iterator::Iterator(const Iterator& rhs) : mIndexOffset(rhs.mIndexOffset), mOwnerVector(rhs.mOwnerVector)
 		{
 
 		}
 
-		// TODO If condition includes end item, i.e size
-		// TODO Calling a exception inside constructor
 		template<typename T>
-		Vector<T>::Iterator::Iterator(const std::int32_t offset,const Vector* ownerVector) : mIndexOffset(offset), mOwnerVector(ownerVector)
+		Vector<T>::Iterator::Iterator(const std::uint32_t offset,const Vector* ownerVector) : mIndexOffset(offset), mOwnerVector(ownerVector)
 		{
-			if (offset > ownerVector->mSize)
-			{
-				throw std::runtime_error("An iterator beyond the vector data cannot be created.");
-			}
+
 		}
 	
 		template<typename T>
-		typename Vector<T>::Iterator& Vector<T>::Iterator::operator=(const Iterator& it)
+		typename Vector<T>::Iterator& Vector<T>::Iterator::operator=(const Iterator& rhs)
 		{
-			if (this != it)
+			if (this != &rhs)
 			{
-				mIndexOffset = it.mIndexOffset;
-				mOwnerVector = it.mOwnerVector;
+				mIndexOffset = rhs.mIndexOffset;
+				mOwnerVector = rhs.mOwnerVector;
 			}
 			return *this;
 		}
@@ -269,8 +278,8 @@ namespace SiachenGameEngine
 			{
 				throw std::runtime_error("Iterator cannot pre-increment, doesn't belong to any vector.");
 			}
-			// TODO Should be able to increment to size
-			if (mIndexOffset == mSize - 1)
+			// Including the case where the iterator points beyond the vector
+			if (mIndexOffset == mSize)
 			{
 				return *this;
 			}
@@ -285,8 +294,8 @@ namespace SiachenGameEngine
 			{
 				throw std::runtime_error("Iterator cannot post-increment, doesn't belong to any vector.");
 			}
-			// TODO Should be able to increment to size
-			if (mIndexOffset == mSize - 1)
+			// Including the case where the iterator points beyond the vector
+			if (mIndexOffset == mSize)
 			{
 				return *this;
 			}
@@ -302,8 +311,11 @@ namespace SiachenGameEngine
 			{
 				throw std::runtime_error("Cannot dereference an iterator which isn't associated with a vector.");
 			}
-			// TODO Case size and check?
-			return *(mOwnerVector->mFront + mIndexOffset);
+			if (mIndexOffset > (mOwnerVector->mSize - 1))
+			{
+				throw std::out_of_range("Cannot dereference an items outside the vector.");
+			}
+			return mOwnerVector->mFront[mIndexOffset];
 		}
 
 		template<typename T>
@@ -313,8 +325,11 @@ namespace SiachenGameEngine
 			{
 				throw std::runtime_error("Cannot dereference an iterator which isn't associated with a vector.");
 			}
-			// TODO Case size and check?
-			return *(mOwnerVector->mFront + mIndexOffset);
+			if (mIndexOffset > (mOwnerVector->mSize - 1))
+			{
+				throw std::out_of_range("Cannot dereference an items outside the vector.");
+			}
+			return mOwnerVector->mFront[mIndexOffset];
 		}
 	}
 }

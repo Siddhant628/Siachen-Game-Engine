@@ -1,15 +1,8 @@
-// // A templated class which implements a vector container.
+// A templated class which implements a vector container.
 
 #pragma once
 #include <cstdint>
 
-// Constant time methods
-//
-// begin - Return an iterator pointing to the first element
-// end - Return an iterator NOT in the container
-
-// May run in linear time
-//
 // Find - Take a const reference to an item and return an iterator pointing to the first item in the container that matches the argument. 
 	// If no match found, return end. This must work even if the sought item is not found, and even if the list is empty.
 // Remove - Write a Remove method that allows the removal of any element in the list. 
@@ -21,6 +14,7 @@
 // Unit tests
 // Copy constructor - Deep copy
 // Operator= - Deep copy
+// end
 
 namespace SiachenGameEngine
 {
@@ -91,6 +85,10 @@ namespace SiachenGameEngine
 			void Reserve(std::uint32_t newCapacity);
 			
 			void Clear();
+			
+			void ClearAndFree();
+
+			//Iterator begin() const;
 
 			// Overloaded operators
 
@@ -115,6 +113,7 @@ namespace SiachenGameEngine
 		
 			class Iterator
 			{
+				friend class Vector;
 			public:
 				/**
 				* Default constructor - Initializes an iterator with no owning vector.
@@ -169,17 +168,28 @@ namespace SiachenGameEngine
 				* @param offset The index offset for the item in the vector which the iterator points to.
 				* @param ownerVector The vector with which the iterator is associated.
 				*/
-				Iterator(const std::int32_t offset, const Vector* ownerVector);
+				Iterator(const std::uint32_t offset, const Vector* ownerVector);
 
 				/**
 				* The index position(of an item) inside the vector where this iterator points to.
 				*/
-				std::int32_t mIndexOffset;
+				std::uint32_t mIndexOffset;
 				/**
 				* A pointer to the vector which owns this iterator.
 				*/
 				const Vector* mOwnerVector;
 			};
+			public:
+				/**
+				* Returns an iterator which points to the item at the beginning of this vector.
+				* @return Iterator associated with the front item of this vector.
+				*/
+				Iterator begin() const;
+				/**
+				* Returns an iterator which points beyond the last item in this vector.
+				* @return Iterator associated with the item location beyond the last item of this vector.
+				*/
+				Iterator end() const;
 		};
 	}
 }

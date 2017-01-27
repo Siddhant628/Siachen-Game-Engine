@@ -31,6 +31,7 @@ namespace UnitTestLibraryDesktop
 
 		TEST_METHOD(Vector_Dummy)
 		{
+			Vector<int> intVector;
 
 		}
 
