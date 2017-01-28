@@ -199,13 +199,11 @@ namespace SiachenGameEngine
 		template<typename T>
 		bool Vector<T>::Remove(const T& data)
 		{
-			for (Vector<T>::Iterator it = begin(); it != end(); ++it)
+			Vector<T>::Iterator it = Find(data);
+			if (it != end())
 			{
-				if (*it == data)
-				{
-					Vector<T>::Iterator it2 = it;
-					return Remove(it, ++it2);
-				}
+				Vector<T>::Iterator it2 = it;
+				return Remove(it, ++it2);
 			}
 			return false;
 		}
@@ -232,7 +230,7 @@ namespace SiachenGameEngine
 
 			T* destination = mFront + beginIndex;
 			T* source = mFront + endIndex;
-			memcpy(destination, source, sizeof(T)*(mSize - endIndex));
+			memmove(destination, source, sizeof(T)*(mSize - endIndex));
 			mSize = mSize - (endIndex - beginIndex);
 
 			return true;
