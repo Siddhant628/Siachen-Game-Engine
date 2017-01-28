@@ -142,7 +142,7 @@ namespace SiachenGameEngine
 				* Overloaded post-increment operator increments the item to which it points in the vector.
 				* @return A copy of the iterator before it incremented.
 				*/
-				Iterator& operator++(std::int32_t);
+				Iterator operator++(std::int32_t);
 				/**
 				* Dereference the item data the iterator points to.
 				* @return Item in the list referred to by the iterator(T&).

@@ -4,7 +4,7 @@ namespace SiachenGameEngine
 {
 	namespace Containers
 	{
-		// Constructors
+		// Vector Constructors
 
 		template <typename T>
 		Vector<T>::Vector() : mFront(nullptr), mSize(0), mCapacity(0)
@@ -28,7 +28,7 @@ namespace SiachenGameEngine
 			ClearAndFree();
 		}
 
-		// Methods
+		// Vector Methods
 
 		template<typename T>
 		bool Vector<T>::IsEmpty() const
@@ -199,16 +199,12 @@ namespace SiachenGameEngine
 		template<typename T>
 		bool Vector<T>::Remove(const T& data)
 		{
-			if (IsEmpty())
-			{
-				return false;
-			}
 			for (Vector<T>::Iterator it = begin(); it != end(); ++it)
 			{
 				if (*it == data)
 				{
-					Remove(it, ++it);
-					return true;
+					Vector<T>::Iterator it2 = it;
+					return Remove(it, ++it2);
 				}
 			}
 			return false;
@@ -221,13 +217,9 @@ namespace SiachenGameEngine
 			{
 				throw std::runtime_error("Invalid iterators for removing from the list.");
 			}
-			if ((beginIt.mIndexOffset > mSize) || (endIt.mIndexOffset > mSize) || (beginIt.mIndexOffset > endIt.mIndexOffset))
+			if ((beginIt.mIndexOffset > mSize) || (endIt.mIndexOffset > mSize) || (beginIt.mIndexOffset >= endIt.mIndexOffset))
 			{
 				throw std::out_of_range("Invalid iterator's for deletion.");
-			}
-			if (IsEmpty() || (beginIt == endIt))
-			{
-				return false;
 			}
 
 			std::uint32_t beginIndex = beginIt.mIndexOffset;
@@ -235,7 +227,7 @@ namespace SiachenGameEngine
 
 			for (Vector<T>::Iterator it = beginIt; it != endIt; ++it)
 			{
-				*it.~T();
+				(*it).~T();
 			}
 
 			T* destination = mFront + beginIndex;
@@ -246,7 +238,7 @@ namespace SiachenGameEngine
 			return true;
 		}
 
-		// Overloaded operators
+		// Vector Operators
 
 		template<typename T>
 		Vector<T>& Vector<T>::operator=(const Vector& rhs)
@@ -254,8 +246,8 @@ namespace SiachenGameEngine
 			if (this != &rhs)
 			{
 				ClearAndFree();
-				T* mFront = static_cast<T*>(malloc(rhs.mCapacity * sizeof(T)));
-				for (std::int32_t index = 0; index < rhs.mSize; ++index)
+				mFront = static_cast<T*>(malloc(rhs.mCapacity * sizeof(T)));
+				for (std::uint32_t index = 0; index < rhs.mSize; ++index)
 				{
 					new (mFront + index)T(rhs.mFront[index]);
 				}
@@ -285,7 +277,7 @@ namespace SiachenGameEngine
 			return *(mFront + index);
 		}
 
-		// Iterator
+		// Iterator Constructors
 
 		template<typename T>
 		Vector<T>::Iterator::Iterator() : mIndexOffset(0), mOwnerVector(nullptr)
@@ -305,6 +297,8 @@ namespace SiachenGameEngine
 
 		}
 	
+		// Iterator Operators
+
 		template<typename T>
 		typename Vector<T>::Iterator& Vector<T>::Iterator::operator=(const Iterator& rhs)
 		{
@@ -345,7 +339,7 @@ namespace SiachenGameEngine
 		}
 
 		template<typename T>
-		typename Vector<T>::Iterator& Vector<T>::Iterator::operator++(std::int32_t)
+		typename Vector<T>::Iterator Vector<T>::Iterator::operator++(std::int32_t)
 		{
 			if (mOwnerVector == nullptr)
 			{
