@@ -122,6 +122,27 @@ namespace UnitTestLibraryDesktop
 			Assert::AreEqual(fooVector.Size(), fooVector2.Size());
 		}
 
+		TEST_METHOD(Vector_FixedSize_Constructor)
+		{
+			std::uint32_t initialSize = 10;
+
+			Vector<std::int32_t> intVector(initialSize);
+			Assert::AreEqual(initialSize, intVector.Size());
+			Assert::AreEqual(initialSize, intVector.Capacity());
+			Assert::AreEqual(int32_t(), intVector.Front());
+			Assert::AreEqual(int32_t(), intVector.Back());
+
+			Vector<std::int32_t*> intPtrVector(initialSize);
+			Assert::AreEqual(initialSize, intPtrVector.Size());
+			Assert::AreEqual(initialSize, intPtrVector.Capacity());
+
+			Vector<Foo> fooVector(initialSize);
+			Assert::AreEqual(initialSize, fooVector.Size());
+			Assert::AreEqual(initialSize, fooVector.Capacity());
+			Assert::AreEqual(Foo(), fooVector.Front());
+			Assert::AreEqual(Foo(), fooVector.Back());
+		}
+
 		TEST_METHOD(Vector_IsEmpty)
 		{
 			std::int32_t data = 10;
@@ -408,36 +429,36 @@ namespace UnitTestLibraryDesktop
 
 			Vector<std::int32_t> intVector;
 			// Initial reserve
-			intVector.Reserve(static_cast<std::uint32_t>(0));
+			intVector.Reserve(static_cast<std::uint32_t>(0), false);
 			intVector.PushBack(data);
 			// Reserving less than the size
-			auto intExpression = [&intVector] { intVector.Reserve(static_cast<std::uint32_t>(0)); };
+			auto intExpression = [&intVector] { intVector.Reserve(static_cast<std::uint32_t>(0), false); };
 			Assert::ExpectException<std::runtime_error>(intExpression);
 			// A general reserve
-			intVector.Reserve(data);
+			intVector.Reserve(data, false);
 			Assert::AreEqual(intVector.Capacity(), data);
 
 			Vector<std::int32_t*> intPtrVector;
 			// Initial reserve
-			intPtrVector.Reserve(static_cast<std::uint32_t>(0));
+			intPtrVector.Reserve(static_cast<std::uint32_t>(0), false);
 			intPtrVector.PushBack(&data2);
 			// Reserving less than the size
-			auto intPtrExpression = [&intPtrVector] { intPtrVector.Reserve(static_cast<std::uint32_t>(0)); };
+			auto intPtrExpression = [&intPtrVector] { intPtrVector.Reserve(static_cast<std::uint32_t>(0), false); };
 			Assert::ExpectException<std::runtime_error>(intPtrExpression);
 			// A general reserve
-			intPtrVector.Reserve(data);
+			intPtrVector.Reserve(data, false);
 			Assert::AreEqual(intPtrVector.Capacity(), data);
 
 			Vector<Foo> fooVector;
 			Foo foo(data2);
 			// Initial reserve
-			fooVector.Reserve(static_cast<std::uint32_t>(0));
+			fooVector.Reserve(static_cast<std::uint32_t>(0), false);
 			fooVector.PushBack(foo);
 			// Reserving less than the size
-			auto fooExpression = [&fooVector] { fooVector.Reserve(static_cast<std::uint32_t>(0)); };
+			auto fooExpression = [&fooVector] { fooVector.Reserve(static_cast<std::uint32_t>(0), false); };
 			Assert::ExpectException<std::runtime_error>(fooExpression);
 			// A general reserve
-			fooVector.Reserve(data);
+			fooVector.Reserve(data, false);
 			Assert::AreEqual(fooVector.Capacity(), data);
 		}
 

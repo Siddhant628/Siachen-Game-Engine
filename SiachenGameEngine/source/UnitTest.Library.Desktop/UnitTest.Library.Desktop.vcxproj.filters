@@ -21,6 +21,9 @@
     <ClCompile Include="VectorTest.cpp">
       <Filter>Test Classes</Filter>
     </ClCompile>
+    <ClCompile Include="HashMapTest.cpp">
+      <Filter>Test Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Helper Classes">

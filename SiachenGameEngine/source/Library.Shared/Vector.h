@@ -39,6 +39,11 @@ namespace SiachenGameEngine
 			*/
 			Vector(const Vector& rhs);
 			/**
+			* A constructor which takes the default capacity for the vector and initializes its contents.
+			* @param initialCapacity The initial capacity of the vector.
+			*/
+			Vector(std::uint32_t initialCapacity);
+			/**
 			* Destructor clears and frees all the memory reserved by the vector.
 			*/
 			~Vector();
@@ -93,8 +98,9 @@ namespace SiachenGameEngine
 			/**
 			* Reserve a specific amount of memory for the vector and move its data to it.
 			* @param newCapacity The amount of capacity for which the memory has to be reserved.
+			* @param isFixedSize Set to true if the vector should be initialized using the default constructors of T.
 			*/
-			void Reserve(std::uint32_t newCapacity);
+			void Reserve(std::uint32_t newCapacity, bool isFixedSize);
 			/**
 			* Clears the memory associated with the vector. However the memory remains reserved, i.e. the capacity remains unchanged.
 			*/

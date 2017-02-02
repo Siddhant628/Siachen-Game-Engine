@@ -22,6 +22,12 @@ namespace SiachenGameEngine
 			}
 		}
 
+		template<typename T>
+		Vector<T>::Vector(std::uint32_t initialCapacity) : mSize(0)
+		{
+			Reserve(initialCapacity, true);
+		}
+
 		template <typename T>
 		Vector<T>::~Vector()
 		{
@@ -93,7 +99,7 @@ namespace SiachenGameEngine
 		{
 			if (mSize == mCapacity)
 			{
-				Reserve(mCapacity * 2);
+				Reserve(mCapacity * 2, false);
 			}
 			new (mFront + mSize)T(data);
 			++mSize;
@@ -124,7 +130,7 @@ namespace SiachenGameEngine
 		}
 
 		template<typename T>
-		void Vector<T>::Reserve(std::uint32_t newCapacity)
+		void Vector<T>::Reserve(std::uint32_t newCapacity, bool isFixedSize)
 		{
 			if (newCapacity < mSize)
 			{
@@ -146,6 +152,15 @@ namespace SiachenGameEngine
 			// Update vector fields
 			mFront = newBuffer;
 			mCapacity = newCapacity;
+			// In case the vectors memory is to be reserved and initialized
+			if (isFixedSize && mSize == 0)
+			{
+				for (std::uint32_t index = 0; index < mCapacity; ++index)
+				{
+					new (mFront + index)T();
+					mSize++;
+				}
+			}
 
 		}
 
@@ -230,7 +245,10 @@ namespace SiachenGameEngine
 
 			T* destination = mFront + beginIndex;
 			T* source = mFront + endIndex;
-			memmove(destination, source, sizeof(T)*(mSize - endIndex));
+			// TODO How to use memmove
+			//memmove(destination, source, sizeof(T)*(mSize - endIndex));
+			//memmove_s(destination, sizeof(T)*(mSize - beginIndex), source, sizeof(T)*(mSize - endIndex));
+			memmove_s(destination, sizeof(T)*(mSize - endIndex), source, sizeof(T)*(mSize - endIndex));
 			mSize = mSize - (endIndex - beginIndex);
 
 			return true;
