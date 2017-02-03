@@ -31,8 +31,30 @@ namespace UnitTestLibraryDesktop
 
 		TEST_METHOD(First_Test)
 		{
+			HashMap<int, int>::Iterator it;
 			HashMap<int, int> randomMap(10);
 		}
+
+		TEST_METHOD(Default_Hash_Functor)
+		{
+			// Default hash function
+			DefaultHash<std::int32_t> intHash;
+			std::uint32_t a = 1000, b = 1000;
+			Assert::AreEqual(intHash(a), intHash(b));
+
+			// Specialization for string keys
+			DefaultHash<std::string> stringHash;
+			std::string str = "Hey";
+			std::string str2 = str;
+			Assert::AreEqual(stringHash(str), stringHash(str2));
+
+			// Specialization for char*
+			DefaultHash<char*> charHash;
+			const char* str3 = "Hey";
+			const char* str4 = "yeH";
+			Assert::AreEqual(charHash(str3), charHash(str4));
+		}
+
 	private:
 		static _CrtMemState sStartMemState;
 	};

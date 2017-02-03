@@ -131,6 +131,10 @@ namespace UnitTestLibraryDesktop
 			Assert::AreEqual(initialSize, intVector.Capacity());
 			Assert::AreEqual(int32_t(), intVector.Front());
 			Assert::AreEqual(int32_t(), intVector.Back());
+			Assert::AreEqual(int32_t(), intVector.At(2));
+			Assert::AreEqual(int32_t(), intVector.At(5));
+			Assert::AreEqual(int32_t(), intVector.At(3));
+			Assert::AreEqual(int32_t(), intVector.At(7));
 
 			Vector<std::int32_t*> intPtrVector(initialSize);
 			Assert::AreEqual(initialSize, intPtrVector.Size());
@@ -141,6 +145,11 @@ namespace UnitTestLibraryDesktop
 			Assert::AreEqual(initialSize, fooVector.Capacity());
 			Assert::AreEqual(Foo(), fooVector.Front());
 			Assert::AreEqual(Foo(), fooVector.Back());
+			Assert::AreEqual(Foo(), fooVector.At(2));
+			Assert::AreEqual(Foo(), fooVector.At(5));
+			Assert::AreEqual(Foo(), fooVector.At(6));
+			Assert::AreEqual(Foo(), fooVector.At(3));
+
 		}
 
 		TEST_METHOD(Vector_IsEmpty)
