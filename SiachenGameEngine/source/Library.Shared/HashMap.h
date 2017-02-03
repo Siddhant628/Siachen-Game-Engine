@@ -78,31 +78,39 @@ namespace SiachenGameEngine
 				*/
 				bool operator==(const Iterator &it) const;
 				/**
-				*
+				* Compares if two iterators aren't associated with the same key-value pair.
+				* @param it The iterator to compare this iterator with.
+				* @return True if two iterators aren't associated with the same key-value pair.
 				*/
 				bool operator!=(const Iterator &it) const;
 				/**
-				*
+				* Overloaded pre-increment operator increments to the next key-value pair in the hashmap.
+				* @return Iterator associated with to the next key-value pair.
 				*/
 				Iterator& operator++();
 				/**
-				* 
+				* Overloaded post-increment operator increments the item to which it is associated with in the hashmap.
+				* @return Iterator associated with to the same key-value pair.
 				*/
 				Iterator operator++(std::int32_t);
 				/**
-				*
+				* Dereference the key-value pair the iterator is associated with.
+				* @return Value in the key-value pair in the hashmap referred to by the iterator.
 				*/
-				PairType& operator*();
+				TData& operator*();
 				/**
-				*
+				* Dereference the key-value pair the iterator is associated with.
+				* @return Key-value pair in the hashmap referred to by the iterator.
 				*/
-				const PairType& operator*() const;
+				const TData& operator*() const;
 				/**
-				*
+				* Dereference the key-value pair the iterator is associated with.
+				* @return Key-value pair in the hashmap referred to by the iterator.
 				*/
 				PairType& operator->();
 				/**
-				*
+				* Dereference the key-value pair the iterator is associated with.
+				* @return Key-value pair in the hashmap referred to by the iterator.
 				*/
 				const PairType& operator->() const;
 			};
@@ -111,6 +119,16 @@ namespace SiachenGameEngine
 			* @param numberOfBuckets The number of buckets the initialized hash map will have (default value is 13)
 			*/
 			explicit HashMap(std::uint32_t numberOfBuckets = 13);
+			/**
+			* Returns an iterator which points to the beginning of this hashmap.
+			* @return Iterator associated with the beginning of the hashmap.
+			*/
+			typename HashMap::Iterator begin() const;
+			/**
+			* Returns an iterator which points to beyond the last location in the hashmap
+			* @return Iterator associated with the end of this hashmap.
+			*/
+			typename HashMap::Iterator end() const;
 
 			~HashMap();
 		};
