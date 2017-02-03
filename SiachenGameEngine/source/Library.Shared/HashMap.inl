@@ -194,7 +194,7 @@ namespace SiachenGameEngine
 		}
 
 		template<typename TKey, typename TData, typename HashFunctor>
-		typename TData& HashMap<TKey, TData, HashFunctor>::Iterator::operator*()
+		typename HashMap<TKey, TData, HashFunctor>::PairType& HashMap<TKey, TData, HashFunctor>::Iterator::operator*()
 		{
 			if (mOwnerMap == nullptr)
 			{
@@ -206,7 +206,7 @@ namespace SiachenGameEngine
 			}
 			try
 			{
-				return (*mListIterator).second;
+				return (*mListIterator);
 
 			}
 			catch (const std::exception&)
@@ -216,7 +216,7 @@ namespace SiachenGameEngine
 		}
 
 		template<typename TKey, typename TData, typename HashFunctor>
-		typename const TData& HashMap<TKey, TData, HashFunctor>::Iterator::operator*() const
+		typename const HashMap<TKey, TData, HashFunctor>::PairType& HashMap<TKey, TData, HashFunctor>::Iterator::operator*() const
 		{
 			if (mOwnerMap == nullptr)
 			{
@@ -228,7 +228,7 @@ namespace SiachenGameEngine
 			}
 			try
 			{
-				return (*mListIterator).second;
+				return (*mListIterator);
 
 			}
 			catch (const std::exception&)
@@ -236,6 +236,51 @@ namespace SiachenGameEngine
 				throw std::runtime_error("Failed at dereferencing the key-value pair.");
 			}
 		}
+
+		template<typename TKey, typename TData, typename HashFunctor>
+		typename HashMap<TKey, TData, HashFunctor>::PairType& HashMap<TKey, TData, HashFunctor>::Iterator::operator->()
+		{
+			if (mOwnerMap == nullptr)
+			{
+				throw std::runtime_error("Cannot dereference an iterator which isn't associated with a hashmap.");
+			}
+			if (mBucketIndex >= mOwnerMap->Size())
+			{
+				throw std::out_of_range("Cannot dereference an items outside the hashmap.");
+			}
+			try
+			{
+				return (*mListIterator);
+
+			}
+			catch (const std::exception&)
+			{
+				throw std::runtime_error("Failed at dereferencing the key-value pair.");
+			}
+		}
+
+		template<typename TKey, typename TData, typename HashFunctor>
+		typename const HashMap<TKey, TData, HashFunctor>::PairType& HashMap<TKey, TData, HashFunctor>::Iterator::operator->() const
+		{
+			if (mOwnerMap == nullptr)
+			{
+				throw std::runtime_error("Cannot dereference an iterator which isn't associated with a hashmap.");
+			}
+			if (mBucketIndex >= mOwnerMap->Size())
+			{
+				throw std::out_of_range("Cannot dereference an items outside the hashmap.");
+			}
+			try
+			{
+				return (*mListIterator);
+
+			}
+			catch (const std::exception&)
+			{
+				throw std::runtime_error("Failed at dereferencing the key-value pair.");
+			}
+		}
+
 		// HashMap constructors
 
 		template<typename TKey, typename TData, typename HashFunctor>
@@ -286,6 +331,90 @@ namespace SiachenGameEngine
 		typename HashMap<TKey, TData, HashFunctor>::Iterator HashMap<TKey, TData, HashFunctor>::end() const
 		{
 			return Iterator(this, mHashmap.Size()-1, mHashmap[mHashmap.Size() - 1].end());
+		}
+
+		template<typename TKey, typename TData, typename HashFunctor>
+		typename HashMap<TKey, TData, HashFunctor>::Iterator HashMap<TKey, TData, HashFunctor>::Find(const TKey &key) const
+		{
+			for (HashMap<TKey, TData, HashFunctor>::Iterator it = begin(); it != end(); ++it)
+			{
+				if ((*it).first == key)
+				{
+					return it;
+				}
+			}
+			return it;
+		}
+
+		template<typename TKey, typename TData, typename HashFunctor>
+		typename HashMap<TKey, TData, HashFunctor>::Iterator HashMap<TKey, TData, HashFunctor>::Insert(const PairType &pair)
+		{
+			TKey key = pair.first;
+			// In case the key is already present in the map
+			HashMap::Iterator it = Find(key);
+			if (it == end())
+			{
+				return it;
+			}
+			// In case the key isn't present in the map
+			HashFunctor hash;
+			uint32_t index = (hash(key) / mHashmap.Size());
+			SList<PairType>::Iterator listIterator = mHashmap[index].PushBack(pair);
+			return Iterator(this, index, listIterator);
+		}
+
+		template<typename TKey, typename TData, typename HashFunctor>
+		bool HashMap<TKey, TData, HashFunctor>::Remove(const TKey &key)
+		{
+			HashMap::Iterator it = Find(key);
+			if (it == end())
+			{
+				return false;
+			}
+			else
+			{
+				mHashmap[it.mBucketIndex].Remove(*it);
+				return true;
+			}
+		}
+
+		// TODO Check for memory leaks
+		template<typename TKey, typename TData, typename HashFunctor>
+		void HashMap<TKey, TData, HashFunctor>::Clear()
+		{
+			mHashmap.ClearAndFree();
+		}
+
+		template<typename TKey, typename TData, typename HashFunctor>
+		std::uint32_t HashMap<TKey, TData, HashFunctor>::Size() const
+		{
+			return mHashmap.Size();
+		}
+
+		template<typename TKey, typename TData, typename HashFunctor>
+		bool HashMap<TKey, TData, HashFunctor>::ContainsKey(const TKey & key) const
+		{
+			HashMap::Iterator it = Find(key);
+			if (it == end())
+			{
+				return false;
+			}
+			return true;
+		}
+
+
+
+		// HashMap operators
+
+		template<typename TKey, typename TData, typename HashFunctor>
+		const TData& HashMap<TKey, TData, HashFunctor>::operator[](const TKey &key) const
+		{
+			HashMap::Iterator it = Find(key);
+			if (it == end())
+			{
+				throw std::runtime_error("No value stored in the map corresponding to the entered key.");
+			}
+			return (*it).second;
 		}
 
 		// Hashing functions

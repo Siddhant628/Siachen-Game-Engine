@@ -14,7 +14,7 @@ namespace SiachenGameEngine
 		* A HashMap container which uses a vector of singly linked lists (for chaining) to store data.
 		*/
 		template<typename TKey, typename TData, typename HashFunctor = DefaultHash<TKey>>
-		class HashMap
+		class HashMap final
 		{
 
 		private:
@@ -95,14 +95,14 @@ namespace SiachenGameEngine
 				Iterator operator++(std::int32_t);
 				/**
 				* Dereference the key-value pair the iterator is associated with.
-				* @return Value in the key-value pair in the hashmap referred to by the iterator.
+				* @return Key-value pair in the hashmap referred to by the iterator.
 				*/
-				TData& operator*();
+				PairType& operator*();
 				/**
 				* Dereference the key-value pair the iterator is associated with.
 				* @return Key-value pair in the hashmap referred to by the iterator.
 				*/
-				const TData& operator*() const;
+				const PairType& operator*() const;
 				/**
 				* Dereference the key-value pair the iterator is associated with.
 				* @return Key-value pair in the hashmap referred to by the iterator.
@@ -119,16 +119,58 @@ namespace SiachenGameEngine
 			* @param numberOfBuckets The number of buckets the initialized hash map will have (default value is 13)
 			*/
 			explicit HashMap(std::uint32_t numberOfBuckets = 13);
+
 			/**
-			* Returns an iterator which points to the beginning of this hashmap.
-			* @return Iterator associated with the beginning of the hashmap.
+			* Returns an iterator which points to first key-value pair in the hashmap
+			* @return Iterator associated with the first key-value pair of the hashmap.
 			*/
 			typename HashMap::Iterator begin() const;
 			/**
-			* Returns an iterator which points to beyond the last location in the hashmap
+			* Returns an iterator which points to beyond the last SList in the hashmap
 			* @return Iterator associated with the end of this hashmap.
 			*/
 			typename HashMap::Iterator end() const;
+			/**
+			* Look for a specific key in the hashmap.
+			* @param key The key which has to be searched for in the hashmap.
+			* @return An iterator to the found key in the hash map, if not found it returns an iterator to the end.
+			*/
+			typename HashMap::Iterator Find(const TKey& key) const;
+			/**
+			* Insert a specific key-value pair into the hashmap.
+			* @param pair The key-value pair which has to be inserted.
+			* @return An iterator associated with the inserted key-value pair
+			*/
+			typename HashMap::Iterator Insert(const PairType& pair);
+			/**
+			* Remove the specified key from the hashmap.
+			* @param key The key whose associated value pair needs to be removed from the hashmap.
+			* @return True if a key-value pair is successfully removed.
+			*/
+			bool Remove(const TKey &key);
+			/**
+			* Empty the hashmap and delete the memory allocated to it.
+			*/
+			void Clear();
+			/**
+			* Get the population of the table.
+			* @return The number of key-value pairs inside the hashmap.
+			*/
+			std::uint32_t Size() const;
+			/**
+			* Check if a key is present in the hashmap.
+			* @param key The key to check for presence.
+			* @return True if the key is present in the hashmap.
+			*/
+			bool ContainsKey(const TKey& key) const;
+
+			// TODO Non const version
+			/**
+			* Overloaded subscript operator returns the value associated with the input key.
+			* @param key The key value whose associated data is output.
+			* @return The data in the hashmap associated with the input key.
+			*/
+			const TData& operator[](const TKey &key) const;
 
 			~HashMap();
 		};
