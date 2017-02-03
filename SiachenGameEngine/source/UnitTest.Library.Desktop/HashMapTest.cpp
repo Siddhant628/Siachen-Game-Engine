@@ -53,6 +53,11 @@ namespace UnitTestLibraryDesktop
 			const char* str3 = "Hey";
 			const char* str4 = "yeH";
 			Assert::AreEqual(charHash(str3), charHash(str4));
+
+			// Specialization for Foo
+			DefaultHash<Foo> fooHash;
+			Foo foo(a), foo2(b);
+			Assert::AreEqual(fooHash(foo), fooHash(foo2));
 		}
 
 	private:

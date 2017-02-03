@@ -5,10 +5,50 @@ namespace SiachenGameEngine
 {
 	namespace Containers
 	{
+		// Iterator constructors
+
 		template<typename TKey, typename TData, typename HashFunctor>
 		HashMap<TKey, TData, HashFunctor>::Iterator::Iterator() : mOwnerMap(nullptr), mBucketIndex(0)
 		{
 
+		}
+		
+		template<typename TKey, typename TData, typename HashFunctor>
+		HashMap<TKey, TData, HashFunctor>::Iterator::Iterator(const Iterator &it) : mOwnerMap(it.mOwnerMap), mBucketIndex(it.mBucketIndex), mListIterator(it.mListIterator)
+		{
+
+		}
+
+		template<typename TKey, typename TData, typename HashFunctor>
+		HashMap<TKey, TData, HashFunctor>::Iterator::Iterator(HashMap* ownerMap, std::uint32_t bucketIndex, typename SList<PairType>::Iterator listIterator) : mOwnerMap(ownerMap), mBucketIndex(bucketIndex), mListIterator(listIterator)
+		{
+
+		}
+
+		// Iterator operations
+
+		template<typename TKey, typename TData, typename HashFunctor>
+		typename HashMap<TKey, TData, HashFunctor>::Iterator& HashMap<TKey, TData, HashFunctor>::Iterator::operator=(const Iterator &it)
+		{
+			it(this != &it)
+			{
+				mOwnerMap = it.mOwnerMap;
+				mBucketIndex = it.mBucketIndex;
+				mListIterator = it.mListIterator;
+			}
+			return *this;
+		}
+
+		template<typename TKey, typename TData, typename HashFunctor>
+		bool HashMap<TKey, TData, HashFunctor>::Iterator::operator==(const Iterator &it) const
+		{
+			return((mOwnerMap == it.mOwnerMap) && (mBucketIndex == it.mBucketIndex) && (mListIterator == it.mListIterator));
+		}
+
+		template<typename TKey, typename TData, typename HashFunctor>
+		bool HashMap<TKey, TData, HashFunctor>::Iterator::operator!=(const Iterator &it) const
+		{
+			return((mOwnerMap != it.mOwnerMap) || (mBucketIndex != it.mBucketIndex) || (mListIterator != it.mListIterator));
 		}
 
 		// HashMap constructors
@@ -30,9 +70,8 @@ namespace SiachenGameEngine
 		template<typename TKey>
 		std::uint32_t DefaultHash<TKey>::operator()(const TKey &key) const
 		{
-			TKey keyValue = key;
-			std::uint32_t numberOfBytes = sizeof(keyValue);
-			std::uint8_t* byteOfKey = reinterpret_cast<std::uint8_t*>(&keyValue);
+			std::uint32_t numberOfBytes = sizeof(key);
+			const std::uint8_t* byteOfKey = reinterpret_cast<const std::uint8_t*>(&key);
 			std::uint32_t hashValue = 0;
 
 			for (std::uint32_t i = 0; i < numberOfBytes; ++i)
@@ -63,6 +102,19 @@ namespace SiachenGameEngine
 			for (std::uint32_t i = 0; i < numberOfBytes; ++i)
 			{
 				hashValue = hashValue + key[i];
+			}
+			return hashValue;
+		}
+
+		std::uint32_t DefaultHash<HelperClasses::Foo>::operator()(const HelperClasses::Foo &foo) const
+		{
+			const std::int32_t value = foo.GetValue();
+			const std::uint8_t* byteOfValue = reinterpret_cast<const std::uint8_t*>(&value);
+			std::uint32_t numberOfBytes = sizeof(value);
+			std::uint32_t hashValue = 0;
+			for (std::uint32_t i = 0; i < numberOfBytes; ++i)
+			{
+				hashValue = hashValue + byteOfValue[i];
 			}
 			return hashValue;
 		}
