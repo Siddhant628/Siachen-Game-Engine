@@ -65,28 +65,29 @@ namespace SiachenGameEngine
 
 			std::uint32_t indexInVector = mBucketIndex;
 			SList<PairType>::Iterator it = mListIterator;
-			bool exceptionThrown = false;
+			//bool exceptionThrown = false;
 
 			// Handle the case for the key-value pairs within the same SList as the iterator.
 			try
 			{
-				for (++it; it != mOwnerMap->mHashmapVector[indexInVector].end(); ++it)
+				++it;
+				for (; it != mOwnerMap->mHashmapVector[indexInVector].end(); ++it)
 				{
-					try
-					{
-						*it;
-					}
-					catch (const std::exception&)
-					{
-						exceptionThrown = true;
-					}
-					if (!exceptionThrown)
-					{
+					//try
+					//{
+					//	*it;
+					//}
+					//catch (const std::exception&)
+					//{
+					//	exceptionThrown = true;
+					//}
+					//if (!exceptionThrown)
+					//{
 						mBucketIndex = indexInVector;
 						mListIterator = it;
 						return *this;
-					}
-					exceptionThrown = false;
+					/*}
+					exceptionThrown = false;*/
 				}
 				++indexInVector;
 			}
@@ -100,21 +101,21 @@ namespace SiachenGameEngine
 			{
 				for (it = mOwnerMap->mHashmapVector[indexInVector].begin(); it != mOwnerMap->mHashmapVector[indexInVector].end(); ++it)
 				{
-					try
-					{
-						*it;
-					}
-					catch (const std::exception&)
-					{
-						exceptionThrown = true;
-					}
-					if (!exceptionThrown)
-					{
+					//try
+					//{
+					//	*it;
+					//}
+					//catch (const std::exception&)
+					//{
+					//	exceptionThrown = true;
+					//}
+					//if (!exceptionThrown)
+					//{
 						mBucketIndex = indexInVector;
 						mListIterator = it;
 						return *this;
-					}
-					exceptionThrown = false;
+					//}
+					//exceptionThrown = false;
 				}
 				++indexInVector;
 			}
@@ -299,29 +300,25 @@ namespace SiachenGameEngine
 		{
 			std::uint32_t indexInVector = 0;
 			SList<PairType>::Iterator it;
-			bool exceptionThrown = false;
+			HashMap<TKey, TData, HashFunctor>::Iterator hashmapIt = end();
 
 			while (indexInVector < mHashmapVector.Size())
 			{
 				for (it = mHashmapVector[indexInVector].begin(); it != mHashmapVector[indexInVector].end(); ++it)
 				{
-					//try
-					//{
-					//	*it;
-					//}
-					//catch (const std::exception&)
-					//{
-					//	exceptionThrown = true;
-					//}
-					//if (!exceptionThrown)
-					//{
-						return Iterator(this, indexInVector, it);
-					//}
-					//exceptionThrown = false;
+						hashmapIt = Iterator(this, indexInVector, it);
+						if (hashmapIt != end())
+						{
+							break;
+						}
+				}
+				if (hashmapIt != end())
+				{
+					break;
 				}
 				++indexInVector;
 			}
-			return end();
+			return hashmapIt;
 		}
 
 		template<typename TKey, typename TData, typename HashFunctor>

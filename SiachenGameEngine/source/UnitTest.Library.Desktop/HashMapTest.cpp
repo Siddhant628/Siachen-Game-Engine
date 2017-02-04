@@ -621,6 +621,90 @@ namespace UnitTestLibraryDesktop
 			Assert::AreEqual(fooMap3[g], data);
 		}
 
+		TEST_METHOD(HashMap_Begin)
+		{
+			std::int32_t data = 10, data2 = 20;
+			std::pair<std::int32_t, int32_t> p1(data, data2), p2(data2, data);
+
+			// Testing for an integer
+			HashMap<std::int32_t, std::int32_t> intMap;
+
+			Assert::AreEqual(intMap.begin(), intMap.end());
+			HashMap<std::int32_t, std::int32_t>::Iterator it = intMap.Insert(p1);
+			Assert::AreNotEqual(intMap.begin(), intMap.end());
+			Assert::AreEqual(it, intMap.begin());
+
+			// Testing for character pointer
+			HashMap<char*, std::int32_t> charPtrMap;
+			char* a = "hey";
+			std::pair<char*, std::int32_t> char1(a, data);
+
+			Assert::AreEqual(charPtrMap.begin(), charPtrMap.end());
+			HashMap<char*, std::int32_t>::Iterator it2 = charPtrMap.Insert(char1);
+			Assert::AreNotEqual(charPtrMap.begin(), charPtrMap.end());
+			Assert::AreEqual(it2, charPtrMap.begin());
+
+			//Testing for string
+			HashMap<std::string, std::int32_t> stringMap;
+			std::string d = "raw";
+			std::pair<std::string, int32_t> str(d, data);
+
+			Assert::AreEqual(stringMap.begin(), stringMap.end());
+			HashMap<std::string, std::int32_t>::Iterator it3 = stringMap.Insert(str);
+			Assert::AreNotEqual(stringMap.begin(), stringMap.end());
+			Assert::AreEqual(it3, stringMap.begin());
+
+			//Testing for Foos
+			HashMap<Foo, std::int32_t> fooMap;
+			Foo g(data), h(data2);
+			std::pair<Foo, std::int32_t> foo(g, data), foo2(h, data);
+
+			Assert::AreEqual(fooMap.begin(), fooMap.end());
+			HashMap<Foo, std::int32_t>::Iterator it4 = fooMap.Insert(foo);
+			Assert::AreNotEqual(fooMap.begin(), fooMap.end());
+			Assert::AreEqual(it4, fooMap.begin());
+		}
+
+		TEST_METHOD(HashMap_End)
+		{
+			std::int32_t data = 10, data2 = 20;
+			std::pair<std::int32_t, int32_t> p1(data, data2);
+
+			// Testing for an integer
+			HashMap<std::int32_t, std::int32_t> intMap;
+
+			Assert::AreEqual(intMap.begin(), intMap.end());
+			intMap.Insert(p1);
+			Assert::AreNotEqual(intMap.begin(), intMap.end());
+
+			// Testing for character pointer
+			HashMap<char*, std::int32_t> charPtrMap;
+			char* a = "hey";
+			std::pair<char*, std::int32_t> char1(a, data);
+
+			Assert::AreEqual(charPtrMap.begin(), charPtrMap.end());
+			charPtrMap.Insert(char1);
+			Assert::AreNotEqual(charPtrMap.begin(), charPtrMap.end());
+
+			//Testing for string
+			HashMap<std::string, std::int32_t> stringMap;
+			std::string d = "raw";
+			std::pair<std::string, int32_t> str(d, data);
+
+			Assert::AreEqual(stringMap.begin(), stringMap.end());
+			stringMap.Insert(str);
+			Assert::AreNotEqual(stringMap.begin(), stringMap.end());
+
+			//Testing for Foos
+			HashMap<Foo, std::int32_t> fooMap;
+			Foo g(data);
+			std::pair<Foo, std::int32_t> foo(g, data);
+
+			Assert::AreEqual(fooMap.begin(), fooMap.end());
+			fooMap.Insert(foo);
+			Assert::AreNotEqual(fooMap.begin(), fooMap.end());
+		}
+
 	private:
 		static _CrtMemState sStartMemState;
 	};
