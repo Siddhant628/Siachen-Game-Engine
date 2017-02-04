@@ -203,23 +203,23 @@ namespace SiachenGameEngine
 		}
 
 		template<typename TKey, typename TData, typename HashFunctor>
-		typename HashMap<TKey, TData, HashFunctor>::PairType& HashMap<TKey, TData, HashFunctor>::Iterator::operator->()
+		typename HashMap<TKey, TData, HashFunctor>::PairType* HashMap<TKey, TData, HashFunctor>::Iterator::operator->()
 		{
 			if (mOwnerMap == nullptr)
 			{
 				throw std::runtime_error("Cannot dereference an iterator which isn't associated with a hashmap.");
 			}
-			return (*mListIterator);
+			return &(*mListIterator);
 		}
 
 		template<typename TKey, typename TData, typename HashFunctor>
-		typename const HashMap<TKey, TData, HashFunctor>::PairType& HashMap<TKey, TData, HashFunctor>::Iterator::operator->() const
+		typename const HashMap<TKey, TData, HashFunctor>::PairType* HashMap<TKey, TData, HashFunctor>::Iterator::operator->() const
 		{
 			if (mOwnerMap == nullptr)
 			{
 				throw std::runtime_error("Cannot dereference an iterator which isn't associated with a hashmap.");
 			}
-			return (*mListIterator);
+			return &(*mListIterator);
 		}
 
 		// HashMap constructors

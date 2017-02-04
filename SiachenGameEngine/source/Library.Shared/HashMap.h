@@ -107,12 +107,12 @@ namespace SiachenGameEngine
 				* Dereference the key-value pair the iterator is associated with.
 				* @return Key-value pair in the hashmap referred to by the iterator.
 				*/
-				PairType& operator->();
+				PairType* operator->();
 				/**
 				* Dereference the key-value pair the iterator is associated with.
 				* @return Key-value pair in the hashmap referred to by the iterator.
 				*/
-				const PairType& operator->() const;
+				const PairType* operator->() const;
 			};
 			/**
 			* Constructor which makes an initialized vector of specified size to store value-type pairs.

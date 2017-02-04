@@ -905,6 +905,106 @@ namespace UnitTestLibraryDesktop
 			Assert::AreEqual(++it12, fooMap.end());
 		}
 
+		TEST_METHOD(Iterator_Dereference_Operators)
+		{
+			std::int32_t data = 10, data2 = 20;
+			std::pair<std::int32_t, int32_t> p1(data, data2);
+
+			// Testing for an integer
+			HashMap<std::int32_t, std::int32_t> intMap;
+
+			HashMap<std::int32_t, std::int32_t>::Iterator it = intMap.begin();
+			const HashMap<std::int32_t, std::int32_t>::Iterator errorIt(it);
+			
+			auto intExpression = [&it] {*it; };
+			Assert::ExpectException<std::exception>(intExpression);
+			auto intExpression2 = [&it] {it->second; };
+			Assert::ExpectException<std::exception>(intExpression2);
+			auto intExpression3 = [&errorIt] {*errorIt; };
+			Assert::ExpectException<std::exception>(intExpression3);
+			auto intExpression4 = [&errorIt] {errorIt->second; };
+			Assert::ExpectException<std::exception>(intExpression4);
+
+			it = intMap.Insert(p1);
+			const HashMap<std::int32_t, std::int32_t>::Iterator constIt(it);
+			Assert::IsTrue(p1 == *it);
+			Assert::AreEqual(it->second, data2);
+			Assert::IsTrue(p1 == *constIt);
+			Assert::AreEqual(constIt->second, data2);
+
+			// Testing for character pointer
+			HashMap<char*, std::int32_t> charPtrMap;
+			char* a = "hey";
+			std::pair<char*, std::int32_t> char1(a, data);
+
+			HashMap<char*, std::int32_t>::Iterator it2 = charPtrMap.begin();
+			const HashMap<char*, std::int32_t>::Iterator errorIt2(it2);
+
+			auto charExpression = [&it2] {*it2; };
+			Assert::ExpectException<std::exception>(charExpression);
+			auto charExpression2 = [&it2] {it2->second; };
+			Assert::ExpectException<std::exception>(charExpression2);
+			auto charExpression3 = [&errorIt2] {*errorIt2; };
+			Assert::ExpectException<std::exception>(charExpression3);
+			auto charExpression4 = [&errorIt2] {errorIt2->second; };
+			Assert::ExpectException<std::exception>(charExpression4);
+
+			it2 = charPtrMap.Insert(char1);
+			const HashMap<char*, std::int32_t>::Iterator constIt2(it2);
+			Assert::IsTrue(char1 == *it2);
+			Assert::AreEqual(it2->second, data);
+			Assert::IsTrue(char1 == *constIt2);
+			Assert::AreEqual(constIt2->second, data);
+
+			//Testing for string
+			HashMap<std::string, std::int32_t> stringMap;
+			std::string d = "raw";
+			std::pair<std::string, int32_t> str(d, data);
+
+			HashMap<std::string, std::int32_t>::Iterator it3 = stringMap.begin();
+			const HashMap<std::string, std::int32_t>::Iterator errorIt3(it3);
+
+			auto stringExpression = [&it3] {*it3; };
+			Assert::ExpectException<std::exception>(stringExpression);
+			auto stringExpression2 = [&it3] {it3->second; };
+			Assert::ExpectException<std::exception>(stringExpression2);
+			auto stringExpression3 = [&errorIt3] {*errorIt3; };
+			Assert::ExpectException<std::exception>(stringExpression3);
+			auto stringExpression4 = [&errorIt3] {errorIt3->second; };
+			Assert::ExpectException<std::exception>(stringExpression4);
+
+			it3 = stringMap.Insert(str);
+			const HashMap<std::string, std::int32_t>::Iterator constIt3(it3);
+			Assert::IsTrue(str == *it3);
+			Assert::AreEqual(it3->second, data);
+			Assert::IsTrue(str == *constIt3);
+			Assert::AreEqual(constIt3->second, data);
+
+			//Testing for Foos
+			HashMap<Foo, std::int32_t> fooMap;
+			Foo g(data);
+			std::pair<Foo, std::int32_t> foo(g, data);
+
+			HashMap<Foo, std::int32_t>::Iterator it4 = fooMap.begin();
+			const HashMap<Foo, std::int32_t>::Iterator errorIt4(it4);
+
+			auto fooExpression = [&it4] {*it4; };
+			Assert::ExpectException<std::exception>(fooExpression);
+			auto fooExpression2 = [&it4] {it4->second; };
+			Assert::ExpectException<std::exception>(fooExpression2);
+			auto fooExpression3 = [&errorIt4] {*errorIt4; };
+			Assert::ExpectException<std::exception>(fooExpression3);
+			auto fooExpression4 = [&errorIt4] {errorIt4->second; };
+			Assert::ExpectException<std::exception>(fooExpression4);
+
+			it4 = fooMap.Insert(foo);
+			const HashMap<Foo, std::int32_t>::Iterator constIt4(it4);
+			Assert::IsTrue(foo == *it4);
+			Assert::AreEqual(it4->second, data);
+			Assert::IsTrue(foo == *constIt4);
+			Assert::AreEqual(constIt4->second, data);
+		}
+
 	private:
 		static _CrtMemState sStartMemState;
 	};
