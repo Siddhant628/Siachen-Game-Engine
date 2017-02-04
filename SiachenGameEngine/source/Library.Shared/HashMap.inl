@@ -67,7 +67,7 @@ namespace SiachenGameEngine
 			std::uint32_t indexInVector = mBucketIndex;
 			SList<PairType>::Iterator it = mListIterator;
 			
-			// Handle the case for the key-value pairs within the same SList as the iterator.
+			// Handle the case for the key-value pairs within the same SList as the iterator
 			try
 			{
 				++it;
@@ -84,12 +84,12 @@ namespace SiachenGameEngine
 				}
 				++indexInVector;
 			}
-			// Move to the next index of vector in case this node was the last SList node.
+			// Move to the next index of vector in case this node was the last SList node
 			catch (const std::exception&)
 			{
 				++indexInVector;
 			}
-			// Iterate over the remaining Vector to get the next valid key-value pair.
+			// Iterate over the remaining Vector to get the next valid key-value pair
 			while (indexInVector < mOwnerMap->mHashmapVector.Size())
 			{
 				for (it = mOwnerMap->mHashmapVector[indexInVector].begin(); it != mOwnerMap->mHashmapVector[indexInVector].end(); ++it)
@@ -128,62 +128,58 @@ namespace SiachenGameEngine
 
 			std::uint32_t indexInVector = mBucketIndex;
 			SList<PairType>::Iterator it = mListIterator;
-			bool exceptionThrown = false;
-			Iterator tempIt = *this;
 
-			// Handle the case for the key-value pairs within the same SList as the iterator.
+			Iterator iteratorBeforeOperation = *this;
+			Iterator iteratorAfterOperation = *this;
+
+			// Handle the case for the key-value pairs within the same SList as the iterator
 			try
 			{
 				for (++it; it != mOwnerMap->mHashmapVector[indexInVector].end(); ++it)
 				{
-					try
-					{
-						*it;
-					}
-					catch (const std::exception&)
-					{
-						exceptionThrown = true;
-					}
-					if (!exceptionThrown)
-					{
 						mBucketIndex = indexInVector;
 						mListIterator = it;
-						return tempIt;
-					}
-					exceptionThrown = false;
+						iteratorAfterOperation = *this;
+						// If incremented to the next key-value pair, break
+						if (iteratorAfterOperation != iteratorBeforeOperation)
+						{
+							break;
+						}
 				}
 				++indexInVector;
 			}
-			// Move to the next index of vector in case this node was the last SList node.
+			// Move to the next index of vector in case this node was the last SList node
 			catch (const std::exception&)
 			{
 				++indexInVector;
 			}
-			// Iterate over the remaining Vector to get the next valid key-value pair.
+			// Iterate over the remaining Vector to get the next valid key-value pair
 			while (indexInVector < mOwnerMap->mHashmapVector.Size())
 			{
 				for (it = mOwnerMap->mHashmapVector[indexInVector].begin(); it != mOwnerMap->mHashmapVector[indexInVector].end(); ++it)
 				{
-					try
-					{
-						*it;
-					}
-					catch (const std::exception&)
-					{
-						exceptionThrown = true;
-					}
-					if (!exceptionThrown)
-					{
 						mBucketIndex = indexInVector;
 						mListIterator = it;
-						return tempIt;
-					}
-					exceptionThrown = false;
+						iteratorAfterOperation = *this;
+						// If incremented to the next key-value pair, break
+						if (iteratorAfterOperation != iteratorBeforeOperation)
+						{
+							break;
+						}
 				}
 				++indexInVector;
+				// If incremented to the next key-value pair, break
+				if (iteratorAfterOperation != iteratorBeforeOperation)
+				{
+					break;
+				}
 			}
-			*this = mOwnerMap->end();
-			return tempIt;
+			// If couldn't find any key-value pair, increment to end of the map
+			if(iteratorAfterOperation == iteratorBeforeOperation)
+			{ 
+				*this = mOwnerMap->end();
+			}
+			return iteratorBeforeOperation;
 		}
 
 		template<typename TKey, typename TData, typename HashFunctor>
@@ -193,18 +189,7 @@ namespace SiachenGameEngine
 			{
 				throw std::runtime_error("Cannot dereference an iterator which isn't associated with a hashmap.");
 			}
-			if (mBucketIndex >= mOwnerMap->mHashmapVector.Size())
-			{
-				throw std::out_of_range("Cannot dereference an items outside the hashmap.");
-			}
-			try
-			{
-				return (*mListIterator);
-			}
-			catch (const std::exception&)
-			{
-				throw std::runtime_error("Failed at dereferencing the key-value pair.");
-			}
+			return (*mListIterator);
 		}
 
 		template<typename TKey, typename TData, typename HashFunctor>
@@ -214,18 +199,7 @@ namespace SiachenGameEngine
 			{
 				throw std::runtime_error("Cannot dereference an iterator which isn't associated with a hashmap.");
 			}
-			if (mBucketIndex >= mOwnerMap->mHashmapVector.Size())
-			{
-				throw std::out_of_range("Cannot dereference an items outside the hashmap.");
-			}
-			try
-			{
-				return (*mListIterator);
-			}
-			catch (const std::exception&)
-			{
-				throw std::runtime_error("Failed at dereferencing the key-value pair.");
-			}
+			return (*mListIterator);
 		}
 
 		template<typename TKey, typename TData, typename HashFunctor>
@@ -235,18 +209,7 @@ namespace SiachenGameEngine
 			{
 				throw std::runtime_error("Cannot dereference an iterator which isn't associated with a hashmap.");
 			}
-			if (mBucketIndex >= mOwnerMap->mHashmapVector.Size())
-			{
-				throw std::out_of_range("Cannot dereference an items outside the hashmap.");
-			}
-			try
-			{
-				return (*mListIterator);
-			}
-			catch (const std::exception&)
-			{
-				throw std::runtime_error("Failed at dereferencing the key-value pair.");
-			}
+			return (*mListIterator);
 		}
 
 		template<typename TKey, typename TData, typename HashFunctor>
@@ -256,18 +219,7 @@ namespace SiachenGameEngine
 			{
 				throw std::runtime_error("Cannot dereference an iterator which isn't associated with a hashmap.");
 			}
-			if (mBucketIndex >= mOwnerMap->mHashmapVector.Size())
-			{
-				throw std::out_of_range("Cannot dereference an items outside the hashmap.");
-			}
-			try
-			{
-				return (*mListIterator);
-			}
-			catch (const std::exception&)
-			{
-				throw std::runtime_error("Failed at dereferencing the key-value pair.");
-			}
+			return (*mListIterator);
 		}
 
 		// HashMap constructors
