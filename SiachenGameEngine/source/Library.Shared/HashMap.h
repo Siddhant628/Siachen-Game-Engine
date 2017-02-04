@@ -196,7 +196,7 @@ namespace SiachenGameEngine
 		class DefaultHash <char*>
 		{
 		public:
-			std::uint32_t operator()(char* &key) const;
+			std::uint32_t operator()(char* key) const;
 		};
 		/**
 		* Default hash functor's specialization for string class.

@@ -338,15 +338,17 @@ namespace SiachenGameEngine
 		template<typename TKey, typename TData, typename HashFunctor>
 		typename HashMap<TKey, TData, HashFunctor>::Iterator HashMap<TKey, TData, HashFunctor>::Find(const TKey &key) const
 		{
-			HashMap<TKey, TData, HashFunctor>::Iterator it = begin();
-			for (; it != end(); ++it)
+			HashFunctor hash;
+			uint32_t index = (hash(key) % mHashmap.Size());
+			
+			for (SList<PairType>::Iterator it = mHashmap[index].begin(); it != mHashmap[index].end(); ++it)
 			{
 				if ((*it).first == key)
 				{
-					return it;
+					return Iterator(this, index, it);
 				}
 			}
-			return it;
+			return end();
 		}
 
 		template<typename TKey, typename TData, typename HashFunctor>
@@ -408,8 +410,6 @@ namespace SiachenGameEngine
 			return true;
 		}
 
-
-
 		// HashMap operators
 
 		template<typename TKey, typename TData, typename HashFunctor>
@@ -452,7 +452,7 @@ namespace SiachenGameEngine
 			return hashValue;
 		}
 
-		std::uint32_t DefaultHash<char*>::operator()(char* &key) const
+		std::uint32_t DefaultHash<char*>::operator()(char* key) const
 		{
 			std::uint32_t numberOfBytes = static_cast<std::uint32_t>(strlen(key));
 			std::uint32_t hashValue = 0;

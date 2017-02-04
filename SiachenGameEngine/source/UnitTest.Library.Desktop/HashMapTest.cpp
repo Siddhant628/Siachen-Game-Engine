@@ -2,10 +2,68 @@
 #include "CppUnitTest.h"
 #include "HashMap.h"
 #include "Foo.h"
+#include <utility>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace SiachenGameEngine::Containers;
 using namespace SiachenGameEngine::HelperClasses;
+
+namespace Microsoft
+{
+	namespace VisualStudio
+	{
+		namespace CppUnitTestFramework
+		{
+			template<>
+			std::wstring ToString<HashMap<std::int32_t, std::int32_t>::Iterator>(typename const HashMap<std::int32_t, std::int32_t>::Iterator& it)
+			{
+				std::wstringstream bufferStream;
+				try
+				{
+					bufferStream << "HashMap_IntegerKey_Iterator_" << (*it).second;
+				}
+				catch (std::exception) {}
+				return bufferStream.str();
+			}
+
+			template<>
+			std::wstring ToString<HashMap<char*, std::int32_t>::Iterator>(typename const HashMap<char*, std::int32_t>::Iterator& it)
+			{
+				std::wstringstream bufferStream;
+				try
+				{
+					bufferStream << "HashMap_Char*Key_Iterator_" << (*it).second;
+				}
+				catch (std::exception) {}
+				return bufferStream.str();
+			}
+
+			template<>
+			std::wstring ToString<HashMap<std::string, std::int32_t>::Iterator>(typename const HashMap<std::string, std::int32_t>::Iterator& it)
+			{
+				std::wstringstream bufferStream;
+				try
+				{
+					bufferStream << "HashMap_StringKey_Iterator_" << (*it).second;
+				}
+				catch (std::exception) {}
+				return bufferStream.str();
+			}
+
+			template<>
+			std::wstring ToString<HashMap<Foo, std::int32_t>::Iterator>(typename const HashMap<Foo, std::int32_t>::Iterator& it)
+			{
+				std::wstringstream bufferStream;
+				try
+				{
+					bufferStream << "HashMap_FooKey_Iterator_" << (*it).second;
+				}
+				catch (std::exception) {}
+				return bufferStream.str();
+			}
+		}
+	}
+}
 
 namespace UnitTestLibraryDesktop
 {
@@ -139,6 +197,97 @@ namespace UnitTestLibraryDesktop
 
 		}
 
+		TEST_METHOD(HashMap_Find)
+		{
+			std::int32_t data = 10, data2 = 20;
+			std::pair<std::int32_t, int32_t> p1(data, data2), p2(data2, data);
+
+			// Testing for an integer
+			HashMap<std::int32_t, std::int32_t> intMap;
+
+			Assert::AreEqual(intMap.end(), intMap.Find(data));
+			HashMap<std::int32_t, std::int32_t>::Iterator it = intMap.Insert(p1);
+			Assert::AreNotEqual(intMap.end(), intMap.Find(data));
+			Assert::AreEqual(it, intMap.Find(data));
+
+			// Testing for character pointer
+			HashMap<char*, std::int32_t> charPtrMap;
+			char* a = "hey";
+			std::pair<char*, std::int32_t> char1(a, data);
+			
+			Assert::AreEqual(charPtrMap.end(), charPtrMap.Find(a));
+			HashMap<char*, std::int32_t>::Iterator it2 = charPtrMap.Insert(char1);
+			Assert::AreNotEqual(charPtrMap.end(), charPtrMap.Find(a));
+			Assert::AreEqual(it2, charPtrMap.Find(a));
+
+			//Testing for string
+			HashMap<std::string, std::int32_t> stringMap;
+			std::string d = "raw";
+			std::pair<std::string, int32_t> str(d, data);
+
+			Assert::AreEqual(stringMap.end(), stringMap.Find(d));
+			HashMap<std::string, std::int32_t>::Iterator it3 = stringMap.Insert(str);
+			Assert::AreNotEqual(stringMap.end(), stringMap.Find(d));
+			Assert::AreEqual(it3, stringMap.Find(d));
+
+			//Testing for Foos
+			HashMap<Foo, std::int32_t> fooMap;
+			Foo g(data);
+			std::pair<Foo, std::int32_t> foo(g, data);
+			
+			Assert::AreEqual(fooMap.end(), fooMap.Find(g));
+			HashMap<Foo, std::int32_t>::Iterator it4 = fooMap.Insert(foo);
+			Assert::AreNotEqual(fooMap.end(), fooMap.Find(g));
+			Assert::AreEqual(it4, fooMap.Find(g));
+		}
+
+		TEST_METHOD(HashMap_Remove)
+		{
+			std::int32_t data = 10, data2 = 20;
+			std::pair<std::int32_t, int32_t> p1(data, data2), p2(data2, data);
+
+			// Testing for an integer
+			HashMap<std::int32_t, std::int32_t> intMap;
+
+			Assert::IsFalse(intMap.Remove(data));
+			HashMap<std::int32_t, std::int32_t>::Iterator it = intMap.Insert(p1);
+			Assert::AreEqual(1U, intMap.Size());
+			Assert::IsTrue(intMap.Remove(data));
+			Assert::AreEqual(0U, intMap.Size());
+
+			// Testing for character pointer
+			HashMap<char*, std::int32_t> charPtrMap;
+			char* a = "hey";
+			std::pair<char*, std::int32_t> char1(a, data);
+
+			Assert::IsFalse(charPtrMap.Remove(a));
+			HashMap<char*, std::int32_t>::Iterator it2 = charPtrMap.Insert(char1);
+			Assert::AreEqual(1U, charPtrMap.Size());
+			Assert::IsTrue(charPtrMap.Remove(a));
+			Assert::AreEqual(0U, charPtrMap.Size());
+
+			//Testing for string
+			HashMap<std::string, std::int32_t> stringMap;
+			std::string d = "raw";
+			std::pair<std::string, int32_t> str(d, data);
+
+			Assert::IsFalse(stringMap.Remove(d));
+			HashMap<std::string, std::int32_t>::Iterator it3 = stringMap.Insert(str);
+			Assert::AreEqual(1U, stringMap.Size());
+			Assert::IsTrue(stringMap.Remove(d));
+			Assert::AreEqual(0U, stringMap.Size());
+
+			//Testing for Foos
+			HashMap<Foo, std::int32_t> fooMap;
+			Foo g(data);
+			std::pair<Foo, std::int32_t> foo(g, data);
+
+			Assert::IsFalse(fooMap.Remove(g));
+			HashMap<Foo, std::int32_t>::Iterator it4 = fooMap.Insert(foo);
+			Assert::AreEqual(1U, fooMap.Size());
+			Assert::IsTrue(fooMap.Remove(g));
+			Assert::AreEqual(0U, fooMap.Size());
+		}
 	private:
 		static _CrtMemState sStartMemState;
 	};
