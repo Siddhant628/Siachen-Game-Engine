@@ -194,7 +194,6 @@ namespace UnitTestLibraryDesktop
 			fooMap.Insert(foo2);
 			Assert::AreEqual(2U, fooMap.Size());
 			Assert::IsTrue(fooMap.ContainsKey(h));
-
 		}
 
 		TEST_METHOD(HashMap_Find)
@@ -288,6 +287,243 @@ namespace UnitTestLibraryDesktop
 			Assert::IsTrue(fooMap.Remove(g));
 			Assert::AreEqual(0U, fooMap.Size());
 		}
+
+		TEST_METHOD(HashMap_Size)
+		{
+			std::int32_t data = 10, data2 = 20;
+			std::pair<std::int32_t, int32_t> p1(data, data2), p2(data2, data);
+
+			// Testing for an integer
+			HashMap<std::int32_t, std::int32_t> intMap;
+
+			intMap.Insert(p1);
+			Assert::AreEqual(1U, intMap.Size());
+			intMap.Insert(p2);
+			Assert::AreEqual(2U, intMap.Size());
+
+			// Testing for character pointer
+			HashMap<char*, std::int32_t> charPtrMap;
+			char* a = "hey", *b = "yeh";
+			std::pair<char*, std::int32_t> char1(a, data), char2(b, data2);
+
+			charPtrMap.Insert(char1);
+			Assert::AreEqual(1U, charPtrMap.Size());
+			charPtrMap.Insert(char2);
+			Assert::AreEqual(2U, charPtrMap.Size());
+
+			//Testing for string
+			HashMap<std::string, std::int32_t> stringMap;
+			std::string d = "raw", e = "war";
+			std::pair<std::string, int32_t> str(d, data), str2(e, data2);
+
+			stringMap.Insert(str);
+			Assert::AreEqual(1U, stringMap.Size());
+			stringMap.Insert(str2);
+			Assert::AreEqual(2U, stringMap.Size());
+
+			//Testing for Foos
+			HashMap<Foo, std::int32_t> fooMap;
+			Foo g(data), h(data2);
+			std::pair<Foo, std::int32_t> foo(g, data), foo2(h, data);
+
+			fooMap.Insert(foo);
+			Assert::AreEqual(1U, fooMap.Size());
+			fooMap.Insert(foo2);
+			Assert::AreEqual(2U, fooMap.Size());
+
+		}
+
+		TEST_METHOD(HashMap_ContainsKey)
+		{
+			std::int32_t data = 10, data2 = 20;
+			std::pair<std::int32_t, int32_t> p1(data, data2);
+
+			// Testing for an integer
+			HashMap<std::int32_t, std::int32_t> intMap;
+
+			Assert::IsFalse(intMap.ContainsKey(data));
+			intMap.Insert(p1);
+			Assert::IsTrue(intMap.ContainsKey(data));
+
+			// Testing for character pointer
+			HashMap<char*, std::int32_t> charPtrMap;
+			char* a = "hey";
+			std::pair<char*, std::int32_t> char1(a, data);
+
+			Assert::IsFalse(charPtrMap.ContainsKey(a));
+			charPtrMap.Insert(char1);
+			Assert::IsTrue(charPtrMap.ContainsKey(a));
+
+			//Testing for string
+			HashMap<std::string, std::int32_t> stringMap;
+			std::string d = "raw";
+			std::pair<std::string, int32_t> str(d, data);
+
+			Assert::IsFalse(stringMap.ContainsKey(d));
+			stringMap.Insert(str);
+			Assert::IsTrue(stringMap.ContainsKey(d));
+
+			//Testing for Foos
+			HashMap<Foo, std::int32_t> fooMap;
+			Foo g(data);
+			std::pair<Foo, std::int32_t> foo(g, data);
+
+			Assert::IsFalse(fooMap.ContainsKey(g));
+			fooMap.Insert(foo);
+			Assert::IsTrue(fooMap.ContainsKey(g));
+		}
+
+		TEST_METHOD(HashMap_Copy_Constructor)
+		{
+			std::int32_t data = 10, data2 = 20;
+			std::pair<std::int32_t, int32_t> p1(data, data2), p2(data2, data);
+
+			// Testing for an integer
+			HashMap<std::int32_t, std::int32_t> intMap;
+			
+			intMap.Insert(p1);
+			intMap.Insert(p2);
+			HashMap<std::int32_t, std::int32_t> intMap2(intMap);
+			Assert::IsTrue(intMap.ContainsKey(data));
+			Assert::IsTrue(intMap.ContainsKey(data2));
+
+			// Testing for character pointer
+			HashMap<char*, std::int32_t> charPtrMap;
+			char* a = "hey", *b = "yeh";
+			std::pair<char*, std::int32_t> char1(a, data), char2(b, data2);
+
+			charPtrMap.Insert(char1);
+			charPtrMap.Insert(char2);
+			HashMap<char*, std::int32_t> charPtrMap2(charPtrMap);
+			Assert::IsTrue(charPtrMap2.ContainsKey(a));
+			Assert::IsTrue(charPtrMap2.ContainsKey(b));
+
+			//Testing for string
+			HashMap<std::string, std::int32_t> stringMap;
+			std::string d = "raw", e = "war";
+			std::pair<std::string, int32_t> str(d, data), str2(e, data2);
+
+			stringMap.Insert(str);
+			stringMap.Insert(str2);
+			HashMap <std::string , std::int32_t > stringMap2(stringMap);
+			Assert::IsTrue(stringMap2.ContainsKey(d));
+			Assert::IsTrue(stringMap2.ContainsKey(e));
+
+			//Testing for Foos
+			HashMap<Foo, std::int32_t> fooMap;
+			Foo g(data), h(data2);
+			std::pair<Foo, std::int32_t> foo(g, data), foo2(h, data);
+
+			fooMap.Insert(foo);
+			fooMap.Insert(foo2);
+			HashMap <Foo, std::int32_t > fooMap2(fooMap);
+			Assert::IsTrue(fooMap2.ContainsKey(g));
+			Assert::IsTrue(fooMap2.ContainsKey(h));
+		}
+
+		TEST_METHOD(HashMap_Clear)
+		{
+			std::int32_t data = 10, data2 = 20;
+			std::pair<std::int32_t, int32_t> p1(data, data2);
+
+			// Testing for an integer
+			HashMap<std::int32_t, std::int32_t> intMap;
+
+			intMap.Insert(p1);
+			Assert::IsTrue(intMap.ContainsKey(data));
+			Assert::AreEqual(1U, intMap.Size());
+			intMap.Clear();
+			Assert::AreEqual(0U, intMap.Size());
+
+			// Testing for character pointer
+			HashMap<char*, std::int32_t> charPtrMap;
+			char* a = "hey";
+			std::pair<char*, std::int32_t> char1(a, data);
+
+			charPtrMap.Insert(char1);
+			Assert::IsTrue(charPtrMap.ContainsKey(a));
+			Assert::AreEqual(1U, charPtrMap.Size());
+			charPtrMap.Clear();
+			Assert::AreEqual(0U, charPtrMap.Size());
+
+			//Testing for string
+			HashMap<std::string, std::int32_t> stringMap;
+			std::string d = "raw";
+			std::pair<std::string, int32_t> str(d, data);
+
+			stringMap.Insert(str);
+			Assert::IsTrue(stringMap.ContainsKey(d));
+			Assert::AreEqual(1U, stringMap.Size());
+			stringMap.Clear();
+			Assert::AreEqual(0U, stringMap.Size());
+
+			//Testing for Foos
+			HashMap<Foo, std::int32_t> fooMap;
+			Foo g(data);
+			std::pair<Foo, std::int32_t> foo(g, data);
+
+			fooMap.Insert(foo);
+			Assert::IsTrue(fooMap.ContainsKey(g));
+			Assert::AreEqual(1U, fooMap.Size());
+			fooMap.Clear();
+			Assert::AreEqual(0U, fooMap.Size());
+		}
+
+		TEST_METHOD(HashMap_Assignment_Operator)
+		{
+			std::int32_t data = 10, data2 = 20;
+			std::pair<std::int32_t, int32_t> p1(data, data2), p2(data2, data);
+
+			// Testing for an integer
+			HashMap<std::int32_t, std::int32_t> intMap, intMap2;
+
+			intMap.Insert(p1);
+			intMap2.Insert(p2);
+			intMap2 = intMap;
+			Assert::IsTrue(intMap2.ContainsKey(data));
+			Assert::IsFalse(intMap2.ContainsKey(data2));
+
+			// Testing for character pointer
+			HashMap<char*, std::int32_t> charPtrMap, charPtrMap2;
+			char* a = "hey", *b = "yeh", *c = "zed";
+			std::pair<char*, std::int32_t> char1(a, data), char2(b, data2), char3(c, data);
+
+			charPtrMap.Insert(char1);
+			charPtrMap.Insert(char2);
+			charPtrMap2.Insert(char3);
+			charPtrMap = charPtrMap2;
+			Assert::AreEqual(1U, charPtrMap.Size());
+			Assert::IsTrue(charPtrMap.ContainsKey(c));
+
+			//Testing for string
+			HashMap<std::string, std::int32_t> stringMap, stringMap2;
+			std::string d = "raw", e = "war", f = "dog";
+			std::pair<std::string, int32_t> str(d, data), str2(e, data2), str3(f, data);
+
+			stringMap.Insert(str);
+			stringMap.Insert(str2);
+			stringMap2.Insert(str3);
+			stringMap = stringMap2;
+			Assert::AreEqual(1U, stringMap.Size());
+			Assert::IsTrue(stringMap.ContainsKey(f));
+
+			//Testing for Foos
+			HashMap<Foo, std::int32_t> fooMap, fooMap2;
+			Foo g(data), h(data2);
+			std::pair<Foo, std::int32_t> foo(g, data), foo2(h, data);
+
+			fooMap.Insert(foo);
+			fooMap2.Insert(foo2);
+			fooMap2 = fooMap;
+			Assert::IsTrue(fooMap2.ContainsKey(g));
+			Assert::IsFalse(fooMap2.ContainsKey(h));
+		}
+
+		TEST_METHOD(HashMap_Subscript_Operator)
+		{
+
+		}
+
 	private:
 		static _CrtMemState sStartMemState;
 	};

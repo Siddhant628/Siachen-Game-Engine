@@ -24,7 +24,7 @@ namespace SiachenGameEngine
 			/**
 			* The vector containing all the data of the hash map.
 			*/
-			BucketType mHashmap;
+			BucketType mHashmapVector;
 			uint32_t mSize;
 		public:
 			/**
@@ -119,7 +119,16 @@ namespace SiachenGameEngine
 			* @param numberOfBuckets The number of buckets the initialized hash map will have (default value is 13)
 			*/
 			explicit HashMap(std::uint32_t numberOfBuckets = 13);
-
+			/**
+			* Copy constructor performs a deep copy of passed hashmap into this hashmap.
+			* @param rhs The hashmap which has to be copied into this hashmap.
+			*/
+			HashMap(const HashMap& rhs) = default;
+			/**
+			* Assignment operator performs a deep copy of the passed hashmap into this hashmap.
+			* @param rhs The hashmap which has to be copied into this hashmap.
+			*/
+			HashMap& operator=(const HashMap& rhs) = default;
 			/**
 			* Returns an iterator which points to first key-value pair in the hashmap
 			* @return Iterator associated with the first key-value pair of the hashmap.
