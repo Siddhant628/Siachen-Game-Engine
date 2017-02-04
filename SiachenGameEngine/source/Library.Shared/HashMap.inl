@@ -327,8 +327,17 @@ namespace SiachenGameEngine
 		template<typename TKey, typename TData, typename HashFunctor>
 		typename HashMap<TKey, TData, HashFunctor>::Iterator HashMap<TKey, TData, HashFunctor>::end() const
 		{
-			SList<PairType>::Iterator it = (mHashmapVector[mHashmapVector.Size() - 1]).end();
-			return Iterator(this, (mHashmapVector.Size()-1), it);
+			SList<PairType>::Iterator it;
+			if (mHashmapVector.Size() == 0)
+			{
+				it = mHashmapVector[0].end();
+				return Iterator(this, 0, it);
+			}
+			else
+			{
+				it = mHashmapVector[mHashmapVector.Size() - 1].end();
+				return Iterator(this, (mHashmapVector.Size() - 1), it);
+			}
 		}
 
 		template<typename TKey, typename TData, typename HashFunctor>
@@ -385,11 +394,14 @@ namespace SiachenGameEngine
 			}
 		}
 
-		// TODO Check for memory leaks
 		template<typename TKey, typename TData, typename HashFunctor>
 		void HashMap<TKey, TData, HashFunctor>::Clear()
 		{
-			mHashmapVector.ClearAndFree();
+			std::int32_t sizeOfVector = mHashmapVector.Size();
+			for (std::int32_t index = 0; index < sizeOfVector; ++index)
+			{
+				mHashmapVector[index].Clear();
+			}
 			mSize = 0;
 		}
 
@@ -413,14 +425,17 @@ namespace SiachenGameEngine
 		// HashMap operators
 
 		template<typename TKey, typename TData, typename HashFunctor>
-		TData& HashMap<TKey, TData, HashFunctor>::operator[](const TKey &key)
+		TData HashMap<TKey, TData, HashFunctor>::operator[](const TKey &key)
 		{
+			std::pair<TKey, TData> pair(key, TData());
 			HashMap::Iterator it = Find(key);
 			if (it == end())
 			{
-				std::pair<TKey, TData> pair(key, TData());
-				++mSize;
 				Insert(pair);
+			}
+			else
+			{
+				pair = *it;
 			}
 			return pair.second;
 		}

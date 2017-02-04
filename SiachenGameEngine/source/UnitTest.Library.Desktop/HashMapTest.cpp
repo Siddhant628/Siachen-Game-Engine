@@ -424,7 +424,7 @@ namespace UnitTestLibraryDesktop
 		TEST_METHOD(HashMap_Clear)
 		{
 			std::int32_t data = 10, data2 = 20;
-			std::pair<std::int32_t, int32_t> p1(data, data2);
+			std::pair<std::int32_t, int32_t> p1(data, data2), p2(data2, data);
 
 			// Testing for an integer
 			HashMap<std::int32_t, std::int32_t> intMap;
@@ -432,8 +432,11 @@ namespace UnitTestLibraryDesktop
 			intMap.Insert(p1);
 			Assert::IsTrue(intMap.ContainsKey(data));
 			Assert::AreEqual(1U, intMap.Size());
+			intMap.Insert(p1);
 			intMap.Clear();
 			Assert::AreEqual(0U, intMap.Size());
+			Assert::IsFalse(intMap.ContainsKey(data));
+			
 
 			// Testing for character pointer
 			HashMap<char*, std::int32_t> charPtrMap;
@@ -445,6 +448,7 @@ namespace UnitTestLibraryDesktop
 			Assert::AreEqual(1U, charPtrMap.Size());
 			charPtrMap.Clear();
 			Assert::AreEqual(0U, charPtrMap.Size());
+			Assert::IsFalse(charPtrMap.ContainsKey(a));
 
 			//Testing for string
 			HashMap<std::string, std::int32_t> stringMap;
@@ -456,6 +460,7 @@ namespace UnitTestLibraryDesktop
 			Assert::AreEqual(1U, stringMap.Size());
 			stringMap.Clear();
 			Assert::AreEqual(0U, stringMap.Size());
+			Assert::IsFalse(stringMap.ContainsKey(d));
 
 			//Testing for Foos
 			HashMap<Foo, std::int32_t> fooMap;
@@ -467,6 +472,7 @@ namespace UnitTestLibraryDesktop
 			Assert::AreEqual(1U, fooMap.Size());
 			fooMap.Clear();
 			Assert::AreEqual(0U, fooMap.Size());
+			Assert::IsFalse(fooMap.ContainsKey(g));
 		}
 
 		TEST_METHOD(HashMap_Assignment_Operator)
@@ -521,7 +527,98 @@ namespace UnitTestLibraryDesktop
 
 		TEST_METHOD(HashMap_Subscript_Operator)
 		{
+			std::int32_t data = 10, data2 = 20;
+			std::pair<std::int32_t, int32_t> p1(data, data2), p2(data2, data);
 
+			// Testing for an integer
+			HashMap<std::int32_t, std::int32_t> intMap;
+
+			intMap.Insert(p1);
+			Assert::AreEqual(intMap[data], data2);
+			Assert::AreEqual(std::int32_t(), intMap[data2]);
+			Assert::IsTrue(intMap.ContainsKey(data2));
+
+			// Testing for character pointer
+			HashMap<char*, std::int32_t> charPtrMap;
+			char* a = "hey", *b = "yeh";
+			std::pair<char*, std::int32_t> char1(a, data), char2(b, data2);
+
+			charPtrMap.Insert(char1);
+			Assert::AreEqual(charPtrMap[a], data);
+			Assert::AreEqual(std::int32_t(), charPtrMap[b]);
+			Assert::IsTrue(charPtrMap.ContainsKey(b));
+
+			//Testing for string
+			HashMap<std::string, std::int32_t> stringMap;
+			std::string d = "raw", e = "war", f = "dog";
+			std::pair<std::string, int32_t> str(d, data), str2(e, data2), str3(f, data);
+
+			stringMap.Insert(str);
+			Assert::AreEqual(stringMap[d], data);
+			Assert::AreEqual(std::int32_t(), stringMap[e]);
+			Assert::IsTrue(stringMap.ContainsKey(e));
+
+			//Testing for Foos
+			HashMap<Foo, std::int32_t> fooMap;
+			Foo g(data), h(data2);
+			std::pair<Foo, std::int32_t> foo(g, data), foo2(h, data);
+
+			fooMap.Insert(foo);
+			Assert::AreEqual(fooMap[g], data);
+			Assert::AreEqual(std::int32_t(), fooMap[h]);
+			Assert::IsTrue(fooMap.ContainsKey(h));
+		}
+
+		TEST_METHOD(HashMap_Subscript_Operator_Constant)
+		{
+			std::int32_t data = 10, data2 = 20;
+			std::pair<std::int32_t, int32_t> p1(data, data2);
+
+			// Testing for an integer
+			HashMap<std::int32_t, std::int32_t> intMap;
+			const HashMap<std::int32_t, std::int32_t> intMap2;
+
+			auto intExpression = [&intMap2, &data] { intMap2[data]; };
+			Assert::ExpectException<std::exception>(intExpression);
+			intMap.Insert(p1);
+			const HashMap<std::int32_t, std::int32_t> intMap3(intMap);
+			Assert::AreEqual(intMap3[data], data2);
+
+			// Testing for character pointer
+			HashMap<char*, std::int32_t> charPtrMap;
+			const HashMap<char*, std::int32_t> charPtrMap2;
+			char* a = "hey";
+			std::pair<char*, std::int32_t> char1(a, data);
+
+			auto charExpression = [&charPtrMap2, &a] { charPtrMap2[a]; };
+			Assert::ExpectException<std::exception>(charExpression);
+			charPtrMap.Insert(char1);
+			const HashMap<char*, std::int32_t> charPtrMap3(charPtrMap);
+			Assert::AreEqual(charPtrMap3[a], data);
+
+			//Testing for string
+			HashMap<std::string, std::int32_t> stringMap;
+			const HashMap<std::string, std::int32_t> stringMap2;
+			std::string d = "raw";
+			std::pair<std::string, int32_t> str(d, data);
+
+			auto stringExpression = [&stringMap2, &d] { stringMap2[d]; };
+			Assert::ExpectException<std::exception>(stringExpression);
+			stringMap.Insert(str);
+			const HashMap<std::string, std::int32_t> stringMap3(stringMap);
+			Assert::AreEqual(stringMap3[d], data);
+
+			//Testing for Foos
+			HashMap<Foo, std::int32_t> fooMap;
+			const HashMap<Foo, std::int32_t> fooMap2;
+			Foo g(data);
+			std::pair<Foo, std::int32_t> foo(g, data);
+
+			auto fooExpression = [&fooMap2, &g] { fooMap2[g]; };
+			Assert::ExpectException<std::exception>(fooExpression);
+			fooMap.Insert(foo);
+			const HashMap<Foo, std::int32_t> fooMap3(fooMap);
+			Assert::AreEqual(fooMap3[g], data);
 		}
 
 	private:

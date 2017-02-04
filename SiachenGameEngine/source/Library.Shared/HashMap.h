@@ -178,7 +178,7 @@ namespace SiachenGameEngine
 			* @param key The key value whose associated data is output.
 			* @return The data in the hashmap associated with the input key.
 			*/
-			TData& operator[](const TKey &key);
+			TData operator[](const TKey &key);
 			/**
 			* Overloaded subscript operator returns the value associated with the input key.
 			* @param key The key value whose associated data is output.
