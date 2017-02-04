@@ -20,7 +20,7 @@ namespace SiachenGameEngine
 		}
 
 		template<typename TKey, typename TData, typename HashFunctor>
-		HashMap<TKey, TData, HashFunctor>::Iterator::Iterator(HashMap* ownerMap, std::uint32_t bucketIndex, typename SList<PairType>::Iterator listIterator) : mOwnerMap(ownerMap), mBucketIndex(bucketIndex), mListIterator(listIterator)
+		HashMap<TKey, TData, HashFunctor>::Iterator::Iterator( const HashMap* ownerMap, const std::uint32_t bucketIndex, const typename SList<PairType>::Iterator listIterator) : mOwnerMap(ownerMap), mBucketIndex(bucketIndex), mListIterator(listIterator)
 		{
 
 		}
@@ -30,7 +30,7 @@ namespace SiachenGameEngine
 		template<typename TKey, typename TData, typename HashFunctor>
 		typename HashMap<TKey, TData, HashFunctor>::Iterator& HashMap<TKey, TData, HashFunctor>::Iterator::operator=(const Iterator &it)
 		{
-			it(this != &it)
+			if(this != &it)
 			{
 				mOwnerMap = it.mOwnerMap;
 				mBucketIndex = it.mBucketIndex;
@@ -64,7 +64,7 @@ namespace SiachenGameEngine
 			}
 
 			std::uint32_t indexInVector = mBucketIndex;
-			SList<PairType>::Iterator it == mListIterator;
+			SList<PairType>::Iterator it = mListIterator;
 			bool exceptionThrown = false;
 
 			// Handle the case for the key-value pairs within the same SList as the iterator.
@@ -118,7 +118,8 @@ namespace SiachenGameEngine
 				}
 				++indexInVector;
 			}
-			return mOwnerMap->end();
+			*this = mOwnerMap->end();
+			return *this;
 		}
 
 		template<typename TKey, typename TData, typename HashFunctor>
@@ -200,7 +201,7 @@ namespace SiachenGameEngine
 			{
 				throw std::runtime_error("Cannot dereference an iterator which isn't associated with a hashmap.");
 			}
-			if (mBucketIndex >= mOwnerMap->Size())
+			if (mBucketIndex >= mOwnerMap->mHashmap.Size())
 			{
 				throw std::out_of_range("Cannot dereference an items outside the hashmap.");
 			}
@@ -222,7 +223,7 @@ namespace SiachenGameEngine
 			{
 				throw std::runtime_error("Cannot dereference an iterator which isn't associated with a hashmap.");
 			}
-			if (mBucketIndex >= mOwnerMap->Size())
+			if (mBucketIndex >= mOwnerMap->mHashmap.Size())
 			{
 				throw std::out_of_range("Cannot dereference an items outside the hashmap.");
 			}
@@ -244,7 +245,7 @@ namespace SiachenGameEngine
 			{
 				throw std::runtime_error("Cannot dereference an iterator which isn't associated with a hashmap.");
 			}
-			if (mBucketIndex >= mOwnerMap->Size())
+			if (mBucketIndex >= mOwnerMap->mHashmap.Size())
 			{
 				throw std::out_of_range("Cannot dereference an items outside the hashmap.");
 			}
@@ -266,7 +267,7 @@ namespace SiachenGameEngine
 			{
 				throw std::runtime_error("Cannot dereference an iterator which isn't associated with a hashmap.");
 			}
-			if (mBucketIndex >= mOwnerMap->Size())
+			if (mBucketIndex >= mOwnerMap->mHashmap.Size())
 			{
 				throw std::out_of_range("Cannot dereference an items outside the hashmap.");
 			}
@@ -284,7 +285,7 @@ namespace SiachenGameEngine
 		// HashMap constructors
 
 		template<typename TKey, typename TData, typename HashFunctor>
-		HashMap<TKey, TData, HashFunctor>::HashMap(std::uint32_t numberOfBuckets) : mHashmap(BucketType(numberOfBuckets))
+		HashMap<TKey, TData, HashFunctor>::HashMap(std::uint32_t numberOfBuckets) : mHashmap(BucketType(numberOfBuckets)), mSize(0)
 		{
 
 		}
@@ -330,13 +331,15 @@ namespace SiachenGameEngine
 		template<typename TKey, typename TData, typename HashFunctor>
 		typename HashMap<TKey, TData, HashFunctor>::Iterator HashMap<TKey, TData, HashFunctor>::end() const
 		{
-			return Iterator(this, mHashmap.Size()-1, mHashmap[mHashmap.Size() - 1].end());
+			SList<PairType>::Iterator it = (mHashmap[mHashmap.Size() - 1]).end();
+			return Iterator(this, (mHashmap.Size()-1), it);
 		}
 
 		template<typename TKey, typename TData, typename HashFunctor>
 		typename HashMap<TKey, TData, HashFunctor>::Iterator HashMap<TKey, TData, HashFunctor>::Find(const TKey &key) const
 		{
-			for (HashMap<TKey, TData, HashFunctor>::Iterator it = begin(); it != end(); ++it)
+			HashMap<TKey, TData, HashFunctor>::Iterator it = begin();
+			for (; it != end(); ++it)
 			{
 				if ((*it).first == key)
 				{
@@ -352,14 +355,15 @@ namespace SiachenGameEngine
 			TKey key = pair.first;
 			// In case the key is already present in the map
 			HashMap::Iterator it = Find(key);
-			if (it == end())
+			if (it != end())
 			{
 				return it;
 			}
 			// In case the key isn't present in the map
 			HashFunctor hash;
-			uint32_t index = (hash(key) / mHashmap.Size());
+			uint32_t index = (hash(key) % mHashmap.Size());
 			SList<PairType>::Iterator listIterator = mHashmap[index].PushBack(pair);
+			++mSize;
 			return Iterator(this, index, listIterator);
 		}
 
@@ -374,6 +378,7 @@ namespace SiachenGameEngine
 			else
 			{
 				mHashmap[it.mBucketIndex].Remove(*it);
+				--mSize;
 				return true;
 			}
 		}
@@ -383,12 +388,13 @@ namespace SiachenGameEngine
 		void HashMap<TKey, TData, HashFunctor>::Clear()
 		{
 			mHashmap.ClearAndFree();
+			mSize = 0;
 		}
 
 		template<typename TKey, typename TData, typename HashFunctor>
 		std::uint32_t HashMap<TKey, TData, HashFunctor>::Size() const
 		{
-			return mHashmap.Size();
+			return mSize;
 		}
 
 		template<typename TKey, typename TData, typename HashFunctor>
@@ -405,6 +411,19 @@ namespace SiachenGameEngine
 
 
 		// HashMap operators
+
+		template<typename TKey, typename TData, typename HashFunctor>
+		TData& HashMap<TKey, TData, HashFunctor>::operator[](const TKey &key)
+		{
+			HashMap::Iterator it = Find(key);
+			if (it == end())
+			{
+				std::pair<TKey, TData> pair(key, TData());
+				++mSize;
+				Insert(pair);
+			}
+			return pair.second;
+		}
 
 		template<typename TKey, typename TData, typename HashFunctor>
 		const TData& HashMap<TKey, TData, HashFunctor>::operator[](const TKey &key) const
@@ -433,7 +452,7 @@ namespace SiachenGameEngine
 			return hashValue;
 		}
 
-		std::uint32_t DefaultHash<char*>::operator()(const char* &key) const
+		std::uint32_t DefaultHash<char*>::operator()(char* &key) const
 		{
 			std::uint32_t numberOfBytes = static_cast<std::uint32_t>(strlen(key));
 			std::uint32_t hashValue = 0;

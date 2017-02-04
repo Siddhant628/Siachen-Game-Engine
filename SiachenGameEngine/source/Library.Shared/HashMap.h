@@ -25,19 +25,19 @@ namespace SiachenGameEngine
 			* The vector containing all the data of the hash map.
 			*/
 			BucketType mHashmap;
-
+			uint32_t mSize;
 		public:
 			/**
 			* An Iterator class for the HashMap container.
 			*/
 			class Iterator
 			{
-
+				friend class HashMap;
 			private:
 				/**
 				* The hashmap to which the iterator is associated.
 				*/
-				HashMap* mOwnerMap;
+				const HashMap* mOwnerMap;
 				/**
 				* The bucket index to which the iterator is associated with, in this case, the specific SList in the Vector.
 				*/
@@ -53,7 +53,7 @@ namespace SiachenGameEngine
 				* @param bucketIndex The index of the bucket in the hash map where the key-value pair's SList is stored.
 				* @param listIterator The iterator associated with a specific node in the SList.
 				*/
-				Iterator(HashMap* ownerMap, std::uint32_t bucketIndex, typename SList<PairType>::Iterator listIterator);
+				Iterator(const HashMap* ownerMap,const std::uint32_t bucketIndex, const typename SList<PairType>::Iterator listIterator);
 			
 			public:
 				/**
@@ -164,7 +164,12 @@ namespace SiachenGameEngine
 			*/
 			bool ContainsKey(const TKey& key) const;
 
-			// TODO Non const version
+			/**
+			* Overloaded subscript operator returns the value associated with the input key, if input key isn't found, it inserts it.
+			* @param key The key value whose associated data is output.
+			* @return The data in the hashmap associated with the input key.
+			*/
+			TData& operator[](const TKey &key);
 			/**
 			* Overloaded subscript operator returns the value associated with the input key.
 			* @param key The key value whose associated data is output.
@@ -191,7 +196,7 @@ namespace SiachenGameEngine
 		class DefaultHash <char*>
 		{
 		public:
-			std::uint32_t operator()(const char* &key) const;
+			std::uint32_t operator()(char* &key) const;
 		};
 		/**
 		* Default hash functor's specialization for string class.
