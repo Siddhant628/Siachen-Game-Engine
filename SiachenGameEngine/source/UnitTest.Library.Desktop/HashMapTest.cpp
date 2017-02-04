@@ -705,6 +705,206 @@ namespace UnitTestLibraryDesktop
 			Assert::AreNotEqual(fooMap.begin(), fooMap.end());
 		}
 
+		TEST_METHOD(Iterator_Assignment_Operator)
+		{
+			std::int32_t data = 10, data2 = 20;
+			std::pair<std::int32_t, int32_t> p1(data, data2);
+
+			// Testing for an integer
+			HashMap<std::int32_t, std::int32_t> intMap;
+			HashMap<std::int32_t, std::int32_t>::Iterator it;
+
+			it = intMap.Insert(p1);
+			Assert::AreEqual(it, intMap.begin());
+
+			// Testing for character pointer
+			HashMap<char*, std::int32_t> charPtrMap;
+			HashMap<char*, std::int32_t>::Iterator it2;
+			char* a = "hey";
+			std::pair<char*, std::int32_t> char1(a, data);
+
+			it2 = charPtrMap.Insert(char1);
+			Assert::AreEqual(it2, charPtrMap.begin());
+
+			//Testing for string
+			HashMap<std::string, std::int32_t> stringMap;
+			HashMap<std::string, std::int32_t>::Iterator it3;
+			std::string d = "raw";
+			std::pair<std::string, int32_t> str(d, data);
+
+			it3 = stringMap.Insert(str);
+			Assert::AreEqual(it3, stringMap.begin());
+
+			//Testing for Foos
+			HashMap<Foo, std::int32_t> fooMap;
+			HashMap<Foo, std::int32_t>::Iterator it4;
+			Foo g(data);
+			std::pair<Foo, std::int32_t> foo(g, data);
+
+			it4 = fooMap.Insert(foo);
+			Assert::AreEqual(it4, fooMap.begin());
+		}
+
+		TEST_METHOD(Iterator_Comparison_Operators)
+		{
+			std::int32_t data = 10, data2 = 20;
+			std::pair<std::int32_t, int32_t> p1(data, data2);
+
+			// Testing for an integer
+			HashMap<std::int32_t, std::int32_t> intMap;
+
+			HashMap<std::int32_t, std::int32_t>::Iterator it = intMap.Insert(p1);
+			HashMap<std::int32_t, std::int32_t>::Iterator it2 = intMap.begin();
+			Assert::IsTrue(it == it2);
+			Assert::IsFalse(it != it2);
+			it2 = intMap.end();
+			Assert::IsFalse(it == it2);
+			Assert::IsTrue(it != it2);
+
+			// Testing for character pointer
+			HashMap<char*, std::int32_t> charPtrMap;
+			char* a = "hey";
+			std::pair<char*, std::int32_t> char1(a, data);
+
+			HashMap<char*, std::int32_t>::Iterator it3 = charPtrMap.Insert(char1);
+			HashMap<char*, std::int32_t>::Iterator it4 = charPtrMap.begin();
+			Assert::IsTrue(it3 == it4);
+			Assert::IsFalse(it3 != it4);
+			it4 = charPtrMap.end();
+			Assert::IsFalse(it3 == it4);
+			Assert::IsTrue(it3 != it4);
+
+			//Testing for string
+			HashMap<std::string, std::int32_t> stringMap;
+			std::string d = "raw", e = "war", f = "dog";
+			std::pair<std::string, int32_t> str(d, data), str2(e, data2), str3(f, data);
+
+			HashMap<std::string, std::int32_t>::Iterator it5 = stringMap.Insert(str);
+			HashMap<std::string, std::int32_t>::Iterator it6 = stringMap.begin();
+			Assert::IsTrue(it5 == it6);
+			Assert::IsFalse(it5 != it6);
+			it6 = stringMap.end();
+			Assert::IsFalse(it5 == it6);
+			Assert::IsTrue(it5 != it6);
+
+			//Testing for Foos
+			HashMap<Foo, std::int32_t> fooMap;
+			Foo g(data), h(data2);
+			std::pair<Foo, std::int32_t> foo(g, data), foo2(h, data);
+
+			HashMap<Foo, std::int32_t>::Iterator it7 = fooMap.Insert(foo);
+			HashMap<Foo, std::int32_t>::Iterator it8 = fooMap.begin();
+			Assert::IsTrue(it7 == it8);
+			Assert::IsFalse(it7 != it8);
+			it8 = fooMap.end();
+			Assert::IsFalse(it7 == it8);
+			Assert::IsTrue(it7 != it8);
+		}
+
+		TEST_METHOD(Iterator_PostIncrement_Operator)
+		{
+			std::int32_t data = 10, data2 = 20;
+			std::pair<std::int32_t, int32_t> p1(data, data2), p2(data2, data);
+
+			// Testing for an integer
+			HashMap<std::int32_t, std::int32_t> intMap;
+
+			HashMap<std::int32_t, std::int32_t>::Iterator it = intMap.Insert(p1);
+			HashMap<std::int32_t, std::int32_t>::Iterator it2 = intMap.Insert(p2);
+			HashMap<std::int32_t, std::int32_t>::Iterator it3 = intMap.begin();
+			Assert::AreEqual(it3++, it2);
+			Assert::AreEqual(it3++, it);
+			Assert::AreEqual(it3, intMap.end());
+
+			// Testing for character pointer
+			HashMap<char*, std::int32_t> charPtrMap;
+			char* a = "hey", *b = "yeh";
+			std::pair<char*, std::int32_t> char1(a, data), char2(b, data2);
+
+			HashMap<char*, std::int32_t>::Iterator it4 = charPtrMap.Insert(char1);
+			HashMap<char*, std::int32_t>::Iterator it5 = charPtrMap.Insert(char2);
+			HashMap<char*, std::int32_t>::Iterator it6 = charPtrMap.begin();
+			Assert::AreEqual(it6++, it4);
+			Assert::AreEqual(it6++, it5);
+			Assert::AreEqual(it6, charPtrMap.end());
+
+			//Testing for string
+			HashMap<std::string, std::int32_t> stringMap;
+			std::string d = "raw", e = "war";
+			std::pair<std::string, int32_t> str(d, data), str2(e, data2);
+
+			HashMap<std::string, std::int32_t>::Iterator it7 = stringMap.Insert(str);
+			HashMap<std::string, std::int32_t>::Iterator it8 = stringMap.Insert(str2);
+			HashMap<std::string, std::int32_t>::Iterator it9 = stringMap.begin();
+			Assert::AreEqual(it9++, it7);
+			Assert::AreEqual(it9++, it8);
+			Assert::AreEqual(it9, stringMap.end());
+
+			//Testing for Foos
+			HashMap<Foo, std::int32_t> fooMap;
+			Foo g(data), h(data2);
+			std::pair<Foo, std::int32_t> foo(g, data), foo2(h, data);
+
+			HashMap<Foo, std::int32_t>::Iterator it10 = fooMap.Insert(foo);
+			HashMap<Foo, std::int32_t>::Iterator it11 = fooMap.Insert(foo2);
+			HashMap<Foo, std::int32_t>::Iterator it12 = fooMap.begin();
+			Assert::AreEqual(it12++, it11);
+			Assert::AreEqual(it12++, it10);
+			Assert::AreEqual(it12, fooMap.end());
+		}
+
+		TEST_METHOD(Iterator_PreIncrement_Operator)
+		{
+			std::int32_t data = 10, data2 = 20;
+			std::pair<std::int32_t, int32_t> p1(data, data2), p2(data2, data);
+
+			// Testing for an integer
+			HashMap<std::int32_t, std::int32_t> intMap;
+
+			HashMap<std::int32_t, std::int32_t>::Iterator it = intMap.Insert(p1);
+			HashMap<std::int32_t, std::int32_t>::Iterator it2 = intMap.Insert(p2);
+			HashMap<std::int32_t, std::int32_t>::Iterator it3 = intMap.begin();
+			Assert::AreEqual(it3, it2);
+			Assert::AreEqual(++it3, it);
+			Assert::AreEqual(++it3, intMap.end());
+
+			// Testing for character pointer
+			HashMap<char*, std::int32_t> charPtrMap;
+			char* a = "hey", *b = "yeh";
+			std::pair<char*, std::int32_t> char1(a, data), char2(b, data2);
+
+			HashMap<char*, std::int32_t>::Iterator it4 = charPtrMap.Insert(char1);
+			HashMap<char*, std::int32_t>::Iterator it5 = charPtrMap.Insert(char2);
+			HashMap<char*, std::int32_t>::Iterator it6 = charPtrMap.begin();
+			Assert::AreEqual(it6, it4);
+			Assert::AreEqual(++it6, it5);
+			Assert::AreEqual(++it6, charPtrMap.end());
+
+			//Testing for string
+			HashMap<std::string, std::int32_t> stringMap;
+			std::string d = "raw", e = "war";
+			std::pair<std::string, int32_t> str(d, data), str2(e, data2);
+
+			HashMap<std::string, std::int32_t>::Iterator it7 = stringMap.Insert(str);
+			HashMap<std::string, std::int32_t>::Iterator it8 = stringMap.Insert(str2);
+			HashMap<std::string, std::int32_t>::Iterator it9 = stringMap.begin();
+			Assert::AreEqual(it9, it7);
+			Assert::AreEqual(++it9, it8);
+			Assert::AreEqual(++it9, stringMap.end());
+
+			//Testing for Foos
+			HashMap<Foo, std::int32_t> fooMap;
+			Foo g(data), h(data2);
+			std::pair<Foo, std::int32_t> foo(g, data), foo2(h, data);
+
+			HashMap<Foo, std::int32_t>::Iterator it10 = fooMap.Insert(foo);
+			HashMap<Foo, std::int32_t>::Iterator it11 = fooMap.Insert(foo2);
+			HashMap<Foo, std::int32_t>::Iterator it12 = fooMap.begin();
+			Assert::AreEqual(it12, it11);
+			Assert::AreEqual(++it12, it10);
+			Assert::AreEqual(++it12, fooMap.end());
+		}
+
 	private:
 		static _CrtMemState sStartMemState;
 	};

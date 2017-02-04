@@ -25,7 +25,7 @@ namespace SiachenGameEngine
 
 		}
 
-		// Iterator operations
+		// Iterator operators
 
 		template<typename TKey, typename TData, typename HashFunctor>
 		typename HashMap<TKey, TData, HashFunctor>::Iterator& HashMap<TKey, TData, HashFunctor>::Iterator::operator=(const Iterator &it)
@@ -63,31 +63,24 @@ namespace SiachenGameEngine
 				throw std::runtime_error("Iterator cannot pre-increment, end has been reached.\n");
 			}
 
+			HashMap<TKey, TData, HashFunctor>::Iterator iteratorToReturn = mOwnerMap->end();
 			std::uint32_t indexInVector = mBucketIndex;
 			SList<PairType>::Iterator it = mListIterator;
-			//bool exceptionThrown = false;
-
+			
 			// Handle the case for the key-value pairs within the same SList as the iterator.
 			try
 			{
 				++it;
 				for (; it != mOwnerMap->mHashmapVector[indexInVector].end(); ++it)
 				{
-					//try
-					//{
-					//	*it;
-					//}
-					//catch (const std::exception&)
-					//{
-					//	exceptionThrown = true;
-					//}
-					//if (!exceptionThrown)
-					//{
-						mBucketIndex = indexInVector;
-						mListIterator = it;
-						return *this;
-					/*}
-					exceptionThrown = false;*/
+					mBucketIndex = indexInVector;
+					mListIterator = it;
+					iteratorToReturn = *this;
+					// If iterator to return is found, break
+					if (iteratorToReturn != mOwnerMap->end())
+					{
+						break;
+					}
 				}
 				++indexInVector;
 			}
@@ -101,25 +94,23 @@ namespace SiachenGameEngine
 			{
 				for (it = mOwnerMap->mHashmapVector[indexInVector].begin(); it != mOwnerMap->mHashmapVector[indexInVector].end(); ++it)
 				{
-					//try
-					//{
-					//	*it;
-					//}
-					//catch (const std::exception&)
-					//{
-					//	exceptionThrown = true;
-					//}
-					//if (!exceptionThrown)
-					//{
-						mBucketIndex = indexInVector;
-						mListIterator = it;
-						return *this;
-					//}
-					//exceptionThrown = false;
+					mBucketIndex = indexInVector;
+					mListIterator = it;
+					iteratorToReturn = *this;
+					// If iterator to return is found, break
+					if (iteratorToReturn != mOwnerMap->end())
+					{
+						break;
+					}
 				}
 				++indexInVector;
+				// If iterator to return is found, break
+				if (iteratorToReturn != mOwnerMap->end())
+				{
+					break;
+				}
 			}
-			*this = mOwnerMap->end();
+			*this = iteratorToReturn;
 			return *this;
 		}
 
@@ -136,7 +127,7 @@ namespace SiachenGameEngine
 			}
 
 			std::uint32_t indexInVector = mBucketIndex;
-			SList<PairType>::Iterator it == mListIterator;
+			SList<PairType>::Iterator it = mListIterator;
 			bool exceptionThrown = false;
 			Iterator tempIt = *this;
 
