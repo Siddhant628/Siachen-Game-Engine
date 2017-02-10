@@ -7,7 +7,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)pch.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Datum.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Datum.cpp">
+      <Filter>Containers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)SList.h">
@@ -21,7 +23,9 @@
       <Filter>Containers</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)RTTI.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Datum.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Datum.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)SList.inl">

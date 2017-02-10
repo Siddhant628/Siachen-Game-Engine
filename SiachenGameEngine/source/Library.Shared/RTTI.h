@@ -6,7 +6,7 @@
 
 namespace SiachenGameEngine
 {
-	namespace Library
+	namespace GameplayFramework
 	{
 		class RTTI
 		{
