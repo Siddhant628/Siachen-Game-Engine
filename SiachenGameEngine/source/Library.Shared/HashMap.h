@@ -13,7 +13,7 @@ namespace SiachenGameEngine
 		/**
 		* A HashMap container which uses a vector of singly linked lists (for chaining) to store data.
 		*/
-		template<typename TKey, typename TData, typename HashFunctor = DefaultHash<TKey>>
+		template<typename TKey, typename TData, typename HashFunctor = DefaultHash<TKey>, typename CompareFunctor = DefaultCompareFunctor<TKey>>
 		class HashMap final
 		{
 
@@ -225,6 +225,21 @@ namespace SiachenGameEngine
 		public:
 			std::uint32_t operator()(const HelperClasses::Foo &foo) const;
 		};
+
+		template<typename T>
+		class DefaultCompareFunctor
+		{
+		public:
+			bool operator()(T,T) const;
+		};
+
+		template<>
+		class DefaultCompareFunctor <char*>
+		{
+		public:
+			bool operator()(char*, char*);
+		};
+
 	}
 }
 

@@ -112,6 +112,38 @@ namespace UnitTestLibraryDesktop
 			Assert::AreEqual(fooHash(foo), fooHash(foo2));
 		}
 
+		TEST_METHOD(Default_Compare_Functor)
+		{
+			std::int32_t data = 10, data2 = 10, data3 = 20;
+
+			// Comparison of integers
+			DefaultCompareFunctor<std::int32_t> intFuctor;
+			Assert::IsTrue(intFuctor(data, data2));
+			Assert::IsFalse(intFuctor(data, data3));
+
+			// Comparison of strings
+			DefaultCompareFunctor<std::string> stringFunctor;
+			std::string str = "Hey";
+			std::string str2 = str;
+			Assert::IsTrue(stringFunctor(str, str2));
+			str2 = "neh";
+			Assert::IsFalse(stringFunctor(str, str2));
+
+			// Comparison of char*
+			DefaultCompareFunctor<char*> charPtrFunctor;
+			char* str3 = "Hey";
+			char str4[4];
+			Assert::IsFalse(charPtrFunctor(str3, str4));
+			strcpy_s(str4, str3);
+			Assert::IsTrue(charPtrFunctor(str3, str4));
+
+			// Comparison of Foos
+			Foo foo(data), foo2(data2), foo3(data3);
+			DefaultCompareFunctor<Foo> fooFunctor;
+			Assert::IsTrue(fooFunctor(foo, foo2));
+			Assert::IsFalse(fooFunctor(foo, foo3));
+		}
+
 		TEST_METHOD(HashMap_Insert)
 		{
 			std::int32_t data = 10, data2 = 20;

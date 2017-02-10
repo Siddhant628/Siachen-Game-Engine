@@ -7,28 +7,28 @@ namespace SiachenGameEngine
 	{
 		// Iterator constructors
 
-		template<typename TKey, typename TData, typename HashFunctor>
-		HashMap<TKey, TData, HashFunctor>::Iterator::Iterator() : mOwnerMap(nullptr), mBucketIndex(0)
+		template<typename TKey, typename TData, typename HashFunctor, typename CompareFunctor>
+		HashMap<TKey, TData, HashFunctor, CompareFunctor>::Iterator::Iterator() : mOwnerMap(nullptr), mBucketIndex(0)
 		{
 
 		}
 		
-		template<typename TKey, typename TData, typename HashFunctor>
-		HashMap<TKey, TData, HashFunctor>::Iterator::Iterator(const Iterator &it) : mOwnerMap(it.mOwnerMap), mBucketIndex(it.mBucketIndex), mListIterator(it.mListIterator)
+		template<typename TKey, typename TData, typename HashFunctor, typename CompareFunctor>
+		HashMap<TKey, TData, HashFunctor, CompareFunctor>::Iterator::Iterator(const Iterator &it) : mOwnerMap(it.mOwnerMap), mBucketIndex(it.mBucketIndex), mListIterator(it.mListIterator)
 		{
 
 		}
 
-		template<typename TKey, typename TData, typename HashFunctor>
-		HashMap<TKey, TData, HashFunctor>::Iterator::Iterator( const HashMap* ownerMap, const std::uint32_t bucketIndex, const typename SList<PairType>::Iterator listIterator) : mOwnerMap(ownerMap), mBucketIndex(bucketIndex), mListIterator(listIterator)
+		template<typename TKey, typename TData, typename HashFunctor, typename CompareFunctor>
+		HashMap<TKey, TData, HashFunctor, CompareFunctor>::Iterator::Iterator( const HashMap* ownerMap, const std::uint32_t bucketIndex, const typename SList<PairType>::Iterator listIterator) : mOwnerMap(ownerMap), mBucketIndex(bucketIndex), mListIterator(listIterator)
 		{
 
 		}
 
 		// Iterator operators
 
-		template<typename TKey, typename TData, typename HashFunctor>
-		typename HashMap<TKey, TData, HashFunctor>::Iterator& HashMap<TKey, TData, HashFunctor>::Iterator::operator=(const Iterator &it)
+		template<typename TKey, typename TData, typename HashFunctor, typename CompareFunctor>
+		typename HashMap<TKey, TData, HashFunctor, CompareFunctor>::Iterator& HashMap<TKey, TData, HashFunctor, CompareFunctor>::Iterator::operator=(const Iterator &it)
 		{
 			if(this != &it)
 			{
@@ -39,20 +39,20 @@ namespace SiachenGameEngine
 			return *this;
 		}
 
-		template<typename TKey, typename TData, typename HashFunctor>
-		bool HashMap<TKey, TData, HashFunctor>::Iterator::operator==(const Iterator &it) const
+		template<typename TKey, typename TData, typename HashFunctor, typename CompareFunctor>
+		bool HashMap<TKey, TData, HashFunctor, CompareFunctor>::Iterator::operator==(const Iterator &it) const
 		{
 			return((mOwnerMap == it.mOwnerMap) && (mBucketIndex == it.mBucketIndex) && (mListIterator == it.mListIterator));
 		}
 
-		template<typename TKey, typename TData, typename HashFunctor>
-		bool HashMap<TKey, TData, HashFunctor>::Iterator::operator!=(const Iterator &it) const
+		template<typename TKey, typename TData, typename HashFunctor, typename CompareFunctor>
+		bool HashMap<TKey, TData, HashFunctor, CompareFunctor>::Iterator::operator!=(const Iterator &it) const
 		{
 			return((mOwnerMap != it.mOwnerMap) || (mBucketIndex != it.mBucketIndex) || (mListIterator != it.mListIterator));
 		}
 
-		template<typename TKey, typename TData, typename HashFunctor>
-		typename HashMap<TKey, TData, HashFunctor>::Iterator& HashMap<TKey, TData, HashFunctor>::Iterator::operator++()
+		template<typename TKey, typename TData, typename HashFunctor, typename CompareFunctor>
+		typename HashMap<TKey, TData, HashFunctor, CompareFunctor>::Iterator& HashMap<TKey, TData, HashFunctor, CompareFunctor>::Iterator::operator++()
 		{
 			if (mOwnerMap == nullptr)
 			{
@@ -63,7 +63,7 @@ namespace SiachenGameEngine
 				throw std::runtime_error("Iterator cannot pre-increment, end has been reached.\n");
 			}
 
-			HashMap<TKey, TData, HashFunctor>::Iterator iteratorToReturn = mOwnerMap->end();
+			HashMap<TKey, TData, HashFunctor, CompareFunctor>::Iterator iteratorToReturn = mOwnerMap->end();
 			std::uint32_t indexInVector = mBucketIndex;
 			SList<PairType>::Iterator it = mListIterator;
 			
@@ -114,8 +114,8 @@ namespace SiachenGameEngine
 			return *this;
 		}
 
-		template<typename TKey, typename TData, typename HashFunctor>
-		typename HashMap<TKey, TData, HashFunctor>::Iterator HashMap<TKey, TData, HashFunctor>::Iterator::operator++(std::int32_t)
+		template<typename TKey, typename TData, typename HashFunctor, typename CompareFunctor>
+		typename HashMap<TKey, TData, HashFunctor, CompareFunctor>::Iterator HashMap<TKey, TData, HashFunctor, CompareFunctor>::Iterator::operator++(std::int32_t)
 		{
 			if (mOwnerMap == nullptr)
 			{
@@ -182,8 +182,8 @@ namespace SiachenGameEngine
 			return iteratorBeforeOperation;
 		}
 
-		template<typename TKey, typename TData, typename HashFunctor>
-		typename HashMap<TKey, TData, HashFunctor>::PairType& HashMap<TKey, TData, HashFunctor>::Iterator::operator*()
+		template<typename TKey, typename TData, typename HashFunctor, typename CompareFunctor>
+		typename HashMap<TKey, TData, HashFunctor, CompareFunctor>::PairType& HashMap<TKey, TData, HashFunctor, CompareFunctor>::Iterator::operator*()
 		{
 			if (mOwnerMap == nullptr)
 			{
@@ -192,8 +192,8 @@ namespace SiachenGameEngine
 			return (*mListIterator);
 		}
 
-		template<typename TKey, typename TData, typename HashFunctor>
-		typename const HashMap<TKey, TData, HashFunctor>::PairType& HashMap<TKey, TData, HashFunctor>::Iterator::operator*() const
+		template<typename TKey, typename TData, typename HashFunctor, typename CompareFunctor>
+		typename const HashMap<TKey, TData, HashFunctor, CompareFunctor>::PairType& HashMap<TKey, TData, HashFunctor, CompareFunctor>::Iterator::operator*() const
 		{
 			if (mOwnerMap == nullptr)
 			{
@@ -202,8 +202,8 @@ namespace SiachenGameEngine
 			return (*mListIterator);
 		}
 
-		template<typename TKey, typename TData, typename HashFunctor>
-		typename HashMap<TKey, TData, HashFunctor>::PairType* HashMap<TKey, TData, HashFunctor>::Iterator::operator->()
+		template<typename TKey, typename TData, typename HashFunctor, typename CompareFunctor>
+		typename HashMap<TKey, TData, HashFunctor, CompareFunctor>::PairType* HashMap<TKey, TData, HashFunctor, CompareFunctor>::Iterator::operator->()
 		{
 			if (mOwnerMap == nullptr)
 			{
@@ -212,8 +212,8 @@ namespace SiachenGameEngine
 			return &(*mListIterator);
 		}
 
-		template<typename TKey, typename TData, typename HashFunctor>
-		typename const HashMap<TKey, TData, HashFunctor>::PairType* HashMap<TKey, TData, HashFunctor>::Iterator::operator->() const
+		template<typename TKey, typename TData, typename HashFunctor, typename CompareFunctor>
+		typename const HashMap<TKey, TData, HashFunctor, CompareFunctor>::PairType* HashMap<TKey, TData, HashFunctor, CompareFunctor>::Iterator::operator->() const
 		{
 			if (mOwnerMap == nullptr)
 			{
@@ -224,22 +224,22 @@ namespace SiachenGameEngine
 
 		// HashMap constructors
 
-		template<typename TKey, typename TData, typename HashFunctor>
-		HashMap<TKey, TData, HashFunctor>::HashMap(std::uint32_t numberOfBuckets) : mHashmapVector(BucketType(numberOfBuckets)), mSize(0)
+		template<typename TKey, typename TData, typename HashFunctor, typename CompareFunctor>
+		HashMap<TKey, TData, HashFunctor, CompareFunctor>::HashMap(std::uint32_t numberOfBuckets) : mHashmapVector(BucketType(numberOfBuckets)), mSize(0)
 		{
 
 		}
 		
-		template<typename TKey, typename TData, typename HashFunctor>
-		HashMap<TKey, TData, HashFunctor>::~HashMap()
+		template<typename TKey, typename TData, typename HashFunctor, typename CompareFunctor>
+		HashMap<TKey, TData, HashFunctor, CompareFunctor>::~HashMap()
 		{
 
 		}
 
 		// HashMap methods
 
-		template<typename TKey, typename TData, typename HashFunctor>
-		typename HashMap<TKey, TData, HashFunctor>::Iterator HashMap<TKey, TData, HashFunctor>::begin() const
+		template<typename TKey, typename TData, typename HashFunctor, typename CompareFunctor>
+		typename HashMap<TKey, TData, HashFunctor, CompareFunctor>::Iterator HashMap<TKey, TData, HashFunctor, CompareFunctor>::begin() const
 		{
 			std::uint32_t indexInVector = 0;
 			SList<PairType>::Iterator it;
@@ -264,8 +264,8 @@ namespace SiachenGameEngine
 			return hashmapIt;
 		}
 
-		template<typename TKey, typename TData, typename HashFunctor>
-		typename HashMap<TKey, TData, HashFunctor>::Iterator HashMap<TKey, TData, HashFunctor>::end() const
+		template<typename TKey, typename TData, typename HashFunctor, typename CompareFunctor>
+		typename HashMap<TKey, TData, HashFunctor, CompareFunctor>::Iterator HashMap<TKey, TData, HashFunctor, CompareFunctor>::end() const
 		{
 			SList<PairType>::Iterator it;
 			if (mHashmapVector.Size() == 0)
@@ -280,19 +280,20 @@ namespace SiachenGameEngine
 			}
 		}
 
-		template<typename TKey, typename TData, typename HashFunctor>
-		typename HashMap<TKey, TData, HashFunctor>::Iterator HashMap<TKey, TData, HashFunctor>::Find(const TKey &key) const
+		template<typename TKey, typename TData, typename HashFunctor, typename CompareFunctor>
+		typename HashMap<TKey, TData, HashFunctor, CompareFunctor>::Iterator HashMap<TKey, TData, HashFunctor, CompareFunctor>::Find(const TKey &key) const
 		{
 			if (mSize == 0)
 			{
 				return end();
 			}
 			HashFunctor hash;
+			CompareFunctor compareFunctor;
 			uint32_t index = (hash(key) % mHashmapVector.Size());
 			
 			for (SList<PairType>::Iterator it = mHashmapVector[index].begin(); it != mHashmapVector[index].end(); ++it)
 			{
-				if ((*it).first == key)
+				if (compareFunctor(((*it).first), key))
 				{
 					return Iterator(this, index, it);
 				}
@@ -300,8 +301,8 @@ namespace SiachenGameEngine
 			return end();
 		}
 
-		template<typename TKey, typename TData, typename HashFunctor>
-		typename HashMap<TKey, TData, HashFunctor>::Iterator HashMap<TKey, TData, HashFunctor>::Insert(const PairType &pair)
+		template<typename TKey, typename TData, typename HashFunctor, typename CompareFunctor>
+		typename HashMap<TKey, TData, HashFunctor, CompareFunctor>::Iterator HashMap<TKey, TData, HashFunctor, CompareFunctor>::Insert(const PairType &pair)
 		{
 			TKey key = pair.first;
 			// In case the key is already present in the map
@@ -318,8 +319,8 @@ namespace SiachenGameEngine
 			return Iterator(this, index, listIterator);
 		}
 
-		template<typename TKey, typename TData, typename HashFunctor>
-		bool HashMap<TKey, TData, HashFunctor>::Remove(const TKey &key)
+		template<typename TKey, typename TData, typename HashFunctor, typename CompareFunctor>
+		bool HashMap<TKey, TData, HashFunctor, CompareFunctor>::Remove(const TKey &key)
 		{
 			HashMap::Iterator it = Find(key);
 			if (it == end())
@@ -334,8 +335,8 @@ namespace SiachenGameEngine
 			}
 		}
 
-		template<typename TKey, typename TData, typename HashFunctor>
-		void HashMap<TKey, TData, HashFunctor>::Clear()
+		template<typename TKey, typename TData, typename HashFunctor, typename CompareFunctor>
+		void HashMap<TKey, TData, HashFunctor, CompareFunctor>::Clear()
 		{
 			std::int32_t sizeOfVector = mHashmapVector.Size();
 			for (std::int32_t index = 0; index < sizeOfVector; ++index)
@@ -345,14 +346,14 @@ namespace SiachenGameEngine
 			mSize = 0;
 		}
 
-		template<typename TKey, typename TData, typename HashFunctor>
-		std::uint32_t HashMap<TKey, TData, HashFunctor>::Size() const
+		template<typename TKey, typename TData, typename HashFunctor, typename CompareFunctor>
+		std::uint32_t HashMap<TKey, TData, HashFunctor, CompareFunctor>::Size() const
 		{
 			return mSize;
 		}
 
-		template<typename TKey, typename TData, typename HashFunctor>
-		bool HashMap<TKey, TData, HashFunctor>::ContainsKey(const TKey & key) const
+		template<typename TKey, typename TData, typename HashFunctor, typename CompareFunctor>
+		bool HashMap<TKey, TData, HashFunctor, CompareFunctor>::ContainsKey(const TKey & key) const
 		{
 			HashMap::Iterator it = Find(key);
 			if (it == end())
@@ -364,8 +365,8 @@ namespace SiachenGameEngine
 
 		// HashMap operators
 
-		template<typename TKey, typename TData, typename HashFunctor>
-		TData HashMap<TKey, TData, HashFunctor>::operator[](const TKey &key)
+		template<typename TKey, typename TData, typename HashFunctor, typename CompareFunctor>
+		TData HashMap<TKey, TData, HashFunctor, CompareFunctor>::operator[](const TKey &key)
 		{
 			std::pair<TKey, TData> pair(key, TData());
 			HashMap::Iterator it = Find(key);
@@ -380,8 +381,8 @@ namespace SiachenGameEngine
 			return pair.second;
 		}
 
-		template<typename TKey, typename TData, typename HashFunctor>
-		const TData& HashMap<TKey, TData, HashFunctor>::operator[](const TKey &key) const
+		template<typename TKey, typename TData, typename HashFunctor, typename CompareFunctor>
+		const TData& HashMap<TKey, TData, HashFunctor, CompareFunctor>::operator[](const TKey &key) const
 		{
 			HashMap::Iterator it = Find(key);
 			if (it == end())
@@ -444,5 +445,25 @@ namespace SiachenGameEngine
 			}
 			return hashValue;
 		}
+
+		// Comparison Functions
+
+		template<typename T>
+		bool DefaultCompareFunctor<T>::operator ()(T first, T second) const
+		{
+			return (first == second);
+		}
+
+		bool DefaultCompareFunctor<char*>::operator()(char* first, char* second)
+		{
+			std::int32_t comparisonResult = strcmp(first, second);
+			
+			if (comparisonResult == 0)
+			{
+				return true;
+			}
+			return false;
+		}
+
 	}
 }
