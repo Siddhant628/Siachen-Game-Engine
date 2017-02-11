@@ -62,7 +62,7 @@ namespace SiachenGameEngine
 			else if (mDatumType == DatumType::MatrixType)		sizeOfData = sizeof(glm::mat4x4);
 			else if (mDatumType == DatumType::StringType)		sizeOfData = sizeof(std::string);
 			else if (mDatumType == DatumType::PointerType)		sizeOfData = sizeof(GameplayFramework::RTTI*);
-			// TODO Add condition for a Scope class
+			// TODO Scope
 
 			// Allocate the memory
 			void* newBuffer = malloc(newCapacity * sizeof(sizeOfData));
@@ -85,7 +85,8 @@ namespace SiachenGameEngine
 			{
 				Reserve(mCapacity * 2);
 			}
-			mData.i[mSize] = data;
+			//mData.i[mSize] = data;
+			new (mData.i + mSize)std::int32_t(data);
 			++mSize;
 		}
 
@@ -99,7 +100,8 @@ namespace SiachenGameEngine
 			{
 				Reserve(mCapacity * 2);
 			}
-			mData.f[mSize] = data;
+			//mData.f[mSize] = data;
+			new (mData.f + mSize)std::float_t(data);
 			++mSize;
 		}
 
@@ -113,7 +115,8 @@ namespace SiachenGameEngine
 			{
 				Reserve(mCapacity * 2);
 			}
-			mData.s[mSize] = data;
+			//mData.s[mSize] = data;
+			new (mData.s + mSize)std::string(data);
 			++mSize;
 		}
 
@@ -127,7 +130,8 @@ namespace SiachenGameEngine
 			{
 				Reserve(mCapacity * 2);
 			}
-			mData.v[mSize] = data;
+			//mData.v[mSize] = data;
+			new (mData.v + mSize)glm::vec4(data);
 			++mSize;
 		}
 
@@ -141,7 +145,8 @@ namespace SiachenGameEngine
 			{
 				Reserve(mCapacity * 2);
 			}
-			mData.m[mSize] = data;
+			//mData.m[mSize] = data;
+			new (mData.m + mSize)glm::mat4x4(data);
 			++mSize;
 		}
 
@@ -155,13 +160,14 @@ namespace SiachenGameEngine
 			{
 				Reserve(mCapacity * 2);
 			}
-			mData.r[mSize] = const_cast<GameplayFramework::RTTI*>(data);
+			//mData.r[mSize] = const_cast<GameplayFramework::RTTI*>(data);
+			new (mData.f + mSize)GameplayFramework::RTTI*(const_cast<GameplayFramework::RTTI*>(data));
 			++mSize;
 		}
 
 		void Datum::PopBack()
 		{
-			if (mIsExternal == true)
+			if (mIsExternal == true || mDatumType == DatumType::UnknownType)
 			{
 				throw std::runtime_error("Invalid pop operation.");
 			}
@@ -171,7 +177,13 @@ namespace SiachenGameEngine
 			}
 			else
 			{
-				--mSize;
+				if		(mDatumType == DatumType::IntegerType)	mData.i[--mSize].std::int32_t::~int32_t();
+				else if (mDatumType == DatumType::FloatType)	mData.f[--mSize].std::float_t::~float_t();
+				else if (mDatumType == DatumType::VectorType)	mData.v[--mSize].glm::vec4::~vec4();
+				else if (mDatumType == DatumType::MatrixType)	mData.m[--mSize].glm::mat4x4::~mat4x4();
+				else if (mDatumType == DatumType::StringType)	mData.s[--mSize].std::string::~string();
+				//else if (mDatumType == DatumType::PointerType)	mData.r[--mSize].GameplayFramework::RTTI::~RTTI*();
+				// TODO Scope
 			}
 		}
 
@@ -195,7 +207,84 @@ namespace SiachenGameEngine
 			mCapacity = 0;
 		}
 
+		void Datum::Set(std::int32_t value, std::uint32_t index)
+		{
+			if (mSize > index)
+			{
+				new (mData.i + index)std::int32_t(value);
+			}
+			else if (mIsExternal)
+			{
+				throw std::runtime_error("Out of bounds of the external array.");
+			}
+			PushBack(value);
+		}
 
+		void Datum::Set(std::float_t value, std::uint32_t index)
+		{
+			if (mSize > index)
+			{
+				new (mData.f + index)std::float_t(value);
+			}
+			else if (mIsExternal)
+			{
+				throw std::runtime_error("Out of bounds of the external array.");
+			}
+			PushBack(value);
+		}
+
+		void Datum::Set(glm::vec4 value, std::uint32_t index)
+		{
+			if (mSize > index)
+			{
+				new (mData.f + index)glm::vec4(value);
+			}
+			else if (mIsExternal)
+			{
+				throw std::runtime_error("Out of bounds of the external array.");
+			}
+			PushBack(value);
+		}
+
+		void Datum::Set(glm::mat4x4 value, std::uint32_t index)
+		{
+			if (mSize > index)
+			{
+				new (mData.f + index)glm::mat4x4(value);
+			}
+			else if (mIsExternal)
+			{
+				throw std::runtime_error("Out of bounds of the external array.");
+			}
+			PushBack(value);
+		}
+
+		void Datum::Set(std::string value, std::uint32_t index)
+		{
+			if (mSize > index)
+			{
+				new (mData.f + index)std::string(value);
+			}
+			else if (mIsExternal)
+			{
+				throw std::runtime_error("Out of bounds of the external array.");
+			}
+			PushBack(value);
+		}
+
+		// TODO CHECK Placement new
+		void Datum::Set(GameplayFramework::RTTI* value, std::uint32_t index)
+		{
+			if (mSize > index)
+			{
+				new (mData.f + index)GameplayFramework::RTTI*(value);
+			}
+			else if (mIsExternal)
+			{
+				throw std::runtime_error("Out of bounds of the external array.");
+			}
+			PushBack(value);
+		}
 
 		//Datum::Datum(const Datum& rhs)
 		//{

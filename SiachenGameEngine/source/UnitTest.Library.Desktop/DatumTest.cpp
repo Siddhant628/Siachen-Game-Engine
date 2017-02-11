@@ -29,15 +29,18 @@ namespace UnitTestLibraryDesktop
 
 		TEST_METHOD(Datum_First)
 		{
-			//Datum floatDatum;
-			//floatDatum.SetType(DatumType::FloatType);
-			//floatDatum.PushBack(2.0f);
+			Datum floatDatum;
+			floatDatum.SetType(DatumType::FloatType);
+			floatDatum.PushBack(2.0f);
+			Assert::AreEqual(2.0f, floatDatum.Get<float_t>());
 
 			Datum intDatum;
 			intDatum.SetType(DatumType::IntegerType);
 			intDatum.PushBack(5);
 			intDatum.PushBack(8);
 			intDatum.PushBack(11);
+			intDatum.PopBack();
+			Assert::AreEqual(8, intDatum.Get<int>(1U));
 		}
 
 	private:

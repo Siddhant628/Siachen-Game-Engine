@@ -35,7 +35,7 @@ namespace SiachenGameEngine
 			union DatumValues
 			{
 				std::int32_t* i;
-				float* f;
+				std::float_t* f;
 				glm::vec4* v;
 				glm::mat4x4* m;
 				std::string* s;
@@ -127,7 +127,7 @@ namespace SiachenGameEngine
 			* @param data The matrix to be pushed into the datum.
 			*/
 			void PushBack(const glm::mat4x4& data);
-			// TODO Implement PushBack for Scope type.
+			// TODO Scope PushBack
 
 			/**
 			* Push the item at the end of the datum.
@@ -135,12 +135,46 @@ namespace SiachenGameEngine
 			*/
 			void PushBack(const GameplayFramework::RTTI* data);
 
-			// TODO Would we need to call destructor?
 			void PopBack();
 
 			void Clear();
 
 			void ClearAndFree();
+
+			template<typename T>
+			T& Get(std::uint32_t index = 0) const;
+
+			template<>
+			std::int32_t& Get(std::uint32_t index) const;
+
+			template<>
+			std::float_t& Get(std::uint32_t index) const;
+
+			template<>
+			glm::vec4& Get(std::uint32_t index) const;
+
+			template<>
+			glm::mat4x4& Get(std::uint32_t index) const;
+
+			template<>
+			std::string& Get(std::uint32_t index) const;
+			// TODO Scope Get specialization
+			template<>
+			GameplayFramework::RTTI*& Get(std::uint32_t index) const;
+
+			void Set(std::int32_t value, std::uint32_t index = 0);
+
+			void Set(std::float_t value, std::uint32_t index = 0);
+
+			void Set(glm::vec4 value, std::uint32_t index = 0);
+
+			void Set(glm::mat4x4 value, std::uint32_t index = 0);
+
+			void Set(std::string value, std::uint32_t index = 0);
+
+			void Set(GameplayFramework::RTTI* value, std::uint32_t index = 0);
+			// TODO Scope Set
+
 
 			// TODO 4 cases - Both sides could be internal or external
 			//Datum& operator=(const Datum& rhs);
@@ -154,9 +188,6 @@ namespace SiachenGameEngine
 			//Datum& operator=(const glm::mat4x4& rhs);
 			//Datum& operator=(const GameplayFramework::RTTI* rhs);
 
-
-			//void Clear();
-
 			//void SetStorage(std::int32_t* externalArray, std::uint32_t numberOfElements);
 			//void SetStorage(float* externalArray, std::uint32_t numberOfElements);
 
@@ -164,3 +195,5 @@ namespace SiachenGameEngine
 		};
 	}
 }
+
+#include "Datum.inl"
