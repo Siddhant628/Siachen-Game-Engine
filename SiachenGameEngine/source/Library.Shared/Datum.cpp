@@ -161,7 +161,7 @@ namespace SiachenGameEngine
 				Reserve(mCapacity * 2);
 			}
 			//mData.r[mSize] = const_cast<GameplayFramework::RTTI*>(data);
-			new (mData.f + mSize)GameplayFramework::RTTI*(const_cast<GameplayFramework::RTTI*>(data));
+			new (mData.r + mSize)GameplayFramework::RTTI*(const_cast<GameplayFramework::RTTI*>(data));
 			++mSize;
 		}
 
@@ -182,7 +182,7 @@ namespace SiachenGameEngine
 				else if (mDatumType == DatumType::VectorType)	mData.v[--mSize].glm::vec4::~vec4();
 				else if (mDatumType == DatumType::MatrixType)	mData.m[--mSize].glm::mat4x4::~mat4x4();
 				else if (mDatumType == DatumType::StringType)	mData.s[--mSize].std::string::~string();
-				//else if (mDatumType == DatumType::PointerType)	mData.r[--mSize].GameplayFramework::RTTI::~RTTI*();
+				else if (mDatumType == DatumType::PointerType)	--mSize;
 				// TODO Scope
 			}
 		}
@@ -209,6 +209,10 @@ namespace SiachenGameEngine
 
 		void Datum::Set(std::int32_t value, std::uint32_t index)
 		{
+			if (mDatumType != DatumType::IntegerType)
+			{
+				throw std::runtime_error("Improper set operation.");
+			}
 			if (mSize > index)
 			{
 				new (mData.i + index)std::int32_t(value);
@@ -222,6 +226,10 @@ namespace SiachenGameEngine
 
 		void Datum::Set(std::float_t value, std::uint32_t index)
 		{
+			if (mDatumType != DatumType::FloatType)
+			{
+				throw std::runtime_error("Improper set operation.");
+			}
 			if (mSize > index)
 			{
 				new (mData.f + index)std::float_t(value);
@@ -235,6 +243,10 @@ namespace SiachenGameEngine
 
 		void Datum::Set(glm::vec4 value, std::uint32_t index)
 		{
+			if (mDatumType != DatumType::VectorType)
+			{
+				throw std::runtime_error("Improper set operation.");
+			}
 			if (mSize > index)
 			{
 				new (mData.f + index)glm::vec4(value);
@@ -248,6 +260,10 @@ namespace SiachenGameEngine
 
 		void Datum::Set(glm::mat4x4 value, std::uint32_t index)
 		{
+			if (mDatumType != DatumType::MatrixType)
+			{
+				throw std::runtime_error("Improper set operation.");
+			}
 			if (mSize > index)
 			{
 				new (mData.f + index)glm::mat4x4(value);
@@ -261,6 +277,10 @@ namespace SiachenGameEngine
 
 		void Datum::Set(std::string value, std::uint32_t index)
 		{
+			if (mDatumType != DatumType::StringType)
+			{
+				throw std::runtime_error("Improper set operation.");
+			}
 			if (mSize > index)
 			{
 				new (mData.f + index)std::string(value);
@@ -272,9 +292,13 @@ namespace SiachenGameEngine
 			PushBack(value);
 		}
 
-		// TODO CHECK Placement new
+		// TODO CHECK Placement New
 		void Datum::Set(GameplayFramework::RTTI* value, std::uint32_t index)
 		{
+			if (mDatumType != DatumType::PointerType)
+			{
+				throw std::runtime_error("Improper set operation.");
+			}
 			if (mSize > index)
 			{
 				new (mData.f + index)GameplayFramework::RTTI*(value);
@@ -286,6 +310,195 @@ namespace SiachenGameEngine
 			PushBack(value);
 		}
 
+		bool Datum::operator==(const Datum & rhs) const
+		{
+			if (mDatumType == DatumType::UnknownType || rhs.mDatumType == DatumType::UnknownType)
+			{
+				throw std::runtime_error("Cannot compare unknown types.");
+			}
+			if ((mSize != rhs.mSize) || (mDatumType != rhs.mDatumType))
+			{
+				return false;
+			}
+			// In case of a string
+			if (mDatumType == DatumType::StringType)
+			{
+				for (std::uint32_t index = 0; index < mSize; ++index)
+				{
+					if (mData.s[index] != rhs.mData.s[index])	return false;
+				}
+				return true;
+			}
+			// In case of a RTTI* type
+			else if (mDatumType == DatumType::PointerType)
+			{
+				for (std::uint32_t index = 0; index < mSize; ++index)
+				{
+					if (!(mData.r[index]->Equals(rhs.mData.r[index])))	return false;
+				}
+				return true;
+			}
+			// In case of any other type
+			std::uint32_t sizeOfElement = 0;
+			if		(mDatumType == DatumType::IntegerType)	sizeOfElement = sizeof(std::int32_t);
+			else if (mDatumType == DatumType::FloatType)	sizeOfElement = sizeof(std::float_t);
+			else if (mDatumType == DatumType::MatrixType)	sizeOfElement = sizeof(glm::mat4x4);
+			else if (mDatumType == DatumType::VectorType)	sizeOfElement = sizeof(glm::vec4);
+			
+			return (std::memcmp(mData.vp, rhs.mData.vp, sizeOfElement*mSize) == 0);
+
+			// TODO Scope
+		}
+
+		bool Datum::operator!=(const Datum & rhs) const
+		{
+			if (mDatumType == DatumType::UnknownType || rhs.mDatumType == DatumType::UnknownType)
+			{
+				throw std::runtime_error("Cannot compare unknown types.");
+			}
+			if ((mSize != rhs.mSize) || (mDatumType != rhs.mDatumType))
+			{
+				return true;
+			}
+			// In case of a string
+			if (mDatumType == DatumType::StringType)
+			{
+				for (std::uint32_t index = 0; index < mSize; ++index)
+				{
+					if (mData.s[index] != rhs.mData.s[index])	return true;
+				}
+				return false;
+			}
+			// In case of a RTTI* type
+			else if (mDatumType == DatumType::PointerType)
+			{
+				for (std::uint32_t index = 0; index < mSize; ++index)
+				{
+					if (!(mData.r[index]->Equals(rhs.mData.r[index])))	return true;
+				}
+				return false;
+			}
+			// In case of any other type
+			std::uint32_t sizeOfElement = 0;
+			if		(mDatumType == DatumType::IntegerType)	sizeOfElement = sizeof(std::int32_t);
+			else if (mDatumType == DatumType::FloatType)	sizeOfElement = sizeof(std::float_t);
+			else if (mDatumType == DatumType::MatrixType)	sizeOfElement = sizeof(glm::mat4x4);
+			else if (mDatumType == DatumType::VectorType)	sizeOfElement = sizeof(glm::vec4);
+			
+			return (std::memcmp(mData.vp, rhs.mData.vp, sizeOfElement*mSize) != 0);
+
+			// TODO Scope
+		}
+
+		bool Datum::operator==(const std::int32_t rhs) const
+		{
+			if ((mSize != 1) || (mDatumType != DatumType::IntegerType))
+			{
+				throw std::runtime_error("Invalid comparison operation.");
+			}
+			return (mData.i[0] == rhs);
+		}
+
+		bool Datum::operator==(const std::float_t rhs) const
+		{
+			if ((mSize != 1) || (mDatumType != DatumType::FloatType))
+			{
+				throw std::runtime_error("Invalid comparison operation.");
+			}
+			return (mData.f[0] == rhs);
+		}
+
+		bool Datum::operator==(const std::string& rhs) const
+		{
+			if ((mSize != 1) || (mDatumType != DatumType::StringType))
+			{
+				throw std::runtime_error("Invalid comparison operation.");
+			}
+			return (mData.s[0] == rhs);
+		}
+
+		bool Datum::operator==(const glm::vec4& rhs) const
+		{
+			if ((mSize != 1) || (mDatumType != DatumType::VectorType))
+			{
+				throw std::runtime_error("Invalid comparison operation.");
+			}
+			return (mData.v[0] == rhs);
+		}
+
+		bool Datum::operator==(const glm::mat4x4& rhs) const
+		{
+			if ((mSize != 1) || (mDatumType != DatumType::MatrixType))
+			{
+				throw std::runtime_error("Invalid comparison operation.");
+			}
+			return (mData.m[0] == rhs);
+		}
+
+		bool Datum::operator==(const GameplayFramework::RTTI* rhs) const
+		{
+			if ((mSize != 1) || (mDatumType != DatumType::PointerType))
+			{
+				throw std::runtime_error("Invalid comparison operation.");
+			}
+			return (mData.r[0] == rhs);
+		}
+
+		bool Datum::operator!=(const std::int32_t rhs) const
+		{
+			if ((mSize != 1) || (mDatumType != DatumType::IntegerType))
+			{
+				throw std::runtime_error("Invalid comparison operation.");
+			}
+			return (mData.i[0] != rhs);
+		}
+
+		bool Datum::operator!=(const std::float_t rhs) const
+		{
+			if ((mSize != 1) || (mDatumType != DatumType::FloatType))
+			{
+				throw std::runtime_error("Invalid comparison operation.");
+			}
+			return (mData.f[0] != rhs);
+		}
+
+		bool Datum::operator!=(const std::string& rhs) const
+		{
+			if ((mSize != 1) || (mDatumType != DatumType::StringType))
+			{
+				throw std::runtime_error("Invalid comparison operation.");
+			}
+			return (mData.s[0] != rhs);
+		}
+
+		bool Datum::operator!=(const glm::vec4& rhs) const
+		{
+			if ((mSize != 1) || (mDatumType != DatumType::VectorType))
+			{
+				throw std::runtime_error("Invalid comparison operation.");
+			}
+			return (mData.v[0] != rhs);
+		}
+
+		bool Datum::operator!=(const glm::mat4x4& rhs) const
+		{
+			if ((mSize != 1) || (mDatumType != DatumType::MatrixType))
+			{
+				throw std::runtime_error("Invalid comparison operation.");
+			}
+			return (mData.m[0] != rhs);
+		}
+
+		bool Datum::operator!=(const GameplayFramework::RTTI* rhs) const
+		{
+			if ((mSize != 1) || (mDatumType != DatumType::PointerType))
+			{
+				throw std::runtime_error("Invalid comparison operation.");
+			}
+			return (mData.r[0] != rhs);
+		}
+		
+		
 		//Datum::Datum(const Datum& rhs)
 		//{
 		//	UNREFERENCED_PARAMETER(rhs);

@@ -175,6 +175,33 @@ namespace SiachenGameEngine
 			void Set(GameplayFramework::RTTI* value, std::uint32_t index = 0);
 			// TODO Scope Set
 
+			bool operator==(const Datum& rhs) const;
+
+			bool operator!=(const Datum& rhs) const;
+			
+			bool operator==(const std::int32_t rhs) const;
+
+			bool operator==(const std::float_t rhs) const;
+
+			bool operator==(const std::string& rhs) const;
+
+			bool operator==(const glm::vec4& rhs) const;
+
+			bool operator==(const glm::mat4x4& rhs) const;
+
+			bool operator==(const GameplayFramework::RTTI* rhs) const;
+
+			bool operator!=(const std::int32_t rhs) const;
+
+			bool operator!=(const std::float_t rhs) const;
+
+			bool operator!=(const std::string& rhs) const;
+
+			bool operator!=(const glm::vec4& rhs) const;
+
+			bool operator!=(const glm::mat4x4& rhs) const;
+
+			bool operator!=(const GameplayFramework::RTTI* rhs) const;
 
 			// TODO 4 cases - Both sides could be internal or external
 			//Datum& operator=(const Datum& rhs);
