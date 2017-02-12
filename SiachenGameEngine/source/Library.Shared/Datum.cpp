@@ -506,7 +506,98 @@ namespace SiachenGameEngine
 			}
 			return (mData.r[0] != rhs);
 		}
+
+		void Datum::SetStorage(std::int32_t* externalArray, std::uint32_t numberOfElements)
+		{
+			if (mDatumType != DatumType::IntegerType || mIsExternal)
+			{
+				throw std::runtime_error("Datum cannot be assigned to an external array.");
+			}
+			// Clear and free the memory allocated to the datum previously
+			ClearAndFree();
+			// Update member variables
+			mIsExternal = true;
+			mSize = numberOfElements;
+			mCapacity = numberOfElements;
+			mData.i = externalArray;
+		}
+
+		void Datum::SetStorage(std::float_t* externalArray, std::uint32_t numberOfElements)
+		{
+			if (mDatumType != DatumType::FloatType || mIsExternal)
+			{
+				throw std::runtime_error("Datum cannot be assigned to an external array.");
+			}
+			// Clear and free the memory allocated to the datum previously
+			ClearAndFree();
+			// Update member variables
+			mIsExternal = true;
+			mSize = numberOfElements;
+			mCapacity = numberOfElements;
+			mData.f = externalArray;
+		}
+
+		void Datum::SetStorage(std::string* externalArray, std::uint32_t numberOfElements)
+		{
+			if (mDatumType != DatumType::StringType || mIsExternal)
+			{
+				throw std::runtime_error("Datum cannot be assigned to an external array.");
+			}
+			// Clear and free the memory allocated to the datum previously
+			ClearAndFree();
+			// Update member variables
+			mIsExternal = true;
+			mSize = numberOfElements;
+			mCapacity = numberOfElements;
+			mData.s = externalArray;
+		}
+
+		void Datum::SetStorage(glm::vec4* externalArray, std::uint32_t numberOfElements)
+		{
+			if (mDatumType != DatumType::VectorType || mIsExternal)
+			{
+				throw std::runtime_error("Datum cannot be assigned to an external array.");
+			}
+			// Clear and free the memory allocated to the datum previously
+			ClearAndFree();
+			// Update member variables
+			mIsExternal = true;
+			mSize = numberOfElements;
+			mCapacity = numberOfElements;
+			mData.v = externalArray;
+		}
+
+		void Datum::SetStorage(glm::mat4x4* externalArray, std::uint32_t numberOfElements)
+		{
+			if (mDatumType != DatumType::MatrixType || mIsExternal)
+			{
+				throw std::runtime_error("Datum cannot be assigned to an external array.");
+			}
+			// Clear and free the memory allocated to the datum previously
+			ClearAndFree();
+			// Update member variables
+			mIsExternal = true;
+			mSize = numberOfElements;
+			mCapacity = numberOfElements;
+			mData.m = externalArray;
+		}
+
+		void Datum::SetStorage(GameplayFramework::RTTI** externalArray, std::uint32_t numberOfElements)
+		{
+			if (mDatumType != DatumType::PointerType || mIsExternal)
+			{
+				throw std::runtime_error("Datum cannot be assigned to an external array.");
+			}
+			// Clear and free the memory allocated to the datum previously
+			ClearAndFree();
+			// Update member variables
+			mIsExternal = true;
+			mSize = numberOfElements;
+			mCapacity = numberOfElements;
+			mData.r = externalArray;
+		}
 		
+
 		
 		//Datum::Datum(const Datum& rhs)
 		//{

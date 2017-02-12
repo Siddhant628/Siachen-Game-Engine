@@ -134,74 +134,228 @@ namespace SiachenGameEngine
 			* @param data The RTTI* to be pushed into the datum.
 			*/
 			void PushBack(const GameplayFramework::RTTI* data);
-
+			/**
+			* Pop out the last item of the datum.
+			*/
 			void PopBack();
-
+			/**
+			* Clears the memory associated with the datum. However the memory remains reserved, i.e. the capacity remains unchanged.
+			*/
 			void Clear();
-
+			/**
+			* Clears and frees the memory used by the datum. This would reset the size and capacity to 0.
+			*/
 			void ClearAndFree();
-
+			/**
+			* Get a specific item stored in the datum.
+			* @param index The position of the item to retrieve from the datum.
+			* @return The item T stored in the datum.
+			*/
 			template<typename T>
 			T& Get(std::uint32_t index = 0) const;
-
+			/**
+			* Get a specific item stored in the datum.
+			* @param index The position of the item to retrieve from the datum.
+			* @return The integer stored in the datum.
+			*/
 			template<>
 			std::int32_t& Get(std::uint32_t index) const;
-
+			/**
+			* Get a specific item stored in the datum.
+			* @param index The position of the item to retrieve from the datum.
+			* @return The floating point number stored in the datum.
+			*/
 			template<>
 			std::float_t& Get(std::uint32_t index) const;
-
+			/**
+			* Get a specific item stored in the datum.
+			* @param index The position of the item to retrieve from the datum.
+			* @return The vector stored in the datum.
+			*/
 			template<>
 			glm::vec4& Get(std::uint32_t index) const;
-
+			/**
+			* Get a specific item stored in the datum.
+			* @param index The position of the item to retrieve from the datum.
+			* @return The matrix stored in the datum.
+			*/
 			template<>
 			glm::mat4x4& Get(std::uint32_t index) const;
-
+			/**
+			* Get a specific item stored in the datum.
+			* @param index The position of the item to retrieve from the datum.
+			* @return The string stored in the datum.
+			*/
 			template<>
 			std::string& Get(std::uint32_t index) const;
 			// TODO Scope Get specialization
+
+			/**
+			* Get a specific item stored in the datum.
+			* @param index The position of the item to retrieve from the datum.
+			* @return The RTTI* stored in the datum.
+			*/
 			template<>
 			GameplayFramework::RTTI*& Get(std::uint32_t index) const;
-
+			/**
+			* Set the value of an item in the datum.
+			* @param value The value that should be taken by the specific item in the datum.
+			* @param index The index at which the value should be set.
+			*/
 			void Set(std::int32_t value, std::uint32_t index = 0);
-
+			/**
+			* Set the value of an item in the datum.
+			* @param value The value that should be taken by the specific item in the datum.
+			* @param index The index at which the value should be set.
+			*/
 			void Set(std::float_t value, std::uint32_t index = 0);
-
+			/**
+			* Set the value of an item in the datum.
+			* @param value The value that should be taken by the specific item in the datum.
+			* @param index The index at which the value should be set.
+			*/
 			void Set(glm::vec4& value, std::uint32_t index = 0);
-
+			/**
+			* Set the value of an item in the datum.
+			* @param value The value that should be taken by the specific item in the datum.
+			* @param index The index at which the value should be set.
+			*/
 			void Set(glm::mat4x4& value, std::uint32_t index = 0);
-
+			/**
+			* Set the value of an item in the datum.
+			* @param value The value that should be taken by the specific item in the datum.
+			* @param index The index at which the value should be set.
+			*/
 			void Set(std::string& value, std::uint32_t index = 0);
-
+			/**
+			* Set the value of an item in the datum.
+			* @param value The value that should be taken by the specific item in the datum.
+			* @param index The index at which the value should be set.
+			*/
 			void Set(GameplayFramework::RTTI* value, std::uint32_t index = 0);
 			// TODO Scope Set
 
+			/**
+			* Equals operator overloaded to compare two datums.
+			* @param rhs The datum with which this datum should be compared.
+			* @return True if the two datums are equal.
+			*/
 			bool operator==(const Datum& rhs) const;
-
+			/**
+			* Inequals operator overloaded to compare two datums.
+			* @param rhs The datum with which this datum should be compared.
+			* @return True if the two datums aren't equal.
+			*/
 			bool operator!=(const Datum& rhs) const;
-			
+			/**
+			* Equals operator overloaded to compare a scalar datum to an integer.
+			* @param rhs The integer with which this datum should be compared.
+			* @return True if the two are equal.
+			*/
 			bool operator==(const std::int32_t rhs) const;
-
+			/**
+			* Equals operator overloaded to compare a scalar datum to a float.
+			* @param rhs The float with which this datum should be compared.
+			* @return True if the two are equal.
+			*/
 			bool operator==(const std::float_t rhs) const;
-
+			/**
+			* Equals operator overloaded to compare a scalar datum to a string.
+			* @param rhs The string with which this datum should be compared.
+			* @return True if the two are equal.
+			*/
 			bool operator==(const std::string& rhs) const;
-
+			/**
+			* Equals operator overloaded to compare a scalar datum to an vector.
+			* @param rhs The vector with which this datum should be compared.
+			* @return True if the two are equal.
+			*/
 			bool operator==(const glm::vec4& rhs) const;
-
+			/**
+			* Equals operator overloaded to compare a scalar datum to a matrix.
+			* @param rhs The matrix with which this datum should be compared.
+			* @return True if the two are equal.
+			*/
 			bool operator==(const glm::mat4x4& rhs) const;
-
+			/**
+			* Equals operator overloaded to compare a scalar datum to an RTTI*.
+			* @param rhs The RTTI* with which this datum should be compared.
+			* @return True if the two are equal.
+			*/
 			bool operator==(const GameplayFramework::RTTI* rhs) const;
-
+			/**
+			* Inequals operator overloaded to compare a scalar datum to an integer.
+			* @param rhs The integer with which this datum should be compared.
+			* @return True if the two aren't equal.
+			*/
 			bool operator!=(const std::int32_t rhs) const;
-
+			/**
+			* Inequals operator overloaded to compare a scalar datum to a float.
+			* @param rhs The float with which this datum should be compared.
+			* @return True if the two aren't equal.
+			*/
 			bool operator!=(const std::float_t rhs) const;
-
+			/**
+			* Inequals operator overloaded to compare a scalar datum to a string.
+			* @param rhs The string with which this datum should be compared.
+			* @return True if the two aren't equal.
+			*/
 			bool operator!=(const std::string& rhs) const;
-
+			/**
+			* Inequals operator overloaded to compare a scalar datum to a vector.
+			* @param rhs The vector with which this datum should be compared.
+			* @return True if the two aren't equal.
+			*/
 			bool operator!=(const glm::vec4& rhs) const;
-
+			/**
+			* Inequals operator overloaded to compare a scalar datum to a matrix.
+			* @param rhs The matrix with which this datum should be compared.
+			* @return True if the two aren't equal.
+			*/
 			bool operator!=(const glm::mat4x4& rhs) const;
-
+			/**
+			* Inequals operator overloaded to compare a scalar datum to a RTTI*.
+			* @param rhs The RTTI* with which this datum should be compared.
+			* @return True if the two aren't equal.
+			*/
 			bool operator!=(const GameplayFramework::RTTI* rhs) const;
+			/**
+			* Associate datum with an external array.
+			* @param externalArray A pointer to the memory location where the external array starts.
+			* @param numberOfElements The number of items in the external array.
+			*/
+			void SetStorage(std::int32_t* externalArray, std::uint32_t numberOfElements);
+			/**
+			* Associate datum with an external array.
+			* @param externalArray A pointer to the memory location where the external array starts.
+			* @param numberOfElements The number of items in the external array.
+			*/
+			void SetStorage(std::float_t* externalArray, std::uint32_t numberOfElements);
+			/**
+			* Associate datum with an external array.
+			* @param externalArray A pointer to the memory location where the external array starts.
+			* @param numberOfElements The number of items in the external array.
+			*/
+			void SetStorage(std::string* externalArray, std::uint32_t numberOfElements);
+			/**
+			* Associate datum with an external array.
+			* @param externalArray A pointer to the memory location where the external array starts.
+			* @param numberOfElements The number of items in the external array.
+			*/
+			void SetStorage(glm::vec4* externalArray, std::uint32_t numberOfElements);
+			/**
+			* Associate datum with an external array.
+			* @param externalArray A pointer to the memory location where the external array starts.
+			* @param numberOfElements The number of items in the external array.
+			*/
+			void SetStorage(glm::mat4x4* externalArray, std::uint32_t numberOfElements);
+			/**
+			* Associate datum with an external array.
+			* @param externalArray A pointer to the memory location where the external array starts.
+			* @param numberOfElements The number of items in the external array.
+			*/
+			void SetStorage(GameplayFramework::RTTI** externalArray, std::uint32_t numberOfElements);
+
 
 			// TODO 4 cases - Both sides could be internal or external
 			//Datum& operator=(const Datum& rhs);
@@ -214,10 +368,6 @@ namespace SiachenGameEngine
 			//Datum& operator=(const glm::vec4& rhs);
 			//Datum& operator=(const glm::mat4x4& rhs);
 			//Datum& operator=(const GameplayFramework::RTTI* rhs);
-
-			//void SetStorage(std::int32_t* externalArray, std::uint32_t numberOfElements);
-			//void SetStorage(float* externalArray, std::uint32_t numberOfElements);
-
 
 		};
 	}
