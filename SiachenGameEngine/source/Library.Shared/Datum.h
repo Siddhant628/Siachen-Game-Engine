@@ -166,11 +166,11 @@ namespace SiachenGameEngine
 
 			void Set(std::float_t value, std::uint32_t index = 0);
 
-			void Set(glm::vec4 value, std::uint32_t index = 0);
+			void Set(glm::vec4& value, std::uint32_t index = 0);
 
-			void Set(glm::mat4x4 value, std::uint32_t index = 0);
+			void Set(glm::mat4x4& value, std::uint32_t index = 0);
 
-			void Set(std::string value, std::uint32_t index = 0);
+			void Set(std::string& value, std::uint32_t index = 0);
 
 			void Set(GameplayFramework::RTTI* value, std::uint32_t index = 0);
 			// TODO Scope Set

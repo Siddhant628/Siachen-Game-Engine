@@ -12,7 +12,7 @@ namespace SiachenGameEngine
 
 		Datum::~Datum()
 		{
-			ClearAndFree();
+			if(!mIsExternal) ClearAndFree();
 		}
 
 		DatumType Datum::Type() const
@@ -24,7 +24,7 @@ namespace SiachenGameEngine
 		{
 			if (mDatumType != DatumType::UnknownType)
 			{
-				throw std::runtime_error("This datum has already been assigned a type");
+				throw std::runtime_error("This datum has already been assigned a type.");
 			}
 			mDatumType = setType;
 		}
@@ -41,13 +41,13 @@ namespace SiachenGameEngine
 
 		void Datum::Reserve(std::uint32_t newCapacity)
 		{
-			if (newCapacity < mSize)
+			if (mIsExternal)
 			{
-				throw std::runtime_error("Capacity cannot be less than the current size.");
+				throw std::runtime_error("Cannot reserve memory for an external array.");
 			}
-			if (mDatumType == DatumType::UnknownType)
+			if ((newCapacity < mSize) || (mDatumType == DatumType::UnknownType))
 			{
-				throw std::runtime_error("Cannot reserve memory for an unknown type");
+				throw std::runtime_error("Invalid reserve request.");
 			}
 			// In case no memory is allocated and the capacity is 0.
 			if (newCapacity == 0)
@@ -77,7 +77,7 @@ namespace SiachenGameEngine
 
 		void Datum::PushBack(const std::int32_t data)
 		{
-			if ((mDatumType != DatumType::IntegerType) || (mIsExternal == true))
+			if ((mDatumType != DatumType::IntegerType) || mIsExternal)
 			{
 				throw std::runtime_error("Invalid push operation.");
 			}
@@ -92,7 +92,7 @@ namespace SiachenGameEngine
 
 		void Datum::PushBack(const std::float_t data)
 		{
-			if ((mDatumType != DatumType::FloatType) || (mIsExternal == true))
+			if ((mDatumType != DatumType::FloatType) || mIsExternal)
 			{
 				throw std::runtime_error("Invalid push operation.");
 			}
@@ -107,7 +107,7 @@ namespace SiachenGameEngine
 
 		void Datum::PushBack(const std::string& data)
 		{
-			if ((mDatumType != DatumType::StringType) || (mIsExternal == true))
+			if ((mDatumType != DatumType::StringType) || mIsExternal)
 			{
 				throw std::runtime_error("Invalid push operation.");
 			}
@@ -122,7 +122,7 @@ namespace SiachenGameEngine
 
 		void Datum::PushBack(const glm::vec4& data)
 		{
-			if ((mDatumType != DatumType::VectorType) || (mIsExternal == true))
+			if ((mDatumType != DatumType::VectorType) || mIsExternal)
 			{
 				throw std::runtime_error("Invalid push operation.");
 			}
@@ -137,7 +137,7 @@ namespace SiachenGameEngine
 
 		void Datum::PushBack(const glm::mat4x4& data)
 		{
-			if ((mDatumType != DatumType::MatrixType) || (mIsExternal == true))
+			if ((mDatumType != DatumType::MatrixType) || mIsExternal)
 			{
 				throw std::runtime_error("Invalid push operation.");
 			}
@@ -152,7 +152,7 @@ namespace SiachenGameEngine
 
 		void Datum::PushBack(const GameplayFramework::RTTI* data)
 		{
-			if ((mDatumType != DatumType::PointerType) || (mIsExternal == true))
+			if ((mDatumType != DatumType::PointerType) || mIsExternal)
 			{
 				throw std::runtime_error("Invalid push operation.");
 			}
@@ -167,7 +167,7 @@ namespace SiachenGameEngine
 
 		void Datum::PopBack()
 		{
-			if (mIsExternal == true || mDatumType == DatumType::UnknownType)
+			if (mIsExternal || mDatumType == DatumType::UnknownType)
 			{
 				throw std::runtime_error("Invalid pop operation.");
 			}
@@ -189,6 +189,10 @@ namespace SiachenGameEngine
 
 		void Datum::Clear()
 		{
+			if (mIsExternal)
+			{
+				throw std::runtime_error("Cannot clear external array.");
+			}
 			while (mSize > 0)
 			{
 				PopBack();
@@ -215,6 +219,7 @@ namespace SiachenGameEngine
 			}
 			if (mSize > index)
 			{
+				mData.i[index].std::int32_t::~int32_t();
 				new (mData.i + index)std::int32_t(value);
 			}
 			else if (mIsExternal)
@@ -232,6 +237,7 @@ namespace SiachenGameEngine
 			}
 			if (mSize > index)
 			{
+				mData.f[index].std::float_t::~float_t();
 				new (mData.f + index)std::float_t(value);
 			}
 			else if (mIsExternal)
@@ -241,7 +247,7 @@ namespace SiachenGameEngine
 			PushBack(value);
 		}
 
-		void Datum::Set(glm::vec4 value, std::uint32_t index)
+		void Datum::Set(glm::vec4& value, std::uint32_t index)
 		{
 			if (mDatumType != DatumType::VectorType)
 			{
@@ -249,7 +255,8 @@ namespace SiachenGameEngine
 			}
 			if (mSize > index)
 			{
-				new (mData.f + index)glm::vec4(value);
+				mData.v[index].glm::vec4::~vec4();
+				new (mData.v + index)glm::vec4(value);
 			}
 			else if (mIsExternal)
 			{
@@ -258,7 +265,7 @@ namespace SiachenGameEngine
 			PushBack(value);
 		}
 
-		void Datum::Set(glm::mat4x4 value, std::uint32_t index)
+		void Datum::Set(glm::mat4x4& value, std::uint32_t index)
 		{
 			if (mDatumType != DatumType::MatrixType)
 			{
@@ -266,7 +273,8 @@ namespace SiachenGameEngine
 			}
 			if (mSize > index)
 			{
-				new (mData.f + index)glm::mat4x4(value);
+				mData.m[index].glm::mat4x4::~mat4x4();
+				new (mData.m + index)glm::mat4x4(value);
 			}
 			else if (mIsExternal)
 			{
@@ -275,7 +283,7 @@ namespace SiachenGameEngine
 			PushBack(value);
 		}
 
-		void Datum::Set(std::string value, std::uint32_t index)
+		void Datum::Set(std::string& value, std::uint32_t index)
 		{
 			if (mDatumType != DatumType::StringType)
 			{
@@ -283,7 +291,8 @@ namespace SiachenGameEngine
 			}
 			if (mSize > index)
 			{
-				new (mData.f + index)std::string(value);
+				mData.s[index].std::string::~string();
+				new (mData.s + index)std::string(value);
 			}
 			else if (mIsExternal)
 			{

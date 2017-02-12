@@ -13,7 +13,7 @@ namespace SiachenGameEngine
 			{
 				throw std::out_of_range("Invalid index into the datum.");
 			}
-			return *(mData.i + index);
+			return mData.i[index];
 		}
 
 		template<>
@@ -27,7 +27,7 @@ namespace SiachenGameEngine
 			{
 				throw std::out_of_range("Invalid index into the datum.");
 			}
-			return *(mData.f + index);
+			return mData.f[index];
 		}
 
 		template<>
@@ -41,7 +41,7 @@ namespace SiachenGameEngine
 			{
 				throw std::out_of_range("Invalid index into the datum.");
 			}
-			return *(mData.v + index);
+			return mData.v[index];
 		}
 
 		template<>
@@ -55,7 +55,7 @@ namespace SiachenGameEngine
 			{
 				throw std::out_of_range("Invalid index into the datum.");
 			}
-			return *(mData.m + index);
+			return mData.m[index];
 		}
 
 		template<>
@@ -69,7 +69,7 @@ namespace SiachenGameEngine
 			{
 				throw std::out_of_range("Invalid index into the datum.");
 			}
-			return *(mData.s + index);
+			return mData.s[index];
 		}
 
 		template<>
@@ -83,7 +83,7 @@ namespace SiachenGameEngine
 			{
 				throw std::out_of_range("Invalid index into the datum.");
 			}
-			return *(mData.r + index);
+			return mData.r[index];
 		}
 	}
 }
