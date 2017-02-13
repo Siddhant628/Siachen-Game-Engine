@@ -109,22 +109,23 @@ namespace UnitTestLibraryDesktop
 			floatDatum.PushBack(10.0f);
 			Assert::AreEqual(floatDatum.Size(), 1U);
 
-			//Datum stringDatum;
-			//std::string str = "str";
-			//Assert::AreEqual(stringDatum.Size(), 0U);
-			//stringDatum.PushBack(str);
-			//Assert::AreEqual(stringDatum.Size(), 1U);
+			Datum stringDatum;
+			std::string str = "str";
+			Assert::AreEqual(stringDatum.Size(), 0U);
+			stringDatum.PushBack(str);
+			Assert::AreEqual(stringDatum.Size(), 1U);
 
-			//Datum vectorDatum;
-			//glm::vec4 vec(1.0f);
-			//Assert::AreEqual(vectorDatum.Size(), 0U);
-			//vectorDatum.PushBack(vec);
-			//Assert::AreEqual(vectorDatum.Size(), 1U);
+			Datum vectorDatum;
+			glm::vec4 vec(1.0f);
+			Assert::AreEqual(vectorDatum.Size(), 0U);
+			vectorDatum.PushBack(vec);
+			Assert::AreEqual(vectorDatum.Size(), 1U);
 
-			//Datum matDatum;
-			//Assert::AreEqual(intDatum.Size(), 0U);
-			//intDatum.PushBack(10);
-			//Assert::AreEqual(intDatum.Size(), 1U);
+			Datum matDatum;
+			glm::mat4x4 mat;
+			Assert::AreEqual(matDatum.Size(), 0U);
+			matDatum.PushBack(mat);
+			Assert::AreEqual(matDatum.Size(), 1U);
 		}
 
 	private:
