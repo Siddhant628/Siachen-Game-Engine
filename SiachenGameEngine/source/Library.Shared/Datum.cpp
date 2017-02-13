@@ -1,5 +1,6 @@
 #include "Datum.h"
-
+#define GLM_FORCE_CXX11
+#include "../../external/glm/glm/glm.hpp"
 
 namespace SiachenGameEngine
 {
@@ -8,6 +9,47 @@ namespace SiachenGameEngine
 		Datum::Datum() : mSize(0), mCapacity(0), mDatumType(DatumType::UnknownType), mIsExternal(false)
 		{
 			mData.vp = nullptr;
+		}
+
+		Datum::Datum(const Datum & rhs) : mDatumType(rhs.mDatumType), mSize(0), mCapacity(0), mIsExternal(false)
+		{
+			if		(mDatumType == DatumType::IntegerType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.i[index]);
+			else if (mDatumType == DatumType::FloatType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.f[index]);
+			else if (mDatumType == DatumType::StringType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.s[index]);
+			else if (mDatumType == DatumType::VectorType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.v[index]);
+			else if (mDatumType == DatumType::MatrixType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.m[index]);
+			else if (mDatumType == DatumType::PointerType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.r[index]);
+			// TODO Scope
+		}
+
+		Datum& Datum::operator=(const Datum & rhs)
+		{
+			if (this != &rhs)
+			{
+				// Clear the previously owned data
+				if (!mIsExternal)
+				{
+					ClearAndFree();
+				}
+				// In case the data in external array
+				else
+				{
+					mSize = 0;
+					mCapacity = 0;
+					mIsExternal = false;
+					mData.vp = nullptr;
+				}
+				mDatumType = rhs.mDatumType;
+				// Copy the data from rhs
+				if		(mDatumType == DatumType::IntegerType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.i[index]);
+				else if (mDatumType == DatumType::FloatType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.f[index]);
+				else if (mDatumType == DatumType::StringType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.s[index]);
+				else if (mDatumType == DatumType::VectorType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.v[index]);
+				else if (mDatumType == DatumType::MatrixType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.m[index]);
+				else if (mDatumType == DatumType::PointerType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.r[index]);
+				// TODO Scope
+			}
+			return *this;
 		}
 
 		Datum::~Datum()
@@ -77,6 +119,10 @@ namespace SiachenGameEngine
 
 		void Datum::PushBack(const std::int32_t data)
 		{
+			if (mDatumType == DatumType::UnknownType && IsEmpty())
+			{
+				SetType(DatumType::IntegerType);
+			}
 			if ((mDatumType != DatumType::IntegerType) || mIsExternal)
 			{
 				throw std::runtime_error("Invalid push operation.");
@@ -92,6 +138,10 @@ namespace SiachenGameEngine
 
 		void Datum::PushBack(const std::float_t data)
 		{
+			if (mDatumType == DatumType::UnknownType && IsEmpty())
+			{
+				SetType(DatumType::FloatType);
+			}
 			if ((mDatumType != DatumType::FloatType) || mIsExternal)
 			{
 				throw std::runtime_error("Invalid push operation.");
@@ -107,6 +157,10 @@ namespace SiachenGameEngine
 
 		void Datum::PushBack(const std::string& data)
 		{
+			if (mDatumType == DatumType::UnknownType && IsEmpty())
+			{
+				SetType(DatumType::StringType);
+			}
 			if ((mDatumType != DatumType::StringType) || mIsExternal)
 			{
 				throw std::runtime_error("Invalid push operation.");
@@ -122,6 +176,10 @@ namespace SiachenGameEngine
 
 		void Datum::PushBack(const glm::vec4& data)
 		{
+			if (mDatumType == DatumType::UnknownType && IsEmpty())
+			{
+				SetType(DatumType::VectorType);
+			}
 			if ((mDatumType != DatumType::VectorType) || mIsExternal)
 			{
 				throw std::runtime_error("Invalid push operation.");
@@ -137,6 +195,10 @@ namespace SiachenGameEngine
 
 		void Datum::PushBack(const glm::mat4x4& data)
 		{
+			if (mDatumType == DatumType::UnknownType && IsEmpty())
+			{
+				SetType(DatumType::MatrixType);
+			}
 			if ((mDatumType != DatumType::MatrixType) || mIsExternal)
 			{
 				throw std::runtime_error("Invalid push operation.");
@@ -152,6 +214,10 @@ namespace SiachenGameEngine
 
 		void Datum::PushBack(const GameplayFramework::RTTI* data)
 		{
+			if (mDatumType == DatumType::UnknownType && IsEmpty())
+			{
+				SetType(DatumType::PointerType);
+			}
 			if ((mDatumType != DatumType::PointerType) || mIsExternal)
 			{
 				throw std::runtime_error("Invalid push operation.");
@@ -206,7 +272,9 @@ namespace SiachenGameEngine
 			{
 				return;
 			}
+			// TODO Cannot free string!
 			free(mData.vp);
+			
 			mData.vp = nullptr;
 			mCapacity = 0;
 		}

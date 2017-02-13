@@ -74,6 +74,12 @@ namespace SiachenGameEngine
 			*/
 			Datum(const Datum& rhs);
 			/**
+			* Assignment operator overloaded to perform a deep copy of the passed datum into this datum.
+			* @param rhs The datum which has to be copied into this datum.
+			* @return The datum with the deep copy.
+			*/
+			Datum& operator=(const Datum& rhs);
+			/**
 			* Ensures that there are no memory leaks.
 			*/
 			~Datum();
@@ -358,7 +364,7 @@ namespace SiachenGameEngine
 
 
 			// TODO 4 cases - Both sides could be internal or external
-			//Datum& operator=(const Datum& rhs);
+			
 
 			// Assignment operator overloads
 
