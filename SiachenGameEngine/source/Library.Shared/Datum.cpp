@@ -2,6 +2,7 @@
 #define GLM_FORCE_CXX11
 #include "../../external/glm/glm/glm.hpp"
 
+
 namespace SiachenGameEngine
 {
 	namespace Containers
@@ -11,7 +12,7 @@ namespace SiachenGameEngine
 			mData.vp = nullptr;
 		}
 
-		Datum::Datum(const Datum & rhs) : mDatumType(rhs.mDatumType), mSize(0), mCapacity(0), mIsExternal(false)
+		Datum::Datum(const Datum& rhs) : mDatumType(rhs.mDatumType), mSize(0), mCapacity(0), mIsExternal(false)
 		{
 			if		(mDatumType == DatumType::IntegerType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.i[index]);
 			else if (mDatumType == DatumType::FloatType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.f[index]);
@@ -22,23 +23,21 @@ namespace SiachenGameEngine
 			// TODO Scope
 		}
 
-		Datum& Datum::operator=(const Datum & rhs)
+		Datum& Datum::operator=(const Datum& rhs)
 		{
 			if (this != &rhs)
 			{
-				// Clear the previously owned data
-				if (!mIsExternal)
+				// In case the data in external array
+				if (mIsExternal)
+				{
+					ResetDatum();
+				}
+				// In case the data in internal array
+				else
 				{
 					ClearAndFree();
 				}
-				// In case the data in external array
-				else
-				{
-					mSize = 0;
-					mCapacity = 0;
-					mIsExternal = false;
-					mData.vp = nullptr;
-				}
+
 				mDatumType = rhs.mDatumType;
 				// Copy the data from rhs
 				if		(mDatumType == DatumType::IntegerType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.i[index]);
@@ -79,6 +78,19 @@ namespace SiachenGameEngine
 		bool Datum::IsEmpty()
 		{
 			return (mSize == 0);
+		}
+
+		void Datum::ResetDatum()
+		{
+			if (!mIsExternal)
+			{
+				return;
+			}
+			mSize = 0;
+			mCapacity = 0;
+			mIsExternal = false;
+			mData.vp = nullptr;
+			mDatumType = DatumType::UnknownType;
 		}
 
 		void Datum::Reserve(std::uint32_t newCapacity)
@@ -226,8 +238,8 @@ namespace SiachenGameEngine
 			{
 				Reserve(mCapacity * 2);
 			}
-			//mData.r[mSize] = const_cast<GameplayFramework::RTTI*>(data);
-			new (mData.r + mSize)GameplayFramework::RTTI*(const_cast<GameplayFramework::RTTI*>(data));
+			mData.r[mSize] = const_cast<GameplayFramework::RTTI*>(data);
+			//new (mData.r + mSize)GameplayFramework::RTTI*(const_cast<GameplayFramework::RTTI*>(data));
 			++mSize;
 		}
 
@@ -279,7 +291,7 @@ namespace SiachenGameEngine
 			mCapacity = 0;
 		}
 
-		void Datum::Set(std::int32_t value, std::uint32_t index)
+		void Datum::Set(const std::int32_t value, std::uint32_t index)
 		{
 			if (mDatumType != DatumType::IntegerType)
 			{
@@ -297,7 +309,7 @@ namespace SiachenGameEngine
 			PushBack(value);
 		}
 
-		void Datum::Set(std::float_t value, std::uint32_t index)
+		void Datum::Set(const std::float_t value, std::uint32_t index)
 		{
 			if (mDatumType != DatumType::FloatType)
 			{
@@ -315,7 +327,7 @@ namespace SiachenGameEngine
 			PushBack(value);
 		}
 
-		void Datum::Set(glm::vec4& value, std::uint32_t index)
+		void Datum::Set(const glm::vec4& value, std::uint32_t index)
 		{
 			if (mDatumType != DatumType::VectorType)
 			{
@@ -333,7 +345,7 @@ namespace SiachenGameEngine
 			PushBack(value);
 		}
 
-		void Datum::Set(glm::mat4x4& value, std::uint32_t index)
+		void Datum::Set(const glm::mat4x4& value, std::uint32_t index)
 		{
 			if (mDatumType != DatumType::MatrixType)
 			{
@@ -351,7 +363,7 @@ namespace SiachenGameEngine
 			PushBack(value);
 		}
 
-		void Datum::Set(std::string& value, std::uint32_t index)
+		void Datum::Set(const std::string& value, std::uint32_t index)
 		{
 			if (mDatumType != DatumType::StringType)
 			{
@@ -370,7 +382,7 @@ namespace SiachenGameEngine
 		}
 
 		// TODO CHECK Placement New
-		void Datum::Set(GameplayFramework::RTTI* value, std::uint32_t index)
+		void Datum::Set(const GameplayFramework::RTTI* value, std::uint32_t index)
 		{
 			if (mDatumType != DatumType::PointerType)
 			{
@@ -378,7 +390,8 @@ namespace SiachenGameEngine
 			}
 			if (mSize > index)
 			{
-				new (mData.f + index)GameplayFramework::RTTI*(value);
+				//new (mData.r + index)GameplayFramework::RTTI*(value);
+				mData.r[mSize] = const_cast<GameplayFramework::RTTI*>(value);
 			}
 			else if (mIsExternal)
 			{
@@ -663,6 +676,120 @@ namespace SiachenGameEngine
 			mSize = numberOfElements;
 			mCapacity = numberOfElements;
 			mData.r = externalArray;
+		}
+
+		Datum& Datum::operator=(const std::int32_t rhs)
+		{
+			if ( ((mDatumType != DatumType::IntegerType) && (mDatumType != DatumType::UnknownType)) || mIsExternal)
+			{
+				throw std::runtime_error("Illegal assignment operation.");
+			}
+			if (mSize > 1)
+			{
+				throw std::runtime_error("Datum is not a scalar.");
+			}
+			Set(rhs);
+			mDatumType = DatumType::IntegerType;
+			return *this;
+		}
+
+		Datum& Datum::operator=(const std::float_t rhs)
+		{
+			if (((mDatumType != DatumType::FloatType) && (mDatumType != DatumType::UnknownType)) || mIsExternal)
+			{
+				throw std::runtime_error("Illegal assignment operation.");
+			}
+			if (mSize > 1)
+			{
+				throw std::runtime_error("Datum is not a scalar.");
+			}
+			Set(rhs);
+			mDatumType = DatumType::FloatType;
+			return *this;
+		}
+
+		Datum& Datum::operator=(const std::string& rhs)
+		{
+			if (((mDatumType != DatumType::StringType) && (mDatumType != DatumType::UnknownType)) || mIsExternal)
+			{
+				throw std::runtime_error("Illegal assignment operation.");
+			}
+			if (mSize > 1)
+			{
+				throw std::runtime_error("Datum is not a scalar.");
+			}
+			Set(rhs);
+			mDatumType = DatumType::StringType;
+			return *this;
+		}
+
+		Datum& Datum::operator=(const glm::vec4& rhs)
+		{
+			if (((mDatumType != DatumType::VectorType) && (mDatumType != DatumType::UnknownType)) || mIsExternal)
+			{
+				throw std::runtime_error("Illegal assignment operation.");
+			}
+			if (mSize > 1)
+			{
+				throw std::runtime_error("Datum is not a scalar.");
+			}
+			Set(rhs);
+			mDatumType = DatumType::VectorType;
+			return *this;
+		}
+
+		Datum& Datum::operator=(const glm::mat4x4& rhs)
+		{
+			if (((mDatumType != DatumType::MatrixType) && (mDatumType != DatumType::UnknownType)) || mIsExternal)
+			{
+				throw std::runtime_error("Illegal assignment operation.");
+			}
+			if (mSize > 1)
+			{
+				throw std::runtime_error("Datum is not a scalar.");
+			}
+			Set(rhs);
+			mDatumType = DatumType::MatrixType;
+			return *this;
+		}
+
+		Datum& Datum::operator=(const GameplayFramework::RTTI* rhs)
+		{
+			if (((mDatumType != DatumType::PointerType) && (mDatumType != DatumType::UnknownType)) || mIsExternal)
+			{
+				throw std::runtime_error("Illegal assignment operation.");
+			}
+			if (mSize > 1)
+			{
+				throw std::runtime_error("Datum is not a scalar.");
+			}
+			Set(rhs);
+			mDatumType = DatumType::PointerType;
+			return *this;
+		}
+
+		std::string Datum::ToString(std::uint32_t index)
+		{
+			switch (mDatumType)
+			{
+			case SiachenGameEngine::Containers::DatumType::UnknownType:
+				break;
+			case SiachenGameEngine::Containers::DatumType::IntegerType:
+				return	std::to_string(Get<std::int32_t>(index));
+			case SiachenGameEngine::Containers::DatumType::FloatType:
+				break;
+			case SiachenGameEngine::Containers::DatumType::VectorType:
+				break;
+			case SiachenGameEngine::Containers::DatumType::MatrixType:
+				break;
+			case SiachenGameEngine::Containers::DatumType::TableType:
+				break;
+			case SiachenGameEngine::Containers::DatumType::StringType:
+				break;
+			case SiachenGameEngine::Containers::DatumType::PointerType:
+				break;
+			}
+			return std::string("str");
 		}
 		
 

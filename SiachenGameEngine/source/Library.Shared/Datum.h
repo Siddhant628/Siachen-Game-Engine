@@ -4,6 +4,7 @@
 // TODO Integrate GLM
 #define GLM_FORCE_CXX11
 #include "../../external/glm/glm/glm.hpp"
+#include <string>
 
 
 namespace SiachenGameEngine
@@ -79,6 +80,7 @@ namespace SiachenGameEngine
 			* @return The datum with the deep copy.
 			*/
 			Datum& operator=(const Datum& rhs);
+			// TODO 4 cases of assignment operator - Both sides could be internal or external
 			/**
 			* Ensures that there are no memory leaks.
 			*/
@@ -103,6 +105,10 @@ namespace SiachenGameEngine
 			* @return True if the datum is empty.
 			*/
 			bool IsEmpty();
+			/**
+			* If the datum is external, it is reset.
+			*/
+			void ResetDatum();
 			/**
 			* Reserve a specific amount of memory for the datum and move its data to it.
 			* @param newCapacity The amount of capacity for which the memory has to be reserved.
@@ -208,37 +214,37 @@ namespace SiachenGameEngine
 			* @param value The value that should be taken by the specific item in the datum.
 			* @param index The index at which the value should be set.
 			*/
-			void Set(std::int32_t value, std::uint32_t index = 0);
+			void Set(const std::int32_t value, std::uint32_t index = 0);
 			/**
 			* Set the value of an item in the datum.
 			* @param value The value that should be taken by the specific item in the datum.
 			* @param index The index at which the value should be set.
 			*/
-			void Set(std::float_t value, std::uint32_t index = 0);
+			void Set(const std::float_t value, std::uint32_t index = 0);
 			/**
 			* Set the value of an item in the datum.
 			* @param value The value that should be taken by the specific item in the datum.
 			* @param index The index at which the value should be set.
 			*/
-			void Set(glm::vec4& value, std::uint32_t index = 0);
+			void Set(const glm::vec4& value, std::uint32_t index = 0);
 			/**
 			* Set the value of an item in the datum.
 			* @param value The value that should be taken by the specific item in the datum.
 			* @param index The index at which the value should be set.
 			*/
-			void Set(glm::mat4x4& value, std::uint32_t index = 0);
+			void Set(const glm::mat4x4& value, std::uint32_t index = 0);
 			/**
 			* Set the value of an item in the datum.
 			* @param value The value that should be taken by the specific item in the datum.
 			* @param index The index at which the value should be set.
 			*/
-			void Set(std::string& value, std::uint32_t index = 0);
+			void Set(const std::string& value, std::uint32_t index = 0);
 			/**
 			* Set the value of an item in the datum.
 			* @param value The value that should be taken by the specific item in the datum.
 			* @param index The index at which the value should be set.
 			*/
-			void Set(GameplayFramework::RTTI* value, std::uint32_t index = 0);
+			void Set(const GameplayFramework::RTTI* value, std::uint32_t index = 0);
 			// TODO Scope Set
 
 			/**
@@ -362,18 +368,14 @@ namespace SiachenGameEngine
 			*/
 			void SetStorage(GameplayFramework::RTTI** externalArray, std::uint32_t numberOfElements);
 
+			Datum& operator=(const std::int32_t rhs);
+			Datum& operator=(const std::float_t rhs);
+			Datum& operator=(const std::string& rhs);
+			Datum& operator=(const glm::vec4& rhs);
+			Datum& operator=(const glm::mat4x4& rhs);
+			Datum& operator=(const GameplayFramework::RTTI* rhs);
 
-			// TODO 4 cases - Both sides could be internal or external
-			
-
-			// Assignment operator overloads
-
-			//Datum& operator=(const std::int32_t rhs);
-			//Datum& operator=(const float rhs);
-			//Datum& operator=(const std::string& rhs);
-			//Datum& operator=(const glm::vec4& rhs);
-			//Datum& operator=(const glm::mat4x4& rhs);
-			//Datum& operator=(const GameplayFramework::RTTI* rhs);
+			std::string ToString(std::uint32_t index = 0);
 
 		};
 	}
