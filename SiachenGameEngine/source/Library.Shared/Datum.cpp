@@ -100,19 +100,6 @@ namespace SiachenGameEngine
 			return (mSize == 0);
 		}
 
-		void Datum::ResetDatum()
-		{
-			if (!mIsExternal)
-			{
-				return;
-			}
-			mSize = 0;
-			mCapacity = 0;
-			mIsExternal = false;
-			mData.vp = nullptr;
-			mDatumType = DatumType::UnknownType;
-		}
-
 		void Datum::Reserve(std::uint32_t newCapacity)
 		{
 			if (mIsExternal)

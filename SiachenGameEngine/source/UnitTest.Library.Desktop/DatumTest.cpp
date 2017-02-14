@@ -90,7 +90,7 @@ namespace UnitTestLibraryDesktop
 			matDatum.SetType(DatumType::MatrixType);
 			auto matExpression = [&matDatum] {matDatum.SetType(DatumType::UnknownType); };
 			Assert::ExpectException<std::exception>(matExpression);
-			
+
 			Datum ptrDatum;
 			ptrDatum.SetType(DatumType::PointerType);
 			auto ptrExpression = [&ptrDatum] {ptrDatum.SetType(DatumType::UnknownType); };
@@ -126,6 +126,143 @@ namespace UnitTestLibraryDesktop
 			Assert::AreEqual(matDatum.Size(), 0U);
 			matDatum.PushBack(mat);
 			Assert::AreEqual(matDatum.Size(), 1U);
+		}
+
+		TEST_METHOD(Datum_IsEmpty)
+		{
+			Datum intDatum;
+			Assert::IsTrue(intDatum.IsEmpty());
+			intDatum.PushBack(10);
+			Assert::IsFalse(intDatum.IsEmpty());
+
+			Datum floatDatum;
+			Assert::IsTrue(floatDatum.IsEmpty());
+			floatDatum.PushBack(10.0f);
+			Assert::IsFalse(floatDatum.IsEmpty());
+
+			Datum stringDatum;
+			Assert::IsTrue(stringDatum.IsEmpty());
+			stringDatum.PushBack(std::string("str"));
+			Assert::IsFalse(stringDatum.IsEmpty());
+
+			Datum vectorDatum;
+			Assert::IsTrue(vectorDatum.IsEmpty());
+			vectorDatum.PushBack(glm::vec4(1.0f));
+			Assert::IsFalse(vectorDatum.IsEmpty());
+
+			Datum matDatum;
+			Assert::IsTrue(matDatum.IsEmpty());
+			matDatum.PushBack(glm::mat4x4());
+			Assert::IsFalse(matDatum.IsEmpty());
+		}
+
+		TEST_METHOD(Datum_Reserve)
+		{
+			// Tests for integers
+			std::int32_t intData = 10;
+			Datum intDatum;
+			intDatum.PushBack(intData);
+			
+			auto intExpression = [&intDatum] { intDatum.Reserve(0); };
+			Assert::ExpectException<std::exception>(intExpression);
+			intDatum.Reserve(5);
+			Assert::AreEqual(intData, intDatum.Get<std::int32_t>());
+			
+			intDatum.SetStorage(&intData, 1);
+			auto intExpression2 = [&intDatum] { intDatum.Reserve(0); };
+			Assert::ExpectException<std::exception>(intExpression2);
+
+			// Tests for floats
+			std::float_t floatData = 10.0f;
+			Datum floatDatum;
+			floatDatum.PushBack(floatData);
+
+			auto floatExpression = [&floatDatum] { floatDatum.Reserve(0); };
+			Assert::ExpectException<std::exception>(floatExpression);
+			floatDatum.Reserve(5);
+			Assert::AreEqual(floatData, floatDatum.Get<std::float_t>());
+
+			floatDatum.SetStorage(&floatData, 1);
+			auto floatExpression2 = [&floatDatum] { floatDatum.Reserve(0); };
+			Assert::ExpectException<std::exception>(floatExpression2);
+
+			// Tests for strings
+			std::string stringData = "str";
+			Datum stringDatum;
+			stringDatum.PushBack(stringData);
+
+			auto stringExpression = [&stringDatum] { stringDatum.Reserve(0); };
+			Assert::ExpectException<std::exception>(stringExpression);
+			stringDatum.Reserve(5);
+			Assert::AreEqual(stringData, stringDatum.Get<std::string>());
+
+			stringDatum.SetStorage(&stringData, 1);
+			auto stringExpression2 = [&stringDatum] { stringDatum.Reserve(0); };
+			Assert::ExpectException<std::exception>(stringExpression2);
+
+			// Tests for vectors
+			glm::vec4 vecData(1.0f);
+			Datum vectorDatum;
+			vectorDatum.PushBack(vecData);
+
+			auto vecExpression = [&vectorDatum] { vectorDatum.Reserve(0); };
+			Assert::ExpectException<std::exception>(vecExpression);
+			vectorDatum.Reserve(5);
+			Assert::IsTrue(vecData == vectorDatum.Get<glm::vec4>());
+
+			vectorDatum.SetStorage(&vecData, 1);
+			auto vecExpression2 = [&vectorDatum] { vectorDatum.Reserve(0); };
+			Assert::ExpectException<std::exception>(vecExpression2);
+
+			// Tests for matrices
+			glm::mat4x4 matData;
+			Datum matDatum;
+			matDatum.PushBack(matData);
+
+			auto matExpression = [&matDatum] { matDatum.Reserve(0); };
+			Assert::ExpectException<std::exception>(matExpression);
+			matDatum.Reserve(5);
+			Assert::IsTrue(matData == matDatum.Get<glm::mat4x4>());
+
+			matDatum.SetStorage(&matData, 1);
+			auto matExpression2 = [&matDatum] { matDatum.Reserve(0); };
+			Assert::ExpectException<std::exception>(matExpression2);
+		}
+
+		TEST_METHOD(Datum_PushBack)
+		{
+			// Tests for integers
+			std::int32_t intData = 10;
+			Datum intDatum;
+			
+			intDatum.PushBack(intData);
+			Assert::IsTrue(intData == intDatum.Get<std::int32_t>());
+
+
+
+			// Tests for floats
+			std::float_t floatData = 10.0f;
+			Datum floatDatum;
+			
+			floatDatum.PushBack(floatData);
+			Assert::IsTrue(intData == intDatum.Get<std::int32_t>());
+
+			
+
+			// Tests for strings
+			std::string stringData = "str";
+			Datum stringDatum;
+			stringDatum.PushBack(stringData);
+
+			// Tests for vectors
+			glm::vec4 vecData(1.0f);
+			Datum vectorDatum;
+			vectorDatum.PushBack(vecData);
+
+			// Tests for matrices
+			glm::mat4x4 matData;
+			Datum matDatum;
+			matDatum.PushBack(matData);
 		}
 
 	private:

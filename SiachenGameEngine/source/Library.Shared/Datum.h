@@ -106,10 +106,6 @@ namespace SiachenGameEngine
 			*/
 			bool IsEmpty();
 			/**
-			* If the datum is external, it is reset.
-			*/
-			void ResetDatum();
-			/**
 			* Reserve a specific amount of memory for the datum and move its data to it.
 			* @param newCapacity The amount of capacity for which the memory has to be reserved.
 			*/
