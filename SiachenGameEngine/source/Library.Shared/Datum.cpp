@@ -300,6 +300,11 @@ namespace SiachenGameEngine
 
 		void Datum::Set(const std::int32_t value, std::uint32_t index)
 		{
+			if (mDatumType == DatumType::UnknownType && IsEmpty() && index == 0)
+			{
+				PushBack(value);
+				return;
+			}
 			if (mDatumType != DatumType::IntegerType)
 			{
 				throw std::runtime_error("Improper set operation.");
@@ -319,6 +324,11 @@ namespace SiachenGameEngine
 
 		void Datum::Set(const std::float_t value, std::uint32_t index)
 		{
+			if (mDatumType == DatumType::UnknownType && IsEmpty() && index == 0)
+			{
+				PushBack(value);
+				return;
+			}
 			if (mDatumType != DatumType::FloatType)
 			{
 				throw std::runtime_error("Improper set operation.");
@@ -338,6 +348,11 @@ namespace SiachenGameEngine
 
 		void Datum::Set(const glm::vec4& value, std::uint32_t index)
 		{
+			if (mDatumType == DatumType::UnknownType && IsEmpty() && index == 0)
+			{
+				PushBack(value);
+				return;
+			}
 			if (mDatumType != DatumType::VectorType)
 			{
 				throw std::runtime_error("Improper set operation.");
@@ -357,6 +372,11 @@ namespace SiachenGameEngine
 
 		void Datum::Set(const glm::mat4x4& value, std::uint32_t index)
 		{
+			if (mDatumType == DatumType::UnknownType && IsEmpty() && index == 0)
+			{
+				PushBack(value);
+				return;
+			}
 			if (mDatumType != DatumType::MatrixType)
 			{
 				throw std::runtime_error("Improper set operation.");
@@ -376,6 +396,11 @@ namespace SiachenGameEngine
 
 		void Datum::Set(const std::string& value, std::uint32_t index)
 		{
+			if (mDatumType == DatumType::UnknownType && IsEmpty() && index == 0)
+			{
+				PushBack(value);
+				return;
+			}
 			if (mDatumType != DatumType::StringType)
 			{
 				throw std::runtime_error("Improper set operation.");
@@ -395,6 +420,11 @@ namespace SiachenGameEngine
 
 		void Datum::Set(const GameplayFramework::RTTI* value, std::uint32_t index)
 		{
+			if (mDatumType == DatumType::UnknownType && IsEmpty() && index == 0)
+			{
+				PushBack(value);
+				return;
+			}
 			if (mDatumType != DatumType::PointerType)
 			{
 				throw std::runtime_error("Improper set operation.");
@@ -550,7 +580,7 @@ namespace SiachenGameEngine
 		{
 			if ((mSize != 1) || (mDatumType != DatumType::IntegerType))
 			{
-				return false;
+				return true;
 			}
 			return (mData.i[0] != rhs);
 		}
@@ -559,7 +589,7 @@ namespace SiachenGameEngine
 		{
 			if ((mSize != 1) || (mDatumType != DatumType::FloatType))
 			{
-				return false;
+				return true;
 			}
 			return (mData.f[0] != rhs);
 		}
@@ -568,7 +598,7 @@ namespace SiachenGameEngine
 		{
 			if ((mSize != 1) || (mDatumType != DatumType::StringType))
 			{
-				return false;
+				return true;
 			}
 			return (mData.s[0] != rhs);
 		}
@@ -577,7 +607,7 @@ namespace SiachenGameEngine
 		{
 			if ((mSize != 1) || (mDatumType != DatumType::VectorType))
 			{
-				return false;
+				return true;
 			}
 			return (mData.v[0] != rhs);
 		}
@@ -586,7 +616,7 @@ namespace SiachenGameEngine
 		{
 			if ((mSize != 1) || (mDatumType != DatumType::MatrixType))
 			{
-				return false;
+				return true;
 			}
 			return (mData.m[0] != rhs);
 		}
@@ -595,14 +625,14 @@ namespace SiachenGameEngine
 		{
 			if ((mSize != 1) || (mDatumType != DatumType::PointerType))
 			{
-				return false;
+				return true;
 			}
 			return (mData.r[0] != rhs);
 		}
 
 		void Datum::SetStorage(std::int32_t* externalArray, std::uint32_t numberOfElements)
 		{
-			if (mDatumType != DatumType::IntegerType)
+			if (mDatumType != DatumType::IntegerType || numberOfElements == 0)
 			{
 				throw std::runtime_error("Datum cannot be assigned to an external array.");
 			}
@@ -617,7 +647,7 @@ namespace SiachenGameEngine
 
 		void Datum::SetStorage(std::float_t* externalArray, std::uint32_t numberOfElements)
 		{
-			if (mDatumType != DatumType::FloatType)
+			if (mDatumType != DatumType::FloatType || numberOfElements == 0)
 			{
 				throw std::runtime_error("Datum cannot be assigned to an external array.");
 			}
@@ -632,7 +662,7 @@ namespace SiachenGameEngine
 
 		void Datum::SetStorage(std::string* externalArray, std::uint32_t numberOfElements)
 		{
-			if (mDatumType != DatumType::StringType)
+			if (mDatumType != DatumType::StringType || numberOfElements == 0)
 			{
 				throw std::runtime_error("Datum cannot be assigned to an external array.");
 			}
@@ -647,7 +677,7 @@ namespace SiachenGameEngine
 
 		void Datum::SetStorage(glm::vec4* externalArray, std::uint32_t numberOfElements)
 		{
-			if (mDatumType != DatumType::VectorType)
+			if (mDatumType != DatumType::VectorType || numberOfElements == 0)
 			{
 				throw std::runtime_error("Datum cannot be assigned to an external array.");
 			}
@@ -662,7 +692,7 @@ namespace SiachenGameEngine
 
 		void Datum::SetStorage(glm::mat4x4* externalArray, std::uint32_t numberOfElements)
 		{
-			if (mDatumType != DatumType::MatrixType)
+			if (mDatumType != DatumType::MatrixType || numberOfElements == 0)
 			{
 				throw std::runtime_error("Datum cannot be assigned to an external array.");
 			}
@@ -677,7 +707,7 @@ namespace SiachenGameEngine
 
 		void Datum::SetStorage(GameplayFramework::RTTI** externalArray, std::uint32_t numberOfElements)
 		{
-			if (mDatumType != DatumType::PointerType)
+			if (mDatumType != DatumType::PointerType || numberOfElements == 0)
 			{
 				throw std::runtime_error("Datum cannot be assigned to an external array.");
 			}

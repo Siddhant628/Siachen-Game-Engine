@@ -5,13 +5,9 @@ namespace SiachenGameEngine
 		template <>
 		std::int32_t& Datum::Get(std::uint32_t index) const
 		{
-			if (mDatumType != DatumType::IntegerType)
+			if (mDatumType != DatumType::IntegerType || index >= mSize)
 			{
 				throw std::runtime_error("Invalid get operation.");
-			}
-			if (index >= mSize)
-			{
-				throw std::out_of_range("Invalid index into the datum.");
 			}
 			return mData.i[index];
 		}
@@ -19,13 +15,9 @@ namespace SiachenGameEngine
 		template<>
 		std::float_t& Datum::Get(std::uint32_t index) const
 		{
-			if (mDatumType != DatumType::FloatType)
+			if (mDatumType != DatumType::FloatType || index >= mSize)
 			{
 				throw std::runtime_error("Invalid get operation.");
-			}
-			if (index >= mSize)
-			{
-				throw std::out_of_range("Invalid index into the datum.");
 			}
 			return mData.f[index];
 		}
@@ -33,13 +25,9 @@ namespace SiachenGameEngine
 		template<>
 		glm::vec4& Datum::Get(std::uint32_t index) const
 		{
-			if (mDatumType != DatumType::VectorType)
+			if (mDatumType != DatumType::VectorType || index >= mSize)
 			{
 				throw std::runtime_error("Invalid get operation.");
-			}
-			if (index >= mSize)
-			{
-				throw std::out_of_range("Invalid index into the datum.");
 			}
 			return mData.v[index];
 		}
@@ -47,13 +35,9 @@ namespace SiachenGameEngine
 		template<>
 		glm::mat4x4& Datum::Get(std::uint32_t index) const
 		{
-			if (mDatumType != DatumType::MatrixType)
+			if (mDatumType != DatumType::MatrixType || index >= mSize)
 			{
 				throw std::runtime_error("Invalid get operation.");
-			}
-			if (index >= mSize)
-			{
-				throw std::out_of_range("Invalid index into the datum.");
 			}
 			return mData.m[index];
 		}
@@ -61,13 +45,9 @@ namespace SiachenGameEngine
 		template<>
 		std::string& Datum::Get(std::uint32_t index) const
 		{
-			if (mDatumType != DatumType::StringType)
+			if (mDatumType != DatumType::StringType || index >= mSize)
 			{
 				throw std::runtime_error("Invalid get operation.");
-			}
-			if (index >= mSize)
-			{
-				throw std::out_of_range("Invalid index into the datum.");
 			}
 			return mData.s[index];
 		}
@@ -75,13 +55,9 @@ namespace SiachenGameEngine
 		template<>
 		GameplayFramework::RTTI*& Datum::Get(std::uint32_t index) const
 		{
-			if (mDatumType != DatumType::PointerType)
+			if (mDatumType != DatumType::PointerType || index >= mSize)
 			{
 				throw std::runtime_error("Invalid get operation.");
-			}
-			if (index >= mSize)
-			{
-				throw std::out_of_range("Invalid index into the datum.");
 			}
 			return mData.r[index];
 		}
