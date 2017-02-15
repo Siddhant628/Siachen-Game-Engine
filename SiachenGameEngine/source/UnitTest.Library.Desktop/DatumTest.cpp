@@ -1214,8 +1214,6 @@ namespace UnitTestLibraryDesktop
 
 		}
 
-
-
 	private:
 		static _CrtMemState sStartMemState;
 	};

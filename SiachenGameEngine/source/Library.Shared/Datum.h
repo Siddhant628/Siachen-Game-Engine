@@ -1,7 +1,6 @@
 #pragma once
 #include "RTTI.h"
 
-// TODO Integrate GLM
 #define GLM_FORCE_CXX11
 #include "../../external/glm/glm/glm.hpp"
 #include <string>
@@ -136,7 +135,6 @@ namespace SiachenGameEngine
 			* @param data The matrix to be pushed into the datum.
 			*/
 			void PushBack(const glm::mat4x4& data);
-			// TODO Scope PushBack
 
 			/**
 			* Push the item at the end of the datum.
@@ -199,7 +197,6 @@ namespace SiachenGameEngine
 			*/
 			template<>
 			std::string& Get(std::uint32_t index) const;
-			// TODO Scope Get specialization
 
 			/**
 			* Get a specific item stored in the datum.
@@ -245,7 +242,6 @@ namespace SiachenGameEngine
 			* @param index The index at which the value should be set.
 			*/
 			void Set(const GameplayFramework::RTTI* value, std::uint32_t index = 0);
-			// TODO Scope Set
 
 			/**
 			* Equals operator overloaded to compare two datums.

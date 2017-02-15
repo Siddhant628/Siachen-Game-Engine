@@ -245,9 +245,7 @@ namespace SiachenGameEngine
 
 			T* destination = mFront + beginIndex;
 			T* source = mFront + endIndex;
-			// TODO How to use memmove
-			//memmove(destination, source, sizeof(T)*(mSize - endIndex));
-			//memmove_s(destination, sizeof(T)*(mSize - beginIndex), source, sizeof(T)*(mSize - endIndex));
+
 			memmove_s(destination, sizeof(T)*(mSize - endIndex), source, sizeof(T)*(mSize - endIndex));
 			mSize = mSize - (endIndex - beginIndex);
 

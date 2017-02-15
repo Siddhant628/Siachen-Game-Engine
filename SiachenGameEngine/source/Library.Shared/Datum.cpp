@@ -33,7 +33,6 @@ namespace SiachenGameEngine
 			else if (mDatumType == DatumType::VectorType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.v[index]);
 			else if (mDatumType == DatumType::MatrixType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.m[index]);
 			else if (mDatumType == DatumType::PointerType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.r[index]);
-			// TODO Scope
 		}
 
 		Datum& Datum::operator=(const Datum& rhs)
@@ -68,7 +67,6 @@ namespace SiachenGameEngine
 					else if (mDatumType == DatumType::VectorType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.v[index]);
 					else if (mDatumType == DatumType::MatrixType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.m[index]);
 					else if (mDatumType == DatumType::PointerType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.r[index]);
-					// TODO Scope
 				}
 			}
 			return *this;
@@ -127,7 +125,6 @@ namespace SiachenGameEngine
 			else if (mDatumType == DatumType::MatrixType)		sizeOfData = sizeof(glm::mat4x4);
 			else if (mDatumType == DatumType::StringType)		sizeOfData = sizeof(std::string);
 			else if (mDatumType == DatumType::PointerType)		sizeOfData = sizeof(GameplayFramework::RTTI*);
-			// TODO Scope
 
 			// Allocate the memory
 			void* newBuffer = malloc(newCapacity * sizeOfData);
@@ -274,7 +271,6 @@ namespace SiachenGameEngine
 				else if (mDatumType == DatumType::MatrixType)	mData.m[--mSize].glm::mat4x4::~mat4x4();
 				else if (mDatumType == DatumType::StringType)	mData.s[--mSize].std::string::~string();
 				else if (mDatumType == DatumType::PointerType)	--mSize;
-				// TODO Scope
 			}
 		}
 
@@ -297,7 +293,6 @@ namespace SiachenGameEngine
 			{
 				return;
 			}
-			// TODO Cannot free string!
 			free(mData.vp);
 
 			mData.vp = nullptr;
@@ -486,8 +481,6 @@ namespace SiachenGameEngine
 			else if (mDatumType == DatumType::VectorType)	sizeOfElement = sizeof(glm::vec4);
 
 			return (std::memcmp(mData.vp, rhs.mData.vp, sizeOfElement*mSize) == 0);
-
-			// TODO Scope
 		}
 
 		bool Datum::operator!=(const Datum & rhs) const
@@ -526,8 +519,6 @@ namespace SiachenGameEngine
 			else if (mDatumType == DatumType::VectorType)	sizeOfElement = sizeof(glm::vec4);
 
 			return (std::memcmp(mData.vp, rhs.mData.vp, sizeOfElement*mSize) != 0);
-
-			// TODO Scope
 		}
 
 		
@@ -821,7 +812,6 @@ namespace SiachenGameEngine
 				stringToReturn = glm::to_string(Get<glm::mat4x4>(index));
 				break;
 			case DatumType::TableType:
-				//TODO Scope
 				break;
 			case DatumType::StringType:
 				stringToReturn = Get<std::string>(index);
@@ -893,7 +883,7 @@ namespace SiachenGameEngine
 					Set(matToSet, index);
 					return true;
 				}
-				// TODO Scope
+
 				case DatumType::TableType:
 					return false;
 
