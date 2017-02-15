@@ -80,11 +80,11 @@ namespace SiachenGameEngine
 			* @return The datum with the deep copy.
 			*/
 			Datum& operator=(const Datum& rhs);
-			// TODO 4 cases of assignment operator - Both sides could be internal or external
 			/**
 			* Ensures that there are no memory leaks.
 			*/
 			~Datum();
+
 			/**
 			* Get the type of data which this datum stores.
 			* @return The type for datum.
@@ -110,6 +110,7 @@ namespace SiachenGameEngine
 			* @param newCapacity The amount of capacity for which the memory has to be reserved.
 			*/
 			void Reserve(std::uint32_t newCapacity);
+
 			/**
 			* Push the item at the end of the datum.
 			* @param data The integer to be pushed into the datum.
@@ -142,6 +143,7 @@ namespace SiachenGameEngine
 			* @param data The RTTI* to be pushed into the datum.
 			*/
 			void PushBack(const GameplayFramework::RTTI* data);
+
 			/**
 			* Pop out the last item of the datum.
 			*/
@@ -154,6 +156,7 @@ namespace SiachenGameEngine
 			* Clears and frees the memory used by the datum. This would reset the size and capacity to 0.
 			*/
 			void ClearAndFree();
+
 			/**
 			* Get a specific item stored in the datum.
 			* @param index The position of the item to retrieve from the datum.
@@ -205,6 +208,7 @@ namespace SiachenGameEngine
 			*/
 			template<>
 			GameplayFramework::RTTI*& Get(std::uint32_t index) const;
+
 			/**
 			* Set the value of an item in the datum.
 			* @param value The value that should be taken by the specific item in the datum.
@@ -255,6 +259,7 @@ namespace SiachenGameEngine
 			* @return True if the two datums aren't equal.
 			*/
 			bool operator!=(const Datum& rhs) const;
+
 			/**
 			* Equals operator overloaded to compare a scalar datum to an integer.
 			* @param rhs The integer with which this datum should be compared.
@@ -291,6 +296,7 @@ namespace SiachenGameEngine
 			* @return True if the two are equal.
 			*/
 			bool operator==(const GameplayFramework::RTTI* rhs) const;
+
 			/**
 			* Inequals operator overloaded to compare a scalar datum to an integer.
 			* @param rhs The integer with which this datum should be compared.
@@ -327,6 +333,7 @@ namespace SiachenGameEngine
 			* @return True if the two aren't equal.
 			*/
 			bool operator!=(const GameplayFramework::RTTI* rhs) const;
+
 			/**
 			* Associate datum with an external array.
 			* @param externalArray A pointer to the memory location where the external array starts.
@@ -364,15 +371,56 @@ namespace SiachenGameEngine
 			*/
 			void SetStorage(GameplayFramework::RTTI** externalArray, std::uint32_t numberOfElements);
 
+			/**
+			* Assignment operator overload - Treats the datum as a scalar and sets its first item, changed the size if required and if possible.
+			* @param rhs An integer to assign the first item.
+			* @return A reference to the datum with the new first item.
+			*/
 			Datum& operator=(const std::int32_t rhs);
+			/**
+			* Assignment operator overload - Treats the datum as a scalar and sets its first item, changed the size if required and if possible.
+			* @param rhs A floating point number to assign to the first item.
+			* @return A reference to the datum with the new first item.
+			*/
 			Datum& operator=(const std::float_t rhs);
+			/**
+			* Assignment operator overload - Treats the datum as a scalar and sets its first item, changed the size if required and if possible.
+			* @param rhs A string to assign to the first item.
+			* @return A reference to the datum with the new first item.
+			*/
 			Datum& operator=(const std::string& rhs);
+			/**
+			* Assignment operator overload - Treats the datum as a scalar and sets its first item, changed the size if required and if possible.
+			* @param rhs A vector to assign to the first item.
+			* @return A reference to the datum with the new first item.
+			*/
 			Datum& operator=(const glm::vec4& rhs);
+			/**
+			* Assignment operator overload - Treats the datum as a scalar and sets its first item, changed the size if required and if possible.
+			* @param rhs A matrix to assign to the first item.
+			* @return A reference to the datum with the new first item.
+			*/
 			Datum& operator=(const glm::mat4x4& rhs);
+			/**
+			* Assignment operator overload - Treats the datum as a scalar and sets its first item, changed the size if required and if possible.
+			* @param rhs A RTTI* type to assign to the first item.
+			* @return A reference to the datum with the new first item.
+			*/
 			Datum& operator=(const GameplayFramework::RTTI* rhs);
 
+			/**
+			* Get a string representation of an element inside the array.
+			* @param Index of the item in the array whose string representation is required.
+			* @return A string representing the item.
+			*/
 			std::string ToString(std::uint32_t index = 0);
-
+			/**
+			* Parses a string input and sets the value at specified index with it.
+			* @param data The data to set as a string.
+			* @param index The index into the datum where value is supposed to be set.
+			* @return True if the value was successfully set.
+			*/
+			bool SetFromString(std::string& data, std::uint32_t index = 0);
 		};
 	}
 }

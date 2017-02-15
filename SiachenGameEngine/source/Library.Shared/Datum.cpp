@@ -1,17 +1,20 @@
 #include "Datum.h"
 #define GLM_FORCE_CXX11
 #include "../../external/glm/glm/glm.hpp"
+#include "../../external/glm/glm/gtx/string_cast.hpp"
+
 
 
 namespace SiachenGameEngine
 {
 	namespace Containers
-	{// TODO Testing
+	{
+
 		Datum::Datum() : mSize(0), mCapacity(0), mDatumType(DatumType::UnknownType), mIsExternal(false)
 		{
 			mData.vp = nullptr;
 		}
-		// TODO Testing
+
 		Datum::Datum(const Datum& rhs) : mDatumType(rhs.mDatumType), mSize(0), mCapacity(0), mIsExternal(false)
 		{
 			// If rhs is an external datum
@@ -32,7 +35,7 @@ namespace SiachenGameEngine
 			else if (mDatumType == DatumType::PointerType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.r[index]);
 			// TODO Scope
 		}
-		// TODO Testing
+
 		Datum& Datum::operator=(const Datum& rhs)
 		{
 			if (this != &rhs)
@@ -76,6 +79,7 @@ namespace SiachenGameEngine
 			if (!mIsExternal) ClearAndFree();
 		}
 
+		
 		DatumType Datum::Type() const
 		{
 			return mDatumType;
@@ -136,6 +140,7 @@ namespace SiachenGameEngine
 			mCapacity = newCapacity;
 		}
 
+		
 		void Datum::PushBack(const std::int32_t data)
 		{
 			if (mDatumType == DatumType::UnknownType && IsEmpty())
@@ -250,6 +255,7 @@ namespace SiachenGameEngine
 			++mSize;
 		}
 
+		
 		void Datum::PopBack()
 		{
 			if (mIsExternal || mDatumType == DatumType::UnknownType)
@@ -298,6 +304,7 @@ namespace SiachenGameEngine
 			mCapacity = 0;
 		}
 
+		
 		void Datum::Set(const std::int32_t value, std::uint32_t index)
 		{
 			if (mDatumType == DatumType::UnknownType && IsEmpty() && index == 0)
@@ -442,6 +449,7 @@ namespace SiachenGameEngine
 			PushBack(value);
 		}
 
+		
 		bool Datum::operator==(const Datum & rhs) const
 		{
 			if (mDatumType == DatumType::UnknownType || rhs.mDatumType == DatumType::UnknownType)
@@ -522,6 +530,7 @@ namespace SiachenGameEngine
 			// TODO Scope
 		}
 
+		
 		bool Datum::operator==(const std::int32_t rhs) const
 		{
 			if ((mSize != 1) || (mDatumType != DatumType::IntegerType))
@@ -576,6 +585,7 @@ namespace SiachenGameEngine
 			return (mData.r[0] == rhs);
 		}
 
+		
 		bool Datum::operator!=(const std::int32_t rhs) const
 		{
 			if ((mSize != 1) || (mDatumType != DatumType::IntegerType))
@@ -629,6 +639,7 @@ namespace SiachenGameEngine
 			}
 			return (mData.r[0] != rhs);
 		}
+
 
 		void Datum::SetStorage(std::int32_t* externalArray, std::uint32_t numberOfElements)
 		{
@@ -720,6 +731,7 @@ namespace SiachenGameEngine
 			mData.r = externalArray;
 		}
 
+
 		Datum& Datum::operator=(const std::int32_t rhs)
 		{
 			if ((mDatumType != DatumType::IntegerType) && (mDatumType != DatumType::UnknownType))
@@ -786,28 +798,114 @@ namespace SiachenGameEngine
 			return *this;
 		}
 
+
 		std::string Datum::ToString(std::uint32_t index)
 		{
+			if (mDatumType == DatumType::UnknownType || index >= mSize)
+			{
+				throw std::runtime_error("Invalid ToString operation.");
+			}
+			std::string stringToReturn;
 			switch (mDatumType)
 			{
-			case DatumType::UnknownType:
-				break;
 			case DatumType::IntegerType:
-				return	std::to_string(Get<std::int32_t>(index));
+				stringToReturn = std::to_string(Get<std::int32_t>(index));
+				break;
 			case DatumType::FloatType:
+				stringToReturn = std::to_string(Get<std::float_t>(index));
 				break;
 			case DatumType::VectorType:
+				stringToReturn = glm::to_string(Get<glm::vec4>(index));
 				break;
 			case DatumType::MatrixType:
+				stringToReturn = glm::to_string(Get<glm::mat4x4>(index));
 				break;
 			case DatumType::TableType:
+				//TODO Scope
 				break;
 			case DatumType::StringType:
+				stringToReturn = Get<std::string>(index);
 				break;
 			case DatumType::PointerType:
+				stringToReturn = (Get<GameplayFramework::RTTI*>(index))->ToString();
 				break;
 			}
-			return std::string("str");
+			return stringToReturn;
+		}
+
+		bool Datum::SetFromString(std::string& data, std::uint32_t index /* = 0 */)
+		{
+			if (mDatumType == DatumType::UnknownType)
+			{
+				throw std::runtime_error("Invalid set from string operation");
+			}
+			const char* stringToParse = data.c_str();
+			switch (mDatumType)
+			{
+				// In case of an integer
+				case DatumType::IntegerType:
+				{
+					std::int32_t value;
+					if (sscanf_s(stringToParse, "%d", &value) != 1)
+					{
+						return false;
+					}
+					Set(value, index);
+					return true;
+				}
+				// In case of a floating point number
+				case DatumType::FloatType:
+				{
+					std::float_t value;
+					if (sscanf_s(stringToParse, "%f", &value) != 1)
+					{
+						return false;
+					}
+					Set(value, index);
+					return true;
+				}
+				// In case of a vector
+				case DatumType::VectorType:
+				{
+					std::float_t value1, value2, value3, value4;
+					if (sscanf_s(stringToParse, "vec4(%f,%f,%f,%f)", &value1, &value2, &value3, &value4) != 4)
+					{
+						return false;
+					}
+					glm::vec4 vecToSet(value1, value2, value3, value4);
+					Set(vecToSet, index);
+					return true;
+				}
+				// In case of a matrix
+				case DatumType::MatrixType:
+				{
+					std::float_t value[16];
+					if (sscanf_s(stringToParse, "mat4x4((%f,%f,%f,%f),(%f,%f,%f,%f),(%f,%f,%f,%f),(%f,%f,%f,%f))", &value[0], &value[1], &value[2], &value[3], &value[4], &value[5], &value[6], &value[7], &value[8], &value[9], &value[10], &value[11], &value[12], &value[13], &value[14], &value[15]) != 16)
+					{
+						return false;
+					}
+					glm::vec4 vec1(value[0], value[1], value[2], value[3]);
+					glm::vec4 vec2(value[4], value[5], value[6], value[7]);
+					glm::vec4 vec3(value[8], value[9], value[10], value[11]);
+					glm::vec4 vec4(value[12], value[13], value[14], value[15]);
+
+					glm::mat4x4 matToSet(vec1, vec2, vec3, vec4);
+					Set(matToSet, index);
+					return true;
+				}
+				// TODO Scope
+				case DatumType::TableType:
+					return false;
+
+				// In case of a string
+				case DatumType::StringType:
+					Set(data, index);
+					return true;
+
+				case DatumType::PointerType:
+					break;
+			}
+			return false;
 		}
 	}
 }
