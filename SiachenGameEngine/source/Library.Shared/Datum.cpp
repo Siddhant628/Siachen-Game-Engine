@@ -6,12 +6,12 @@
 namespace SiachenGameEngine
 {
 	namespace Containers
-	{
+	{// TODO Testing
 		Datum::Datum() : mSize(0), mCapacity(0), mDatumType(DatumType::UnknownType), mIsExternal(false)
 		{
 			mData.vp = nullptr;
 		}
-
+		// TODO Testing
 		Datum::Datum(const Datum& rhs) : mDatumType(rhs.mDatumType), mSize(0), mCapacity(0), mIsExternal(false)
 		{
 			// If rhs is an external datum
@@ -32,7 +32,7 @@ namespace SiachenGameEngine
 			else if (mDatumType == DatumType::PointerType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.r[index]);
 			// TODO Scope
 		}
-
+		// TODO Testing
 		Datum& Datum::operator=(const Datum& rhs)
 		{
 			if (this != &rhs)
@@ -262,7 +262,7 @@ namespace SiachenGameEngine
 			}
 			else
 			{
-				if (mDatumType == DatumType::IntegerType)	mData.i[--mSize].std::int32_t::~int32_t();
+				if		(mDatumType == DatumType::IntegerType)	mData.i[--mSize].std::int32_t::~int32_t();
 				else if (mDatumType == DatumType::FloatType)	mData.f[--mSize].std::float_t::~float_t();
 				else if (mDatumType == DatumType::VectorType)	mData.v[--mSize].glm::vec4::~vec4();
 				else if (mDatumType == DatumType::MatrixType)	mData.m[--mSize].glm::mat4x4::~mat4x4();
