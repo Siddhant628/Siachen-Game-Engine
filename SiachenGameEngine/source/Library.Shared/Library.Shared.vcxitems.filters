@@ -16,6 +16,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Scope.cpp">
       <Filter>Gameplay Framework</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)HashMap.cpp">
+      <Filter>Containers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)SList.h">
@@ -46,9 +49,6 @@
       <Filter>Containers</Filter>
     </None>
     <None Include="$(MSBuildThisFileDirectory)HashMap.inl">
-      <Filter>Containers</Filter>
-    </None>
-    <None Include="$(MSBuildThisFileDirectory)Datum.inl">
       <Filter>Containers</Filter>
     </None>
   </ItemGroup>

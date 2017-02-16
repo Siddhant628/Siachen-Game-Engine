@@ -27,6 +27,9 @@
     <ClCompile Include="Foo.cpp">
       <Filter>Helper Classes</Filter>
     </ClCompile>
+    <ClCompile Include="ScopeTest.cpp">
+      <Filter>Test Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Helper Classes">

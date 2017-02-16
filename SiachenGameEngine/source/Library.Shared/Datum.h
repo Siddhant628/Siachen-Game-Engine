@@ -420,5 +420,3 @@ namespace SiachenGameEngine
 		};
 	}
 }
-
-#include "Datum.inl"

@@ -10,16 +10,23 @@ namespace SiachenGameEngine
 {
 	namespace GameplayFramework
 	{
-		class Scope : public RTTI
+		class Scope final : public RTTI
 		{
 		private:
 			typedef std::pair<std::string, Containers::Datum> StringDatumPair;
 
+			
 			Containers::HashMap<std::string, Containers::Datum> mTable;
-			Containers::Vector<StringDatumPair*> mIndexCache;
+
+			Containers::Vector<StringDatumPair*> mIndexVector;
+
+			Scope* mParent;
 
 		public:
-
+			// TODO Pick a default value
+			Scope(std::uint32_t initialCapacity = 13);
+			// TODO Delete all the children scopes
+			~Scope();
 		};
 	}
 }

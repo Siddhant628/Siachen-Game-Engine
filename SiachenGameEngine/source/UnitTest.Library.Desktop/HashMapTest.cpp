@@ -14,7 +14,7 @@ namespace SiachenGameEngine
 	* Default has functor's specialization for Foo class.
 	*/
 	template<>
-	class DefaultHash <HelperClasses::Foo>
+	class DefaultHash<HelperClasses::Foo>
 	{
 	public:
 		std::uint32_t operator()(const HelperClasses::Foo &foo) const;
