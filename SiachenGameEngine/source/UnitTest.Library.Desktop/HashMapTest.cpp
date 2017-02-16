@@ -8,10 +8,39 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace SiachenGameEngine::Containers;
 using namespace SiachenGameEngine::HelperClasses;
 
+namespace SiachenGameEngine
+{
+	/**
+	* Default has functor's specialization for Foo class.
+	*/
+	template<>
+	class DefaultHash <HelperClasses::Foo>
+	{
+	public:
+		std::uint32_t operator()(const HelperClasses::Foo &foo) const;
+	};
+
+	std::uint32_t DefaultHash<HelperClasses::Foo>::operator()(const HelperClasses::Foo &foo) const
+	{
+		const std::int32_t value = foo.GetValue();
+		const std::uint8_t* byteOfValue = reinterpret_cast<const std::uint8_t*>(&value);
+		std::uint32_t numberOfBytes = sizeof(value);
+		std::uint32_t hashValue = 0;
+		for (std::uint32_t i = 0; i < numberOfBytes; ++i)
+		{
+			hashValue = hashValue + byteOfValue[i];
+		}
+		return hashValue;
+	}
+}
+
+
+
 namespace Microsoft
 {
 	namespace VisualStudio
 	{
+
 		namespace CppUnitTestFramework
 		{
 			template<>

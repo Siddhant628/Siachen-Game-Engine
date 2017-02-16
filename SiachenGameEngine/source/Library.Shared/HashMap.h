@@ -1,10 +1,10 @@
 #pragma once
+
 #include <cstdint>
 #include <utility>
 #include <string>
 #include "Vector.h"
 #include "SList.h"
-#include "Foo.h"
 
 namespace SiachenGameEngine
 {
@@ -215,15 +215,6 @@ namespace SiachenGameEngine
 		{
 		public:
 			std::uint32_t operator()(const std::string &key) const;
-		};
-		/**
-		* Default has functor's specialization for Foo class.
-		*/
-		template<>
-		class DefaultHash <HelperClasses::Foo>
-		{
-		public:
-			std::uint32_t operator()(const HelperClasses::Foo &foo) const;
 		};
 
 		template<typename T>

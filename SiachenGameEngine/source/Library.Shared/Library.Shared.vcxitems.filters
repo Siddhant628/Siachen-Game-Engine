@@ -4,11 +4,17 @@
     <Filter Include="Containers">
       <UniqueIdentifier>{cc4c77a4-104b-4d3d-8284-15a827ccc3d5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Gameplay Framework">
+      <UniqueIdentifier>{36df8374-6266-4efe-86a1-e54a360887de}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)pch.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Datum.cpp">
       <Filter>Containers</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Scope.cpp">
+      <Filter>Gameplay Framework</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -22,9 +28,14 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)HashMap.h">
       <Filter>Containers</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)RTTI.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Datum.h">
       <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)RTTI.h">
+      <Filter>Gameplay Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Scope.h">
+      <Filter>Gameplay Framework</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

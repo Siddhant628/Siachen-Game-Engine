@@ -433,19 +433,6 @@ namespace SiachenGameEngine
 			return hashValue;
 		}
 
-		std::uint32_t DefaultHash<HelperClasses::Foo>::operator()(const HelperClasses::Foo &foo) const
-		{
-			const std::int32_t value = foo.GetValue();
-			const std::uint8_t* byteOfValue = reinterpret_cast<const std::uint8_t*>(&value);
-			std::uint32_t numberOfBytes = sizeof(value);
-			std::uint32_t hashValue = 0;
-			for (std::uint32_t i = 0; i < numberOfBytes; ++i)
-			{
-				hashValue = hashValue + byteOfValue[i];
-			}
-			return hashValue;
-		}
-
 		// Comparison Functions
 
 		template<typename T>

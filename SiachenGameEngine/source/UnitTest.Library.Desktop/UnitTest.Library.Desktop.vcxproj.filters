@@ -2,16 +2,13 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClInclude Include="pch.h" />
+    <ClInclude Include="ToStringTemplates.h" />
     <ClInclude Include="Foo.h">
       <Filter>Helper Classes</Filter>
     </ClInclude>
-    <ClInclude Include="ToStringTemplates.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="Foo.cpp">
-      <Filter>Helper Classes</Filter>
-    </ClCompile>
     <ClCompile Include="SListTest.cpp">
       <Filter>Test Classes</Filter>
     </ClCompile>
@@ -26,6 +23,9 @@
     </ClCompile>
     <ClCompile Include="DatumTest.cpp">
       <Filter>Test Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Foo.cpp">
+      <Filter>Helper Classes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
