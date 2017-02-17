@@ -30,7 +30,7 @@ namespace SiachenGameEngine
 			/**
 			* An Iterator class for the HashMap container.
 			*/
-			class Iterator
+			class Iterator final
 			{
 				friend class HashMap;
 			private:
@@ -148,7 +148,7 @@ namespace SiachenGameEngine
 			/**
 			* Look for a specific key in the hashmap.
 			* @param key The key which has to be searched for in the hashmap.
-			* @param The index at which the key was present.
+			* @param index Outputs the index at which the key was present.
 			* @return An iterator to the found key in the hash map, if not found it returns an iterator to the end.
 			*/
 			typename HashMap::Iterator Find(const TKey& key, std::uint32_t& index);
@@ -158,6 +158,13 @@ namespace SiachenGameEngine
 			* @return An iterator associated with the inserted key-value pair
 			*/
 			typename HashMap::Iterator Insert(const PairType& pair);
+			/**
+			* Insert a specific key-value pair into the hashmap.
+			* @param pair The key-value pair which has to be inserted.
+			* @param isInserted Outputs whether an insert operation actually took place.
+			* @return An iterator associated with the inserted key-value pair
+			*/
+			typename HashMap::Iterator Insert(const PairType& pair, bool& isInserted);
 			/**
 			* Remove the specified key from the hashmap.
 			* @param key The key whose associated value pair needs to be removed from the hashmap.

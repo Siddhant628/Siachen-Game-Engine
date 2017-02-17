@@ -72,7 +72,7 @@ namespace SiachenGameEngine
 			return datum;
 		}
 
-		Containers::Datum* Scope::Search(const std::string key, Scope** owningScope) const
+		Containers::Datum* Scope::Search(const std::string& key, Scope** owningScope) const
 		{
 			Scope* searchScope = const_cast<Scope*>(this);
 			Containers::Datum* foundDatum = nullptr;

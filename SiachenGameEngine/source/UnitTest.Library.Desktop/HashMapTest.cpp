@@ -255,6 +255,111 @@ namespace UnitTestLibraryDesktop
 			Assert::IsTrue(fooMap.ContainsKey(h));
 		}
 
+		TEST_METHOD(HashMap_Insert_Overload)
+		{
+			std::int32_t data = 10, data2 = 20;
+			std::pair<std::int32_t, int32_t> p1(data, data2), p2(data2, data);
+			bool isInserted;
+
+			// Testing for an integer
+			HashMap<std::int32_t, std::int32_t> intMap;
+
+			intMap.Insert(p1, isInserted);
+			Assert::AreEqual(1U, intMap.Size());
+			Assert::IsTrue(isInserted);
+			intMap.Insert(p1, isInserted);
+			Assert::AreEqual(1U, intMap.Size());
+			Assert::IsFalse(isInserted);
+			Assert::IsTrue(intMap.ContainsKey(data));
+
+			intMap.Insert(p2, isInserted);
+			Assert::AreEqual(2U, intMap.Size());
+			Assert::IsTrue(isInserted);
+			intMap.Insert(p2, isInserted);
+			Assert::AreEqual(2U, intMap.Size());
+			Assert::IsFalse(isInserted);
+			Assert::IsTrue(intMap.ContainsKey(data2));
+
+			// Testing for character pointer
+			HashMap<char*, std::int32_t> charPtrMap;
+			char* a = "hey", *b = "yeh", *c = "zed";
+			std::pair<char*, std::int32_t> char1(a, data), char2(b, data2), char3(c, data);
+
+			charPtrMap.Insert(char1, isInserted);
+			Assert::AreEqual(1U, charPtrMap.Size());
+			Assert::IsTrue(isInserted);
+			charPtrMap.Insert(char1, isInserted);
+			Assert::AreEqual(1U, charPtrMap.Size());
+			Assert::IsFalse(isInserted);
+			Assert::IsTrue(charPtrMap.ContainsKey(a));
+
+			charPtrMap.Insert(char2, isInserted);
+			Assert::AreEqual(2U, charPtrMap.Size());
+			Assert::IsTrue(isInserted);
+			charPtrMap.Insert(char2, isInserted);
+			Assert::AreEqual(2U, charPtrMap.Size());
+			Assert::IsFalse(isInserted);
+			Assert::IsTrue(charPtrMap.ContainsKey(b));
+
+			charPtrMap.Insert(char3, isInserted);
+			Assert::AreEqual(3U, charPtrMap.Size());
+			Assert::IsTrue(isInserted);
+			charPtrMap.Insert(char3, isInserted);
+			Assert::AreEqual(3U, charPtrMap.Size());
+			Assert::IsFalse(isInserted);
+			Assert::IsTrue(charPtrMap.ContainsKey(c));
+
+			//Testing for string
+			HashMap<std::string, std::int32_t> stringMap;
+			std::string d = "raw", e = "war", f = "dog";
+			std::pair<std::string, int32_t> str(d, data), str2(e, data2), str3(f, data);
+
+			stringMap.Insert(str, isInserted);
+			Assert::AreEqual(1U, stringMap.Size());
+			Assert::IsTrue(isInserted);
+			stringMap.Insert(str, isInserted);
+			Assert::AreEqual(1U, stringMap.Size());
+			Assert::IsFalse(isInserted);
+			Assert::IsTrue(stringMap.ContainsKey(d));
+
+			stringMap.Insert(str2, isInserted);
+			Assert::AreEqual(2U, stringMap.Size());
+			Assert::IsTrue(isInserted);
+			stringMap.Insert(str2, isInserted);
+			Assert::AreEqual(2U, stringMap.Size());
+			Assert::IsFalse(isInserted);
+			Assert::IsTrue(stringMap.ContainsKey(e));
+
+			stringMap.Insert(str3, isInserted);
+			Assert::AreEqual(3U, stringMap.Size());
+			Assert::IsTrue(isInserted);
+			stringMap.Insert(str3, isInserted);
+			Assert::AreEqual(3U, stringMap.Size());
+			Assert::IsFalse(isInserted);
+			Assert::IsTrue(stringMap.ContainsKey(f));
+
+			//Testing for Foos
+			HashMap<Foo, std::int32_t> fooMap;
+			Foo g(data), h(data2);
+			std::pair<Foo, std::int32_t> foo(g, data), foo2(h, data);
+
+			fooMap.Insert(foo, isInserted);
+			Assert::AreEqual(1U, fooMap.Size());
+			Assert::IsTrue(isInserted);
+			fooMap.Insert(foo, isInserted);
+			Assert::AreEqual(1U, fooMap.Size());
+			Assert::IsFalse(isInserted);
+			Assert::IsTrue(fooMap.ContainsKey(g));
+
+			fooMap.Insert(foo2, isInserted);
+			Assert::AreEqual(2U, fooMap.Size());
+			Assert::IsTrue(isInserted);
+			fooMap.Insert(foo2, isInserted);
+			Assert::AreEqual(2U, fooMap.Size());
+			Assert::IsFalse(isInserted);
+			Assert::IsTrue(fooMap.ContainsKey(h));
+		}
+
 		TEST_METHOD(HashMap_Find)
 		{
 			std::int32_t data = 10, data2 = 20;
@@ -297,6 +402,51 @@ namespace UnitTestLibraryDesktop
 			HashMap<Foo, std::int32_t>::Iterator it4 = fooMap.Insert(foo);
 			Assert::AreNotEqual(fooMap.end(), fooMap.Find(g));
 			Assert::AreEqual(it4, fooMap.Find(g));
+		}
+
+		TEST_METHOD(HashMap_Find_Overload)
+		{
+			std::int32_t data = 10, data2 = 20;
+			std::uint32_t index;
+			std::pair<std::int32_t, int32_t> p1(data, data2), p2(data2, data);
+
+			// Testing for an integer
+			HashMap<std::int32_t, std::int32_t> intMap;
+
+			Assert::AreEqual(intMap.end(), intMap.Find(data, index));
+			HashMap<std::int32_t, std::int32_t>::Iterator it = intMap.Insert(p1);
+			Assert::AreNotEqual(intMap.end(), intMap.Find(data, index));
+			Assert::AreEqual(it, intMap.Find(data, index));
+
+			// Testing for character pointer
+			HashMap<char*, std::int32_t> charPtrMap;
+			char* a = "hey";
+			std::pair<char*, std::int32_t> char1(a, data);
+
+			Assert::AreEqual(charPtrMap.end(), charPtrMap.Find(a, index));
+			HashMap<char*, std::int32_t>::Iterator it2 = charPtrMap.Insert(char1);
+			Assert::AreNotEqual(charPtrMap.end(), charPtrMap.Find(a, index));
+			Assert::AreEqual(it2, charPtrMap.Find(a, index));
+
+			//Testing for string
+			HashMap<std::string, std::int32_t> stringMap;
+			std::string d = "raw";
+			std::pair<std::string, int32_t> str(d, data);
+
+			Assert::AreEqual(stringMap.end(), stringMap.Find(d, index));
+			HashMap<std::string, std::int32_t>::Iterator it3 = stringMap.Insert(str);
+			Assert::AreNotEqual(stringMap.end(), stringMap.Find(d, index));
+			Assert::AreEqual(it3, stringMap.Find(d, index));
+
+			//Testing for Foos
+			HashMap<Foo, std::int32_t> fooMap;
+			Foo g(data);
+			std::pair<Foo, std::int32_t> foo(g, data);
+
+			Assert::AreEqual(fooMap.end(), fooMap.Find(g, index));
+			HashMap<Foo, std::int32_t>::Iterator it4 = fooMap.Insert(foo);
+			Assert::AreNotEqual(fooMap.end(), fooMap.Find(g, index));
+			Assert::AreEqual(it4, fooMap.Find(g, index));
 		}
 
 		TEST_METHOD(HashMap_Remove)
