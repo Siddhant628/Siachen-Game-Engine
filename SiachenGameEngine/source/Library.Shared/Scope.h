@@ -12,9 +12,10 @@ namespace SiachenGameEngine
 	{
 		class Scope final : public RTTI
 		{
+			RTTI_DECLARATIONS(Scope, RTTI)
+			
 		private:
 			typedef std::pair<std::string, Containers::Datum> StringDatumPair;
-
 			
 			Containers::HashMap<std::string, Containers::Datum> mTable;
 
@@ -28,7 +29,12 @@ namespace SiachenGameEngine
 			// TODO Delete all the children scopes
 			~Scope();
 
-			virtual bool Is(const std::string& name) const;
+			Containers::Datum& Append(const std::string key);
+
+			// TODO Write logic
+			virtual bool Equals(const RTTI* rhs) const override;
+			// TODO Write logic
+			virtual std::string ToString() const override;
 		};
 	}
 }

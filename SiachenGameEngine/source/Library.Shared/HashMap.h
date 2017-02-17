@@ -146,6 +146,13 @@ namespace SiachenGameEngine
 			*/
 			typename HashMap::Iterator Find(const TKey& key) const;
 			/**
+			* Look for a specific key in the hashmap.
+			* @param key The key which has to be searched for in the hashmap.
+			* @param The index at which the key was present.
+			* @return An iterator to the found key in the hash map, if not found it returns an iterator to the end.
+			*/
+			typename HashMap::Iterator Find(const TKey& key, std::uint32_t& index);
+			/**
 			* Insert a specific key-value pair into the hashmap.
 			* @param pair The key-value pair which has to be inserted.
 			* @return An iterator associated with the inserted key-value pair

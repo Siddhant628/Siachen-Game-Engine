@@ -24,7 +24,7 @@ namespace SiachenGameEngine
 			PointerType
 		};
 
-		class Datum
+		class Datum final
 		{
 
 		private:

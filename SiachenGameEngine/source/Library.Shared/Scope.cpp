@@ -5,6 +5,8 @@ namespace SiachenGameEngine
 {
 	namespace GameplayFramework
 	{
+		RTTI_DEFINITIONS(Scope)
+
 		Scope::Scope(std::uint32_t initialCapacity /* = 13 */) : mTable(initialCapacity), mIndexVector(initialCapacity)
 		{
 			if (initialCapacity == 0)
@@ -18,16 +20,21 @@ namespace SiachenGameEngine
 
 		}
 
-		bool Scope::Is(const std::string& name) const
+		//Containers::Datum& Scope::Append(const std::string key)
+		//{
+		//	// Check if the pair is already present in the scope
+
+		//}
+
+		bool Scope::Equals(const RTTI* rhs) const
 		{
-			if (name == "Scope")
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+			UNREFERENCED_PARAMETER(rhs);
+			return true;
+		}
+
+		std::string Scope::ToString() const
+		{
+			return "SCOPE";
 		}
 	}
 }

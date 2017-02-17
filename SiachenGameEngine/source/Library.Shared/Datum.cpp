@@ -28,7 +28,7 @@ namespace SiachenGameEngine
 			else
 			{
 				Reserve(10U);
-				if (mDatumType == DatumType::IntegerType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.i[index]);
+				if		(mDatumType == DatumType::IntegerType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.i[index]);
 				else if (mDatumType == DatumType::FloatType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.f[index]);
 				else if (mDatumType == DatumType::StringType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.s[index]);
 				else if (mDatumType == DatumType::VectorType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.v[index]);
@@ -63,7 +63,7 @@ namespace SiachenGameEngine
 					mCapacity = 0;
 					mData.vp = nullptr;
 					Reserve(10U);
-					if (mDatumType == DatumType::IntegerType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.i[index]);
+					if		(mDatumType == DatumType::IntegerType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.i[index]);
 					else if (mDatumType == DatumType::FloatType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.f[index]);
 					else if (mDatumType == DatumType::StringType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.s[index]);
 					else if (mDatumType == DatumType::VectorType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.v[index]);
@@ -87,11 +87,14 @@ namespace SiachenGameEngine
 
 		void Datum::SetType(DatumType setType)
 		{
-			if (mDatumType != DatumType::UnknownType)
+			if (mDatumType == DatumType::UnknownType || setType == mDatumType)
+			{
+				mDatumType = setType;
+			}
+			else
 			{
 				throw std::runtime_error("This datum has already been assigned a type.");
 			}
-			mDatumType = setType;
 		}
 
 		std::uint32_t Datum::Size() const

@@ -61,7 +61,7 @@ namespace SiachenGameEngine
 			static std::string TypeName() { return std::string(#Type); }                                     \
 			static std::uint64_t TypeIdClass() { return sRunTimeTypeId; }                                    \
 			virtual std::uint64_t TypeIdInstance() const override { return Type::TypeIdClass(); }            \
-			virtual Library::RTTI* QueryInterface(const std::uint64_t id) const override                     \
+			virtual GameplayFramework::RTTI* QueryInterface(const std::uint64_t id) const override           \
             {                                                                                                \
                 if (id == sRunTimeTypeId)                                                                    \
 					{ return (RTTI*)this; }                                                                  \

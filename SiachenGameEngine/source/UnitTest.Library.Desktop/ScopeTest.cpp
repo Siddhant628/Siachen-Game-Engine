@@ -2,6 +2,7 @@
 #include "CppUnitTest.h"
 #include "Scope.h"
 
+
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace SiachenGameEngine::GameplayFramework;
 
@@ -30,7 +31,7 @@ namespace UnitTestLibraryDesktop
 
 		TEST_METHOD(Scope_First)
 		{
-			//Scope scope;
+			Scope scope;
 		}
 
 	private:

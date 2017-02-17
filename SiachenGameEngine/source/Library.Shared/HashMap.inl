@@ -225,7 +225,7 @@ namespace SiachenGameEngine
 		// HashMap constructors
 
 		template<typename TKey, typename TData, typename HashFunctor, typename CompareFunctor>
-		HashMap<TKey, TData, HashFunctor, CompareFunctor>::HashMap(std::uint32_t numberOfBuckets) : mHashmapVector(BucketType(numberOfBuckets)), mSize(0)
+		HashMap<TKey, TData, HashFunctor, CompareFunctor>::HashMap(std::uint32_t numberOfBuckets) : mHashmapVector(numberOfBuckets), mSize(0)
 		{
 
 		}
@@ -301,19 +301,40 @@ namespace SiachenGameEngine
 			return end();
 		}
 
+		// TODO Add tests
+		template<typename TKey, typename TData, typename HashFunctor, typename CompareFunctor>
+		typename HashMap<TKey, TData, HashFunctor, CompareFunctor>::Iterator HashMap<TKey, TData, HashFunctor, CompareFunctor>::Find(const TKey& key, std::uint32_t& index)
+		{
+			static HashFunctor hash;
+			index = (hash(key) % mHashmapVector.Size());
+			if (mSize == 0)
+			{
+				return end();
+			}
+			CompareFunctor compareFunctor;
+
+			for (SList<PairType>::Iterator it = mHashmapVector[index].begin(); it != mHashmapVector[index].end(); ++it)
+			{
+				if (compareFunctor(((*it).first), key))
+				{
+					return Iterator(this, index, it);
+				}
+			}
+			return end();
+		}
+
 		template<typename TKey, typename TData, typename HashFunctor, typename CompareFunctor>
 		typename HashMap<TKey, TData, HashFunctor, CompareFunctor>::Iterator HashMap<TKey, TData, HashFunctor, CompareFunctor>::Insert(const PairType &pair)
 		{
 			TKey key = pair.first;
 			// In case the key is already present in the map
-			HashMap::Iterator it = Find(key);
+			std::uint32_t index = 0;
+			HashMap::Iterator it = Find(key, index);
 			if (it != end())
 			{
 				return it;
 			}
 			// In case the key isn't present in the map
-			HashFunctor hash;
-			uint32_t index = (hash(key) % mHashmapVector.Size());
 			SList<PairType>::Iterator listIterator = mHashmapVector[index].PushBack(pair);
 			++mSize;
 			return Iterator(this, index, listIterator);
