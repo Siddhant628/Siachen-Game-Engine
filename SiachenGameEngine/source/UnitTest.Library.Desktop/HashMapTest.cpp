@@ -34,8 +34,6 @@ namespace SiachenGameEngine
 	}
 }
 
-
-
 namespace Microsoft
 {
 	namespace VisualStudio
