@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "HashMap.h"
 
 namespace SiachenGameEngine

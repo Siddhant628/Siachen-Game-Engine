@@ -1,4 +1,6 @@
+#include "pch.h"
 #include "Datum.h"
+
 #define GLM_FORCE_CXX11
 #include "../../external/glm/glm/glm.hpp"
 #include "../../external/glm/glm/gtx/string_cast.hpp"
@@ -24,15 +26,18 @@ namespace SiachenGameEngine
 				mSize = rhs.mSize;
 				mCapacity = rhs.mCapacity;
 				mData = rhs.mData;
-				return;
 			}
 			// If rhs is an internal datum
-			if		(mDatumType == DatumType::IntegerType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.i[index]);
-			else if (mDatumType == DatumType::FloatType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.f[index]);
-			else if (mDatumType == DatumType::StringType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.s[index]);
-			else if (mDatumType == DatumType::VectorType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.v[index]);
-			else if (mDatumType == DatumType::MatrixType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.m[index]);
-			else if (mDatumType == DatumType::PointerType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.r[index]);
+			else
+			{
+				Reserve(10U);
+				if (mDatumType == DatumType::IntegerType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.i[index]);
+				else if (mDatumType == DatumType::FloatType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.f[index]);
+				else if (mDatumType == DatumType::StringType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.s[index]);
+				else if (mDatumType == DatumType::VectorType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.v[index]);
+				else if (mDatumType == DatumType::MatrixType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.m[index]);
+				else if (mDatumType == DatumType::PointerType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.r[index]);
+			}
 		}
 
 		Datum& Datum::operator=(const Datum& rhs)
@@ -60,8 +65,8 @@ namespace SiachenGameEngine
 					mSize = 0;
 					mCapacity = 0;
 					mData.vp = nullptr;
-					
-					if		(mDatumType == DatumType::IntegerType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.i[index]);
+					Reserve(10U);
+					if (mDatumType == DatumType::IntegerType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.i[index]);
 					else if (mDatumType == DatumType::FloatType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.f[index]);
 					else if (mDatumType == DatumType::StringType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.s[index]);
 					else if (mDatumType == DatumType::VectorType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.v[index]);
@@ -77,7 +82,7 @@ namespace SiachenGameEngine
 			if (!mIsExternal) ClearAndFree();
 		}
 
-		
+
 		DatumType Datum::Type() const
 		{
 			return mDatumType;
@@ -97,7 +102,7 @@ namespace SiachenGameEngine
 			return mSize;
 		}
 
-		bool Datum::IsEmpty()
+		bool Datum::IsEmpty() const
 		{
 			return (mSize == 0);
 		}
@@ -119,7 +124,7 @@ namespace SiachenGameEngine
 			}
 			// Estimate the size of data items
 			std::uint32_t sizeOfData = 0;
-			if		(mDatumType == DatumType::IntegerType)		sizeOfData = sizeof(std::int32_t);
+			if (mDatumType == DatumType::IntegerType)		sizeOfData = sizeof(std::int32_t);
 			else if (mDatumType == DatumType::FloatType)		sizeOfData = sizeof(std::float_t);
 			else if (mDatumType == DatumType::VectorType)		sizeOfData = sizeof(glm::vec4);
 			else if (mDatumType == DatumType::MatrixType)		sizeOfData = sizeof(glm::mat4x4);
@@ -137,7 +142,7 @@ namespace SiachenGameEngine
 			mCapacity = newCapacity;
 		}
 
-		
+
 		void Datum::PushBack(const std::int32_t data)
 		{
 			if (mDatumType == DatumType::UnknownType && IsEmpty())
@@ -152,7 +157,6 @@ namespace SiachenGameEngine
 			{
 				Reserve(mCapacity * 2);
 			}
-			//mData.i[mSize] = data;
 			new (mData.i + mSize)std::int32_t(data);
 			++mSize;
 		}
@@ -171,7 +175,6 @@ namespace SiachenGameEngine
 			{
 				Reserve(mCapacity * 2);
 			}
-			//mData.f[mSize] = data;
 			new (mData.f + mSize)std::float_t(data);
 			++mSize;
 		}
@@ -190,7 +193,6 @@ namespace SiachenGameEngine
 			{
 				Reserve(mCapacity * 2);
 			}
-			//mData.s[mSize] = data;
 			new (mData.s + mSize)std::string(data);
 			++mSize;
 		}
@@ -209,7 +211,6 @@ namespace SiachenGameEngine
 			{
 				Reserve(mCapacity * 2);
 			}
-			//mData.v[mSize] = data;
 			new (mData.v + mSize)glm::vec4(data);
 			++mSize;
 		}
@@ -228,7 +229,6 @@ namespace SiachenGameEngine
 			{
 				Reserve(mCapacity * 2);
 			}
-			//mData.m[mSize] = data;
 			new (mData.m + mSize)glm::mat4x4(data);
 			++mSize;
 		}
@@ -248,11 +248,10 @@ namespace SiachenGameEngine
 				Reserve(mCapacity * 2);
 			}
 			mData.r[mSize] = const_cast<GameplayFramework::RTTI*>(data);
-			//new (mData.r + mSize)GameplayFramework::RTTI*(const_cast<GameplayFramework::RTTI*>(data));
 			++mSize;
 		}
 
-		
+
 		void Datum::PopBack()
 		{
 			if (mIsExternal || mDatumType == DatumType::UnknownType)
@@ -265,7 +264,7 @@ namespace SiachenGameEngine
 			}
 			else
 			{
-				if		(mDatumType == DatumType::IntegerType)	mData.i[--mSize].std::int32_t::~int32_t();
+				if (mDatumType == DatumType::IntegerType)	mData.i[--mSize].std::int32_t::~int32_t();
 				else if (mDatumType == DatumType::FloatType)	mData.f[--mSize].std::float_t::~float_t();
 				else if (mDatumType == DatumType::VectorType)	mData.v[--mSize].glm::vec4::~vec4();
 				else if (mDatumType == DatumType::MatrixType)	mData.m[--mSize].glm::mat4x4::~mat4x4();
@@ -299,9 +298,22 @@ namespace SiachenGameEngine
 			mCapacity = 0;
 		}
 
-		
+		// TODO Write a Set method for all, update unit tests accordingly.
 		void Datum::Set(const std::int32_t value, std::uint32_t index)
 		{
+			//if (mDatumType != DatumType::IntegerType)
+			//{
+			//	throw std::runtime_error("Improper set operation.");
+			//}
+			//if (mSize > index)
+			//{
+			//	mData.i[index].std::int32_t::~int32_t();
+			//	new (mData.i + index)std::int32_t(value);
+			//}
+			//else
+			//{
+			//	throw std::runtime_error("Out of bounds of the external array.");
+			//}
 			if (mDatumType == DatumType::UnknownType && IsEmpty() && index == 0)
 			{
 				PushBack(value);
@@ -444,7 +456,7 @@ namespace SiachenGameEngine
 			PushBack(value);
 		}
 
-		
+
 		bool Datum::operator==(const Datum & rhs) const
 		{
 			if (mDatumType == DatumType::UnknownType || rhs.mDatumType == DatumType::UnknownType)
@@ -475,7 +487,7 @@ namespace SiachenGameEngine
 			}
 			// In case of any other type
 			std::uint32_t sizeOfElement = 0;
-			if		(mDatumType == DatumType::IntegerType)	sizeOfElement = sizeof(std::int32_t);
+			if (mDatumType == DatumType::IntegerType)	sizeOfElement = sizeof(std::int32_t);
 			else if (mDatumType == DatumType::FloatType)	sizeOfElement = sizeof(std::float_t);
 			else if (mDatumType == DatumType::MatrixType)	sizeOfElement = sizeof(glm::mat4x4);
 			else if (mDatumType == DatumType::VectorType)	sizeOfElement = sizeof(glm::vec4);
@@ -485,43 +497,10 @@ namespace SiachenGameEngine
 
 		bool Datum::operator!=(const Datum & rhs) const
 		{
-			if (mDatumType == DatumType::UnknownType || rhs.mDatumType == DatumType::UnknownType)
-			{
-				throw std::runtime_error("Cannot compare unknown types.");
-			}
-			if ((mSize != rhs.mSize) || (mDatumType != rhs.mDatumType))
-			{
-				return true;
-			}
-			// In case of a string
-			if (mDatumType == DatumType::StringType)
-			{
-				for (std::uint32_t index = 0; index < mSize; ++index)
-				{
-					if (mData.s[index] != rhs.mData.s[index])	return true;
-				}
-				return false;
-			}
-			// In case of a RTTI* type
-			else if (mDatumType == DatumType::PointerType)
-			{
-				for (std::uint32_t index = 0; index < mSize; ++index)
-				{
-					if (!(mData.r[index]->Equals(rhs.mData.r[index])))	return true;
-				}
-				return false;
-			}
-			// In case of any other type
-			std::uint32_t sizeOfElement = 0;
-			if		(mDatumType == DatumType::IntegerType)	sizeOfElement = sizeof(std::int32_t);
-			else if (mDatumType == DatumType::FloatType)	sizeOfElement = sizeof(std::float_t);
-			else if (mDatumType == DatumType::MatrixType)	sizeOfElement = sizeof(glm::mat4x4);
-			else if (mDatumType == DatumType::VectorType)	sizeOfElement = sizeof(glm::vec4);
-
-			return (std::memcmp(mData.vp, rhs.mData.vp, sizeOfElement*mSize) != 0);
+			return !operator==(rhs);
 		}
 
-		
+
 		bool Datum::operator==(const std::int32_t rhs) const
 		{
 			if ((mSize != 1) || (mDatumType != DatumType::IntegerType))
@@ -576,59 +555,35 @@ namespace SiachenGameEngine
 			return (mData.r[0] == rhs);
 		}
 
-		
+
 		bool Datum::operator!=(const std::int32_t rhs) const
 		{
-			if ((mSize != 1) || (mDatumType != DatumType::IntegerType))
-			{
-				return true;
-			}
-			return (mData.i[0] != rhs);
+			return !operator==(rhs);
 		}
 
 		bool Datum::operator!=(const std::float_t rhs) const
 		{
-			if ((mSize != 1) || (mDatumType != DatumType::FloatType))
-			{
-				return true;
-			}
-			return (mData.f[0] != rhs);
+			return !operator==(rhs);
 		}
 
 		bool Datum::operator!=(const std::string& rhs) const
 		{
-			if ((mSize != 1) || (mDatumType != DatumType::StringType))
-			{
-				return true;
-			}
-			return (mData.s[0] != rhs);
+			return !operator==(rhs);
 		}
 
 		bool Datum::operator!=(const glm::vec4& rhs) const
 		{
-			if ((mSize != 1) || (mDatumType != DatumType::VectorType))
-			{
-				return true;
-			}
-			return (mData.v[0] != rhs);
+			return !operator==(rhs);
 		}
 
 		bool Datum::operator!=(const glm::mat4x4& rhs) const
 		{
-			if ((mSize != 1) || (mDatumType != DatumType::MatrixType))
-			{
-				return true;
-			}
-			return (mData.m[0] != rhs);
+			return !operator==(rhs);
 		}
 
 		bool Datum::operator!=(const GameplayFramework::RTTI* rhs) const
 		{
-			if ((mSize != 1) || (mDatumType != DatumType::PointerType))
-			{
-				return true;
-			}
-			return (mData.r[0] != rhs);
+			return !operator==(rhs);
 		}
 
 
@@ -774,7 +729,7 @@ namespace SiachenGameEngine
 				throw std::runtime_error("Illegal assignment operation.");
 			}
 			Set(rhs);
-		//	mDatumType = DatumType::MatrixType;
+			//	mDatumType = DatumType::MatrixType;
 			return *this;
 		}
 
@@ -833,71 +788,72 @@ namespace SiachenGameEngine
 			switch (mDatumType)
 			{
 				// In case of an integer
-				case DatumType::IntegerType:
+			case DatumType::IntegerType:
+			{
+				std::int32_t value;
+				if (sscanf_s(stringToParse, "%d", &value) != 1)
 				{
-					std::int32_t value;
-					if (sscanf_s(stringToParse, "%d", &value) != 1)
-					{
-						return false;
-					}
-					Set(value, index);
-					return true;
-				}
-				// In case of a floating point number
-				case DatumType::FloatType:
-				{
-					std::float_t value;
-					if (sscanf_s(stringToParse, "%f", &value) != 1)
-					{
-						return false;
-					}
-					Set(value, index);
-					return true;
-				}
-				// In case of a vector
-				case DatumType::VectorType:
-				{
-					std::float_t value1, value2, value3, value4;
-					if (sscanf_s(stringToParse, "vec4(%f,%f,%f,%f)", &value1, &value2, &value3, &value4) != 4)
-					{
-						return false;
-					}
-					glm::vec4 vecToSet(value1, value2, value3, value4);
-					Set(vecToSet, index);
-					return true;
-				}
-				// In case of a matrix
-				case DatumType::MatrixType:
-				{
-					std::float_t value[16];
-					if (sscanf_s(stringToParse, "mat4x4((%f,%f,%f,%f),(%f,%f,%f,%f),(%f,%f,%f,%f),(%f,%f,%f,%f))", &value[0], &value[1], &value[2], &value[3], &value[4], &value[5], &value[6], &value[7], &value[8], &value[9], &value[10], &value[11], &value[12], &value[13], &value[14], &value[15]) != 16)
-					{
-						return false;
-					}
-					glm::vec4 vec1(value[0], value[1], value[2], value[3]);
-					glm::vec4 vec2(value[4], value[5], value[6], value[7]);
-					glm::vec4 vec3(value[8], value[9], value[10], value[11]);
-					glm::vec4 vec4(value[12], value[13], value[14], value[15]);
-
-					glm::mat4x4 matToSet(vec1, vec2, vec3, vec4);
-					Set(matToSet, index);
-					return true;
-				}
-
-				case DatumType::TableType:
 					return false;
+				}
+				Set(value, index);
+				return true;
+			}
+			// In case of a floating point number
+			case DatumType::FloatType:
+			{
+				std::float_t value;
+				if (sscanf_s(stringToParse, "%f", &value) != 1)
+				{
+					return false;
+				}
+				Set(value, index);
+				return true;
+			}
+			// In case of a vector
+			case DatumType::VectorType:
+			{
+				std::float_t value1, value2, value3, value4;
+				if (sscanf_s(stringToParse, "vec4(%f,%f,%f,%f)", &value1, &value2, &value3, &value4) != 4)
+				{
+					return false;
+				}
+				glm::vec4 vecToSet(value1, value2, value3, value4);
+				Set(vecToSet, index);
+				return true;
+			}
+			// In case of a matrix
+			case DatumType::MatrixType:
+			{
+				std::float_t value[16];
+				if (sscanf_s(stringToParse, "mat4x4((%f,%f,%f,%f),(%f,%f,%f,%f),(%f,%f,%f,%f),(%f,%f,%f,%f))", &value[0], &value[1], &value[2], &value[3], &value[4], &value[5], &value[6], &value[7], &value[8], &value[9], &value[10], &value[11], &value[12], &value[13], &value[14], &value[15]) != 16)
+				{
+					return false;
+				}
+				glm::vec4 vec1(value[0], value[1], value[2], value[3]);
+				glm::vec4 vec2(value[4], value[5], value[6], value[7]);
+				glm::vec4 vec3(value[8], value[9], value[10], value[11]);
+				glm::vec4 vec4(value[12], value[13], value[14], value[15]);
+
+				glm::mat4x4 matToSet(vec1, vec2, vec3, vec4);
+				Set(matToSet, index);
+				return true;
+			}
+
+			case DatumType::TableType:
+				return false;
 
 				// In case of a string
-				case DatumType::StringType:
-					Set(data, index);
-					return true;
+			case DatumType::StringType:
+				Set(data, index);
+				return true;
 
-				case DatumType::PointerType:
-					break;
+			case DatumType::PointerType:
+				break;
 			}
 			return false;
 		}
-	
+
+
 		template <>
 		std::int32_t& Datum::Get(std::uint32_t index) const
 		{

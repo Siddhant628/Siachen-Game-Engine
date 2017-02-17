@@ -1,9 +1,9 @@
 #pragma once
+#include <string>
 #include "RTTI.h"
 
 #define GLM_FORCE_CXX11
 #include "../../external/glm/glm/glm.hpp"
-#include <string>
 
 
 namespace SiachenGameEngine
@@ -103,7 +103,7 @@ namespace SiachenGameEngine
 			* Check whether a datum is empty.
 			* @return True if the datum is empty.
 			*/
-			bool IsEmpty();
+			bool IsEmpty() const;
 			/**
 			* Reserve a specific amount of memory for the datum and move its data to it.
 			* @param newCapacity The amount of capacity for which the memory has to be reserved.

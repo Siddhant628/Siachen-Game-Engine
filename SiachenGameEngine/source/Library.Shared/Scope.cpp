@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Scope.h"
 
 namespace SiachenGameEngine
@@ -15,6 +16,18 @@ namespace SiachenGameEngine
 		Scope::~Scope()
 		{
 
+		}
+
+		bool Scope::Is(const std::string& name) const
+		{
+			if (name == "Scope")
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
 	}
 }

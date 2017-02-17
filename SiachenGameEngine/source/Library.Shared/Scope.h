@@ -27,6 +27,8 @@ namespace SiachenGameEngine
 			Scope(std::uint32_t initialCapacity = 13);
 			// TODO Delete all the children scopes
 			~Scope();
+
+			virtual bool Is(const std::string& name) const;
 		};
 	}
 }
