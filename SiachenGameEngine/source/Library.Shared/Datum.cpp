@@ -2,7 +2,7 @@
 #include "Datum.h"
 
 #define GLM_FORCE_CXX11
-#include "../../external/glm/glm/glm.hpp"
+//#include "../../external/glm/glm/glm.hpp"
 #include "../../external/glm/glm/gtx/string_cast.hpp"
 
 
@@ -812,28 +812,25 @@ namespace SiachenGameEngine
 			// In case of a vector
 			case DatumType::VectorType:
 			{
-				std::float_t value1, value2, value3, value4;
-				if (sscanf_s(stringToParse, "vec4(%f,%f,%f,%f)", &value1, &value2, &value3, &value4) != 4)
+				glm::vec4 vec;
+				if (sscanf_s(stringToParse, "vec4(%f,%f,%f,%f)", &vec.x, &vec.y, &vec.z, &vec.w) != 4)
 				{
 					return false;
 				}
-				glm::vec4 vecToSet(value1, value2, value3, value4);
-				Set(vecToSet, index);
+				Set(vec, index);
 				return true;
 			}
 			// In case of a matrix
 			case DatumType::MatrixType:
 			{
-				std::float_t value[16];
-				if (sscanf_s(stringToParse, "mat4x4((%f,%f,%f,%f),(%f,%f,%f,%f),(%f,%f,%f,%f),(%f,%f,%f,%f))", &value[0], &value[1], &value[2], &value[3], &value[4], &value[5], &value[6], &value[7], &value[8], &value[9], &value[10], &value[11], &value[12], &value[13], &value[14], &value[15]) != 16)
+				glm::vec4 vec1;
+				glm::vec4 vec2;
+				glm::vec4 vec3;
+				glm::vec4 vec4;
+				if (sscanf_s(stringToParse, "mat4x4((%f,%f,%f,%f),(%f,%f,%f,%f),(%f,%f,%f,%f),(%f,%f,%f,%f))", &vec1.x, &vec1.y, &vec1.z, &vec1.w, &vec2.x, &vec2.y, &vec2.z, &vec2.w, &vec3.x, &vec3.y, &vec3.z, &vec3.w, &vec4.x, &vec4.y, &vec4.z, &vec4.w) != 16)
 				{
 					return false;
 				}
-				glm::vec4 vec1(value[0], value[1], value[2], value[3]);
-				glm::vec4 vec2(value[4], value[5], value[6], value[7]);
-				glm::vec4 vec3(value[8], value[9], value[10], value[11]);
-				glm::vec4 vec4(value[12], value[13], value[14], value[15]);
-
 				glm::mat4x4 matToSet(vec1, vec2, vec3, vec4);
 				Set(matToSet, index);
 				return true;
