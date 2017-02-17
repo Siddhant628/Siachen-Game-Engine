@@ -2,9 +2,8 @@
 #include <string>
 #include "RTTI.h"
 
-#define GLM_FORCE_CXX11
-#include "../../external/glm/glm/glm.hpp"
-
+#define GLM_FORCE_CXX98
+#include <glm/glm.hpp>
 
 namespace SiachenGameEngine
 {

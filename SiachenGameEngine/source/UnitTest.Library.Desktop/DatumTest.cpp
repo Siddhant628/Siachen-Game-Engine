@@ -1,7 +1,10 @@
 #include "pch.h"
 #include "CppUnitTest.h"
 #include "Datum.h"
-#include "../../external/glm/glm/gtx/string_cast.hpp"
+
+#define GLM_FORCE_CXX98
+#include <glm/glm.hpp>
+#include <glm/gtx/string_cast.hpp>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace SiachenGameEngine::Containers;

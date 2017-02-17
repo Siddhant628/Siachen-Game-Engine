@@ -1,11 +1,8 @@
 #include "pch.h"
 #include "Datum.h"
 
-#define GLM_FORCE_CXX11
-//#include "../../external/glm/glm/glm.hpp"
-#include "../../external/glm/glm/gtx/string_cast.hpp"
-
-
+#define GLM_FORCE_CXX98
+#include <glm/gtx/string_cast.hpp>
 
 namespace SiachenGameEngine
 {
