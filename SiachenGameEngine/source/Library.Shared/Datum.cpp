@@ -590,7 +590,6 @@ namespace SiachenGameEngine
 				}
 				return true;
 			}
-			// TODO Scope
 			// In case of a Scope* type
 			else if (mDatumType == DatumType::TableType)
 			{
@@ -670,7 +669,15 @@ namespace SiachenGameEngine
 			return (mData.r[0]->Equals(rhs));
 		}
 
-		// TODO Scope?
+		bool Datum::operator==(const GameplayFramework::Scope* rhs) const
+		{
+			if ((mSize != 1) || (mDatumType != DatumType::TableType))
+			{
+				return false;
+			}
+			return (mData.sc[0]->Equals(rhs));
+		}
+
 
 		bool Datum::operator!=(const std::int32_t rhs) const
 		{
@@ -702,7 +709,11 @@ namespace SiachenGameEngine
 			return !operator==(rhs);
 		}
 
-		// TODO Scope?
+		bool Datum::operator!=(const GameplayFramework::Scope* rhs) const
+		{
+			return !(operator==(rhs));
+		}
+
 
 		void Datum::SetStorage(std::int32_t* externalArray, std::uint32_t numberOfElements)
 		{
@@ -794,7 +805,21 @@ namespace SiachenGameEngine
 			mData.r = externalArray;
 		}
 
-		// TODO Scope?
+		void Datum::SetStorage(GameplayFramework::Scope** externalArray, std::uint32_t numberOfElements)
+		{
+			if (mDatumType != DatumType::TableType || numberOfElements == 0)
+			{
+				throw std::runtime_error("Datum cannot be assigned to an external array.");
+			}
+			// Clear and free the memory allocated to the datum previously
+			if (!mIsExternal) ClearAndFree();
+			// Update member variables
+			mIsExternal = true;
+			mSize = numberOfElements;
+			mCapacity = numberOfElements;
+			mData.sc = externalArray;
+		}
+
 
 		Datum& Datum::operator=(const std::int32_t rhs)
 		{
@@ -952,6 +977,7 @@ namespace SiachenGameEngine
 				stringToReturn = glm::to_string(Get<glm::mat4x4>(index));
 				break;
 			case DatumType::TableType:
+				stringToReturn = (Get<GameplayFramework::Scope*>(index))->ToString();
 				break;
 			case DatumType::StringType:
 				stringToReturn = Get<std::string>(index);
@@ -1028,9 +1054,6 @@ namespace SiachenGameEngine
 			case DatumType::StringType:
 				Set(data, index);
 				return true;
-
-			case DatumType::PointerType:
-				break;
 			}
 			return false;
 		}

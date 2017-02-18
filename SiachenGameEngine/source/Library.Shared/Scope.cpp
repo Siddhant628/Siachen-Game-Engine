@@ -9,6 +9,27 @@ namespace SiachenGameEngine
 	namespace GameplayFramework
 	{
 		RTTI_DEFINITIONS(Scope)
+		
+		void Scope::DeepCopyScope(const Scope& rhs)
+		{
+			VectorType::Iterator end = rhs.mIndexVector.end();
+			for (VectorType::Iterator it = rhs.mIndexVector.begin(); it != end; ++it)
+			{
+				if ((*it)->second.Type() == DatumType::TableType)
+				{
+					for (std::uint32_t index = 0; index < (*it)->second.Size(); ++index)
+					{
+						Scope scope((*it)->second[index]);
+						Adopt(scope, (*it)->first);
+					}
+				}
+				else
+				{
+					TableType::Iterator insertedItem = mTableHashmap.Insert(*(*it));
+					mIndexVector.PushBack(&*insertedItem);
+				}
+			}
+		}
 
 		Scope::Scope(std::uint32_t initialCapacity /* = 13 */) : mTableHashmap(initialCapacity), mIndexVector(initialCapacity), mParent(nullptr)
 		{
@@ -20,8 +41,16 @@ namespace SiachenGameEngine
 
 		Scope::Scope(const Scope& rhs) : mParent(nullptr)
 		{
-			mTableHashmap = rhs.mTableHashmap;
-			mIndexVector = rhs.mIndexVector;
+			DeepCopyScope(rhs);
+		}
+
+		Scope& Scope::operator=(const Scope& rhs)
+		{
+			if (this != &rhs)
+			{
+				DeepCopyScope(rhs);
+			}
+			return *this;
 		}
 
 		Scope::~Scope()
@@ -103,8 +132,12 @@ namespace SiachenGameEngine
 
 		bool Scope::Equals(const RTTI* rhs) const
 		{
-			UNREFERENCED_PARAMETER(rhs);
-			return true;
+			Scope* rhsScope = rhs->As<Scope>();
+			if (rhsScope == nullptr)
+			{
+				return false;
+			}
+			return (operator==(*rhsScope));
 		}
 
 		std::string Scope::ToString() const

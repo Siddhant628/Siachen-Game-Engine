@@ -25,18 +25,17 @@ namespace SiachenGameEngine
 
 			Scope* mParent;
 
+			void DeepCopyScope(const Scope& rhs);
+
 		public:
-			// TODO Pick a default value
 			Scope(std::uint32_t initialCapacity = 13);
 
 			Scope(const Scope& rhs);
 
 			Scope& operator=(const Scope& rhs);
 
-			// TODO Delete all the children scopes
 			~Scope();
 
-			// TODO Caching of insertion
 			Containers::Datum& Append(const std::string& key);
 
 			Scope& AppendScope(const std::string& key);
@@ -47,7 +46,6 @@ namespace SiachenGameEngine
 
 			Scope* GetParent() const;
 
-			// TODO Write logic
 			virtual bool Equals(const RTTI* rhs) const override;
 			// TODO Write logic
 			virtual std::string ToString() const override;
