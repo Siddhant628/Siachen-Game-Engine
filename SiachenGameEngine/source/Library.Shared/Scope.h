@@ -28,8 +28,13 @@ namespace SiachenGameEngine
 		public:
 			// TODO Pick a default value
 			Scope(std::uint32_t initialCapacity = 13);
+
+			Scope(const Scope& rhs);
+
+			Scope& operator=(const Scope& rhs);
+
 			// TODO Delete all the children scopes
-			~Scope() = default;
+			~Scope();
 
 			// TODO Caching of insertion
 			Containers::Datum& Append(const std::string& key);
@@ -46,12 +51,22 @@ namespace SiachenGameEngine
 			virtual bool Equals(const RTTI* rhs) const override;
 			// TODO Write logic
 			virtual std::string ToString() const override;
-			// TODO Check if const version is logical
+			
 			Containers::Datum& operator[](const std::string& key);
 
 			Containers::Datum& operator[](const std::uint32_t index);
 
 			const Containers::Datum& operator[](const std::uint32_t index) const;
+
+			bool Orphan();
+
+			void Adopt(Scope& childToAdopt, const std::string& nameOfChild);
+		
+			void Clear();
+
+			bool operator==(const Scope& rhs) const;
+
+			bool operator!=(const Scope& rhs) const;
 		};
 	}
 }

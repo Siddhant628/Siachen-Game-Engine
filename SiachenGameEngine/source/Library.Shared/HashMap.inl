@@ -448,7 +448,7 @@ namespace SiachenGameEngine
 		}
 
 		template<typename T>
-		bool DefaultCompareFunctor<T>::operator ()(T first, T second) const
+		bool DefaultCompareFunctor<T>::operator()(T first, T second) const
 		{
 			return (first == second);
 		}

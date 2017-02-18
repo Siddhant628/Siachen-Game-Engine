@@ -3,6 +3,8 @@
 
 #define GLM_FORCE_CXX98
 #include <glm/gtx/string_cast.hpp>
+#include "Scope.h"
+
 
 namespace SiachenGameEngine
 {
@@ -564,7 +566,7 @@ namespace SiachenGameEngine
 		{
 			if (mDatumType == DatumType::UnknownType || rhs.mDatumType == DatumType::UnknownType)
 			{
-				throw std::runtime_error("Cannot compare unknown types.");
+				return false;
 			}
 			if ((mSize != rhs.mSize) || (mDatumType != rhs.mDatumType))
 			{
@@ -590,14 +592,14 @@ namespace SiachenGameEngine
 			}
 			// TODO Scope
 			// In case of a Scope* type
-			//else if (mDatumType == DatumType::TableType)
-			//{
-			//	for (std::uint32_t index = 0; index < mSize; ++index)
-			//	{
-			//		if (!(mData.sc[index]->Equals(rhs.mData.sc[index])))	return false;
-			//	}
-			//	return true;
-			//}
+			else if (mDatumType == DatumType::TableType)
+			{
+				for (std::uint32_t index = 0; index < mSize; ++index)
+				{
+					if (!(mData.sc[index]->Equals(rhs.mData.sc[index])))	return false;
+				}
+				return true;
+			}
 			// In case of any other type
 			std::uint32_t sizeOfElement = 0;
 			if		(mDatumType == DatumType::IntegerType)	sizeOfElement = sizeof(std::int32_t);
@@ -1038,7 +1040,7 @@ namespace SiachenGameEngine
 		{
 			if (mIsExternal || mDatumType != DatumType::IntegerType)
 			{
-				throw std::runtime_error("Invalid remove operation.");
+				return false;
 			}
 			for (std::uint32_t index = 0; index < mSize; ++index)
 			{
@@ -1059,7 +1061,7 @@ namespace SiachenGameEngine
 		{
 			if (mIsExternal || mDatumType != DatumType::FloatType)
 			{
-				throw std::runtime_error("Invalid remove operation.");
+				return false;
 			}
 			for (std::uint32_t index = 0; index < mSize; ++index)
 			{
@@ -1080,7 +1082,7 @@ namespace SiachenGameEngine
 		{
 			if (mIsExternal || mDatumType != DatumType::StringType)
 			{
-				throw std::runtime_error("Invalid remove operation.");
+				return false;
 			}
 			for (std::uint32_t index = 0; index < mSize; ++index)
 			{
@@ -1102,7 +1104,7 @@ namespace SiachenGameEngine
 		{
 			if (mIsExternal || mDatumType != DatumType::VectorType)
 			{
-				throw std::runtime_error("Invalid remove operation.");
+				return false;
 			}
 			for (std::uint32_t index = 0; index < mSize; ++index)
 			{
@@ -1123,7 +1125,7 @@ namespace SiachenGameEngine
 		{
 			if (mIsExternal || mDatumType != DatumType::MatrixType)
 			{
-				throw std::runtime_error("Invalid remove operation.");
+				return false;
 			}
 			for (std::uint32_t index = 0; index < mSize; ++index)
 			{
@@ -1144,7 +1146,7 @@ namespace SiachenGameEngine
 		{
 			if (mIsExternal || mDatumType != DatumType::PointerType)
 			{
-				throw std::runtime_error("Invalid remove operation.");
+				return false;
 			}
 			for (std::uint32_t index = 0; index < mSize; ++index)
 			{
@@ -1165,7 +1167,7 @@ namespace SiachenGameEngine
 		{
 			if (mIsExternal || mDatumType != DatumType::TableType)
 			{
-				throw std::runtime_error("Invalid remove operation.");
+				return false;
 			}
 			for (std::uint32_t index = 0; index < mSize; ++index)
 			{
@@ -1184,7 +1186,7 @@ namespace SiachenGameEngine
 
 
 		template <>
-		std::int32_t& Datum::Get(std::uint32_t index) const
+		std::int32_t& Datum::Get(std::uint32_t index) 
 		{
 			if (mDatumType != DatumType::IntegerType || index >= mSize)
 			{
@@ -1194,7 +1196,7 @@ namespace SiachenGameEngine
 		}
 
 		template<>
-		std::float_t& Datum::Get(std::uint32_t index) const
+		std::float_t& Datum::Get(std::uint32_t index)
 		{
 			if (mDatumType != DatumType::FloatType || index >= mSize)
 			{
@@ -1204,7 +1206,7 @@ namespace SiachenGameEngine
 		}
 
 		template<>
-		glm::vec4& Datum::Get(std::uint32_t index) const
+		glm::vec4& Datum::Get(std::uint32_t index)
 		{
 			if (mDatumType != DatumType::VectorType || index >= mSize)
 			{
@@ -1214,7 +1216,7 @@ namespace SiachenGameEngine
 		}
 
 		template<>
-		glm::mat4x4& Datum::Get(std::uint32_t index) const
+		glm::mat4x4& Datum::Get(std::uint32_t index)
 		{
 			if (mDatumType != DatumType::MatrixType || index >= mSize)
 			{
@@ -1224,7 +1226,7 @@ namespace SiachenGameEngine
 		}
 
 		template<>
-		std::string& Datum::Get(std::uint32_t index) const
+		std::string& Datum::Get(std::uint32_t index)
 		{
 			if (mDatumType != DatumType::StringType || index >= mSize)
 			{
@@ -1234,7 +1236,7 @@ namespace SiachenGameEngine
 		}
 
 		template<>
-		GameplayFramework::RTTI*& Datum::Get(std::uint32_t index) const
+		GameplayFramework::RTTI*& Datum::Get(std::uint32_t index)
 		{
 			if (mDatumType != DatumType::PointerType || index >= mSize)
 			{
@@ -1244,7 +1246,7 @@ namespace SiachenGameEngine
 		}
 
 		template<>
-		GameplayFramework::Scope*& Datum::Get(std::uint32_t index) const
+		GameplayFramework::Scope*& Datum::Get(std::uint32_t index)
 		{
 			if (mDatumType != DatumType::TableType || index >= mSize)
 			{
@@ -1252,5 +1254,46 @@ namespace SiachenGameEngine
 			}
 			return mData.sc[index];
 		}
+
+		template <>
+		const std::int32_t& Datum::Get(std::uint32_t index) const
+		{
+			return const_cast<Datum*>(this)->Get<std::int32_t>(index);
+		}
+
+		template<>
+		const std::float_t& Datum::Get(std::uint32_t index) const
+		{
+			return const_cast<Datum*>(this)->Get<std::float_t>(index);
+		}
+
+		template<>
+		const glm::vec4& Datum::Get(std::uint32_t index) const
+		{
+			return const_cast<Datum*>(this)->Get<glm::vec4>(index);
+		}
+
+		template<>
+		const glm::mat4x4& Datum::Get(std::uint32_t index) const
+		{
+			return const_cast<Datum*>(this)->Get<glm::mat4x4>(index);
+		}
+
+		template<>
+		const std::string& Datum::Get(std::uint32_t index) const
+		{
+			return const_cast<Datum*>(this)->Get<std::string>(index);
+		}
+		
+		//const GameplayFramework::RTTI*& Datum::Get(std::uint32_t index) const
+		//{
+		//	return const_cast<Datum*>(this)->Get<GameplayFramework::RTTI*>(index);
+		//}
+
+		//const GameplayFramework::Scope*& Datum::Get(std::uint32_t index) const
+		//{
+		//	return const_cast<Datum*>(this)->Get<GameplayFramework::Scope*>(index);
+		//}
+		
 	}
 }

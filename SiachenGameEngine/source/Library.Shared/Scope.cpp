@@ -2,6 +2,8 @@
 #include "Scope.h"
 #include "Datum.h"
 
+using namespace SiachenGameEngine::Containers;
+
 namespace SiachenGameEngine
 {
 	namespace GameplayFramework
@@ -16,18 +18,24 @@ namespace SiachenGameEngine
 			}
 		}
 
-		//Scope::~Scope()
-		//{
+		Scope::Scope(const Scope& rhs) : mParent(nullptr)
+		{
+			mTableHashmap = rhs.mTableHashmap;
+			mIndexVector = rhs.mIndexVector;
+		}
 
-		//}
+		Scope::~Scope()
+		{
+			Clear();
+		}
 
-		Containers::Datum& Scope::Append(const std::string& key)
+		Datum& Scope::Append(const std::string& key)
 		{
 			TableType::Iterator it =  mTableHashmap.Find(key);
 			// If the pair is not present in the scope
 			if(it == mTableHashmap.end())
 			{
-				StringDatumPair pair(key, Containers::Datum());
+				StringDatumPair pair(key, Datum());
 				// Update the table and vector
 				it = mTableHashmap.Insert(pair);
 				mIndexVector.PushBack(&*it);
@@ -38,7 +46,7 @@ namespace SiachenGameEngine
 
 		Scope& Scope::AppendScope(const std::string& key)
 		{
-			Containers::Datum datum;
+			Datum datum;
 			// Create the scope to append
 			Scope* scope = new Scope;
 			scope->mParent = this;
@@ -59,7 +67,7 @@ namespace SiachenGameEngine
 			return *scope;
 		}
 
-		Containers::Datum* Scope::Find(const std::string& key) const
+		Datum* Scope::Find(const std::string& key) const
 		{
 			Containers::Datum* datum = nullptr;
 			TableType::Iterator it = mTableHashmap.Find(key);
@@ -70,7 +78,7 @@ namespace SiachenGameEngine
 			return datum;
 		}
 
-		Containers::Datum* Scope::Search(const std::string& key, Scope** owningScope) const
+		Datum* Scope::Search(const std::string& key, Scope** owningScope) const
 		{
 			Scope* searchScope = const_cast<Scope*>(this);
 			Containers::Datum* foundDatum = nullptr;
@@ -101,23 +109,112 @@ namespace SiachenGameEngine
 
 		std::string Scope::ToString() const
 		{
-			return "SCOPE";
+			return "Scope";
 		}
 
-		Containers::Datum& Scope::operator[](const std::string& key)
+		Datum& Scope::operator[](const std::string& key)
 		{
 			return Append(key);
 		}
 
-		Containers::Datum& Scope::operator[](const std::uint32_t index)
+		Datum& Scope::operator[](const std::uint32_t index)
 		{
 			return (*mIndexVector[index]).second;
 		}
 
-		const Containers::Datum& Scope::operator[](const std::uint32_t index) const
+		const Datum& Scope::operator[](const std::uint32_t index) const
 		{
 			return (*mIndexVector[index]).second;
 		}
+
+		bool Scope::Orphan()
+		{
+			if (mParent == nullptr)
+			{
+				return false;
+			}
+			Scope* parentScope = mParent;
+			TableType::Iterator it = parentScope->mTableHashmap.begin();
+			TableType::Iterator end = parentScope->mTableHashmap.end();
+
+			for (; it != end; ++it)
+			{
+				if ((it->second).Type() == DatumType::TableType)
+				{
+					if ((it->second).Remove(this))
+					{
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+
+		void Scope::Adopt(Scope& childToAdopt, const std::string& nameOfChild)
+		{
+			if (childToAdopt.mParent != nullptr)
+			{
+				childToAdopt.Orphan();
+			}
+			childToAdopt.mParent = this;
+			
+			Datum datum;
+			datum.PushBack(&childToAdopt);
+			
+			StringDatumPair pair(nameOfChild, datum);
+			TableType::Iterator it = mTableHashmap.Insert(pair);
+		}
+
+		void Scope::Clear()
+		{
+			// Unlink from parent
+			if (mParent != nullptr)
+			{
+				Orphan();
+			}
+			// Clear all the children scopes
+			TableType::Iterator end = mTableHashmap.end();
+			for (TableType::Iterator it = mTableHashmap.begin(); it != end; ++it)
+			{
+				if ((it->second).Type() == DatumType::TableType)
+				{
+					std::uint32_t size = (it->second).Size();
+					for (std::uint32_t i = 0; i < size; ++i)
+					{
+						(it->second).Get<Scope*>()->~Scope();
+					}
+				}
+			}
+
+		}
+
+		bool Scope::operator==(const Scope& rhs) const
+		{
+			bool valueToReturn = true;
+			if (mIndexVector.Size() != rhs.mIndexVector.Size())
+			{
+				valueToReturn = false;
+			}
+			else
+			{
+				std::uint32_t size = mIndexVector.Size();
+				for (std::uint32_t index = 0; index < size; ++index)
+				{
+					if (*mIndexVector[index] != *rhs.mIndexVector[index])
+					{
+						valueToReturn = false;
+						break;
+					}
+				}
+			}
+			return valueToReturn;
+		}
+
+		bool Scope::operator!=(const Scope& rhs) const
+		{
+			return !(operator==(rhs));
+		}
+
 
 	}
 }

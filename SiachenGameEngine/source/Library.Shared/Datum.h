@@ -169,56 +169,15 @@ namespace SiachenGameEngine
 			* @return The item T stored in the datum.
 			*/
 			template<typename T>
-			T& Get(std::uint32_t index = 0) const;
+			T& Get(std::uint32_t index = 0);
 			/**
 			* Get a specific item stored in the datum.
 			* @param index The position of the item to retrieve from the datum.
-			* @return The integer stored in the datum.
+			* @return The item T stored in the datum.
 			*/
-			template<>
-			std::int32_t& Get(std::uint32_t index) const;
-			/**
-			* Get a specific item stored in the datum.
-			* @param index The position of the item to retrieve from the datum.
-			* @return The floating point number stored in the datum.
-			*/
-			template<>
-			std::float_t& Get(std::uint32_t index) const;
-			/**
-			* Get a specific item stored in the datum.
-			* @param index The position of the item to retrieve from the datum.
-			* @return The vector stored in the datum.
-			*/
-			template<>
-			glm::vec4& Get(std::uint32_t index) const;
-			/**
-			* Get a specific item stored in the datum.
-			* @param index The position of the item to retrieve from the datum.
-			* @return The matrix stored in the datum.
-			*/
-			template<>
-			glm::mat4x4& Get(std::uint32_t index) const;
-			/**
-			* Get a specific item stored in the datum.
-			* @param index The position of the item to retrieve from the datum.
-			* @return The string stored in the datum.
-			*/
-			template<>
-			std::string& Get(std::uint32_t index) const;
-			/**
-			* Get a specific item stored in the datum.
-			* @param index The position of the item to retrieve from the datum.
-			* @return The RTTI* stored in the datum.
-			*/
-			template<>
-			GameplayFramework::RTTI*& Get(std::uint32_t index) const;
-			/**
-			* Get a specific item stored in the datum.
-			* @param index The position of the item to retrieve from the datum.
-			* @return The Scope* stored in the datum.
-			*/
-			template<>
-			GameplayFramework::Scope*& Get(std::uint32_t index) const;
+			template<typename T>
+			const T& Get(std::uint32_t index = 0) const;
+
 
 			/**
 			* Set the value of an item in the datum.
@@ -467,3 +426,5 @@ namespace SiachenGameEngine
 		};
 	}
 }
+
+#include "Datum.inl"

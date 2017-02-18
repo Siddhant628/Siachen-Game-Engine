@@ -51,5 +51,8 @@
     <None Include="$(MSBuildThisFileDirectory)HashMap.inl">
       <Filter>Containers</Filter>
     </None>
+    <None Include="$(MSBuildThisFileDirectory)Datum.inl">
+      <Filter>Containers</Filter>
+    </None>
   </ItemGroup>
 </Project>
