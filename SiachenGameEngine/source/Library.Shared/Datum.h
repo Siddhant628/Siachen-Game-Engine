@@ -7,6 +7,10 @@
 
 namespace SiachenGameEngine
 {
+	namespace GameplayFramework
+	{
+		class Scope;
+	}
 	namespace Containers
 	{
 		/**
@@ -39,6 +43,7 @@ namespace SiachenGameEngine
 				glm::mat4x4* m;
 				std::string* s;
 				GameplayFramework::RTTI** r;
+				GameplayFramework::Scope** sc;
 				void* vp;
 			};
 			/**
@@ -134,12 +139,16 @@ namespace SiachenGameEngine
 			* @param data The matrix to be pushed into the datum.
 			*/
 			void PushBack(const glm::mat4x4& data);
-
 			/**
 			* Push the item at the end of the datum.
 			* @param data The RTTI* to be pushed into the datum.
 			*/
 			void PushBack(const GameplayFramework::RTTI* data);
+			/**
+			* Push the item at the end of the datum.
+			* @param data The Scope* to be pushed into the datum.
+			*/
+			void Datum::PushBack(const GameplayFramework::Scope* data);
 
 			/**
 			* Pop out the last item of the datum.
@@ -196,7 +205,6 @@ namespace SiachenGameEngine
 			*/
 			template<>
 			std::string& Get(std::uint32_t index) const;
-
 			/**
 			* Get a specific item stored in the datum.
 			* @param index The position of the item to retrieve from the datum.
@@ -204,6 +212,13 @@ namespace SiachenGameEngine
 			*/
 			template<>
 			GameplayFramework::RTTI*& Get(std::uint32_t index) const;
+			/**
+			* Get a specific item stored in the datum.
+			* @param index The position of the item to retrieve from the datum.
+			* @return The Scope* stored in the datum.
+			*/
+			template<>
+			GameplayFramework::Scope*& Get(std::uint32_t index) const;
 
 			/**
 			* Set the value of an item in the datum.
@@ -241,6 +256,12 @@ namespace SiachenGameEngine
 			* @param index The index at which the value should be set.
 			*/
 			void Set(const GameplayFramework::RTTI* value, std::uint32_t index = 0);
+			/**
+			* Set the value of an item in the datum.
+			* @param value The value that should be taken by the specific item in the datum.
+			* @param index The index at which the value should be set.
+			*/
+			void Set(const GameplayFramework::Scope* value, std::uint32_t index = 0);
 
 			/**
 			* Equals operator overloaded to compare two datums.
@@ -367,41 +388,53 @@ namespace SiachenGameEngine
 			void SetStorage(GameplayFramework::RTTI** externalArray, std::uint32_t numberOfElements);
 
 			/**
-			* Assignment operator overload - Treats the datum as a scalar and sets its first item, changed the size if required and if possible.
+			* Assignment operator overload - Treats the datum as a scalar and sets its first item, changes the size if required and if possible.
 			* @param rhs An integer to assign the first item.
 			* @return A reference to the datum with the new first item.
 			*/
 			Datum& operator=(const std::int32_t rhs);
 			/**
-			* Assignment operator overload - Treats the datum as a scalar and sets its first item, changed the size if required and if possible.
+			* Assignment operator overload - Treats the datum as a scalar and sets its first item, changes the size if required and if possible.
 			* @param rhs A floating point number to assign to the first item.
 			* @return A reference to the datum with the new first item.
 			*/
 			Datum& operator=(const std::float_t rhs);
 			/**
-			* Assignment operator overload - Treats the datum as a scalar and sets its first item, changed the size if required and if possible.
+			* Assignment operator overload - Treats the datum as a scalar and sets its first item, changes the size if required and if possible.
 			* @param rhs A string to assign to the first item.
 			* @return A reference to the datum with the new first item.
 			*/
 			Datum& operator=(const std::string& rhs);
 			/**
-			* Assignment operator overload - Treats the datum as a scalar and sets its first item, changed the size if required and if possible.
+			* Assignment operator overload - Treats the datum as a scalar and sets its first item, changes the size if required and if possible.
 			* @param rhs A vector to assign to the first item.
 			* @return A reference to the datum with the new first item.
 			*/
 			Datum& operator=(const glm::vec4& rhs);
 			/**
-			* Assignment operator overload - Treats the datum as a scalar and sets its first item, changed the size if required and if possible.
+			* Assignment operator overload - Treats the datum as a scalar and sets its first item, changes the size if required and if possible.
 			* @param rhs A matrix to assign to the first item.
 			* @return A reference to the datum with the new first item.
 			*/
 			Datum& operator=(const glm::mat4x4& rhs);
 			/**
-			* Assignment operator overload - Treats the datum as a scalar and sets its first item, changed the size if required and if possible.
+			* Assignment operator overload - Treats the datum as a scalar and sets its first item, changes the size if required and if possible.
 			* @param rhs A RTTI* type to assign to the first item.
 			* @return A reference to the datum with the new first item.
 			*/
 			Datum& operator=(const GameplayFramework::RTTI* rhs);
+			/**
+			* Assignment operator overload - Treats the datum as a scalar and sets its first item, changes the size if required and if possible.
+			* @param rhs A Scope* type to assign to the first item.
+			* @return A reference to the datum with the new first item.
+			*/
+			Datum& operator=(const GameplayFramework::Scope* rhs);
+			/**
+			* Get a specific Scope, associated with a Scope* stored in the datum.
+			* @param index The position of the scope* from which to retrieve.
+			* @return The Scope pointed to by the pointer at the index location.
+			*/
+			GameplayFramework::Scope& operator[](std::uint32_t index);
 
 			/**
 			* Get a string representation of an element inside the array.
@@ -416,6 +449,21 @@ namespace SiachenGameEngine
 			* @return True if the value was successfully set.
 			*/
 			bool SetFromString(std::string& data, std::uint32_t index = 0);
+
+
+			bool Remove(std::int32_t data);
+
+			bool Remove(std::float_t data);
+
+			bool Remove(std::string data);
+
+			bool Remove(glm::vec4 data);
+
+			bool Remove(glm::mat4x4 data);
+
+			bool Remove(GameplayFramework::RTTI* data);
+
+			bool Remove(GameplayFramework::Scope* data);
 		};
 	}
 }

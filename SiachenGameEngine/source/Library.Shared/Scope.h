@@ -40,6 +40,8 @@ namespace SiachenGameEngine
 
 			Containers::Datum* Search(const std::string& key, Scope** owningScope = nullptr) const;
 
+			Scope* GetParent() const;
+
 			// TODO Write logic
 			virtual bool Equals(const RTTI* rhs) const override;
 			// TODO Write logic

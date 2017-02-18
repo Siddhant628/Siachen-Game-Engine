@@ -34,6 +34,7 @@ namespace SiachenGameEngine
 				else if (mDatumType == DatumType::VectorType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.v[index]);
 				else if (mDatumType == DatumType::MatrixType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.m[index]);
 				else if (mDatumType == DatumType::PointerType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.r[index]);
+				else if (mDatumType == DatumType::TableType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.sc[index]);
 			}
 		}
 
@@ -69,6 +70,7 @@ namespace SiachenGameEngine
 					else if (mDatumType == DatumType::VectorType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.v[index]);
 					else if (mDatumType == DatumType::MatrixType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.m[index]);
 					else if (mDatumType == DatumType::PointerType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.r[index]);
+					else if (mDatumType == DatumType::TableType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.sc[index]);
 				}
 			}
 			return *this;
@@ -124,12 +126,14 @@ namespace SiachenGameEngine
 			}
 			// Estimate the size of data items
 			std::uint32_t sizeOfData = 0;
-			if (mDatumType == DatumType::IntegerType)		sizeOfData = sizeof(std::int32_t);
+			if		(mDatumType == DatumType::IntegerType)		sizeOfData = sizeof(std::int32_t);
 			else if (mDatumType == DatumType::FloatType)		sizeOfData = sizeof(std::float_t);
 			else if (mDatumType == DatumType::VectorType)		sizeOfData = sizeof(glm::vec4);
 			else if (mDatumType == DatumType::MatrixType)		sizeOfData = sizeof(glm::mat4x4);
 			else if (mDatumType == DatumType::StringType)		sizeOfData = sizeof(std::string);
 			else if (mDatumType == DatumType::PointerType)		sizeOfData = sizeof(GameplayFramework::RTTI*);
+			else if (mDatumType == DatumType::TableType)		sizeOfData = sizeof(GameplayFramework::Scope*);
+
 
 			// Allocate the memory
 			void* newBuffer = malloc(newCapacity * sizeOfData);
@@ -251,6 +255,24 @@ namespace SiachenGameEngine
 			++mSize;
 		}
 
+		void Datum::PushBack(const GameplayFramework::Scope* data)
+		{
+			if (mDatumType == DatumType::UnknownType && IsEmpty())
+			{
+				SetType(DatumType::TableType);
+			}
+			if ((mDatumType != DatumType::TableType) || mIsExternal)
+			{
+				throw std::runtime_error("Invalid push operation.");
+			}
+			if (mSize == mCapacity)
+			{
+				Reserve(mCapacity * 2);
+			}
+			mData.sc[mSize] = const_cast<GameplayFramework::Scope*>(data);
+			++mSize;
+		}
+
 
 		void Datum::PopBack()
 		{
@@ -264,12 +286,15 @@ namespace SiachenGameEngine
 			}
 			else
 			{
-				if (mDatumType == DatumType::IntegerType)	mData.i[--mSize].std::int32_t::~int32_t();
+				if		(mDatumType == DatumType::IntegerType)	mData.i[--mSize].std::int32_t::~int32_t();
 				else if (mDatumType == DatumType::FloatType)	mData.f[--mSize].std::float_t::~float_t();
 				else if (mDatumType == DatumType::VectorType)	mData.v[--mSize].glm::vec4::~vec4();
 				else if (mDatumType == DatumType::MatrixType)	mData.m[--mSize].glm::mat4x4::~mat4x4();
 				else if (mDatumType == DatumType::StringType)	mData.s[--mSize].std::string::~string();
-				else if (mDatumType == DatumType::PointerType)	--mSize;
+				else
+				{
+					--mSize;
+				}
 			}
 		}
 
@@ -298,27 +323,8 @@ namespace SiachenGameEngine
 			mCapacity = 0;
 		}
 
-		// TODO Write a Set method for all, update unit tests accordingly.
 		void Datum::Set(const std::int32_t value, std::uint32_t index)
 		{
-			//if (mDatumType != DatumType::IntegerType)
-			//{
-			//	throw std::runtime_error("Improper set operation.");
-			//}
-			//if (mSize > index)
-			//{
-			//	mData.i[index].std::int32_t::~int32_t();
-			//	new (mData.i + index)std::int32_t(value);
-			//}
-			//else
-			//{
-			//	throw std::runtime_error("Out of bounds of the external array.");
-			//}
-			if (mDatumType == DatumType::UnknownType && IsEmpty() && index == 0)
-			{
-				PushBack(value);
-				return;
-			}
 			if (mDatumType != DatumType::IntegerType)
 			{
 				throw std::runtime_error("Improper set operation.");
@@ -327,22 +333,35 @@ namespace SiachenGameEngine
 			{
 				mData.i[index].std::int32_t::~int32_t();
 				new (mData.i + index)std::int32_t(value);
-				return;
 			}
-			else if (mIsExternal)
+			else
 			{
 				throw std::runtime_error("Out of bounds of the external array.");
 			}
-			PushBack(value);
+			//if (mDatumType == DatumType::UnknownType && IsEmpty() && index == 0)
+			//{
+			//	PushBack(value);
+			//	return;
+			//}
+			//if (mDatumType != DatumType::IntegerType)
+			//{
+			//	throw std::runtime_error("Improper set operation.");
+			//}
+			//if (mSize > index)
+			//{
+			//	mData.i[index].std::int32_t::~int32_t();
+			//	new (mData.i + index)std::int32_t(value);
+			//	return;
+			//}
+			//else if (mIsExternal)
+			//{
+			//	throw std::runtime_error("Out of bounds of the external array.");
+			//}
+			//PushBack(value);
 		}
 
 		void Datum::Set(const std::float_t value, std::uint32_t index)
 		{
-			if (mDatumType == DatumType::UnknownType && IsEmpty() && index == 0)
-			{
-				PushBack(value);
-				return;
-			}
 			if (mDatumType != DatumType::FloatType)
 			{
 				throw std::runtime_error("Improper set operation.");
@@ -351,22 +370,35 @@ namespace SiachenGameEngine
 			{
 				mData.f[index].std::float_t::~float_t();
 				new (mData.f + index)std::float_t(value);
-				return;
 			}
-			else if (mIsExternal)
+			else
 			{
 				throw std::runtime_error("Out of bounds of the external array.");
 			}
-			PushBack(value);
+			//if (mDatumType == DatumType::UnknownType && IsEmpty() && index == 0)
+			//{
+			//	PushBack(value);
+			//	return;
+			//}
+			//if (mDatumType != DatumType::FloatType)
+			//{
+			//	throw std::runtime_error("Improper set operation.");
+			//}
+			//if (mSize > index)
+			//{
+			//	mData.f[index].std::float_t::~float_t();
+			//	new (mData.f + index)std::float_t(value);
+			//	return;
+			//}
+			//else if (mIsExternal)
+			//{
+			//	throw std::runtime_error("Out of bounds of the external array.");
+			//}
+			//PushBack(value);
 		}
 
 		void Datum::Set(const glm::vec4& value, std::uint32_t index)
 		{
-			if (mDatumType == DatumType::UnknownType && IsEmpty() && index == 0)
-			{
-				PushBack(value);
-				return;
-			}
 			if (mDatumType != DatumType::VectorType)
 			{
 				throw std::runtime_error("Improper set operation.");
@@ -375,22 +407,35 @@ namespace SiachenGameEngine
 			{
 				mData.v[index].glm::vec4::~vec4();
 				new (mData.v + index)glm::vec4(value);
-				return;
 			}
-			else if (mIsExternal)
+			else
 			{
 				throw std::runtime_error("Out of bounds of the external array.");
 			}
-			PushBack(value);
+			//if (mDatumType == DatumType::UnknownType && IsEmpty() && index == 0)
+			//{
+			//	PushBack(value);
+			//	return;
+			//}
+			//if (mDatumType != DatumType::VectorType)
+			//{
+			//	throw std::runtime_error("Improper set operation.");
+			//}
+			//if (mSize > index)
+			//{
+			//	mData.v[index].glm::vec4::~vec4();
+			//	new (mData.v + index)glm::vec4(value);
+			//	return;
+			//}
+			//else if (mIsExternal)
+			//{
+			//	throw std::runtime_error("Out of bounds of the external array.");
+			//}
+			//PushBack(value);
 		}
 
 		void Datum::Set(const glm::mat4x4& value, std::uint32_t index)
 		{
-			if (mDatumType == DatumType::UnknownType && IsEmpty() && index == 0)
-			{
-				PushBack(value);
-				return;
-			}
 			if (mDatumType != DatumType::MatrixType)
 			{
 				throw std::runtime_error("Improper set operation.");
@@ -399,22 +444,35 @@ namespace SiachenGameEngine
 			{
 				mData.m[index].glm::mat4x4::~mat4x4();
 				new (mData.m + index)glm::mat4x4(value);
-				return;
 			}
-			else if (mIsExternal)
+			else
 			{
 				throw std::runtime_error("Out of bounds of the external array.");
 			}
-			PushBack(value);
+			//if (mDatumType == DatumType::UnknownType && IsEmpty() && index == 0)
+			//{
+			//	PushBack(value);
+			//	return;
+			//}
+			//if (mDatumType != DatumType::MatrixType)
+			//{
+			//	throw std::runtime_error("Improper set operation.");
+			//}
+			//if (mSize > index)
+			//{
+			//	mData.m[index].glm::mat4x4::~mat4x4();
+			//	new (mData.m + index)glm::mat4x4(value);
+			//	return;
+			//}
+			//else if (mIsExternal)
+			//{
+			//	throw std::runtime_error("Out of bounds of the external array.");
+			//}
+			//PushBack(value);
 		}
 
 		void Datum::Set(const std::string& value, std::uint32_t index)
 		{
-			if (mDatumType == DatumType::UnknownType && IsEmpty() && index == 0)
-			{
-				PushBack(value);
-				return;
-			}
 			if (mDatumType != DatumType::StringType)
 			{
 				throw std::runtime_error("Improper set operation.");
@@ -423,41 +481,86 @@ namespace SiachenGameEngine
 			{
 				mData.s[index].std::string::~string();
 				new (mData.s + index)std::string(value);
-				return;
 			}
-			else if (mIsExternal)
+			else
 			{
 				throw std::runtime_error("Out of bounds of the external array.");
 			}
-			PushBack(value);
+			//if (mDatumType == DatumType::UnknownType && IsEmpty() && index == 0)
+			//{
+			//	PushBack(value);
+			//	return;
+			//}
+			//if (mDatumType != DatumType::StringType)
+			//{
+			//	throw std::runtime_error("Improper set operation.");
+			//}
+			//if (mSize > index)
+			//{
+			//	mData.s[index].std::string::~string();
+			//	new (mData.s + index)std::string(value);
+			//	return;
+			//}
+			//else if (mIsExternal)
+			//{
+			//	throw std::runtime_error("Out of bounds of the external array.");
+			//}
+			//PushBack(value);
 		}
 
 		void Datum::Set(const GameplayFramework::RTTI* value, std::uint32_t index)
 		{
-			if (mDatumType == DatumType::UnknownType && IsEmpty() && index == 0)
-			{
-				PushBack(value);
-				return;
-			}
 			if (mDatumType != DatumType::PointerType)
 			{
 				throw std::runtime_error("Improper set operation.");
 			}
 			if (mSize > index)
 			{
-				//new (mData.r + index)GameplayFramework::RTTI*(value);
 				mData.r[index] = const_cast<GameplayFramework::RTTI*>(value);
-				return;
 			}
-			else if (mIsExternal)
+			else
 			{
 				throw std::runtime_error("Out of bounds of the external array.");
 			}
-			PushBack(value);
+			//if (mDatumType == DatumType::UnknownType && IsEmpty() && index == 0)
+			//{
+			//	PushBack(value);
+			//	return;
+			//}
+			//if (mDatumType != DatumType::PointerType)
+			//{
+			//	throw std::runtime_error("Improper set operation.");
+			//}
+			//if (mSize > index)
+			//{
+			//	mData.r[index] = const_cast<GameplayFramework::RTTI*>(value);
+			//	return;
+			//}
+			//else if (mIsExternal)
+			//{
+			//	throw std::runtime_error("Out of bounds of the external array.");
+			//}
+			//PushBack(value);
+		}
+
+		void Datum::Set(const GameplayFramework::Scope* value, std::uint32_t index)
+		{
+			if (mDatumType != DatumType::TableType)
+			{
+				throw std::runtime_error("Improper set operation.");
+			}
+			if (mSize > index)
+			{
+				mData.sc[index] = const_cast<GameplayFramework::Scope*>(value);
+			}
+			else
+			{
+				throw std::runtime_error("Out of bounds of the external array.");
+			}
 		}
 
 
-		bool Datum::operator==(const Datum & rhs) const
+		bool Datum::operator==(const Datum& rhs) const
 		{
 			if (mDatumType == DatumType::UnknownType || rhs.mDatumType == DatumType::UnknownType)
 			{
@@ -485,9 +588,19 @@ namespace SiachenGameEngine
 				}
 				return true;
 			}
+			// TODO Scope
+			// In case of a Scope* type
+			//else if (mDatumType == DatumType::TableType)
+			//{
+			//	for (std::uint32_t index = 0; index < mSize; ++index)
+			//	{
+			//		if (!(mData.sc[index]->Equals(rhs.mData.sc[index])))	return false;
+			//	}
+			//	return true;
+			//}
 			// In case of any other type
 			std::uint32_t sizeOfElement = 0;
-			if (mDatumType == DatumType::IntegerType)	sizeOfElement = sizeof(std::int32_t);
+			if		(mDatumType == DatumType::IntegerType)	sizeOfElement = sizeof(std::int32_t);
 			else if (mDatumType == DatumType::FloatType)	sizeOfElement = sizeof(std::float_t);
 			else if (mDatumType == DatumType::MatrixType)	sizeOfElement = sizeof(glm::mat4x4);
 			else if (mDatumType == DatumType::VectorType)	sizeOfElement = sizeof(glm::vec4);
@@ -552,9 +665,10 @@ namespace SiachenGameEngine
 			{
 				return false;
 			}
-			return (mData.r[0] == rhs);
+			return (mData.r[0]->Equals(rhs));
 		}
 
+		// TODO Scope?
 
 		bool Datum::operator!=(const std::int32_t rhs) const
 		{
@@ -586,6 +700,7 @@ namespace SiachenGameEngine
 			return !operator==(rhs);
 		}
 
+		// TODO Scope?
 
 		void Datum::SetStorage(std::int32_t* externalArray, std::uint32_t numberOfElements)
 		{
@@ -677,6 +792,7 @@ namespace SiachenGameEngine
 			mData.r = externalArray;
 		}
 
+		// TODO Scope?
 
 		Datum& Datum::operator=(const std::int32_t rhs)
 		{
@@ -684,9 +800,22 @@ namespace SiachenGameEngine
 			{
 				throw std::runtime_error("Illegal assignment operation.");
 			}
-			Set(rhs);
-			//mDatumType = DatumType::IntegerType;
+			if (mDatumType == DatumType::UnknownType && IsEmpty())
+			{
+				PushBack(rhs);
+			}
+			else
+			{
+				Set(rhs);
+			}
 			return *this;
+
+			//if ((mDatumType != DatumType::IntegerType) && (mDatumType != DatumType::UnknownType))
+			//{
+			//	throw std::runtime_error("Illegal assignment operation.");
+			//}
+			//Set(rhs);
+			//return *this;
 		}
 
 		Datum& Datum::operator=(const std::float_t rhs)
@@ -695,8 +824,14 @@ namespace SiachenGameEngine
 			{
 				throw std::runtime_error("Illegal assignment operation.");
 			}
-			Set(rhs);
-			//mDatumType = DatumType::FloatType;
+			if (mDatumType == DatumType::UnknownType && IsEmpty())
+			{
+				PushBack(rhs);
+			}
+			else
+			{
+				Set(rhs);
+			}
 			return *this;
 		}
 
@@ -706,8 +841,14 @@ namespace SiachenGameEngine
 			{
 				throw std::runtime_error("Illegal assignment operation.");
 			}
-			Set(rhs);
-			//mDatumType = DatumType::StringType;
+			if (mDatumType == DatumType::UnknownType && IsEmpty())
+			{
+				PushBack(rhs);
+			}
+			else
+			{
+				Set(rhs);
+			}
 			return *this;
 		}
 
@@ -717,8 +858,14 @@ namespace SiachenGameEngine
 			{
 				throw std::runtime_error("Illegal assignment operation.");
 			}
-			Set(rhs);
-			//mDatumType = DatumType::VectorType;
+			if (mDatumType == DatumType::UnknownType && IsEmpty())
+			{
+				PushBack(rhs);
+			}
+			else
+			{
+				Set(rhs);
+			}
 			return *this;
 		}
 
@@ -728,8 +875,14 @@ namespace SiachenGameEngine
 			{
 				throw std::runtime_error("Illegal assignment operation.");
 			}
-			Set(rhs);
-			//	mDatumType = DatumType::MatrixType;
+			if (mDatumType == DatumType::UnknownType && IsEmpty())
+			{
+				PushBack(rhs);
+			}
+			else
+			{
+				Set(rhs);
+			}
 			return *this;
 		}
 
@@ -739,9 +892,39 @@ namespace SiachenGameEngine
 			{
 				throw std::runtime_error("Illegal assignment operation.");
 			}
-			Set(rhs);
-			//mDatumType = DatumType::PointerType;
+			if (mDatumType == DatumType::UnknownType && IsEmpty())
+			{
+				PushBack(rhs);
+			}
+			else
+			{
+				Set(rhs);
+			}
 			return *this;
+		}
+
+		Datum& Datum::operator=(const GameplayFramework::Scope* rhs)
+		{
+			if ((mDatumType != DatumType::TableType) && (mDatumType != DatumType::UnknownType))
+			{
+				throw std::runtime_error("Illegal assignment operation.");
+			}
+			if (mDatumType == DatumType::UnknownType && IsEmpty())
+			{
+				PushBack(rhs);
+			}
+			else
+			{
+				Set(rhs);
+			}
+			return *this;
+		}
+
+		// TODO Scope?
+
+		GameplayFramework::Scope& Datum::operator[](std::uint32_t index)
+		{
+			return *(Get<GameplayFramework::Scope*>(index));
 		}
 
 
@@ -851,6 +1034,155 @@ namespace SiachenGameEngine
 		}
 
 
+		bool Datum::Remove(std::int32_t data)
+		{
+			if (mIsExternal || mDatumType != DatumType::IntegerType)
+			{
+				throw std::runtime_error("Invalid remove operation.");
+			}
+			for (std::uint32_t index = 0; index < mSize; ++index)
+			{
+				if (mData.i[index] == data)
+				{
+					std::int32_t* destination = mData.i + index;
+					std::int32_t* source = destination + 1;
+
+					memmove_s(destination, sizeof(std::int32_t)*(mSize - index - 1) , source, sizeof(std::int32_t)*(mSize - index - 1));
+					mSize--;
+					return true;
+				}
+			}
+			return false;
+		}
+
+		bool Datum::Remove(std::float_t data)
+		{
+			if (mIsExternal || mDatumType != DatumType::FloatType)
+			{
+				throw std::runtime_error("Invalid remove operation.");
+			}
+			for (std::uint32_t index = 0; index < mSize; ++index)
+			{
+				if (mData.f[index] == data)
+				{
+					std::float_t* destination = mData.f + index;
+					std::float_t* source = destination + 1;
+
+					memmove_s(destination, sizeof(std::float_t)*(mSize - index - 1), source, sizeof(std::float_t)*(mSize - index - 1));
+					mSize--;
+					return true;
+				}
+			}
+			return false;
+		}
+
+		bool Datum::Remove(std::string data)
+		{
+			if (mIsExternal || mDatumType != DatumType::StringType)
+			{
+				throw std::runtime_error("Invalid remove operation.");
+			}
+			for (std::uint32_t index = 0; index < mSize; ++index)
+			{
+				if (mData.s[index] == data)
+				{
+					mData.s[index].std::string::~string();
+					std::string* destination = mData.s + index;
+					std::string* source = destination + 1;
+
+					memmove_s(destination, sizeof(std::string)*(mSize - index - 1), source, sizeof(std::string)*(mSize - index - 1));
+					mSize--;
+					return true;
+				}
+			}
+			return false;
+		}
+
+		bool Datum::Remove(glm::vec4 data)
+		{
+			if (mIsExternal || mDatumType != DatumType::VectorType)
+			{
+				throw std::runtime_error("Invalid remove operation.");
+			}
+			for (std::uint32_t index = 0; index < mSize; ++index)
+			{
+				if (mData.v[index] == data)
+				{
+					glm::vec4* destination = mData.v + index;
+					glm::vec4* source = destination + 1;
+
+					memmove_s(destination, sizeof(glm::vec4)*(mSize - index - 1), source, sizeof(glm::vec4)*(mSize - index - 1));
+					mSize--;
+					return true;
+				}
+			}
+			return false;
+		}
+
+		bool Datum::Remove(glm::mat4x4 data)
+		{
+			if (mIsExternal || mDatumType != DatumType::MatrixType)
+			{
+				throw std::runtime_error("Invalid remove operation.");
+			}
+			for (std::uint32_t index = 0; index < mSize; ++index)
+			{
+				if (mData.m[index] == data)
+				{
+					glm::mat4x4* destination = mData.m + index;
+					glm::mat4x4* source = destination + 1;
+
+					memmove_s(destination, sizeof(glm::mat4x4)*(mSize - index - 1), source, sizeof(glm::mat4x4)*(mSize - index - 1));
+					mSize--;
+					return true;
+				}
+			}
+			return false;
+		}
+
+		bool Datum::Remove(GameplayFramework::RTTI* data)
+		{
+			if (mIsExternal || mDatumType != DatumType::PointerType)
+			{
+				throw std::runtime_error("Invalid remove operation.");
+			}
+			for (std::uint32_t index = 0; index < mSize; ++index)
+			{
+				if (mData.r[index] == data)
+				{
+					GameplayFramework::RTTI** destination = mData.r + index;
+					GameplayFramework::RTTI** source = destination + 1;
+
+					memmove_s(destination, sizeof(GameplayFramework::RTTI**)*(mSize - index - 1), source, sizeof(GameplayFramework::RTTI**)*(mSize - index - 1));
+					mSize--;
+					return true;
+				}
+			}
+			return false;
+		}
+
+		bool Datum::Remove(GameplayFramework::Scope* data)
+		{
+			if (mIsExternal || mDatumType != DatumType::TableType)
+			{
+				throw std::runtime_error("Invalid remove operation.");
+			}
+			for (std::uint32_t index = 0; index < mSize; ++index)
+			{
+				if (mData.sc[index] == data)
+				{
+					GameplayFramework::Scope** destination = mData.sc + index;
+					GameplayFramework::Scope** source = destination + 1;
+
+					memmove_s(destination, sizeof(GameplayFramework::Scope**)*(mSize - index - 1), source, sizeof(GameplayFramework::Scope**)*(mSize - index - 1));
+					mSize--;
+					return true;
+				}
+			}
+			return false;
+		}
+
+
 		template <>
 		std::int32_t& Datum::Get(std::uint32_t index) const
 		{
@@ -909,6 +1241,16 @@ namespace SiachenGameEngine
 				throw std::runtime_error("Invalid get operation.");
 			}
 			return mData.r[index];
+		}
+
+		template<>
+		GameplayFramework::Scope*& Datum::Get(std::uint32_t index) const
+		{
+			if (mDatumType != DatumType::TableType || index >= mSize)
+			{
+				throw std::runtime_error("Invalid get operation.");
+			}
+			return mData.sc[index];
 		}
 	}
 }

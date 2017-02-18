@@ -54,9 +54,7 @@ namespace SiachenGameEngine
 			}
 			else
 			{
-				// TODO Check
-				datum = it->second;
-				datum.PushBack(scope);
+				(it->second).PushBack(scope);
 			}
 			return *scope;
 		}
@@ -67,7 +65,7 @@ namespace SiachenGameEngine
 			TableType::Iterator it = mTableHashmap.Find(key);
 			if (it != mTableHashmap.end())
 			{
-				datum = &(*it).second;
+				datum = &((*it).second);
 			}
 			return datum;
 		}
@@ -88,6 +86,11 @@ namespace SiachenGameEngine
 				searchScope = searchScope->mParent;
 			}
 			return foundDatum;
+		}
+
+		Scope* Scope::GetParent() const
+		{
+			return mParent;
 		}
 
 		bool Scope::Equals(const RTTI* rhs) const

@@ -31,6 +31,7 @@ namespace UnitTestLibraryDesktop
 			}
 		}
 		
+		// TODO Scope
 		TEST_METHOD(Datum_Copy_Constructor)
 		{
 			// Tests for integers
@@ -93,7 +94,7 @@ namespace UnitTestLibraryDesktop
 			Datum matDatum3(matDatum);
 			Assert::IsTrue(matDatum == matDatum3);
 		}
-		
+		// TODO Scope
 		TEST_METHOD(Datum_Assignment_Operator)
 		{
 			// Tests for integers
@@ -165,58 +166,68 @@ namespace UnitTestLibraryDesktop
 			matDatum3 = matDatum;
 			Assert::IsTrue(matDatum == matDatum3);
 		}
-
+		// TODO Scope
 		TEST_METHOD(Datum_Assignment_Scalar_Operator)
 		{
 			Datum pointerDatum;
 			pointerDatum.SetType(DatumType::PointerType);
 
 			// Tests for integers
-			std::int32_t intData = 10;
+			std::int32_t intData = 10, intData2 = 20;
 
 			Datum intDatum;
 			intDatum = intData;
 			Assert::IsTrue(intData == intDatum.Get<std::int32_t>());
+			intDatum = intData2;
+			Assert::IsTrue(intData2 == intDatum.Get<std::int32_t>());
 
 			auto intExpression = [&pointerDatum, &intData] { pointerDatum = intData; };
 			Assert::ExpectException<std::exception>(intExpression);
 
 			// Tests for floats
-			std::float_t floatData = 10.0f;
+			std::float_t floatData = 10.0f, floatData2 = 20.0f;
 
 			Datum floatDatum;
 			floatDatum = floatData;
 			Assert::IsTrue(floatData == floatDatum.Get<std::float_t>());
+			floatDatum = floatData2;
+			Assert::IsTrue(floatData2 == floatDatum.Get<std::float_t>());
 
 			auto floatExpression = [&pointerDatum, &floatData] { pointerDatum = floatData; };
 			Assert::ExpectException<std::exception>(floatExpression);
 
 			// Tests for strings
-			std::string stringData = "str";
+			std::string stringData = "str", stringData2 = "str2";
 
 			Datum stringDatum;
 			stringDatum = stringData;
 			Assert::IsTrue(stringData == stringDatum.Get<std::string>());
+			stringDatum = stringData2;
+			Assert::IsTrue(stringData2 == stringDatum.Get<std::string>());
 
 			auto strExpression = [&pointerDatum, &stringData] { pointerDatum = stringData; };
 			Assert::ExpectException<std::exception>(strExpression);
 
 			// Tests for vectors
-			glm::vec4 vecData(1.0f);
+			glm::vec4 vecData(1.0f), vecData2(2.0f);
 
 			Datum vectorDatum;
 			vectorDatum = vecData;
 			Assert::IsTrue(vecData == vectorDatum.Get<glm::vec4>());
+			vectorDatum = vecData2;
+			Assert::IsTrue(vecData2 == vectorDatum.Get<glm::vec4>());
 
 			auto vecExpression = [&pointerDatum, &vecData] { pointerDatum = vecData; };
 			Assert::ExpectException<std::exception>(vecExpression);
 
 			// Tests for matrices
-			glm::mat4x4 matData;
+			glm::mat4x4 matData(vecData2, vecData2, vecData, vecData), matData2(vecData, vecData, vecData2, vecData2);
 
 			Datum matDatum;
 			matDatum = matData;
 			Assert::IsTrue(matData == matDatum.Get<glm::mat4x4>());
+			matDatum = matData2;
+			Assert::IsTrue(matData2 == matDatum.Get<glm::mat4x4>());
 
 			auto matExpression = [&pointerDatum, &matData] { pointerDatum = matData; };
 			Assert::ExpectException<std::exception>(matExpression);
@@ -340,7 +351,7 @@ namespace UnitTestLibraryDesktop
 			matDatum.PushBack(glm::mat4x4());
 			Assert::IsFalse(matDatum.IsEmpty());
 		}
-
+		// TODO Scope
 		TEST_METHOD(Datum_Reserve)
 		{
 			// Tests for integers
@@ -413,7 +424,7 @@ namespace UnitTestLibraryDesktop
 			auto matExpression2 = [&matDatum] { matDatum.Reserve(0); };
 			Assert::ExpectException<std::exception>(matExpression2);
 		}
-
+		// TODO Scope
 		TEST_METHOD(Datum_PushBack)
 		{
 			Datum pointerDatum;
@@ -472,7 +483,7 @@ namespace UnitTestLibraryDesktop
 			auto matExpression = [&pointerDatum, &matData] { pointerDatum.PushBack(matData); };
 			Assert::ExpectException<std::exception>(matExpression);
 		}
-
+		// TODO Scope
 		TEST_METHOD(Datum_PopBack)
 		{
 			Datum unknownDatum;
@@ -627,7 +638,7 @@ namespace UnitTestLibraryDesktop
 			Assert::IsTrue(matDatum.IsEmpty());
 
 		}
-
+		// TODO Scope
 		TEST_METHOD(Datum_Set)
 		{
 			Datum pointerDatum;
@@ -767,7 +778,8 @@ namespace UnitTestLibraryDesktop
 			matDatum.PushBack(matData);
 			Assert::IsTrue(matData == matDatum.Get<glm::mat4x4>());
 		}
-
+		// TODO Scope
+		// TODO Issue
 		TEST_METHOD(Datum_Equals_Operator)
 		{
 			Datum unknownDatum;
@@ -787,8 +799,8 @@ namespace UnitTestLibraryDesktop
 			Assert::IsFalse(intDatum == pointerDatum);
 			Assert::IsTrue(intDatum == intDatum2);
 
-			intDatum.Set(intData);
-			intDatum2.Set(intData2);
+			intDatum.PushBack(intData);
+			intDatum2.PushBack(intData2);
 			Assert::IsFalse(intDatum == intDatum2);
 			intDatum2.Set(intData);
 			Assert::IsTrue(intDatum == intDatum2);
@@ -806,8 +818,8 @@ namespace UnitTestLibraryDesktop
 			Assert::IsFalse(floatDatum == pointerDatum);
 			Assert::IsTrue(floatDatum == floatDatum2);
 
-			floatDatum.Set(floatData);
-			floatDatum2.Set(floatData2);
+			floatDatum.PushBack(floatData);
+			floatDatum2.PushBack(floatData2);
 			Assert::IsFalse(floatDatum == floatDatum2);
 			floatDatum2.Set(floatData);
 			Assert::IsTrue(floatDatum == floatDatum2);
@@ -825,8 +837,8 @@ namespace UnitTestLibraryDesktop
 			Assert::IsFalse(stringDatum == pointerDatum);
 			Assert::IsTrue(stringDatum == stringDatum2);
 
-			stringDatum.Set(stringData);
-			stringDatum2.Set(stringData2);
+			stringDatum.PushBack(stringData);
+			stringDatum2.PushBack(stringData2);
 			Assert::IsFalse(stringDatum == stringDatum2);
 			stringDatum2.Set(stringData);
 			Assert::IsTrue(stringDatum == stringDatum2);
@@ -844,8 +856,8 @@ namespace UnitTestLibraryDesktop
 			Assert::IsFalse(vecDatum == pointerDatum);
 			Assert::IsTrue(vecDatum == vecDatum2);
 
-			vecDatum.Set(vecData);
-			vecDatum2.Set(vecData2);
+			vecDatum.PushBack(vecData);
+			vecDatum2.PushBack(vecData2);
 			Assert::IsFalse(vecDatum == vecDatum2);
 			vecDatum2.Set(vecData);
 			Assert::IsTrue(vecDatum == vecDatum2);
@@ -863,8 +875,8 @@ namespace UnitTestLibraryDesktop
 			Assert::IsFalse(matDatum == pointerDatum);
 			Assert::IsTrue(matDatum == matDatum2);
 
-			matDatum.Set(matData);
-			matDatum2.Set(matData2);
+			matDatum.PushBack(matData);
+			matDatum2.PushBack(matData2);
 			Assert::IsFalse(matDatum == matDatum2);
 			matDatum2.Set(matData);
 			Assert::IsTrue(matDatum == matDatum2);
@@ -890,8 +902,8 @@ namespace UnitTestLibraryDesktop
 			Assert::IsTrue(intDatum != pointerDatum);
 			Assert::IsFalse(intDatum != intDatum2);
 
-			intDatum.Set(intData);
-			intDatum2.Set(intData2);
+			intDatum.PushBack(intData);
+			intDatum2.PushBack(intData2);
 			Assert::IsTrue(intDatum != intDatum2);
 			intDatum2.Set(intData);
 			Assert::IsFalse(intDatum != intDatum2);
@@ -909,8 +921,8 @@ namespace UnitTestLibraryDesktop
 			Assert::IsTrue(floatDatum != pointerDatum);
 			Assert::IsFalse(floatDatum != floatDatum2);
 
-			floatDatum.Set(floatData);
-			floatDatum2.Set(floatData2);
+			floatDatum.PushBack(floatData);
+			floatDatum2.PushBack(floatData2);
 			Assert::IsTrue(floatDatum != floatDatum2);
 			floatDatum2.Set(floatData);
 			Assert::IsFalse(floatDatum != floatDatum2);
@@ -928,8 +940,8 @@ namespace UnitTestLibraryDesktop
 			Assert::IsTrue(stringDatum != pointerDatum);
 			Assert::IsFalse(stringDatum != stringDatum2);
 
-			stringDatum.Set(stringData);
-			stringDatum2.Set(stringData2);
+			stringDatum.PushBack(stringData);
+			stringDatum2.PushBack(stringData2);
 			Assert::IsTrue(stringDatum != stringDatum2);
 			stringDatum2.Set(stringData);
 			Assert::IsFalse(stringDatum != stringDatum2);
@@ -947,8 +959,8 @@ namespace UnitTestLibraryDesktop
 			Assert::IsTrue(vecDatum != pointerDatum);
 			Assert::IsFalse(vecDatum != vecDatum2);
 
-			vecDatum.Set(vecData);
-			vecDatum2.Set(vecData2);
+			vecDatum.PushBack(vecData);
+			vecDatum2.PushBack(vecData2);
 			Assert::IsTrue(vecDatum != vecDatum2);
 			vecDatum2.Set(vecData);
 			Assert::IsFalse(vecDatum != vecDatum2);
@@ -966,8 +978,8 @@ namespace UnitTestLibraryDesktop
 			Assert::IsTrue(matDatum != pointerDatum);
 			Assert::IsFalse(matDatum != matDatum2);
 
-			matDatum.Set(matData);
-			matDatum2.Set(matData2);
+			matDatum.PushBack(matData);
+			matDatum2.PushBack(matData2);
 			Assert::IsTrue(matDatum != matDatum2);
 			matDatum2.Set(matData);
 			Assert::IsFalse(matDatum != matDatum2);
