@@ -29,7 +29,7 @@ namespace SiachenGameEngine
 			// If rhs is an internal datum
 			else
 			{
-				Reserve(10U);
+				//Reserve(10U);
 				if		(mDatumType == DatumType::IntegerType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.i[index]);
 				else if (mDatumType == DatumType::FloatType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.f[index]);
 				else if (mDatumType == DatumType::StringType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.s[index]);
@@ -65,7 +65,7 @@ namespace SiachenGameEngine
 					mSize = 0;
 					mCapacity = 0;
 					mData.vp = nullptr;
-					Reserve(10U);
+					//Reserve(10U);
 					if		(mDatumType == DatumType::IntegerType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.i[index]);
 					else if (mDatumType == DatumType::FloatType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.f[index]);
 					else if (mDatumType == DatumType::StringType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.s[index]);
@@ -315,7 +315,7 @@ namespace SiachenGameEngine
 		void Datum::ClearAndFree()
 		{
 			Clear();
-			if (mData.vp == nullptr)
+			if (mCapacity == 0)
 			{
 				return;
 			}
@@ -836,13 +836,6 @@ namespace SiachenGameEngine
 				Set(rhs);
 			}
 			return *this;
-
-			//if ((mDatumType != DatumType::IntegerType) && (mDatumType != DatumType::UnknownType))
-			//{
-			//	throw std::runtime_error("Illegal assignment operation.");
-			//}
-			//Set(rhs);
-			//return *this;
 		}
 
 		Datum& Datum::operator=(const std::float_t rhs)
@@ -947,7 +940,6 @@ namespace SiachenGameEngine
 			return *this;
 		}
 
-		// TODO Scope?
 
 		GameplayFramework::Scope& Datum::operator[](std::uint32_t index)
 		{

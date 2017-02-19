@@ -31,7 +31,7 @@ namespace SiachenGameEngine
 			}
 		}
 
-		Scope::Scope(std::uint32_t initialCapacity /* = 13 */) : mTableHashmap(initialCapacity), mIndexVector(initialCapacity), mParent(nullptr)
+		Scope::Scope(std::uint32_t initialCapacity /* = 13 */) : mTableHashmap(initialCapacity), mParent(nullptr)
 		{
 			if (initialCapacity == 0)
 			{
@@ -48,6 +48,7 @@ namespace SiachenGameEngine
 		{
 			if (this != &rhs)
 			{
+				Clear();
 				DeepCopyScope(rhs);
 			}
 			return *this;
@@ -70,7 +71,6 @@ namespace SiachenGameEngine
 				mIndexVector.PushBack(&*it);
 			}
 			return (*it).second;
-		
 		}
 
 		Scope& Scope::AppendScope(const std::string& key)
@@ -117,7 +117,10 @@ namespace SiachenGameEngine
 				foundDatum = searchScope->Find(key);
 				if (foundDatum != nullptr)
 				{
-					owningScope = &searchScope;
+					if (owningScope != nullptr)
+					{
+						*owningScope = searchScope;
+					}
 					break;
 				}
 				searchScope = searchScope->mParent;
@@ -200,25 +203,21 @@ namespace SiachenGameEngine
 
 		void Scope::Clear()
 		{
-			// Unlink from parent
-			if (mParent != nullptr)
+			VectorType::Iterator end = mIndexVector.end();
+			
+			for (VectorType::Iterator it = mIndexVector.begin(); it != end; ++it)
 			{
-				Orphan();
-			}
-			// Clear all the children scopes
-			TableType::Iterator end = mTableHashmap.end();
-			for (TableType::Iterator it = mTableHashmap.begin(); it != end; ++it)
-			{
-				if ((it->second).Type() == DatumType::TableType)
+				if ((*it)->second.Type() == DatumType::TableType)
 				{
-					std::uint32_t size = (it->second).Size();
+					std::uint32_t size = (*it)->second.Size();
 					for (std::uint32_t i = 0; i < size; ++i)
 					{
-						(it->second).Get<Scope*>()->~Scope();
+						delete ((*it)->second).Get<Scope*>(i);
 					}
 				}
 			}
-
+			mTableHashmap.Clear();
+			mIndexVector.Clear();
 		}
 
 		bool Scope::operator==(const Scope& rhs) const
