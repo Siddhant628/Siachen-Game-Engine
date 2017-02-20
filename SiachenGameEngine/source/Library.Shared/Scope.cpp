@@ -165,40 +165,40 @@ namespace SiachenGameEngine
 
 		bool Scope::Orphan()
 		{
-			if (mParent == nullptr)
+			bool valueToReturn = false;
+			if (mParent != nullptr)
 			{
-				return false;
-			}
-			Scope* parentScope = mParent;
-			TableType::Iterator it = parentScope->mTableHashmap.begin();
-			TableType::Iterator end = parentScope->mTableHashmap.end();
+				Scope* parentScope = mParent;
+				TableType::Iterator it = parentScope->mTableHashmap.begin();
+				TableType::Iterator end = parentScope->mTableHashmap.end();
 
-			for (; it != end; ++it)
-			{
-				if ((it->second).Type() == DatumType::TableType)
+				for (; it != end; ++it)
 				{
-					if ((it->second).Remove(this))
+					if ((it->second).Type() == DatumType::TableType)
 					{
-						return true;
+						if ((it->second).Remove(this))
+						{
+							mParent = nullptr;
+							valueToReturn = true;
+							break;
+						}
 					}
 				}
 			}
-			return false;
+			return valueToReturn;
 		}
 
 		void Scope::Adopt(Scope& childToAdopt, const std::string& nameOfChild)
 		{
-			if (childToAdopt.mParent != nullptr)
-			{
-				childToAdopt.Orphan();
-			}
+			childToAdopt.Orphan();
 			childToAdopt.mParent = this;
-			
-			Datum datum;
-			datum.PushBack(&childToAdopt);
-			
-			StringDatumPair pair(nameOfChild, datum);
-			TableType::Iterator it = mTableHashmap.Insert(pair);
+
+			bool pairInserted = false;
+			if (Find(nameOfChild) == nullptr)
+			{
+				pairInserted = true;
+			}
+			Append(nameOfChild).PushBack(&childToAdopt);
 		}
 
 		void Scope::Clear()

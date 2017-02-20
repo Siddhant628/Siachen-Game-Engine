@@ -69,7 +69,9 @@ namespace UnitTestLibraryDesktop
 			Assert::IsNull(scope.Find(stringData2));
 
 			scope.Append(stringData2).PushBack(intData);
+
 			Assert::AreEqual(scope.Find(stringData2)->Get<std::int32_t>(), intData);
+			Assert::AreEqual(scope.Find(stringData)->Get<std::int32_t>(), intData2);
 		}
 
 		TEST_METHOD(Scope_Search)
@@ -90,6 +92,49 @@ namespace UnitTestLibraryDesktop
 
 			childScope->Search(stringData, &searchResult);
 			Assert::AreEqual((searchResult)->Append(stringData).Get<std::int32_t>(), intData);
+		}
+
+		TEST_METHOD(Scope_Orphan)
+		{
+			std::string stringData = "IntegerData", stringData2 = "BabyScope", stringData3 = "IntegerData2", stringData4 = "BabyScope2";
+			Scope scope;
+			std::int32_t intData = 10, intData2 = 20;
+
+			scope.Append(stringData).PushBack(intData);
+			Scope* childScope = &scope.AppendScope(stringData2);
+			
+			childScope->Append(stringData3).PushBack(intData2);
+			childScope->AppendScope(stringData4).Append(stringData).PushBack(intData);
+			
+			Assert::IsFalse(scope.Orphan());
+
+			Assert::IsTrue(childScope->Orphan());
+			Assert::IsNull(childScope->GetParent());
+
+			delete childScope;
+
+		}
+	
+		TEST_METHOD(Scope_Adopt)
+		{
+			std::string stringData = "IntegerData", stringData2 = "IntegerData2", stringData3 = "IntegerData3", stringData4 = "IntegerData4", stringData5 = "BabyScope", stringData6 = "BabyScope2";
+			Scope scope, scope2;
+			std::int32_t intData = 10, intData2 = 20, intData3 = 30, intData4 = 40;
+			Scope* searchResult;
+
+			scope.Append(stringData).PushBack(intData);
+			Scope* childScope = &scope.AppendScope(stringData5);
+			childScope->Append(stringData2).PushBack(intData2);
+			
+			scope2.Append(stringData3).PushBack(intData3);
+			Scope* childScope2 = &scope2.AppendScope(stringData6);
+			childScope2->Append(stringData4).PushBack(intData4);
+
+			Assert::IsNull(childScope2->Search(stringData, &searchResult));
+			scope.Adopt(*childScope2, stringData4);
+			Assert::IsNotNull(childScope2->Search(stringData, &searchResult));
+			Assert::AreEqual(childScope2->Search(stringData, &searchResult)->Get<std::int32_t>(), intData);
+
 		}
 
 	private:
