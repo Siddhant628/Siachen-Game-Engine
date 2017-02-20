@@ -33,7 +33,7 @@ namespace UnitTestLibraryDesktop
 			}
 		}
 		
-		// TODO Scope
+		
 		TEST_METHOD(Datum_Copy_Constructor)
 		{
 			// Tests for integers
@@ -111,7 +111,7 @@ namespace UnitTestLibraryDesktop
 			Datum scopeDatum3(scopeDatum);
 			Assert::IsTrue(scopeDatum3 == scopeDatum);
 		}
-		// TODO Scope
+		
 		TEST_METHOD(Datum_Assignment_Operator)
 		{
 			// Tests for integers
@@ -198,7 +198,7 @@ namespace UnitTestLibraryDesktop
 			Datum scopeDatum3(scopeDatum);
 			Assert::IsTrue(scopeDatum3 == scopeDatum);
 		}
-		// TODO Scope
+		
 		TEST_METHOD(Datum_Assignment_Scalar_Operator)
 		{
 			Datum pointerDatum;
@@ -383,7 +383,7 @@ namespace UnitTestLibraryDesktop
 			matDatum.PushBack(glm::mat4x4());
 			Assert::IsFalse(matDatum.IsEmpty());
 		}
-		// TODO Scope
+		
 		TEST_METHOD(Datum_Reserve)
 		{
 			// Tests for integers
@@ -456,7 +456,7 @@ namespace UnitTestLibraryDesktop
 			auto matExpression2 = [&matDatum] { matDatum.Reserve(0); };
 			Assert::ExpectException<std::exception>(matExpression2);
 		}
-		// TODO Scope
+		
 		TEST_METHOD(Datum_PushBack)
 		{
 			Datum pointerDatum;
@@ -515,7 +515,7 @@ namespace UnitTestLibraryDesktop
 			auto matExpression = [&pointerDatum, &matData] { pointerDatum.PushBack(matData); };
 			Assert::ExpectException<std::exception>(matExpression);
 		}
-		// TODO Scope
+		
 		TEST_METHOD(Datum_PopBack)
 		{
 			Datum unknownDatum;
@@ -670,7 +670,7 @@ namespace UnitTestLibraryDesktop
 			Assert::IsTrue(matDatum.IsEmpty());
 
 		}
-		// TODO Scope
+		
 		TEST_METHOD(Datum_Set)
 		{
 			Datum pointerDatum;
@@ -810,7 +810,7 @@ namespace UnitTestLibraryDesktop
 			matDatum.PushBack(matData);
 			Assert::IsTrue(matData == matDatum.Get<glm::mat4x4>());
 		}
-		// TODO Scope
+		
 		TEST_METHOD(Datum_Equals_Operator)
 		{
 			Datum unknownDatum;

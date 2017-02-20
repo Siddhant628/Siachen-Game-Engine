@@ -1180,15 +1180,17 @@ namespace SiachenGameEngine
 			return const_cast<Datum*>(this)->Get<std::string>(index);
 		}
 		
-		//const GameplayFramework::RTTI*& Datum::Get(std::uint32_t index) const
-		//{
-		//	return const_cast<Datum*>(this)->Get<GameplayFramework::RTTI*>(index);
-		//}
+		template<>
+		GameplayFramework::RTTI* const& Datum::Get(std::uint32_t index) const
+		{
+			return const_cast<Datum*>(this)->Get<GameplayFramework::RTTI*>(index);
+		}
 
-		//const GameplayFramework::Scope*& Datum::Get(std::uint32_t index) const
-		//{
-		//	return const_cast<Datum*>(this)->Get<GameplayFramework::Scope*>(index);
-		//}
+		template<>
+		GameplayFramework::Scope* const& Datum::Get(std::uint32_t index) const
+		{
+			return const_cast<Datum*>(this)->Get<GameplayFramework::Scope*>(index);
+		}
 		
 	}
 }

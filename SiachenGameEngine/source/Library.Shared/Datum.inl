@@ -108,20 +108,20 @@ namespace SiachenGameEngine
 		*/
 		template<>
 		const std::string& Datum::Get(std::uint32_t index) const;
-		///**
-		//* Get a specific item stored in the datum.
-		//* @param index The position of the item to retrieve from the datum.
-		//* @return The RTTI* stored in the datum.
-		//*/
-		//template<>
-		//const GameplayFramework::RTTI*& Datum::Get(std::uint32_t index) const;
-		///**
-		//* Get a specific item stored in the datum.
-		//* @param index The position of the item to retrieve from the datum.
-		//* @return The Scope* stored in the datum.
-		//*/
-		//template<>
-		//const GameplayFramework::Scope*& Datum::Get(std::uint32_t index) const;
+		/**
+		* Get a specific item stored in the datum.
+		* @param index The position of the item to retrieve from the datum.
+		* @return The RTTI* stored in the datum.
+		*/
+		template<>
+		GameplayFramework::RTTI* const& Datum::Get(std::uint32_t index) const;
+		/**
+		* Get a specific item stored in the datum.
+		* @param index The position of the item to retrieve from the datum.
+		* @return The Scope* stored in the datum.
+		*/
+		template<>
+		GameplayFramework::Scope* const& Datum::Get(std::uint32_t index) const;
 
 	}
 }
