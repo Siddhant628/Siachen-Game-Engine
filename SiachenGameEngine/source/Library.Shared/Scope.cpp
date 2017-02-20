@@ -19,8 +19,8 @@ namespace SiachenGameEngine
 				{
 					for (std::uint32_t index = 0; index < (*it)->second.Size(); ++index)
 					{
-						Scope scope((*it)->second[index]);
-						Adopt(scope, (*it)->first);
+						Scope* scope = new Scope((*it)->second[index]);
+						Adopt(*scope, (*it)->first);
 					}
 				}
 				else
@@ -192,12 +192,6 @@ namespace SiachenGameEngine
 		{
 			childToAdopt.Orphan();
 			childToAdopt.mParent = this;
-
-			bool pairInserted = false;
-			if (Find(nameOfChild) == nullptr)
-			{
-				pairInserted = true;
-			}
 			Append(nameOfChild).PushBack(&childToAdopt);
 		}
 

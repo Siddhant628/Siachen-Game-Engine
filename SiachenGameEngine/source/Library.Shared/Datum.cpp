@@ -29,7 +29,6 @@ namespace SiachenGameEngine
 			// If rhs is an internal datum
 			else
 			{
-				//Reserve(10U);
 				if		(mDatumType == DatumType::IntegerType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.i[index]);
 				else if (mDatumType == DatumType::FloatType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.f[index]);
 				else if (mDatumType == DatumType::StringType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.s[index]);
@@ -65,7 +64,7 @@ namespace SiachenGameEngine
 					mSize = 0;
 					mCapacity = 0;
 					mData.vp = nullptr;
-					//Reserve(10U);
+					
 					if		(mDatumType == DatumType::IntegerType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.i[index]);
 					else if (mDatumType == DatumType::FloatType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.f[index]);
 					else if (mDatumType == DatumType::StringType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.s[index]);
@@ -340,26 +339,6 @@ namespace SiachenGameEngine
 			{
 				throw std::runtime_error("Out of bounds of the external array.");
 			}
-			//if (mDatumType == DatumType::UnknownType && IsEmpty() && index == 0)
-			//{
-			//	PushBack(value);
-			//	return;
-			//}
-			//if (mDatumType != DatumType::IntegerType)
-			//{
-			//	throw std::runtime_error("Improper set operation.");
-			//}
-			//if (mSize > index)
-			//{
-			//	mData.i[index].std::int32_t::~int32_t();
-			//	new (mData.i + index)std::int32_t(value);
-			//	return;
-			//}
-			//else if (mIsExternal)
-			//{
-			//	throw std::runtime_error("Out of bounds of the external array.");
-			//}
-			//PushBack(value);
 		}
 
 		void Datum::Set(const std::float_t value, std::uint32_t index)
@@ -377,26 +356,6 @@ namespace SiachenGameEngine
 			{
 				throw std::runtime_error("Out of bounds of the external array.");
 			}
-			//if (mDatumType == DatumType::UnknownType && IsEmpty() && index == 0)
-			//{
-			//	PushBack(value);
-			//	return;
-			//}
-			//if (mDatumType != DatumType::FloatType)
-			//{
-			//	throw std::runtime_error("Improper set operation.");
-			//}
-			//if (mSize > index)
-			//{
-			//	mData.f[index].std::float_t::~float_t();
-			//	new (mData.f + index)std::float_t(value);
-			//	return;
-			//}
-			//else if (mIsExternal)
-			//{
-			//	throw std::runtime_error("Out of bounds of the external array.");
-			//}
-			//PushBack(value);
 		}
 
 		void Datum::Set(const glm::vec4& value, std::uint32_t index)
@@ -414,26 +373,6 @@ namespace SiachenGameEngine
 			{
 				throw std::runtime_error("Out of bounds of the external array.");
 			}
-			//if (mDatumType == DatumType::UnknownType && IsEmpty() && index == 0)
-			//{
-			//	PushBack(value);
-			//	return;
-			//}
-			//if (mDatumType != DatumType::VectorType)
-			//{
-			//	throw std::runtime_error("Improper set operation.");
-			//}
-			//if (mSize > index)
-			//{
-			//	mData.v[index].glm::vec4::~vec4();
-			//	new (mData.v + index)glm::vec4(value);
-			//	return;
-			//}
-			//else if (mIsExternal)
-			//{
-			//	throw std::runtime_error("Out of bounds of the external array.");
-			//}
-			//PushBack(value);
 		}
 
 		void Datum::Set(const glm::mat4x4& value, std::uint32_t index)
@@ -451,26 +390,6 @@ namespace SiachenGameEngine
 			{
 				throw std::runtime_error("Out of bounds of the external array.");
 			}
-			//if (mDatumType == DatumType::UnknownType && IsEmpty() && index == 0)
-			//{
-			//	PushBack(value);
-			//	return;
-			//}
-			//if (mDatumType != DatumType::MatrixType)
-			//{
-			//	throw std::runtime_error("Improper set operation.");
-			//}
-			//if (mSize > index)
-			//{
-			//	mData.m[index].glm::mat4x4::~mat4x4();
-			//	new (mData.m + index)glm::mat4x4(value);
-			//	return;
-			//}
-			//else if (mIsExternal)
-			//{
-			//	throw std::runtime_error("Out of bounds of the external array.");
-			//}
-			//PushBack(value);
 		}
 
 		void Datum::Set(const std::string& value, std::uint32_t index)
@@ -488,26 +407,6 @@ namespace SiachenGameEngine
 			{
 				throw std::runtime_error("Out of bounds of the external array.");
 			}
-			//if (mDatumType == DatumType::UnknownType && IsEmpty() && index == 0)
-			//{
-			//	PushBack(value);
-			//	return;
-			//}
-			//if (mDatumType != DatumType::StringType)
-			//{
-			//	throw std::runtime_error("Improper set operation.");
-			//}
-			//if (mSize > index)
-			//{
-			//	mData.s[index].std::string::~string();
-			//	new (mData.s + index)std::string(value);
-			//	return;
-			//}
-			//else if (mIsExternal)
-			//{
-			//	throw std::runtime_error("Out of bounds of the external array.");
-			//}
-			//PushBack(value);
 		}
 
 		void Datum::Set(const GameplayFramework::RTTI* value, std::uint32_t index)
@@ -524,25 +423,6 @@ namespace SiachenGameEngine
 			{
 				throw std::runtime_error("Out of bounds of the external array.");
 			}
-			//if (mDatumType == DatumType::UnknownType && IsEmpty() && index == 0)
-			//{
-			//	PushBack(value);
-			//	return;
-			//}
-			//if (mDatumType != DatumType::PointerType)
-			//{
-			//	throw std::runtime_error("Improper set operation.");
-			//}
-			//if (mSize > index)
-			//{
-			//	mData.r[index] = const_cast<GameplayFramework::RTTI*>(value);
-			//	return;
-			//}
-			//else if (mIsExternal)
-			//{
-			//	throw std::runtime_error("Out of bounds of the external array.");
-			//}
-			//PushBack(value);
 		}
 
 		void Datum::Set(const GameplayFramework::Scope* value, std::uint32_t index)
