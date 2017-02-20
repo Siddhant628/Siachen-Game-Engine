@@ -2,6 +2,7 @@
 #include "CppUnitTest.h"
 #include "Scope.h"
 #include "Datum.h"
+#include "Foo.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace SiachenGameEngine::GameplayFramework;
@@ -35,7 +36,7 @@ namespace UnitTestLibraryDesktop
 			Scope scope;
 			std::int32_t intData = 10, intData2 = 20;
 
-			scope.Append(stringData).PushBack(intData);
+			scope[stringData] = intData;
 			Datum scopeDatum = scope.Append(stringData);
 			Assert::AreEqual(scopeDatum.Get<std::int32_t>(), intData);
 
@@ -86,7 +87,7 @@ namespace UnitTestLibraryDesktop
 
 			Scope* searchResult;
 			Assert::IsNull(childScope->Search("Hello", &searchResult));
-			
+
 			childScope->Search(stringData3, &searchResult);
 			Assert::AreEqual((searchResult)->Append(stringData3).Get<std::int32_t>(), intData2);
 
@@ -102,10 +103,10 @@ namespace UnitTestLibraryDesktop
 
 			scope.Append(stringData).PushBack(intData);
 			Scope* childScope = &scope.AppendScope(stringData2);
-			
+
 			childScope->Append(stringData3).PushBack(intData2);
 			childScope->AppendScope(stringData4).Append(stringData).PushBack(intData);
-			
+
 			Assert::IsFalse(scope.Orphan());
 
 			Assert::IsTrue(childScope->Orphan());
@@ -114,7 +115,7 @@ namespace UnitTestLibraryDesktop
 			delete childScope;
 
 		}
-	
+
 		TEST_METHOD(Scope_Adopt)
 		{
 			std::string stringData = "IntegerData", stringData2 = "IntegerData2", stringData3 = "IntegerData3", stringData4 = "IntegerData4", stringData5 = "BabyScope", stringData6 = "BabyScope2";
@@ -125,7 +126,7 @@ namespace UnitTestLibraryDesktop
 			scope.Append(stringData).PushBack(intData);
 			Scope* childScope = &scope.AppendScope(stringData5);
 			childScope->Append(stringData2).PushBack(intData2);
-			
+
 			scope2.Append(stringData3).PushBack(intData3);
 			Scope* childScope2 = &scope2.AppendScope(stringData6);
 			childScope2->Append(stringData4).PushBack(intData4);
@@ -134,6 +135,9 @@ namespace UnitTestLibraryDesktop
 			scope.Adopt(*childScope2, stringData4);
 			Assert::IsNotNull(childScope2->Search(stringData, &searchResult));
 			Assert::AreEqual(childScope2->Search(stringData, &searchResult)->Get<std::int32_t>(), intData);
+
+			auto scopeExpression = [&scope, &stringData] {scope.Adopt(scope, stringData); };
+			Assert::ExpectException<std::exception>(scopeExpression);
 
 		}
 
@@ -214,12 +218,64 @@ namespace UnitTestLibraryDesktop
 
 			Assert::IsFalse(scope == scope2);
 			Assert::IsTrue(scope == scope3);
-		
+
 			scope2.Append(stringData).PushBack(intData);
 			Scope* childScope2 = &scope2.AppendScope(stringData3);
 			childScope2->Append(stringData2).PushBack(intData);
 
 			Assert::IsFalse(scope == scope2);
+		}
+
+		TEST_METHOD(Scope_ToString)
+		{
+			std::string stringData = "IntegerData", stringData2 = "IntegerData2";
+			Scope scope;
+			std::int32_t intData = 10, intData2 = 20;
+
+			scope.Append(stringData).PushBack(intData);
+			Assert::IsTrue(scope.ToString() == "Scope(1)");
+
+			scope.Append(stringData).PushBack(intData2);
+			Assert::IsTrue(scope.ToString() == "Scope(1)");
+
+			scope.Append(stringData2).PushBack(intData);
+			Assert::IsTrue(scope.ToString() == "Scope(2)");
+
+		}
+
+		TEST_METHOD(Scope_Equals)
+		{
+			std::string stringData = "IntegerData", stringData2 = "IntegerData2", stringData3 = "IntegerData3", stringData4 = "IntegerData4", stringData5 = "BabyScope", stringData6 = "BabyScope2";
+			Scope scope, scope2;
+			std::int32_t intData = 10, intData2 = 20, intData3 = 30, intData4 = 40;
+
+			scope.Append(stringData).PushBack(intData);
+			Scope* childScope = &scope.AppendScope(stringData5);
+			childScope->Append(stringData2).PushBack(intData2);
+
+			scope2.Append(stringData3).PushBack(intData3);
+			Scope* childScope2 = &scope2.AppendScope(stringData6);
+			childScope2->Append(stringData4).PushBack(intData4);
+
+			Assert::IsFalse(scope.Equals(&scope2));
+			scope = scope2;
+			Assert::IsTrue(scope.Equals(&scope2));
+		}
+
+		TEST_METHOD(Scope_RTTI)
+		{
+			RTTI* scopeAsRTTI = new Scope;
+
+			Assert::IsTrue(scopeAsRTTI->Is("Scope"));
+			Assert::IsFalse(scopeAsRTTI->Is("Foo"));
+
+			Assert::IsTrue(scopeAsRTTI->Is(Scope::TypeIdClass()));
+			Assert::IsFalse(scopeAsRTTI->Is(SiachenGameEngine::HelperClasses::Foo::TypeIdClass()));
+
+			Assert::IsNotNull(scopeAsRTTI->As<Scope>());
+			Assert::IsNull(scopeAsRTTI->As<SiachenGameEngine::HelperClasses::Foo>());
+
+			delete scopeAsRTTI;
 		}
 
 		TEST_METHOD(Scope_Inequals_Operator)
@@ -277,25 +333,6 @@ namespace UnitTestLibraryDesktop
 			Assert::IsFalse(scope == scope2);
 			scope = scope2;
 			Assert::IsTrue(scope == scope2);
-		}
-
-		TEST_METHOD(Scope_Equals)
-		{
-			std::string stringData = "IntegerData", stringData2 = "IntegerData2", stringData3 = "IntegerData3", stringData4 = "IntegerData4", stringData5 = "BabyScope", stringData6 = "BabyScope2";
-			Scope scope, scope2;
-			std::int32_t intData = 10, intData2 = 20, intData3 = 30, intData4 = 40;
-
-			scope.Append(stringData).PushBack(intData);
-			Scope* childScope = &scope.AppendScope(stringData5);
-			childScope->Append(stringData2).PushBack(intData2);
-
-			scope2.Append(stringData3).PushBack(intData3);
-			Scope* childScope2 = &scope2.AppendScope(stringData6);
-			childScope2->Append(stringData4).PushBack(intData4);
-
-			Assert::IsFalse(scope.Equals(&scope2));
-			scope = scope2;
-			Assert::IsTrue(scope.Equals(&scope2));
 		}
 
 	private:

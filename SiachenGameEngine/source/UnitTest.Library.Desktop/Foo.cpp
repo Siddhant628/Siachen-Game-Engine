@@ -5,6 +5,7 @@ namespace SiachenGameEngine
 {
 	namespace HelperClasses
 	{
+		RTTI_DEFINITIONS(Foo);
 		Foo::Foo() : mIntegerPointer(new int32_t(0))
 		{
 
@@ -39,6 +40,23 @@ namespace SiachenGameEngine
 		int32_t Foo::GetValue() const
 		{
 			return *mIntegerPointer;
+		}
+
+		bool Foo::Equals(const RTTI * rhs) const
+		{
+			Foo* rhsFoo = rhs->As<Foo>();
+			if (rhsFoo == nullptr)
+			{
+				return false;
+			}
+			return (operator==(*rhsFoo));
+		}
+
+		std::string Foo::ToString() const
+		{
+			std::stringstream stream;
+			stream << "Foo(" << *mIntegerPointer << ")";
+			return stream.str();
 		}
 	}
 }

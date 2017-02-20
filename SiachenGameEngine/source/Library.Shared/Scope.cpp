@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Scope.h"
 #include "Datum.h"
+#include <string>
+#include <sstream>
 
 using namespace SiachenGameEngine::Containers;
 
@@ -145,7 +147,9 @@ namespace SiachenGameEngine
 
 		std::string Scope::ToString() const
 		{
-			return "Scope";
+			std::stringstream stream;
+			stream << "Scope(" << mTableHashmap.Size() << ")";
+			return stream.str();
 		}
 
 		Datum& Scope::operator[](const std::string& key)
@@ -190,6 +194,10 @@ namespace SiachenGameEngine
 
 		void Scope::Adopt(Scope& childToAdopt, const std::string& nameOfChild)
 		{
+			if (this == &childToAdopt)
+			{
+				throw std::runtime_error("Scope cannot adopt itself.");
+			}
 			childToAdopt.Orphan();
 			childToAdopt.mParent = this;
 			Append(nameOfChild).PushBack(&childToAdopt);

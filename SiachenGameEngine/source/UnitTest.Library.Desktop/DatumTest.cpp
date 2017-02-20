@@ -98,7 +98,8 @@ namespace UnitTestLibraryDesktop
 
 			// Test for tables
 
-			Scope scope, scope2;
+			Scope scope;
+			scope.Append(stringData).PushBack(intData);
 			Scope* scope1 = &scope;
 
 			Datum scopeDatum;
@@ -187,16 +188,17 @@ namespace UnitTestLibraryDesktop
 
 			Scope scope, scope2;
 			Scope* scope1 = &scope;
+			scope.Append(stringData).PushBack(intData);
 
 			Datum scopeDatum;
 			scopeDatum.PushBack(&scope);
-			Datum scopeDatum2(scopeDatum);
-
+			Datum scopeDatum2;
+			scopeDatum2 = scopeDatum;
 			Assert::IsTrue(scopeDatum == scopeDatum2);
 
 			scopeDatum.SetStorage(&scope1, 1);
-			Datum scopeDatum3(scopeDatum);
-			Assert::IsTrue(scopeDatum3 == scopeDatum);
+			Datum scopeDatum3 = scopeDatum;
+			Assert::IsTrue(scopeDatum == scopeDatum3);
 		}
 		
 		TEST_METHOD(Datum_Assignment_Scalar_Operator)
@@ -263,6 +265,19 @@ namespace UnitTestLibraryDesktop
 
 			auto matExpression = [&pointerDatum, &matData] { pointerDatum = matData; };
 			Assert::ExpectException<std::exception>(matExpression);
+
+			// Tests for tables
+			Scope scope, scope2;
+			scope["IntegerData"] = 10 ;
+
+			Datum scopeDatum;
+			scopeDatum = &scope;
+			Assert::IsTrue(&scope == scopeDatum.Get<Scope*>());
+			scopeDatum = &scope2;
+			Assert::IsTrue(&scope2 == scopeDatum.Get<Scope*>());
+
+			auto scopeExpression = [&pointerDatum, &scope] { pointerDatum = &scope; };
+			Assert::ExpectException<std::exception>(scopeExpression);
 		}
 
 		TEST_METHOD(Datum_Type)
@@ -290,6 +305,10 @@ namespace UnitTestLibraryDesktop
 			Datum ptrDatum;
 			ptrDatum.SetType(DatumType::PointerType);
 			Assert::IsTrue(DatumType::PointerType == ptrDatum.Type());
+
+			Datum scopeDatum;
+			scopeDatum.SetType(DatumType::TableType);
+			Assert::IsTrue(DatumType::TableType == scopeDatum.Type());
 		}
 
 		TEST_METHOD(Datum_SetType)
@@ -323,6 +342,11 @@ namespace UnitTestLibraryDesktop
 			ptrDatum.SetType(DatumType::PointerType);
 			auto ptrExpression = [&ptrDatum] {ptrDatum.SetType(DatumType::UnknownType); };
 			Assert::ExpectException<std::exception>(ptrExpression);
+
+			Datum scopeDatum;
+			scopeDatum.SetType(DatumType::TableType);
+			auto scopeExpression = [&scopeDatum] {scopeDatum.SetType(DatumType::UnknownType); };
+			Assert::ExpectException<std::exception>(scopeExpression);
 		}
 
 		TEST_METHOD(DatumType_Size)
@@ -354,6 +378,12 @@ namespace UnitTestLibraryDesktop
 			Assert::AreEqual(matDatum.Size(), 0U);
 			matDatum.PushBack(mat);
 			Assert::AreEqual(matDatum.Size(), 1U);
+
+			Datum scopeDatum;
+			Scope scope;
+			Assert::AreEqual(scopeDatum.Size(), 0U);
+			scopeDatum.PushBack(&scope);
+			Assert::AreEqual(scopeDatum.Size(), 1U);
 		}
 
 		TEST_METHOD(Datum_IsEmpty)
@@ -382,6 +412,12 @@ namespace UnitTestLibraryDesktop
 			Assert::IsTrue(matDatum.IsEmpty());
 			matDatum.PushBack(glm::mat4x4());
 			Assert::IsFalse(matDatum.IsEmpty());
+
+			Datum scopeDatum;
+			Scope scope;
+			Assert::IsTrue(scopeDatum.IsEmpty());
+			scopeDatum.PushBack(&scope);
+			Assert::IsFalse(scopeDatum.IsEmpty());
 		}
 		
 		TEST_METHOD(Datum_Reserve)
@@ -455,6 +491,21 @@ namespace UnitTestLibraryDesktop
 			matDatum.SetStorage(&matData, 1);
 			auto matExpression2 = [&matDatum] { matDatum.Reserve(0); };
 			Assert::ExpectException<std::exception>(matExpression2);
+
+			// Tests for integers
+			Scope scope;
+			Scope* scopePtr = &scope;
+			Datum scopeDatum;
+			scopeDatum.PushBack(&scope);
+
+			auto scopeExpression = [&scopeDatum] { scopeDatum.Reserve(0); };
+			Assert::ExpectException<std::exception>(scopeExpression);
+			scopeDatum.Reserve(5);
+			Assert::IsTrue(&scope == scopeDatum.Get<Scope*>());
+
+			scopeDatum.SetStorage(&scopePtr, 1);
+			auto scopeExpression2 = [&scopeDatum] { scopeDatum.Reserve(0); };
+			Assert::ExpectException<std::exception>(scopeExpression2);
 		}
 		
 		TEST_METHOD(Datum_PushBack)
@@ -514,6 +565,19 @@ namespace UnitTestLibraryDesktop
 
 			auto matExpression = [&pointerDatum, &matData] { pointerDatum.PushBack(matData); };
 			Assert::ExpectException<std::exception>(matExpression);
+
+			// Test for tables
+
+			Scope scope;
+			Datum scopeDatum;
+			scopeDatum.PushBack(&scope);
+
+			scopeDatum.PushBack(&scope);
+			Assert::IsTrue(&scope == scopeDatum.Get<Scope*>());
+
+			auto scopeExpression = [&pointerDatum, &scope] { pointerDatum.PushBack(&scope); };
+			Assert::ExpectException<std::exception>(scopeExpression);
+
 		}
 		
 		TEST_METHOD(Datum_PopBack)
@@ -567,6 +631,15 @@ namespace UnitTestLibraryDesktop
 			matDatum.PopBack();
 			Assert::AreEqual(matDatum.Size(), 0U);
 			matDatum.PopBack();
+
+			// Tests for tables
+			Scope scope;
+			Datum scopeDatum;
+			scopeDatum.PushBack(&scope);
+			Assert::AreEqual(scopeDatum.Size(), 1U);
+			scopeDatum.PopBack();
+			Assert::AreEqual(scopeDatum.Size(), 0U);
+			scopeDatum.PopBack();
 		}
 
 		TEST_METHOD(Datum_Clear)
@@ -625,6 +698,19 @@ namespace UnitTestLibraryDesktop
 			matDatum.SetStorage(&matData, 1);
 			auto matExpression = [&matDatum] { matDatum.Clear(); };
 			Assert::ExpectException<std::exception>(matExpression);
+
+			// Tests for tables
+			Scope scope;
+			Scope* scopePtr = &scope;
+			Datum scopeDatum;
+			scopeDatum.PushBack(&scope);
+			scopeDatum.Clear();
+			Assert::IsTrue(scopeDatum.IsEmpty());
+
+			scopeDatum.SetStorage(&scopePtr, 1);
+			auto scopeExpression = [&scopeDatum] { scopeDatum.Clear(); };
+			Assert::ExpectException<std::exception>(scopeExpression);
+
 		}
 
 		TEST_METHOD(Datum_ClearAndFree)
@@ -669,6 +755,13 @@ namespace UnitTestLibraryDesktop
 			matDatum.ClearAndFree();
 			Assert::IsTrue(matDatum.IsEmpty());
 
+			// Tests for tables
+			Scope scope;
+			Datum scopeDatum;
+			scopeDatum.ClearAndFree();
+			scopeDatum.PushBack(&scope);
+			scopeDatum.ClearAndFree();
+			Assert::IsTrue(scopeDatum.IsEmpty());
 		}
 		
 		TEST_METHOD(Datum_Set)
@@ -756,6 +849,25 @@ namespace UnitTestLibraryDesktop
 			matDatum.SetStorage(&matData, 1);
 			auto matExpression2 = [&matDatum, &matData] { matDatum.Set(matData, 1); };
 			Assert::ExpectException<std::exception>(matExpression2);
+			
+			// Tests for tables
+			Scope scope, scope2;
+			scope2["IntegerData"] = 10;
+			Scope* scopePtr = &scope;
+
+			auto scopeExpression = [&pointerDatum, &scope] { pointerDatum.Set(&scope); };
+			Assert::ExpectException<std::exception>(scopeExpression);
+
+			Datum scopeDatum;
+			scopeDatum.PushBack(&scope);
+			Assert::IsTrue(&scope == scopeDatum.Get<Scope*>());
+			scopeDatum.Set(&scope2);
+			Assert::IsTrue(&scope2 == scopeDatum.Get<Scope*>());
+
+			scopeDatum.SetStorage(&scopePtr, 1);
+			auto scopeExpression2 = [&scopeDatum, &scope] { scopeDatum.Set(&scope, 1); };
+			Assert::ExpectException<std::exception>(scopeExpression2);
+
 		}
 
 		TEST_METHOD(Datum_Get)
@@ -770,6 +882,9 @@ namespace UnitTestLibraryDesktop
 			intDatum.PushBack(intData);
 			Assert::AreEqual(intData, intDatum.Get<std::int32_t>());
 
+			const Datum intDatum2(intDatum);
+			Assert::AreEqual(intData, intDatum2.Get<std::int32_t>());
+
 			// Tests for floats
 			std::float_t floatData = 10.0f;
 			Datum floatDatum;
@@ -779,6 +894,9 @@ namespace UnitTestLibraryDesktop
 
 			floatDatum.PushBack(floatData);
 			Assert::AreEqual(floatData, floatDatum.Get<std::float_t>());
+
+			const Datum floatDatum2(floatDatum);
+			Assert::AreEqual(floatData, floatDatum2.Get<std::float_t>());
 
 			// Tests for strings
 			std::string stringData = "str";
@@ -790,6 +908,10 @@ namespace UnitTestLibraryDesktop
 			stringDatum.PushBack(stringData);
 			Assert::AreEqual(stringData, stringDatum.Get<std::string>());
 
+			const Datum stringDatum2(stringDatum);
+			Assert::AreEqual(stringData, stringDatum2.Get<std::string>());
+
+
 			// Tests for vectors
 			glm::vec4 vecData(1.0f);
 			Datum vectorDatum;
@@ -800,6 +922,9 @@ namespace UnitTestLibraryDesktop
 			vectorDatum.PushBack(vecData);
 			Assert::IsTrue(vecData == vectorDatum.Get<glm::vec4>());
 
+			const Datum vectorDatum2(vectorDatum);
+			Assert::IsTrue(vecData == vectorDatum2.Get<glm::vec4>());
+
 			// Tests for matrices
 			glm::mat4x4 matData;
 			Datum matDatum;
@@ -809,6 +934,22 @@ namespace UnitTestLibraryDesktop
 
 			matDatum.PushBack(matData);
 			Assert::IsTrue(matData == matDatum.Get<glm::mat4x4>());
+		
+			const Datum matDatum2(matDatum);
+			Assert::IsTrue(matData == matDatum2.Get<glm::mat4x4>());
+
+			// Tests for tables
+			Scope scope;
+			Datum scopeDatum;
+
+			auto scopeExpression = [&scopeDatum] { scopeDatum.Get<Scope*>(); };
+			Assert::ExpectException<std::exception>(scopeExpression);
+
+			scopeDatum.PushBack(&scope);
+			Assert::IsTrue(&scope == scopeDatum.Get<Scope*>());
+
+			const Datum scopeDatum2(scopeDatum);
+			Assert::IsTrue(&scope == scopeDatum2.Get<Scope*>());
 		}
 		
 		TEST_METHOD(Datum_Equals_Operator)
@@ -907,6 +1048,24 @@ namespace UnitTestLibraryDesktop
 			matDatum2.Set(matData);
 			Assert::IsTrue(matDatum == matDatum2);
 
+			// Tests for table
+			Scope scope, scope2;
+			scope["IntegerData"] = 10;
+
+			Datum scopeDatum, scopeDatum2;
+			scopeDatum.SetType(DatumType::TableType);
+			scopeDatum2.SetType(DatumType::TableType);
+
+			Assert::IsFalse(scopeDatum == unknownDatum);
+			Assert::IsFalse(scopeDatum == pointerDatum);
+
+			Assert::IsTrue(scopeDatum == scopeDatum2);
+
+			scopeDatum.PushBack(&scope);
+			scopeDatum2.PushBack(&scope2);
+			Assert::IsFalse(scopeDatum == scopeDatum2);
+			scopeDatum2.Set(&scope);
+			Assert::IsTrue(scopeDatum == scopeDatum2);
 		}
 
 		TEST_METHOD(Datum_Inequals_Operator)
@@ -1004,6 +1163,25 @@ namespace UnitTestLibraryDesktop
 			Assert::IsTrue(matDatum != matDatum2);
 			matDatum2.Set(matData);
 			Assert::IsFalse(matDatum != matDatum2);
+
+			// Tests for tables
+			Scope scope, scope2;
+			scope["IntegerData"] = 10;
+
+			Datum scopeDatum, scopeDatum2;
+			scopeDatum.SetType(DatumType::TableType);
+			scopeDatum2.SetType(DatumType::TableType);
+
+			Assert::IsTrue(scopeDatum != unknownDatum);
+			Assert::IsTrue(scopeDatum != pointerDatum);
+
+			Assert::IsFalse(scopeDatum != scopeDatum2);
+
+			scopeDatum.PushBack(&scope);
+			scopeDatum2.PushBack(&scope2);
+			Assert::IsTrue(scopeDatum != scopeDatum2);
+			scopeDatum2.Set(&scope);
+			Assert::IsFalse(scopeDatum != scopeDatum2);
 		}
 
 		TEST_METHOD(Datum_Equals_Scalar_Operator)
@@ -1050,6 +1228,13 @@ namespace UnitTestLibraryDesktop
 			Assert::IsFalse(unknownDatum == matData);
 			Assert::IsTrue(matDatum == matData);
 
+			// Tests for tables
+			Scope scope;
+			Datum scopeDatum;
+			scopeDatum.PushBack(&scope);
+
+			Assert::IsFalse(unknownDatum == &scope);
+			Assert::IsTrue(scopeDatum == &scope);
 		}
 
 		TEST_METHOD(Datum_Inequals_Scalar_Operator)
@@ -1095,6 +1280,14 @@ namespace UnitTestLibraryDesktop
 
 			Assert::IsTrue(unknownDatum != matData);
 			Assert::IsFalse(matDatum != matData);
+
+			// Tests for tables
+			Scope scope;
+			Datum scopeDatum;
+			scopeDatum.PushBack(&scope);
+
+			Assert::IsTrue(unknownDatum != &scope);
+			Assert::IsFalse(scopeDatum != &scope);
 		}
 
 		TEST_METHOD(Datum_SetStorage)
@@ -1153,6 +1346,16 @@ namespace UnitTestLibraryDesktop
 			auto matExpression = [&unknownDatum, &matData] { unknownDatum.SetStorage(&matData, 1); };
 			Assert::ExpectException<std::exception>(matExpression);
 
+			// Tests for tables
+			Scope scope;
+			Scope* scopePtr = &scope;
+			Datum scopeDatum;
+			scopeDatum.PushBack(&scope);
+
+			scopeDatum.SetStorage(&scopePtr, 1);
+
+			auto scopeExpression = [&unknownDatum, &scopePtr] { unknownDatum.SetStorage(&scopePtr, 1); };
+			Assert::ExpectException<std::exception>(scopeExpression);
 		}
 
 		TEST_METHOD(Datum_ToString)
@@ -1190,6 +1393,12 @@ namespace UnitTestLibraryDesktop
 			Datum matDatum;
 			matDatum.PushBack(matData);
 			Assert::AreEqual(matDatum.ToString(), glm::to_string(matData));
+
+			// Tests for tables
+			Scope scope;
+			Datum scopeDatum;
+			scopeDatum.PushBack(&scope);
+			Assert::IsTrue(scopeDatum.ToString() == "Scope(0)");
 		}
 
 		TEST_METHOD(Datum_SetFromString)
@@ -1247,7 +1456,6 @@ namespace UnitTestLibraryDesktop
 			Assert::IsFalse(matData == matDatum.Get<glm::mat4x4>());
 			Assert::IsTrue(matDatum.SetFromString(matString));
 			Assert::IsTrue(matData == matDatum.Get<glm::mat4x4>());
-
 		}
 
 	private:
