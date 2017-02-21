@@ -918,11 +918,6 @@ namespace SiachenGameEngine
 				Set(matToSet, index);
 				return true;
 			}
-
-			case DatumType::TableType:
-				return false;
-
-				// In case of a string
 			case DatumType::StringType:
 				Set(data, index);
 				return true;

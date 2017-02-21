@@ -11,6 +11,7 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace SiachenGameEngine::Containers;
 using namespace SiachenGameEngine::GameplayFramework;
+using namespace SiachenGameEngine::HelperClasses;
 
 namespace UnitTestLibraryDesktop
 {
@@ -113,7 +114,21 @@ namespace UnitTestLibraryDesktop
 			Datum scopeDatum3(scopeDatum);
 			Assert::IsTrue(scopeDatum3 == scopeDatum);
 
+			// Tests for Foo (pointer type)
+
+			Foo foo(10);
 			
+			RTTI* ptrData = &foo;
+
+			Datum pointerDatum;
+			pointerDatum.PushBack(ptrData);
+			Datum pointerDatum2(pointerDatum);
+
+			Assert::IsTrue(pointerDatum == pointerDatum2);
+
+			pointerDatum.SetStorage(&ptrData, 1);
+			Datum pointerDatum3(pointerDatum);
+			Assert::IsTrue(pointerDatum3 == pointerDatum);
 		}
 		
 		TEST_METHOD(Datum_Assignment_Operator)
@@ -202,6 +217,22 @@ namespace UnitTestLibraryDesktop
 			scopeDatum.SetStorage(&scope1, 1);
 			Datum scopeDatum3 = scopeDatum;
 			Assert::IsTrue(scopeDatum == scopeDatum3);
+
+			// Tests for Foo (pointer type)
+
+			Foo foo(10);
+
+			RTTI* ptrData = &foo;
+
+			Datum ptrDatum;
+			ptrDatum.PushBack(ptrData);
+			Datum ptrDatum2;
+			ptrDatum2 = ptrDatum;
+			Assert::IsTrue(ptrDatum == ptrDatum2);
+
+			ptrDatum.SetStorage(&ptrData, 1);
+			Datum ptrData3 = ptrDatum;
+			Assert::IsTrue(ptrDatum == ptrData3);
 		}
 		
 		TEST_METHOD(Datum_Assignment_Scalar_Operator)
@@ -281,6 +312,25 @@ namespace UnitTestLibraryDesktop
 
 			auto scopeExpression = [&pointerDatum, &scope] { pointerDatum = &scope; };
 			Assert::ExpectException<std::exception>(scopeExpression);
+
+			// Tests for Foo (pointer type)
+
+			Foo foo(10), foo2(20);
+
+			RTTI* ptrData = &foo;
+			RTTI* ptrData2 = &foo2;
+
+			Datum otherDatum;
+			otherDatum.SetType(DatumType::IntegerType);
+
+			Datum ptrDatum;
+			ptrDatum = ptrData;
+			Assert::IsTrue(ptrData == ptrDatum.Get<RTTI*>());
+			ptrDatum = ptrData2;
+			Assert::IsTrue(ptrData2 == ptrDatum.Get<RTTI*>());
+
+			auto ptrExpression = [&otherDatum, &ptrData] { otherDatum = ptrData; };
+			Assert::ExpectException<std::exception>(ptrExpression);
 		}
 
 		TEST_METHOD(Datum_Type)
@@ -387,6 +437,14 @@ namespace UnitTestLibraryDesktop
 			Assert::AreEqual(scopeDatum.Size(), 0U);
 			scopeDatum.PushBack(&scope);
 			Assert::AreEqual(scopeDatum.Size(), 1U);
+
+			Datum ptrDatum;
+			Foo foo;
+			RTTI* ptrData = &foo;
+			Assert::AreEqual(ptrDatum.Size(), 0U);
+			ptrDatum.PushBack(ptrData);
+			Assert::AreEqual(ptrDatum.Size(), 1U);
+
 		}
 
 		TEST_METHOD(Datum_IsEmpty)
@@ -421,6 +479,15 @@ namespace UnitTestLibraryDesktop
 			Assert::IsTrue(scopeDatum.IsEmpty());
 			scopeDatum.PushBack(&scope);
 			Assert::IsFalse(scopeDatum.IsEmpty());
+		
+			Foo foo(10);
+
+			RTTI* ptrData = &foo;
+
+			Datum ptrDatum;
+			Assert::IsTrue(ptrDatum.IsEmpty());
+			ptrDatum.PushBack(ptrData);
+			Assert::IsFalse(ptrDatum.IsEmpty());
 		}
 		
 		TEST_METHOD(Datum_Reserve)
@@ -495,7 +562,7 @@ namespace UnitTestLibraryDesktop
 			auto matExpression2 = [&matDatum] { matDatum.Reserve(0); };
 			Assert::ExpectException<std::exception>(matExpression2);
 
-			// Tests for integers
+			// Tests for tables
 			Scope scope;
 			Scope* scopePtr = &scope;
 			Datum scopeDatum;
@@ -509,6 +576,23 @@ namespace UnitTestLibraryDesktop
 			scopeDatum.SetStorage(&scopePtr, 1);
 			auto scopeExpression2 = [&scopeDatum] { scopeDatum.Reserve(0); };
 			Assert::ExpectException<std::exception>(scopeExpression2);
+
+			// Tests for Foo (pointer type)
+			Foo foo(10);
+
+			RTTI* ptrData = &foo;
+
+			Datum ptrDatum;
+			ptrDatum.PushBack(ptrData);
+
+			auto ptrExpression = [&ptrDatum] { ptrDatum.Reserve(0); };
+			Assert::ExpectException<std::exception>(ptrExpression);
+			ptrDatum.Reserve(5);
+			Assert::IsTrue(ptrData == ptrDatum.Get<RTTI*>());
+
+			ptrDatum.SetStorage(&ptrData, 1);
+			auto ptrExpression2 = [&ptrDatum] { ptrDatum.Reserve(0); };
+			Assert::ExpectException<std::exception>(ptrExpression2);
 		}
 		
 		TEST_METHOD(Datum_PushBack)
@@ -581,6 +665,22 @@ namespace UnitTestLibraryDesktop
 			auto scopeExpression = [&pointerDatum, &scope] { pointerDatum.PushBack(&scope); };
 			Assert::ExpectException<std::exception>(scopeExpression);
 
+			// Tests for Foo (pointer type)
+			Foo foo(10);
+
+			RTTI* ptrData = &foo;
+
+			Datum otherDatum;
+			otherDatum.SetType(DatumType::IntegerType);
+
+			Datum ptrDatum;
+			ptrDatum.PushBack(ptrData);
+
+			ptrDatum.PushBack(ptrData);
+			Assert::IsTrue(ptrData == ptrDatum.Get<RTTI*>());
+
+			auto ptrExpression = [&otherDatum, &ptrData] { otherDatum.PushBack(ptrData); };
+			Assert::ExpectException<std::exception>(ptrExpression);
 		}
 		
 		TEST_METHOD(Datum_PopBack)
@@ -643,6 +743,19 @@ namespace UnitTestLibraryDesktop
 			scopeDatum.PopBack();
 			Assert::AreEqual(scopeDatum.Size(), 0U);
 			scopeDatum.PopBack();
+
+			// Tests for Foo (pointer type)
+
+			Foo foo(10);
+
+			RTTI* ptrData = &foo;
+
+			Datum ptrDatum;
+			ptrDatum.PushBack(ptrData);
+			Assert::AreEqual(ptrDatum.Size(), 1U);
+			ptrDatum.PopBack();
+			Assert::AreEqual(ptrDatum.Size(), 0U);
+			ptrDatum.PopBack();
 		}
 
 		TEST_METHOD(Datum_Clear)
@@ -714,6 +827,21 @@ namespace UnitTestLibraryDesktop
 			auto scopeExpression = [&scopeDatum] { scopeDatum.Clear(); };
 			Assert::ExpectException<std::exception>(scopeExpression);
 
+			// Tests for Foo (pointer type)
+
+			Foo foo(10);
+
+			RTTI* ptrData = &foo;
+
+			Datum ptrDatum;
+			ptrDatum.PushBack(ptrData);
+			ptrDatum.Clear();
+			Assert::IsTrue(ptrDatum.IsEmpty());
+
+			ptrDatum.SetStorage(&ptrData, 1);
+			auto ptrExpression = [&ptrDatum] { ptrDatum.Clear(); };
+			Assert::ExpectException<std::exception>(ptrExpression);
+
 		}
 
 		TEST_METHOD(Datum_ClearAndFree)
@@ -765,6 +893,18 @@ namespace UnitTestLibraryDesktop
 			scopeDatum.PushBack(&scope);
 			scopeDatum.ClearAndFree();
 			Assert::IsTrue(scopeDatum.IsEmpty());
+
+			// Tests for Foo (pointer type)
+
+			Foo foo(10);
+
+			RTTI* ptrData = &foo;
+			
+			Datum ptrDatum;
+			ptrDatum.ClearAndFree();
+			ptrDatum.PushBack(ptrData);
+			ptrDatum.ClearAndFree();
+			Assert::IsTrue(ptrDatum.IsEmpty());
 		}
 		
 		TEST_METHOD(Datum_Set)
@@ -871,6 +1011,29 @@ namespace UnitTestLibraryDesktop
 			auto scopeExpression2 = [&scopeDatum, &scope] { scopeDatum.Set(&scope, 1); };
 			Assert::ExpectException<std::exception>(scopeExpression2);
 
+			// Tests for Foo (pointer type)
+
+			Foo foo(10), foo2(20);
+
+			RTTI* ptrData = &foo;
+			RTTI* ptrData2 = &foo2;
+
+			Datum otherDatum;
+			otherDatum.SetType(DatumType::IntegerType);
+
+			auto ptrExpression = [&otherDatum, &ptrData] { otherDatum.Set(ptrData); };
+			Assert::ExpectException<std::exception>(ptrExpression);
+
+			Datum ptrDatum;
+			ptrDatum.PushBack(ptrData);
+			Assert::IsTrue(ptrData == ptrDatum.Get<RTTI*>());
+			ptrDatum.Set(ptrData2);
+			Assert::IsTrue(ptrData2 == ptrDatum.Get<RTTI*>());
+
+
+			ptrDatum.SetStorage(&ptrData, 1);
+			auto ptrExpression2 = [&ptrDatum, &ptrData] { ptrDatum.Set(ptrData, 1); };
+			Assert::ExpectException<std::exception>(ptrExpression2);
 		}
 
 		TEST_METHOD(Datum_Get)
@@ -953,6 +1116,23 @@ namespace UnitTestLibraryDesktop
 
 			const Datum scopeDatum2(scopeDatum);
 			Assert::IsTrue(&scope == scopeDatum2.Get<Scope*>());
+
+			// Tests for Foo (pointer type)
+
+			Foo foo(10);
+
+			RTTI* ptrData = &foo;
+
+			Datum ptrDatum;
+
+			auto ptrExpression = [&ptrDatum] { ptrDatum.Get<RTTI*>(); };
+			Assert::ExpectException<std::exception>(ptrExpression);
+
+			ptrDatum.PushBack(ptrData);
+			Assert::IsTrue(ptrData == ptrDatum.Get<RTTI*>());
+
+			const Datum ptrDatum2(ptrDatum);
+			Assert::IsTrue(ptrData == ptrDatum2.Get<RTTI*>());
 		}
 		
 		TEST_METHOD(Datum_Equals_Operator)
@@ -1069,6 +1249,31 @@ namespace UnitTestLibraryDesktop
 			Assert::IsFalse(scopeDatum == scopeDatum2);
 			scopeDatum2.Set(&scope);
 			Assert::IsTrue(scopeDatum == scopeDatum2);
+
+			// Tests for Foo (pointer type)
+
+			Foo foo(10), foo2(20);
+
+			RTTI* ptrData = &foo;
+			RTTI* ptrData2 = &foo2;
+
+			Datum otherDatum;
+			otherDatum.SetType(DatumType::IntegerType);
+
+			Datum ptrDatum, ptrDatum2;
+			ptrDatum.SetType(DatumType::PointerType);
+			ptrDatum2.SetType(DatumType::PointerType);
+
+			Assert::IsFalse(ptrDatum == unknownDatum);
+			Assert::IsFalse(ptrDatum == otherDatum);
+
+			Assert::IsTrue(ptrDatum == ptrDatum2);
+
+			ptrDatum.PushBack(ptrData);
+			ptrDatum2.PushBack(ptrData2);
+			Assert::IsFalse(ptrDatum == ptrDatum2);
+			ptrDatum2.Set(ptrData);
+			Assert::IsTrue(ptrDatum == ptrDatum2);
 		}
 
 		TEST_METHOD(Datum_Inequals_Operator)
@@ -1185,6 +1390,31 @@ namespace UnitTestLibraryDesktop
 			Assert::IsTrue(scopeDatum != scopeDatum2);
 			scopeDatum2.Set(&scope);
 			Assert::IsFalse(scopeDatum != scopeDatum2);
+
+			// Tests for Foo (pointer type)
+
+			Foo foo(10), foo2(20);
+
+			RTTI* ptrData = &foo;
+			RTTI* ptrData2 = &foo2;
+
+			Datum otherDatum;
+			otherDatum.SetType(DatumType::IntegerType);
+
+			Datum ptrDatum, ptrDatum2;
+			ptrDatum.SetType(DatumType::PointerType);
+			ptrDatum2.SetType(DatumType::PointerType);
+
+			Assert::IsTrue(ptrDatum != unknownDatum);
+			Assert::IsTrue(ptrDatum != otherDatum);
+
+			Assert::IsFalse(ptrDatum != ptrDatum2);
+
+			ptrDatum.PushBack(ptrData);
+			ptrDatum2.PushBack(ptrData2);
+			Assert::IsTrue(ptrDatum != ptrDatum2);
+			ptrDatum2.Set(ptrData);
+			Assert::IsFalse(ptrDatum != ptrDatum2);
 		}
 
 		TEST_METHOD(Datum_Equals_Scalar_Operator)
@@ -1238,6 +1468,18 @@ namespace UnitTestLibraryDesktop
 
 			Assert::IsFalse(unknownDatum == &scope);
 			Assert::IsTrue(scopeDatum == &scope);
+
+			// Tests for Foo (pointer type)
+
+			Foo foo(10);
+
+			RTTI* ptrData = &foo;
+
+			Datum ptrDatum;
+			ptrDatum.PushBack(ptrData);
+
+			Assert::IsFalse(unknownDatum == ptrData);
+			Assert::IsTrue(ptrDatum == ptrData);
 		}
 
 		TEST_METHOD(Datum_Inequals_Scalar_Operator)
@@ -1291,6 +1533,18 @@ namespace UnitTestLibraryDesktop
 
 			Assert::IsTrue(unknownDatum != &scope);
 			Assert::IsFalse(scopeDatum != &scope);
+
+			// Tests for Foo (pointer type)
+
+			Foo foo(10);
+
+			RTTI* ptrData = &foo;
+
+			Datum ptrDatum;
+			ptrDatum.PushBack(ptrData);
+
+			Assert::IsTrue(unknownDatum != ptrData);
+			Assert::IsFalse(ptrDatum != ptrData);
 		}
 
 		TEST_METHOD(Datum_SetStorage)
@@ -1359,6 +1613,20 @@ namespace UnitTestLibraryDesktop
 
 			auto scopeExpression = [&unknownDatum, &scopePtr] { unknownDatum.SetStorage(&scopePtr, 1); };
 			Assert::ExpectException<std::exception>(scopeExpression);
+
+			// Tests for Foo (pointer type)
+
+			Foo foo(10);
+
+			RTTI* ptrData = &foo;
+
+			Datum ptrDatum;
+			ptrDatum.PushBack(ptrData);
+
+			ptrDatum.SetStorage(&ptrData, 1);
+
+			auto ptrExpression = [&unknownDatum, &ptrData] { unknownDatum.SetStorage(&ptrData, 1); };
+			Assert::ExpectException<std::exception>(ptrExpression);
 		}
 
 		TEST_METHOD(Datum_ToString)
@@ -1402,6 +1670,14 @@ namespace UnitTestLibraryDesktop
 			Datum scopeDatum;
 			scopeDatum.PushBack(&scope);
 			Assert::IsTrue(scopeDatum.ToString() == "Scope(0)");
+
+			// Tests for Foo (pointer type)
+			Foo foo(10);
+			RTTI* ptrData = &foo;
+
+			Datum ptrDatum;
+			ptrDatum.PushBack(ptrData);
+			Assert::IsTrue(ptrDatum.ToString() == "Foo(10)");
 		}
 
 		TEST_METHOD(Datum_SetFromString)
@@ -1578,9 +1854,27 @@ namespace UnitTestLibraryDesktop
 
 			Assert::IsTrue(scopeDatum.Remove(&scope));
 			Assert::IsTrue(scopeDatum.IsEmpty());
+
+			// Tests for Foo (pointer type)
+
+			Foo foo(10), foo2(20);
+
+			RTTI* ptrData = &foo;
+			RTTI* ptrData2 = &foo2;
+
+			Datum ptrDatum;
+
+			Assert::IsFalse(ptrDatum.Remove(ptrData));
+
+			ptrDatum.PushBack(ptrData);
+			Assert::IsTrue(ptrDatum.Get<RTTI*>() == ptrData);
+
+			Assert::IsFalse(ptrDatum.Remove(ptrData2));
+			Assert::IsTrue(ptrDatum.Get<RTTI*>() == ptrData);
+
+			Assert::IsTrue(ptrDatum.Remove(ptrData));
+			Assert::IsTrue(ptrDatum.IsEmpty());
 		}
-
-
 
 	private:
 		static _CrtMemState sStartMemState;
