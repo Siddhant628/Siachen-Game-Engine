@@ -2,6 +2,7 @@
 #include "CppUnitTest.h"
 #include "Datum.h"
 #include "Scope.h"
+#include "Foo.h"
 
 #define GLM_FORCE_CXX98
 #include <glm/glm.hpp>
@@ -111,6 +112,8 @@ namespace UnitTestLibraryDesktop
 			scopeDatum.SetStorage(&scope1, 1);
 			Datum scopeDatum3(scopeDatum);
 			Assert::IsTrue(scopeDatum3 == scopeDatum);
+
+			
 		}
 		
 		TEST_METHOD(Datum_Assignment_Operator)
@@ -1457,6 +1460,127 @@ namespace UnitTestLibraryDesktop
 			Assert::IsTrue(matDatum.SetFromString(matString));
 			Assert::IsTrue(matData == matDatum.Get<glm::mat4x4>());
 		}
+
+		TEST_METHOD(Datum_Subscript_Operator_Scope)
+		{
+			Datum scopeDatum;
+
+			Scope scope, scope2;
+
+			scope["IntegerData"] = 10;
+			scope2["StringData"] = "Jawohl";
+
+			scopeDatum.PushBack(&scope);
+			scopeDatum.PushBack(&scope2);
+
+			Assert::IsTrue(scopeDatum[0] == scope);
+			Assert::IsTrue(scopeDatum[1] == scope2);
+		}
+
+		TEST_METHOD(Datum_Remove)
+		{
+
+			// Tests for integers
+			std::int32_t intData = 10, intData2 = 20;
+
+			Datum intDatum;
+
+			Assert::IsFalse(intDatum.Remove(intData));
+
+			intDatum.PushBack(intData);
+			Assert::AreEqual(intDatum.Get<std::int32_t>(), intData);
+
+			Assert::IsFalse(intDatum.Remove(intData2));
+			Assert::AreEqual(intDatum.Get<std::int32_t>(), intData);
+
+			Assert::IsTrue(intDatum.Remove(intData));
+			Assert::IsTrue(intDatum.IsEmpty());
+			
+			// Tests for floats
+			std::float_t floatData = 10.0f, floatData2 = 20.0f;
+
+			Datum floatDatum;
+
+			Assert::IsFalse(floatDatum.Remove(floatData));
+
+			floatDatum.PushBack(floatData);
+			Assert::AreEqual(floatDatum.Get<std::float_t>(), floatData);
+
+			Assert::IsFalse(floatDatum.Remove(floatData2));
+			Assert::AreEqual(floatDatum.Get<std::float_t>(), floatData);
+
+			Assert::IsTrue(floatDatum.Remove(floatData));
+			Assert::IsTrue(floatDatum.IsEmpty());
+
+			// Tests for strings
+			std::string stringData("str"), stringData2("str2");
+
+			Datum stringDatum;
+
+			Assert::IsFalse(stringDatum.Remove(stringData));
+
+			stringDatum.PushBack(stringData);
+			Assert::AreEqual(stringDatum.Get<std::string>(), stringData);
+
+			Assert::IsFalse(stringDatum.Remove(stringData2));
+			Assert::AreEqual(stringDatum.Get<std::string>(), stringData);
+
+			Assert::IsTrue(stringDatum.Remove(stringData));
+			Assert::IsTrue(stringDatum.IsEmpty());
+
+			// Tests for vectors
+			glm::vec4 vecData(1.0f), vecData2(2.0f);
+
+			Datum vecDatum;
+
+			Assert::IsFalse(vecDatum.Remove(vecData));
+
+			vecDatum.PushBack(vecData);
+			Assert::IsTrue(vecDatum.Get<glm::vec4>() == vecData);
+
+			Assert::IsFalse(vecDatum.Remove(vecData2));
+			Assert::IsTrue(vecDatum.Get<glm::vec4>() == vecData);
+
+			Assert::IsTrue(vecDatum.Remove(vecData));
+			Assert::IsTrue(vecDatum.IsEmpty());
+
+			// Tests for matrices
+			glm::mat4x4 matData, matData2(vecData, vecData, vecData, vecData);
+
+			Datum matDatum;
+
+			Assert::IsFalse(matDatum.Remove(matData));
+
+			matDatum.PushBack(matData);
+			Assert::IsTrue(matDatum.Get<glm::mat4x4>() == matData);
+
+			Assert::IsFalse(matDatum.Remove(matData2));
+			Assert::IsTrue(matDatum.Get<glm::mat4x4>() == matData);
+
+			Assert::IsTrue(matDatum.Remove(matData));
+			Assert::IsTrue(matDatum.IsEmpty());
+
+			// Tests for tables
+			Scope scope, scope2;
+
+			scope["IntegerData"] = 1;
+			scope2["StringData"] = "Butter Chicken";
+
+			Datum scopeDatum;
+
+			Assert::IsFalse(scopeDatum.Remove(&scope));
+
+			scopeDatum.PushBack(&scope);
+			Assert::IsTrue(scopeDatum.Get<Scope*>() == &scope);
+
+			Assert::IsFalse(scopeDatum.Remove(&scope2));
+			Assert::IsTrue(scopeDatum.Get<Scope*>() == &scope);
+
+			Assert::IsTrue(scopeDatum.Remove(&scope));
+			Assert::IsTrue(scopeDatum.IsEmpty());
+		}
+
+
 
 	private:
 		static _CrtMemState sStartMemState;

@@ -427,19 +427,47 @@ namespace SiachenGameEngine
 			*/
 			bool SetFromString(std::string& data, std::uint32_t index = 0);
 
-
+			/*
+			* Removes the passed data item from the datum if present.
+			* @param data The item to be removed from the datum.
+			* @return True if a successful remove operation occured.
+			*/
 			bool Remove(std::int32_t data);
-
+			/*
+			* Removes the passed data item from the datum if present.
+			* @param data The item to be removed from the datum.
+			* @return True if a successful remove operation occurred.
+			*/
 			bool Remove(std::float_t data);
-
+			/*
+			* Removes the passed data item from the datum if present.
+			* @param data The item to be removed from the datum.
+			* @return True if a successful remove operation occurred.
+			*/
 			bool Remove(std::string data);
-
+			/*
+			* Removes the passed data item from the datum if present.
+			* @param data The item to be removed from the datum.
+			* @return True if a successful remove operation occurred.
+			*/
 			bool Remove(glm::vec4 data);
-
+			/*
+			* Removes the passed data item from the datum if present.
+			* @param data The item to be removed from the datum.
+			* @return True if a successful remove operation occurred.
+			*/
 			bool Remove(glm::mat4x4 data);
-
+			/*
+			* Removes the passed data item from the datum if present.
+			* @param data The item to be removed from the datum.
+			* @return True if a successful remove operation occurred.
+			*/
 			bool Remove(GameplayFramework::RTTI* data);
-
+			/*
+			* Removes the passed data item from the datum if present.
+			* @param data The item to be removed from the datum.
+			* @return True if a successful remove operation occurred.
+			*/
 			bool Remove(GameplayFramework::Scope* data);
 		};
 	}
