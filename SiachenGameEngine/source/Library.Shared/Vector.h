@@ -235,7 +235,7 @@ namespace SiachenGameEngine
 				* @param endIt The iterator associated with item index till where items have to be removed (exclusive).
 				* @return True if the items were successfully removed.
 				*/
-				bool Remove(Iterator& beginIt, Iterator& endIt);
+				bool Remove(const Iterator& beginIt, const Iterator& endIt);
 		};
 	}
 }

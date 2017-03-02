@@ -248,8 +248,6 @@ namespace SiachenGameEngine
 		{
 			return !(operator==(rhs));
 		}
-
-
 	}
 }
 

@@ -224,7 +224,7 @@ namespace SiachenGameEngine
 		}
 
 		template<typename T>
-		bool Vector<T>::Remove(Iterator& beginIt, Iterator& endIt)
+		bool Vector<T>::Remove(const Iterator& beginIt, const Iterator& endIt)
 		{
 			if ((beginIt.mOwnerVector != endIt.mOwnerVector) || (beginIt.mOwnerVector != this))
 			{
@@ -333,7 +333,7 @@ namespace SiachenGameEngine
 		template<typename T>
 		bool Vector<T>::Iterator::operator!=(const Iterator& it) const
 		{
-			return ((mOwnerVector != it.mOwnerVector) || (mIndexOffset != it.mIndexOffset));
+			return !operator==(it);
 		}
 
 		template<typename T>
