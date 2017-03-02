@@ -582,8 +582,13 @@ namespace UnitTestLibraryDesktop
 			Assert::IsTrue(fooMap.ContainsKey(g));
 		}
 
-		TEST_METHOD(HashMap_Copy_Constructor)
+		TEST_METHOD(HashMap_Constructors)
 		{
+			// Default constructor
+			auto hashmapExpression = [] { HashMap<std::string, std::int32_t> someMap(0); };
+			Assert::ExpectException<std::runtime_error>(hashmapExpression);
+
+			// Copy constructor
 			std::int32_t data = 10, data2 = 20;
 			std::pair<std::int32_t, int32_t> p1(data, data2), p2(data2, data);
 

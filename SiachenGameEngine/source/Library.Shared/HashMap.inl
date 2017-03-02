@@ -227,7 +227,10 @@ namespace SiachenGameEngine
 		template<typename TKey, typename TData, typename HashFunctor, typename CompareFunctor>
 		HashMap<TKey, TData, HashFunctor, CompareFunctor>::HashMap(std::uint32_t numberOfBuckets) : mHashmapVector(numberOfBuckets), mSize(0)
 		{
-
+			if (numberOfBuckets == 0)
+			{
+				throw std::runtime_error("The Hashmap vector must have size greater than 0.");
+			}
 		}
 		
 		template<typename TKey, typename TData, typename HashFunctor, typename CompareFunctor>
@@ -408,16 +411,19 @@ namespace SiachenGameEngine
 		TData HashMap<TKey, TData, HashFunctor, CompareFunctor>::operator[](const TKey &key)
 		{
 			std::pair<TKey, TData> pair(key, TData());
-			HashMap::Iterator it = Find(key);
-			if (it == end())
-			{
-				Insert(pair);
-			}
-			else
-			{
-				pair = *it;
-			}
-			return pair.second;
+
+			HashMap::Iterator it = Insert(pair);
+			return (*it).second;
+			//HashMap::Iterator it = Find(key);
+			//if (it == end())
+			//{
+			//	Insert(pair);
+			//}
+			//else
+			//{
+			//	pair = *it;
+			//}
+			//return pair.second;
 		}
 
 		template<typename TKey, typename TData, typename HashFunctor, typename CompareFunctor>
