@@ -1,0 +1,22 @@
+#pragma once
+#include "Attributed.h"
+#include "RTTI.h"
+
+namespace SiachenGameEngine
+{
+	namespace HelperClasses
+	{
+		class AttributedFoo : public GameplayFramework::Attributed
+		{
+		RTTI_DECLARATIONS(AttributedFoo, Attributed)
+
+		private:
+			std::int32_t mInteger;
+		
+		public:
+			AttributedFoo();
+			void Populate() override;
+
+		};
+	}
+}

@@ -19,6 +19,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)HashMap.cpp">
       <Filter>Containers</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Attributed.cpp">
+      <Filter>Gameplay Framework</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)SList.h">
@@ -38,6 +41,9 @@
       <Filter>Gameplay Framework</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Scope.h">
+      <Filter>Gameplay Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Attributed.h">
       <Filter>Gameplay Framework</Filter>
     </ClInclude>
   </ItemGroup>

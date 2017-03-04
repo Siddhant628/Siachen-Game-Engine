@@ -179,11 +179,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AttributedFoo.h" />
     <ClInclude Include="Foo.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="ToStringTemplates.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AttributedFoo.cpp" />
+    <ClCompile Include="AttributedTest.cpp" />
     <ClCompile Include="DatumTest.cpp" />
     <ClCompile Include="Foo.cpp" />
     <ClCompile Include="HashMapTest.cpp" />

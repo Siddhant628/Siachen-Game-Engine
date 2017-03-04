@@ -6,6 +6,9 @@
     <ClInclude Include="Foo.h">
       <Filter>Helper Classes</Filter>
     </ClInclude>
+    <ClInclude Include="AttributedFoo.h">
+      <Filter>Helper Classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -28,6 +31,12 @@
       <Filter>Helper Classes</Filter>
     </ClCompile>
     <ClCompile Include="ScopeTest.cpp">
+      <Filter>Test Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="AttributedFoo.cpp">
+      <Filter>Helper Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="AttributedTest.cpp">
       <Filter>Test Classes</Filter>
     </ClCompile>
   </ItemGroup>

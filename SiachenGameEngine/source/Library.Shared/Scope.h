@@ -13,7 +13,7 @@ namespace SiachenGameEngine
 		/*
 		* A scope is a table that creates a dictionary of name-value pairs where Datum objects are the values. 
 		*/
-		class Scope final : public RTTI
+		class Scope : public RTTI
 		{
 			RTTI_DECLARATIONS(Scope, RTTI)
 			
@@ -59,7 +59,7 @@ namespace SiachenGameEngine
 			/*
 			* Destructor - Clears the dynamically allocated memory.
 			*/
-			~Scope();
+			virtual ~Scope();
 			/*
 			* Returns a reference to a datum present in the scope with the parameter as key. If it is not present, creates one and returns a reference to it.
 			* @param key The key which is associated with a name-datum pair in the scope.
