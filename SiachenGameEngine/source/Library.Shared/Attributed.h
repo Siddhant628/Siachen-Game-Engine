@@ -1,6 +1,9 @@
 #pragma once
+
 #include "Scope.h"
 #include "RTTI.h"
+#include "Vector.h"
+#include "HashMap.h"
 
 namespace SiachenGameEngine
 {
@@ -19,7 +22,11 @@ namespace SiachenGameEngine
 			*/
 			bool prescribedAttributesAssigned;
 
+			static Containers::HashMap<std::uint64_t, Containers::Vector<std::string>> prescribedAttributeCache;
+
 			void ValidatePrescribedAttribute(const std::string& attributeName);
+
+			void UpdatePrescribedAttributeCache(const std::uint64_t& attributedClassId, const std::string& attributeName);
 		public:
 			Attributed();
 

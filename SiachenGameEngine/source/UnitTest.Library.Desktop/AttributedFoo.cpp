@@ -16,7 +16,8 @@ namespace SiachenGameEngine
 
 		void AttributedFoo::Populate()
 		{
-			//Parent::Populate();
+			// TODO Confirm if I can populate here 
+			Parent::Populate();
 			AddExternalAttribute("mInteger", &mInteger, 1U, true);
 		}
 	}

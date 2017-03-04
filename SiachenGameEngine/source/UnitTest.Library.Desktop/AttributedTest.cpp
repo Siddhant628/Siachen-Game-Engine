@@ -37,6 +37,11 @@ namespace UnitTestLibraryDesktop
 			AttributedFoo foo;
 		}
 
+		TEST_METHOD(Attributed_Second)
+		{
+			AttributedFoo foo;
+		}
+
 	private:
 		static _CrtMemState sStartMemState;
 	};

@@ -12,9 +12,12 @@ namespace SiachenGameEngine
 	{
 		RTTI_DEFINITIONS(Attributed)
 
+		Containers::HashMap<std::uint64_t, Containers::Vector<std::string>> Attributed::prescribedAttributeCache;
+		
 		Attributed::Attributed() : prescribedAttributeCount(0), prescribedAttributesAssigned(false)
 		{
-			Populate();
+			// TODO Remove
+			//Populate();
 		}
 
 		void Attributed::ValidatePrescribedAttribute(const std::string& attributeName)
@@ -26,7 +29,25 @@ namespace SiachenGameEngine
 			if ((Find(attributeName) == nullptr))
 			{
 				++prescribedAttributeCount;
-				// TODO Add to vector for prescribed attributes
+				UpdatePrescribedAttributeCache(TypeIdInstance(), attributeName);
+			}
+		}
+
+		void Attributed::UpdatePrescribedAttributeCache(const std::uint64_t& attributedClassId, const std::string& attributeName)
+		{
+			HashMap<std::uint64_t, Containers::Vector<std::string>>::Iterator it = prescribedAttributeCache.Find(attributedClassId);
+			if (it != prescribedAttributeCache.end())
+			{
+				if ((*it).second.Find(attributeName) == (*it).second.end())
+				{
+					(*it).second.PushBack(attributeName);
+				}
+			}
+			else
+			{
+				Vector<std::string> cacheVector;
+				cacheVector.PushBack(attributeName);
+				prescribedAttributeCache.Insert(make_pair(TypeIdInstance(), cacheVector));
 			}
 		}
 
@@ -78,13 +99,13 @@ namespace SiachenGameEngine
 			return (Find(attributeName) != nullptr);
 		}
 
-		bool Attributed::IsPrescribedAttribute(const std::string & attributeName)
+		bool Attributed::IsPrescribedAttribute(const std::string& attributeName)
 		{
 			UNREFERENCED_PARAMETER(attributeName);
 			return false;
 		}
 
-		bool Attributed::IsAuxillaryAttribute(const std::string & attributeName)
+		bool Attributed::IsAuxillaryAttribute(const std::string& attributeName)
 		{
 			if (IsAttribute(attributeName) && !IsPrescribedAttribute(attributeName))
 			{
@@ -94,6 +115,15 @@ namespace SiachenGameEngine
 			{
 				return false;
 			}
+		}
+
+		Containers::Datum& Attributed::AppendAuxillaryAttribute(const std::string& attributeName)
+		{
+			if (IsPrescribedAttribute(attributeName))
+			{
+				throw std::runtime_error("An prescribed attribute with the same name is already present in the scope.");
+			}
+			return Append(attributeName);
 		}
 
 	}
