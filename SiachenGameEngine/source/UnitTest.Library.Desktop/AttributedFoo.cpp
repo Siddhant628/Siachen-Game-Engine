@@ -16,8 +16,7 @@ namespace SiachenGameEngine
 
 		void AttributedFoo::Populate()
 		{
-			Parent::Populate();
-			AddInternalAttribute("this", static_cast<RTTI*>(this), true);
+			//Parent::Populate();
 			AddExternalAttribute("mInteger", &mInteger, 1U, true);
 		}
 	}

@@ -18,6 +18,8 @@ namespace SiachenGameEngine
 			* A bool used to ensure that prescribed attributed aren't modified after being assigned.
 			*/
 			bool prescribedAttributesAssigned;
+
+			void ValidatePrescribedAttribute(const std::string& attributeName);
 		public:
 			Attributed();
 
@@ -42,6 +44,16 @@ namespace SiachenGameEngine
 			void AddInternalAttribute(const std::string& attributeName, const RTTI* attributeValue, bool isPrescribedAttribute = false);
 
 			void SetPrescribedAttributesAssigned();
+
+			std::uint32_t AuxillaryBegin();
+
+			bool IsAttribute(const std::string& attributeName);
+			// TODO Implement logic
+			bool IsPrescribedAttribute(const std::string& attributeName);
+
+			bool IsAuxillaryAttribute(const std::string& attributeName);
+
+			Containers::Datum& AppendAuxillaryAttribute(const std::string& attributeName);
 		};
 	}
 }
