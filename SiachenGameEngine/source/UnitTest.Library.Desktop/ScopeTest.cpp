@@ -335,6 +335,24 @@ namespace UnitTestLibraryDesktop
 			Assert::IsTrue(scope == scope2);
 		}
 
+		TEST_METHOD(Scope_GetKeys)
+		{
+			Scope scope;
+			Vector<std::string> scopeKeys;
+
+			scope.GetKeys(scopeKeys);
+			Assert::IsTrue(scopeKeys.IsEmpty());
+
+			scope["first"] = 1;
+			scope.GetKeys(scopeKeys);
+			Assert::IsFalse(scopeKeys.IsEmpty());
+			Assert::AreEqual(1U, scopeKeys.Size());
+
+			scope["second"] = 2;
+			scope.GetKeys(scopeKeys);
+			Assert::AreEqual(2U, scopeKeys.Size());
+		}
+
 	private:
 		static _CrtMemState sStartMemState;
 	};

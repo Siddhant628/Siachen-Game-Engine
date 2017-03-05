@@ -248,6 +248,19 @@ namespace SiachenGameEngine
 		{
 			return !(operator==(rhs));
 		}
+		
+		void Scope::GetKeys(Vector<std::string>& keysVector)
+		{
+			keysVector.Clear();
+
+			TableType::Iterator it = mTableHashmap.begin();
+			TableType::Iterator itEnd = mTableHashmap.end();
+			
+			for (; it != itEnd; ++it)
+			{
+				keysVector.PushBack((*it).first);
+			}
+		}
 	}
 }
 

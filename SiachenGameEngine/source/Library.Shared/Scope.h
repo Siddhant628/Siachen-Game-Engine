@@ -18,6 +18,7 @@ namespace SiachenGameEngine
 			RTTI_DECLARATIONS(Scope, RTTI)
 			
 		private:
+
 			typedef std::pair<std::string, Containers::Datum> StringDatumPair;
 			typedef Containers::HashMap<std::string, Containers::Datum> TableType;
 			typedef Containers::Vector<StringDatumPair*> VectorType;
@@ -146,6 +147,11 @@ namespace SiachenGameEngine
 			* @return True if the two scopes are not equal.
 			*/
 			bool operator!=(const Scope& rhs) const;
+			/**
+			* Get the keys present inside the current scope (excluding children scope).
+			* @param keysVector An output parameter which will be a vector of strings (keys).
+			*/
+			void GetKeys(Containers::Vector<std::string>& keysVector);
 		};
 	}
 }
