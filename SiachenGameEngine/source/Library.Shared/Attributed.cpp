@@ -11,73 +11,76 @@ namespace SiachenGameEngine
 	{
 		RTTI_DEFINITIONS(Attributed)
 
-		Containers::HashMap<std::uint64_t, Containers::Vector<std::string>> Attributed::prescribedAttributeCache;
-		
-		Attributed::Attributed() : prescribedAttributeCount(0), prescribedAttributesAssigned(false)
+		Containers::HashMap<std::uint64_t, Containers::Vector<std::string>> Attributed::sPrescribedAttributeCache;
+
+		Attributed::Attributed() : mPrescribedAttributeCount(0)//, prescribedAttributesAssigned(false)
 		{
-			// TODO Remove
 			Populate();
 		}
 
-		void Attributed::ValidatePrescribedAttribute(const std::string& attributeName)
-		{
-			if (prescribedAttributesAssigned)
-			{
-				throw std::runtime_error("Cannot insert new prescribed attributes.");
-			}
-			if ((Find(attributeName) == nullptr))
-			{
-				++prescribedAttributeCount;
-				UpdatePrescribedAttributeCache(TypeIdInstance(), attributeName);
-			}
-		}
+		//void Attributed::ValidatePrescribedAttribute(const std::string& attributeName)
+		//{
+		//	//if (prescribedAttributesAssigned)
+		//	//{
+		//	//	throw std::runtime_error("Cannot insert new prescribed attributes.");
+		//	//}
+		//	if ((Find(attributeName) == nullptr))
+		//	{
+		//		++mPrescribedAttributeCount;
+		//		UpdatePrescribedAttributeCache(TypeIdInstance(), attributeName);
+		//	}
+		//}
 
-		void Attributed::UpdatePrescribedAttributeCache(const std::uint64_t& attributedClassId, const std::string& attributeName)
-		{
-			HashMap<std::uint64_t, Containers::Vector<std::string>>::Iterator it = prescribedAttributeCache.Find(attributedClassId);
-			if (it != prescribedAttributeCache.end())
-			{
-				if ((*it).second.Find(attributeName) == (*it).second.end())
-				{
-					(*it).second.PushBack(attributeName);
-				}
-			}
-			else
-			{
-				Vector<std::string> cacheVector;
-				cacheVector.PushBack(attributeName);
-				std::pair<std::uint64_t, Containers::Vector<std::string>> pair(TypeIdInstance(), cacheVector);
-				prescribedAttributeCache.Insert(pair);
-			}
-		}
-
-		void Attributed::ClearCacheHashmap()
-		{
-			prescribedAttributeCache.Clear();
-		}
+		//void Attributed::UpdatePrescribedAttributeCache(const std::uint64_t& attributedClassId, const std::string& attributeName)
+		//{
+		//	CacheHashmapType::Iterator it = sPrescribedAttributeCache.Find(attributedClassId);
+		//	if (it != sPrescribedAttributeCache.end())
+		//	{
+		//		if ((*it).second.Find(attributeName) == (*it).second.end())
+		//		{
+		//			(*it).second.PushBack(attributeName);
+		//		}
+		//	}
+		//	else
+		//	{
+		//		Vector<std::string> cacheVector;
+		//		cacheVector.PushBack(attributeName);
+		//		std::pair<std::uint64_t, Containers::Vector<std::string>> pair(TypeIdInstance(), cacheVector);
+		//		sPrescribedAttributeCache.Insert(pair);
+		//	}
+		//}
 
 		void Attributed::Populate()
 		{
-			AddInternalAttribute("this", static_cast<RTTI*>(this), true);
+			//AddInternalAttribute("this", static_cast<RTTI*>(this), true);
+			AddInternalAttribute("this", static_cast<RTTI*>(this));
+			UpdatePrescribedAttributeCache();
 		}
 
-		void Attributed::AddExternalAttribute(const std::string& attributeName, const std::int32_t* externalAttribute, std::uint32_t numberOfValues, bool isPrescribedAttribute)
+		void Attributed::AddExternalAttribute(const std::string& attributeName, const std::int32_t* externalAttribute, std::uint32_t numberOfValues/*, bool isPrescribedAttribute*/)
 		{
-			if (isPrescribedAttribute)
-			{
-				ValidatePrescribedAttribute(attributeName);
-			}
+			//if (isPrescribedAttribute)
+			//{
+			//	ValidatePrescribedAttribute(attributeName);
+			//}
 			Datum& datum = Append(attributeName);
 			datum.SetType(DatumType::IntegerType);
 			datum.SetStorage(const_cast<std::int32_t*>(externalAttribute), numberOfValues);
 		}
 
-		void Attributed::AddInternalAttribute(const std::string& attributeName, const RTTI* attributeValue, bool isPrescribedAttribute)
+		void Attributed::AddExternalAttribute(const std::string& attributeName, const std::float_t* externalAttribute, std::uint32_t numberOfValues/*, bool isPrescribedAttribute*/)
 		{
-			if (isPrescribedAttribute)
-			{
-				ValidatePrescribedAttribute(attributeName);
-			}
+			Datum& datum = Append(attributeName);
+			datum.SetType(DatumType::FloatType);
+			datum.SetStorage(const_cast<std::float_t*>(externalAttribute), numberOfValues);
+		}
+
+		void Attributed::AddInternalAttribute(const std::string& attributeName, const RTTI* attributeValue/*, bool isPrescribedAttribute*/)
+		{
+			//if (isPrescribedAttribute)
+			//{
+			//	ValidatePrescribedAttribute(attributeName);
+			//}
 			Datum& datum = Append(attributeName);
 			if (datum.IsEmpty())
 			{
@@ -89,28 +92,31 @@ namespace SiachenGameEngine
 			}
 		}
 
-		void Attributed::SetPrescribedAttributesAssigned()
-		{
-			prescribedAttributesAssigned = true;
-		}
+		//void Attributed::SetPrescribedAttributesAssigned()
+		//{
+		//	prescribedAttributesAssigned = true;
+		//}
 
-		std::uint32_t Attributed::AuxillaryBegin()
-		{
-			return prescribedAttributeCount;
-		}
-
-		bool Attributed::IsAttribute(const std::string& attributeName)
+		bool Attributed::IsAttribute(const std::string& attributeName) const
 		{
 			return (Find(attributeName) != nullptr);
 		}
 
-		bool Attributed::IsPrescribedAttribute(const std::string& attributeName)
+		bool Attributed::IsPrescribedAttribute(const std::string& attributeName) const
 		{
-			UNREFERENCED_PARAMETER(attributeName);
+			CacheHashmapType::Iterator it = sPrescribedAttributeCache.Find(TypeIdInstance());
+
+			//if (it != sPrescribedAttributeCache.end())
+			//{
+			if ((*it).second.Find(attributeName) != (*it).second.end())
+			{
+				return true;
+			}
+			//}
 			return false;
 		}
 
-		bool Attributed::IsAuxillaryAttribute(const std::string& attributeName)
+		bool Attributed::IsAuxillaryAttribute(const std::string& attributeName) const
 		{
 			if (IsAttribute(attributeName) && !IsPrescribedAttribute(attributeName))
 			{
@@ -128,8 +134,65 @@ namespace SiachenGameEngine
 			{
 				throw std::runtime_error("An prescribed attribute with the same name is already present in the scope.");
 			}
-			return Append(attributeName);
+			Datum& datum = Append(attributeName);
+			return datum;
 		}
-}
 
+		std::uint32_t Attributed::AuxillaryBegin() const
+		{
+			return mPrescribedAttributeCount;
+		}
+
+		void Attributed::ClearCacheHashmap()
+		{
+			sPrescribedAttributeCache.Clear();
+		}
+
+		void Attributed::UpdatePrescribedAttributeCache()
+		{
+			//// Set prescribed attribute count since prescribed attributes have been inserted
+			//mPrescribedAttributeCount = mTableHashmap.Size();
+			//// Insert classID, Vector pair into static hashmap if required
+			//CacheHashmapType::Iterator itCache = sPrescribedAttributeCache.Find(TypeIdInstance());
+			//if (itCache == sPrescribedAttributeCache.end())
+			//{
+			//	std::pair<std::uint64_t, Containers::Vector<std::string>> pair(TypeIdInstance(), Vector<std::string>());
+			//	sPrescribedAttributeCache.Insert(pair);
+			//	itCache = sPrescribedAttributeCache.Find(TypeIdInstance());
+			//}
+			//// Fill the prescribed attributes vector if it is empty
+			//TableType::Iterator itTable = mTableHashmap.begin();
+			//for (; itTable != mTableHashmap.end(); ++itTable)
+			//{
+			//	std::string attributeName = (*itTable).first;
+			//	if ((*itCache).second.Find(attributeName) == (*itCache).second.end())
+			//	{
+			//		(*itCache).second.PushBack(attributeName);
+			//	}
+			//}
+
+			Vector<std::string> attributeList;
+			GetKeys(attributeList);
+			// Set prescribed attribute count since prescribed attributes have been inserted
+			mPrescribedAttributeCount = attributeList.Size();
+			// Insert classID, Vector pair into static hashmap if required
+			CacheHashmapType::Iterator itCache = sPrescribedAttributeCache.Find(TypeIdInstance());
+			if (itCache == sPrescribedAttributeCache.end())
+			{
+				std::pair<std::uint64_t, Containers::Vector<std::string>> pair(TypeIdInstance(), Vector<std::string>());
+				sPrescribedAttributeCache.Insert(pair);
+				itCache = sPrescribedAttributeCache.Find(TypeIdInstance());
+			}
+			// Fill the prescribed attributes vector if it is empty
+			for (std::uint32_t i = 0; i < mPrescribedAttributeCount; ++i)
+			{
+				std::string attributeName = attributeList.At(i);
+				if ((*itCache).second.Find(attributeName) == (*itCache).second.end())
+				{
+					(*itCache).second.PushBack(attributeName);
+				}
+			}
+		}
 	}
+
+}

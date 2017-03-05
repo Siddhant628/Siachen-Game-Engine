@@ -3,6 +3,7 @@
 
 #include "Attributed.h"
 #include "AttributedFoo.h"
+#include "AttributedBar.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -35,14 +36,17 @@ namespace UnitTestLibraryDesktop
 		TEST_METHOD(Attributed_First)
 		{
 			AttributedFoo foo;
-			//Attributed::ClearCacheHashmap();
+			AttributedBar bar;
+			Attributed::ClearCacheHashmap();
 		}
 
 		TEST_METHOD(Attributed_Second)
 		{
 			AttributedFoo foo;
 			AttributedFoo foo2;
-			//Attributed::ClearCacheHashmap();
+			AttributedBar bar;
+			AttributedBar bar2;
+			Attributed::ClearCacheHashmap();
 		}
 
 	private:

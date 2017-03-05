@@ -11,14 +11,15 @@ namespace SiachenGameEngine
 		AttributedFoo::AttributedFoo()
 		{
 			Populate();
-			SetPrescribedAttributesAssigned();
+			//SetPrescribedAttributesAssigned();
 		}
 
 		void AttributedFoo::Populate()
 		{
-			// TODO Confirm if I can populate here 
-			Parent::Populate();
-			AddExternalAttribute("mInteger", &mInteger, 1U, true);
+			//Parent::Populate();
+			//AddExternalAttribute("mInteger", &mInteger, 1U, true);
+			AddExternalAttribute("mInteger", &mInteger, 1U);
+			UpdatePrescribedAttributeCache();
 		}
 	}
 }

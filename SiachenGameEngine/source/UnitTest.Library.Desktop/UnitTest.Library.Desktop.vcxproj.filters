@@ -9,6 +9,9 @@
     <ClInclude Include="AttributedFoo.h">
       <Filter>Helper Classes</Filter>
     </ClInclude>
+    <ClInclude Include="AttributedBar.h">
+      <Filter>Helper Classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -38,6 +41,9 @@
     </ClCompile>
     <ClCompile Include="AttributedTest.cpp">
       <Filter>Test Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="AttributedBar.cpp">
+      <Filter>Helper Classes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
