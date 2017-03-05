@@ -2,7 +2,6 @@
 #include "Attributed.h"
 
 #include "Datum.h"
-#include "RTTI.h"
 
 using namespace SiachenGameEngine::Containers;
 
@@ -17,7 +16,7 @@ namespace SiachenGameEngine
 		Attributed::Attributed() : prescribedAttributeCount(0), prescribedAttributesAssigned(false)
 		{
 			// TODO Remove
-			//Populate();
+			Populate();
 		}
 
 		void Attributed::ValidatePrescribedAttribute(const std::string& attributeName)
@@ -47,8 +46,14 @@ namespace SiachenGameEngine
 			{
 				Vector<std::string> cacheVector;
 				cacheVector.PushBack(attributeName);
-				prescribedAttributeCache.Insert(make_pair(TypeIdInstance(), cacheVector));
+				std::pair<std::uint64_t, Containers::Vector<std::string>> pair(TypeIdInstance(), cacheVector);
+				prescribedAttributeCache.Insert(pair);
 			}
+		}
+
+		void Attributed::ClearCacheHashmap()
+		{
+			prescribedAttributeCache.Clear();
 		}
 
 		void Attributed::Populate()
@@ -125,6 +130,6 @@ namespace SiachenGameEngine
 			}
 			return Append(attributeName);
 		}
+}
 
 	}
-}

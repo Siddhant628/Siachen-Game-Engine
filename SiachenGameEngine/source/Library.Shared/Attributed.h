@@ -31,6 +31,8 @@ namespace SiachenGameEngine
 			Attributed();
 
 			virtual ~Attributed() = default;
+
+			static void ClearCacheHashmap();
 		protected:
 			virtual void Populate();
 

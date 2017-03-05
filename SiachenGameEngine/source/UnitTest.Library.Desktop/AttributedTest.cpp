@@ -35,11 +35,14 @@ namespace UnitTestLibraryDesktop
 		TEST_METHOD(Attributed_First)
 		{
 			AttributedFoo foo;
+			//Attributed::ClearCacheHashmap();
 		}
 
 		TEST_METHOD(Attributed_Second)
 		{
 			AttributedFoo foo;
+			AttributedFoo foo2;
+			//Attributed::ClearCacheHashmap();
 		}
 
 	private:
