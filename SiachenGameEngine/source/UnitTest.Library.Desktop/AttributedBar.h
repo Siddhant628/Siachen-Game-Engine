@@ -14,10 +14,11 @@ namespace SiachenGameEngine
 			RTTI_DECLARATIONS(AttributedBar, AttributedFoo)
 
 		private:
-			/**
-			* A float value.
-			*/
 			std::float_t mFloat;
+			std::string mString;
+			glm::vec4 mVec4;
+			glm::mat4x4 mMat4x4;
+			GameplayFramework::RTTI* mRTTI;
 
 		public:
 			/**
@@ -27,21 +28,31 @@ namespace SiachenGameEngine
 			/**
 			* Destructor clears and frees all the memory reserved by the vector.
 			*/
-			~AttributedBar() = default;
+			~AttributedBar();
 			/**
 			* Populate the AttributedBar with prescribed attributes of this class.
 			*/
 			void Populate() override;
-			/**
-			* Get the value of mFloat.
-			* @return The value of mFloat.
-			*/
-			std::float_t GetFloat();
-			/**
-			* Set the value of mFloat.
-			* @param value The value to set for mFloat.
-			*/
+
+			std::float_t GetFloat() const;
+
+			const std::string GetString() const;
+
+			glm::vec4 GetVector() const;
+
+			glm::mat4x4 GetMatrix() const;
+
+			std::int32_t GetRTTIFoo() const;
+
 			void SetFloat(std::float_t value);
+
+			void SetString(const std::string& str);
+
+			void SetVector(glm::vec4& vector);
+
+			void SetMatrix(glm::mat4x4& matrix);
+
+			void SetRTTIFoo(std::int32_t value);
 
 		};
 	}

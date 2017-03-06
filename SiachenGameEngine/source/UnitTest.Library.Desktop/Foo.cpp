@@ -42,6 +42,11 @@ namespace SiachenGameEngine
 			return *mIntegerPointer;
 		}
 
+		void Foo::SetValue(std::int32_t value)
+		{
+			*mIntegerPointer = value;
+		}
+
 		bool Foo::Equals(const RTTI * rhs) const
 		{
 			Foo* rhsFoo = rhs->As<Foo>();

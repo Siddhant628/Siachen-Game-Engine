@@ -52,53 +52,46 @@ namespace SiachenGameEngine
 		}
 
 
-		void Attributed::AddExternalAttribute(const std::string& attributeName, const std::int32_t* externalAttribute, std::uint32_t numberOfValues)
+		void Attributed::AddExternalAttribute(const std::string& attributeName, std::int32_t* const externalAttribute, std::uint32_t numberOfValues)
 		{
 			Datum& datum = Append(attributeName);
 			datum.SetType(DatumType::IntegerType);
-			datum.SetStorage(const_cast<std::int32_t*>(externalAttribute), numberOfValues);
+			datum.SetStorage(externalAttribute, numberOfValues);
 		}
 
-		void Attributed::AddExternalAttribute(const std::string& attributeName, const std::float_t* externalAttribute, std::uint32_t numberOfValues)
+		void Attributed::AddExternalAttribute(const std::string& attributeName, std::float_t* const externalAttribute, std::uint32_t numberOfValues)
 		{
 			Datum& datum = Append(attributeName);
 			datum.SetType(DatumType::FloatType);
-			datum.SetStorage(const_cast<std::float_t*>(externalAttribute), numberOfValues);
+			datum.SetStorage(externalAttribute, numberOfValues);
 		}
 
-		void Attributed::AddExternalAttribute(const std::string& attributeName, const std::string* externalAttribute, std::uint32_t numberOfValues)
+		void Attributed::AddExternalAttribute(const std::string& attributeName, std::string* const externalAttribute, std::uint32_t numberOfValues)
 		{
 			Datum& datum = Append(attributeName);
 			datum.SetType(DatumType::StringType);
-			datum.SetStorage(const_cast<std::string*>(externalAttribute), numberOfValues);
+			datum.SetStorage(externalAttribute, numberOfValues);
 		}
 
-		void Attributed::AddExternalAttribute(const std::string& attributeName, const glm::vec4* externalAttribute, std::uint32_t numberOfValues)
+		void Attributed::AddExternalAttribute(const std::string& attributeName, glm::vec4* const externalAttribute, std::uint32_t numberOfValues)
 		{
 			Datum& datum = Append(attributeName);
 			datum.SetType(DatumType::VectorType);
-			datum.SetStorage(const_cast<glm::vec4*>(externalAttribute), numberOfValues);
+			datum.SetStorage(externalAttribute, numberOfValues);
 		}
 
-		void Attributed::AddExternalAttribute(const std::string& attributeName, const glm::mat4x4* externalAttribute, std::uint32_t numberOfValues)
+		void Attributed::AddExternalAttribute(const std::string& attributeName, glm::mat4x4* const externalAttribute, std::uint32_t numberOfValues)
 		{
 			Datum& datum = Append(attributeName);
 			datum.SetType(DatumType::MatrixType);
-			datum.SetStorage(const_cast<glm::mat4x4*>(externalAttribute), numberOfValues);
+			datum.SetStorage(externalAttribute, numberOfValues);
 		}
 
-		void Attributed::AddExternalAttribute(const std::string& attributeName, const Scope** externalAttribute, std::uint32_t numberOfValues)
-		{
-			Datum& datum = Append(attributeName);
-			datum.SetType(DatumType::TableType);
-			datum.SetStorage(const_cast<Scope**>(externalAttribute), numberOfValues);
-		}
-
-		void Attributed::AddExternalAttribute(const std::string& attributeName, const RTTI** externalAttribute, std::uint32_t numberOfValues)
+		void Attributed::AddExternalAttribute(const std::string& attributeName, RTTI** const externalAttribute, std::uint32_t numberOfValues)
 		{
 			Datum& datum = Append(attributeName);
 			datum.SetType(DatumType::PointerType);
-			datum.SetStorage(const_cast<RTTI**>(externalAttribute), numberOfValues);
+			datum.SetStorage(externalAttribute, numberOfValues);
 		}
 
 
@@ -167,7 +160,7 @@ namespace SiachenGameEngine
 			}
 		}
 
-		void Attributed::AddInternalAttribute(const std::string& attributeName, const Scope* attributeValue)
+		void Attributed::AddInternalAttribute(const std::string& attributeName, Scope* const attributeValue)
 		{
 			Datum& datum = Append(attributeName);
 			if (datum.IsEmpty())
@@ -180,7 +173,7 @@ namespace SiachenGameEngine
 			}
 		}
 
-		void Attributed::AddInternalAttribute(const std::string& attributeName, const RTTI* attributeValue)
+		void Attributed::AddInternalAttribute(const std::string& attributeName, RTTI* const attributeValue)
 		{
 			Datum& datum = Append(attributeName);
 			if (datum.IsEmpty())

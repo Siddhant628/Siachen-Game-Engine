@@ -35,7 +35,7 @@ namespace SiachenGameEngine
 			* Get the value of mInteger.
 			* @return The value of mInteger.
 			*/
-			std::int32_t GetInteger();
+			std::int32_t GetInteger() const;
 			/**
 			* Set the value of mInteger.
 			* @param value The value to set for mInteger.

@@ -40,49 +40,42 @@ namespace SiachenGameEngine
 			* @param externalAttribute A pointer to the value of the external attribute which has to be added to this scope.
 			* @param numberOfValues The number of items in the external attribute.
 			*/
-			void AddExternalAttribute(const std::string& attributeName, const std::int32_t* externalAttribute, std::uint32_t numberOfValues);
+			void AddExternalAttribute(const std::string& attributeName, std::int32_t* const externalAttribute, std::uint32_t numberOfValues);
 			/**
 			* Add an external attribute to the scope associated with this attributed class object.
 			* @param attributeName The name of the attribute which has to be appended to the scope.
 			* @param externalAttribute A pointer to the value of the external attribute which has to be added to this scope.
 			* @param numberOfValues The number of items in the external attribute.
 			*/
-			void AddExternalAttribute(const std::string& attributeName, const std::float_t* externalAttribute, std::uint32_t numberOfValues);
+			void AddExternalAttribute(const std::string& attributeName, std::float_t* const externalAttribute, std::uint32_t numberOfValues);
 			/**
 			* Add an external attribute to the scope associated with this attributed class object.
 			* @param attributeName The name of the attribute which has to be appended to the scope.
 			* @param externalAttribute A pointer to the value of the external attribute which has to be added to this scope.
 			* @param numberOfValues The number of items in the external attribute.
 			*/
-			void AddExternalAttribute(const std::string& attributeName, const std::string* externalAttribute, std::uint32_t numberOfValues);
+			void AddExternalAttribute(const std::string& attributeName, std::string* const externalAttribute, std::uint32_t numberOfValues);
 			/**
 			* Add an external attribute to the scope associated with this attributed class object.
 			* @param attributeName The name of the attribute which has to be appended to the scope.
 			* @param externalAttribute A pointer to the value of the external attribute which has to be added to this scope.
 			* @param numberOfValues The number of items in the external attribute.
 			*/
-			void AddExternalAttribute(const std::string& attributeName, const glm::vec4* externalAttribute, std::uint32_t numberOfValues);
+			void AddExternalAttribute(const std::string& attributeName, glm::vec4* const externalAttribute, std::uint32_t numberOfValues);
 			/**
 			* Add an external attribute to the scope associated with this attributed class object.
 			* @param attributeName The name of the attribute which has to be appended to the scope.
 			* @param externalAttribute A pointer to the value of the external attribute which has to be added to this scope.
 			* @param numberOfValues The number of items in the external attribute.
 			*/
-			void AddExternalAttribute(const std::string& attributeName, const glm::mat4x4* externalAttribute, std::uint32_t numberOfValues);
+			void AddExternalAttribute(const std::string& attributeName, glm::mat4x4* const externalAttribute, std::uint32_t numberOfValues);
 			/**
 			* Add an external attribute to the scope associated with this attributed class object.
 			* @param attributeName The name of the attribute which has to be appended to the scope.
 			* @param externalAttribute A pointer to the value of the external attribute which has to be added to this scope.
 			* @param numberOfValues The number of items in the external attribute.
 			*/
-			void AddExternalAttribute(const std::string& attributeName, const Scope** externalAttribute, std::uint32_t numberOfValues);
-			/**
-			* Add an external attribute to the scope associated with this attributed class object.
-			* @param attributeName The name of the attribute which has to be appended to the scope.
-			* @param externalAttribute A pointer to the value of the external attribute which has to be added to this scope.
-			* @param numberOfValues The number of items in the external attribute.
-			*/
-			void AddExternalAttribute(const std::string& attributeName, const RTTI** externalAttribute, std::uint32_t numberOfValues);
+			void AddExternalAttribute(const std::string& attributeName, RTTI** const externalAttribute, std::uint32_t numberOfValues);
 
 			/**
 			* Add an internal attribute to the scope associated with this attributed class object.
@@ -119,13 +112,13 @@ namespace SiachenGameEngine
 			* @param attributeName The name of the attribute which has to be appended to the scope.
 			* @param attributeValue The value of the attribute which has to be added to the scope.
 			*/
-			void AddInternalAttribute(const std::string& attributeName, const Scope* attributeValue);
+			void AddInternalAttribute(const std::string& attributeName, Scope* const attributeValue);
 			/**
 			* Add an internal attribute to the scope associated with this attributed class object.
 			* @param attributeName The name of the attribute which has to be appended to the scope.
 			* @param attributeValue The value of the attribute which has to be added to the scope.
 			*/
-			void AddInternalAttribute(const std::string& attributeName, const RTTI* attributeValue);
+			void AddInternalAttribute(const std::string& attributeName, RTTI* const attributeValue);
 
 			/**
 			* Updates the prescribed attribute count and static hashmap with the attributes present in the scope at the instance it is called. This method should be called as soon as the scope is populated with prescribed attributes.

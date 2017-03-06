@@ -1,8 +1,12 @@
 #include "pch.h"
 
+#include "Attributed.h"
 #include "AttributedBar.h"
 #include "AttributedFoo.h"
 #include "RTTI.h"
+#include "Foo.h"
+
+using namespace SiachenGameEngine::GameplayFramework;
 
 namespace SiachenGameEngine
 {
@@ -12,23 +16,75 @@ namespace SiachenGameEngine
 
 		AttributedBar::AttributedBar()
 		{
+			mRTTI = new Foo();
 			Populate();
 			UpdatePrescribedAttributeInfo();
+		}
+
+		AttributedBar::~AttributedBar()
+		{
+			delete mRTTI;
 		}
 
 		void AttributedBar::Populate()
 		{
 			AddExternalAttribute("mFloat", &mFloat, 1U);
+			AddExternalAttribute("mString", &mString, 1U);
+			AddExternalAttribute("mVec4", &mVec4, 1U);
+			AddExternalAttribute("mMat4x4", &mMat4x4, 1U);
+			AddExternalAttribute("mRTTI", &mRTTI, 1U);
 		}
 
-		std::float_t AttributedBar::GetFloat()
+		std::float_t AttributedBar::GetFloat() const
 		{
 			return mFloat;
+		}
+
+		const std::string AttributedBar::GetString() const
+		{
+			return mString;
+		}
+
+		glm::vec4 AttributedBar::GetVector() const
+		{
+			return mVec4;
+		}
+
+		glm::mat4x4 AttributedBar::GetMatrix() const
+		{
+			return mMat4x4;
+		}
+
+		std::int32_t AttributedBar::GetRTTIFoo() const
+		{
+			Foo* pFoo = mRTTI->As<Foo>();
+			return pFoo->GetValue();
 		}
 
 		void AttributedBar::SetFloat(std::float_t value)
 		{
 			mFloat = value;
+		}
+
+		void AttributedBar::SetString(const std::string& str)
+		{
+			mString = str;
+		}
+
+		void AttributedBar::SetVector(glm::vec4& vec)
+		{
+			mVec4 = vec;
+		}
+
+		void AttributedBar::SetMatrix(glm::mat4x4& matrix)
+		{
+			mMat4x4 = matrix;
+		}
+
+		void AttributedBar::SetRTTIFoo(std::int32_t value)
+		{
+			Foo* pFoo = mRTTI->As<Foo>();
+			pFoo->SetValue(value);
 		}
 	}
 }

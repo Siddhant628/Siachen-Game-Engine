@@ -27,6 +27,8 @@ namespace SiachenGameEngine
 			// Get the integer value stored at mIntegerPointer
 			int32_t GetValue() const;
 
+			void SetValue(std::int32_t value);
+
 			virtual bool Equals(const RTTI* rhs) const override;
 
 			virtual std::string ToString() const override;

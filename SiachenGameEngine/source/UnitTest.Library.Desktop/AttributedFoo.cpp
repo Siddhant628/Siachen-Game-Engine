@@ -20,7 +20,7 @@ namespace SiachenGameEngine
 			AddExternalAttribute("mInteger", &mInteger, 1U);
 		}
 
-		std::int32_t AttributedFoo::GetInteger()
+		std::int32_t AttributedFoo::GetInteger() const
 		{
 			return mInteger;
 		}
