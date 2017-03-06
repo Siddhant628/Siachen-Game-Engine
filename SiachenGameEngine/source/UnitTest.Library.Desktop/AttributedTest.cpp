@@ -55,11 +55,11 @@ namespace UnitTestLibraryDesktop
 			Assert::IsTrue(bar.IsPrescribedAttribute("mFloat"));
 			Assert::IsFalse(bar.IsPrescribedAttribute("mSomething"));
 
-			foo.AppendAuxillaryAttribute("AuxillaryFoo");
-			bar.AppendAuxillaryAttribute("AuxillaryBar");
+			foo.AppendAuxiliaryAttribute("AuxiliaryFoo");
+			bar.AppendAuxiliaryAttribute("AuxiliaryBar");
 
-			Assert::IsFalse(foo.IsPrescribedAttribute("AuxillaryFoo"));
-			Assert::IsFalse(bar.IsPrescribedAttribute("AuxillaryBar"));
+			Assert::IsFalse(foo.IsPrescribedAttribute("AuxiliaryFoo"));
+			Assert::IsFalse(bar.IsPrescribedAttribute("AuxiliaryBar"));
 		}
 
 		TEST_METHOD(Attributed_IsAttribute)
@@ -76,70 +76,70 @@ namespace UnitTestLibraryDesktop
 			Assert::IsTrue(bar.IsAttribute("mFloat"));
 			Assert::IsFalse(bar.IsAttribute("mSomething"));
 
-			foo.AppendAuxillaryAttribute("AuxillaryFoo");
-			bar.AppendAuxillaryAttribute("AuxillaryBar");
+			foo.AppendAuxiliaryAttribute("AuxiliaryFoo");
+			bar.AppendAuxiliaryAttribute("AuxiliaryBar");
 
-			Assert::IsTrue(foo.IsAttribute("AuxillaryFoo"));
-			Assert::IsTrue(bar.IsAttribute("AuxillaryBar"));
+			Assert::IsTrue(foo.IsAttribute("AuxiliaryFoo"));
+			Assert::IsTrue(bar.IsAttribute("AuxiliaryBar"));
 		}
 
-		TEST_METHOD(Attributed_IsAuxillaryAttribute)
+		TEST_METHOD(Attributed_IsAuxiliaryAttribute)
 		{
 			AttributedFoo foo;
 			AttributedBar bar;
 
-			Assert::IsFalse(foo.IsAuxillaryAttribute("this"));
-			Assert::IsFalse(foo.IsAuxillaryAttribute("mInteger"));
-			Assert::IsFalse(foo.IsAuxillaryAttribute("mFloat"));
+			Assert::IsFalse(foo.IsAuxiliaryAttribute("this"));
+			Assert::IsFalse(foo.IsAuxiliaryAttribute("mInteger"));
+			Assert::IsFalse(foo.IsAuxiliaryAttribute("mFloat"));
 
-			Assert::IsFalse(bar.IsAuxillaryAttribute("this"));
-			Assert::IsFalse(bar.IsAuxillaryAttribute("mInteger"));
-			Assert::IsFalse(bar.IsAuxillaryAttribute("mFloat"));
-			Assert::IsFalse(bar.IsAuxillaryAttribute("mSomething"));
+			Assert::IsFalse(bar.IsAuxiliaryAttribute("this"));
+			Assert::IsFalse(bar.IsAuxiliaryAttribute("mInteger"));
+			Assert::IsFalse(bar.IsAuxiliaryAttribute("mFloat"));
+			Assert::IsFalse(bar.IsAuxiliaryAttribute("mSomething"));
 
-			foo.AppendAuxillaryAttribute("AuxillaryFoo");
-			bar.AppendAuxillaryAttribute("AuxillaryBar");
+			foo.AppendAuxiliaryAttribute("AuxiliaryFoo");
+			bar.AppendAuxiliaryAttribute("AuxiliaryBar");
 
-			Assert::IsTrue(foo.IsAuxillaryAttribute("AuxillaryFoo"));
-			Assert::IsTrue(bar.IsAuxillaryAttribute("AuxillaryBar"));
+			Assert::IsTrue(foo.IsAuxiliaryAttribute("AuxiliaryFoo"));
+			Assert::IsTrue(bar.IsAuxiliaryAttribute("AuxiliaryBar"));
 		}
 
-		TEST_METHOD(Attributed_AppendAuxillaryAttribute)
+		TEST_METHOD(Attributed_AppendAuxiliaryAttribute)
 		{
 			AttributedFoo foo;
 
-			Assert::IsFalse(foo.IsAuxillaryAttribute("mInteger"));
-			auto fooExpression = [&foo] { foo.AppendAuxillaryAttribute("mInteger"); };
+			Assert::IsFalse(foo.IsAuxiliaryAttribute("mInteger"));
+			auto fooExpression = [&foo] { foo.AppendAuxiliaryAttribute("mInteger"); };
 			Assert::ExpectException<std::exception>(fooExpression);
 
-			Assert::IsFalse(foo.IsAuxillaryAttribute("AuxillaryFoo"));
-			foo.AppendAuxillaryAttribute("AuxillaryFoo");
-			Assert::IsTrue(foo.IsAuxillaryAttribute("AuxillaryFoo"));
+			Assert::IsFalse(foo.IsAuxiliaryAttribute("AuxiliaryFoo"));
+			foo.AppendAuxiliaryAttribute("AuxiliaryFoo");
+			Assert::IsTrue(foo.IsAuxiliaryAttribute("AuxiliaryFoo"));
 
 			AttributedBar bar;
 
-			Assert::IsFalse(bar.IsAuxillaryAttribute("mInteger"));
-			auto barExpression = [&bar] { bar.AppendAuxillaryAttribute("mInteger"); };
+			Assert::IsFalse(bar.IsAuxiliaryAttribute("mInteger"));
+			auto barExpression = [&bar] { bar.AppendAuxiliaryAttribute("mInteger"); };
 			Assert::ExpectException<std::exception>(barExpression);
 
-			Assert::IsFalse(bar.IsAuxillaryAttribute("AuxillaryBar"));
-			bar.AppendAuxillaryAttribute("AuxillaryBar");
-			Assert::IsTrue(bar.IsAuxillaryAttribute("AuxillaryBar"));
+			Assert::IsFalse(bar.IsAuxiliaryAttribute("AuxiliaryBar"));
+			bar.AppendAuxiliaryAttribute("AuxiliaryBar");
+			Assert::IsTrue(bar.IsAuxiliaryAttribute("AuxiliaryBar"));
 		}
 
-		TEST_METHOD(Attribute_AuxillaryBegin)
+		TEST_METHOD(Attribute_AuxiliaryBegin)
 		{
 			AttributedFoo foo;
 
-			Assert::AreEqual(2U, foo.AuxillaryBegin());
-			foo.AppendAuxillaryAttribute("AuxillaryFoo");
-			Assert::AreEqual(2U, foo.AuxillaryBegin());
+			Assert::AreEqual(2U, foo.AuxiliaryBegin());
+			foo.AppendAuxiliaryAttribute("AuxiliaryFoo");
+			Assert::AreEqual(2U, foo.AuxiliaryBegin());
 
 			AttributedBar bar;
 
-			Assert::AreEqual(3U, bar.AuxillaryBegin());
-			bar.AppendAuxillaryAttribute("AuxillaryBar");
-			Assert::AreEqual(3U, bar.AuxillaryBegin());
+			Assert::AreEqual(3U, bar.AuxiliaryBegin());
+			bar.AppendAuxiliaryAttribute("AuxiliaryBar");
+			Assert::AreEqual(3U, bar.AuxiliaryBegin());
 		}
 
 		TEST_METHOD(Attributed_UpdatingValues)
