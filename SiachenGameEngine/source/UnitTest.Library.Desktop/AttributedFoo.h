@@ -18,6 +18,10 @@ namespace SiachenGameEngine
 			virtual ~AttributedFoo() = default;
 			void Populate() override;
 
+			std::int32_t GetInteger();
+
+			void SetInteger(std::int32_t);
+
 		};
 	}
 }

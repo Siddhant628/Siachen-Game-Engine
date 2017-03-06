@@ -17,6 +17,10 @@ namespace SiachenGameEngine
 			AttributedBar();
 			void Populate() override;
 
+			std::float_t GetFloat();
+
+			void SetFloat(std::float_t value);
+
 		};
 	}
 }

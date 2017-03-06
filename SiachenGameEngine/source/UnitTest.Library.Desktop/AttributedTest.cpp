@@ -17,6 +17,12 @@ namespace UnitTestLibraryDesktop
 	TEST_CLASS(AttributedTest)
 	{
 	public:
+		TEST_CLASS_INITIALIZE(ClassInitialize)
+		{
+			AttributedFoo foo;
+			AttributedBar bar;
+		}
+
 		TEST_METHOD_INITIALIZE(Initialize)
 		{
 			_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF);
@@ -32,22 +38,6 @@ namespace UnitTestLibraryDesktop
 				_CrtMemDumpStatistics(&diffMemState);
 				Assert::Fail(L"Memory Leaks!");
 			}
-		}
-
-		TEST_METHOD(Attributed_First)
-		{
-			AttributedFoo foo;
-			AttributedBar bar;
-			//Attributed::ClearCacheHashmap();
-		}
-
-		TEST_METHOD(Attributed_Second)
-		{
-			AttributedFoo foo;
-			AttributedFoo foo2;
-			AttributedBar bar;
-			AttributedBar bar2;
-			//Attributed::ClearCacheHashmap();
 		}
 
 		TEST_METHOD(Attributed_IsPrescribedAttribute)
@@ -70,8 +60,6 @@ namespace UnitTestLibraryDesktop
 
 			Assert::IsFalse(foo.IsPrescribedAttribute("AuxillaryFoo"));
 			Assert::IsFalse(bar.IsPrescribedAttribute("AuxillaryBar"));
-
-			//Attributed::ClearCacheHashmap();
 		}
 
 		TEST_METHOD(Attributed_IsAttribute)
@@ -93,8 +81,6 @@ namespace UnitTestLibraryDesktop
 
 			Assert::IsTrue(foo.IsAttribute("AuxillaryFoo"));
 			Assert::IsTrue(bar.IsAttribute("AuxillaryBar"));
-
-			//Attributed::ClearCacheHashmap();
 		}
 
 		TEST_METHOD(Attributed_IsAuxillaryAttribute)
@@ -116,8 +102,6 @@ namespace UnitTestLibraryDesktop
 
 			Assert::IsTrue(foo.IsAuxillaryAttribute("AuxillaryFoo"));
 			Assert::IsTrue(bar.IsAuxillaryAttribute("AuxillaryBar"));
-
-			//Attributed::ClearCacheHashmap();
 		}
 
 		TEST_METHOD(Attributed_AppendAuxillaryAttribute)
@@ -141,8 +125,6 @@ namespace UnitTestLibraryDesktop
 			Assert::IsFalse(bar.IsAuxillaryAttribute("AuxillaryBar"));
 			bar.AppendAuxillaryAttribute("AuxillaryBar");
 			Assert::IsTrue(bar.IsAuxillaryAttribute("AuxillaryBar"));
-
-			//Attributed::ClearCacheHashmap();
 		}
 
 		TEST_METHOD(Attribute_AuxillaryBegin)
@@ -158,16 +140,25 @@ namespace UnitTestLibraryDesktop
 			Assert::AreEqual(3U, bar.AuxillaryBegin());
 			bar.AppendAuxillaryAttribute("AuxillaryBar");
 			Assert::AreEqual(3U, bar.AuxillaryBegin());
-
-			//Attributed::ClearCacheHashmap();
 		}
 
-		TEST_METHOD(Attribute_ClearCacheHashmap)
+		TEST_METHOD(Attributed_UpdatingValues)
 		{
 			AttributedFoo foo;
+
+			foo.SetInteger(10);
+			Assert::AreEqual(foo["mInteger"].Get<std::int32_t>(), 10);
+
+			foo["mInteger"].Set(20);
+			Assert::AreEqual(foo.GetInteger(), 20);
+
 			AttributedBar bar;
 
-			Attributed::ClearCacheHashmap();
+			bar.SetFloat(10.0f);
+			Assert::AreEqual(bar["mFloat"].Get<std::float_t>(), 10.0f);
+
+			bar["mFloat"].Set(20.0f);
+			Assert::AreEqual(bar.GetFloat(), 20.0f);
 		}
 
 	private:

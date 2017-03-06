@@ -57,8 +57,6 @@ namespace SiachenGameEngine
 
 			virtual ~Attributed() = default;
 
-			static void ClearCacheHashmap();
-
 			bool IsAttribute(const std::string& attributeName) const;
 
 			bool IsPrescribedAttribute(const std::string& attributeName) const;

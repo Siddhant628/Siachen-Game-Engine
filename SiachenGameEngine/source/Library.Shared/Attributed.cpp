@@ -138,11 +138,6 @@ namespace SiachenGameEngine
 			return mPrescribedAttributeCount;
 		}
 
-		void Attributed::ClearCacheHashmap()
-		{
-			sPrescribedAttributeCache.Clear();
-		}
-
 		void Attributed::UpdatePrescribedAttributeCache()
 		{
 			//// Set prescribed attribute count since prescribed attributes have been inserted
