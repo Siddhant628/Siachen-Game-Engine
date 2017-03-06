@@ -30,12 +30,6 @@ namespace SiachenGameEngine
 			//void ValidatePrescribedAttribute(const std::string& attributeName);
 
 			//void UpdatePrescribedAttributeCache(const std::uint64_t& attributedClassId, const std::string& attributeName);
-		public:
-			Attributed();
-
-			virtual ~Attributed() = default;
-
-			static void ClearCacheHashmap();
 		protected:
 			virtual void Populate();
 
@@ -57,6 +51,14 @@ namespace SiachenGameEngine
 
 			//void SetPrescribedAttributesAssigned();
 
+			void UpdatePrescribedAttributeCache();
+		public:
+			Attributed();
+
+			virtual ~Attributed() = default;
+
+			static void ClearCacheHashmap();
+
 			bool IsAttribute(const std::string& attributeName) const;
 
 			bool IsPrescribedAttribute(const std::string& attributeName) const;
@@ -66,8 +68,6 @@ namespace SiachenGameEngine
 			Containers::Datum& AppendAuxillaryAttribute(const std::string& attributeName);
 
 			std::uint32_t AuxillaryBegin() const;
-
-			void UpdatePrescribedAttributeCache();
 		};
 	}
 }

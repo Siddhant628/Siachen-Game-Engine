@@ -10,15 +10,15 @@ namespace SiachenGameEngine
 	{
 		RTTI_DEFINITIONS(AttributedBar)
 
-			AttributedBar::AttributedBar()
+		AttributedBar::AttributedBar()
 		{
 			Populate();
+			UpdatePrescribedAttributeCache();
 		}
 
 		void AttributedBar::Populate()
 		{
 			AddExternalAttribute("mFloat", &mFloat, 1U);
-			UpdatePrescribedAttributeCache();
 		}
 	}
 }

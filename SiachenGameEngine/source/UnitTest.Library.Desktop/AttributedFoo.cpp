@@ -11,6 +11,7 @@ namespace SiachenGameEngine
 		AttributedFoo::AttributedFoo()
 		{
 			Populate();
+			UpdatePrescribedAttributeCache();
 			//SetPrescribedAttributesAssigned();
 		}
 
@@ -19,7 +20,6 @@ namespace SiachenGameEngine
 			//Parent::Populate();
 			//AddExternalAttribute("mInteger", &mInteger, 1U, true);
 			AddExternalAttribute("mInteger", &mInteger, 1U);
-			UpdatePrescribedAttributeCache();
 		}
 	}
 }

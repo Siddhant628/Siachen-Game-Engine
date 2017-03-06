@@ -15,6 +15,7 @@ namespace SiachenGameEngine
 		
 		public:
 			AttributedFoo();
+			virtual ~AttributedFoo() = default;
 			void Populate() override;
 
 		};

@@ -6,7 +6,7 @@ namespace SiachenGameEngine
 {
 	namespace HelperClasses
 	{
-		class AttributedBar : public AttributedFoo
+		class AttributedBar final : public AttributedFoo
 		{
 			RTTI_DECLARATIONS(AttributedBar, AttributedFoo)
 

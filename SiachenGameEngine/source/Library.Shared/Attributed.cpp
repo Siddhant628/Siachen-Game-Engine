@@ -16,6 +16,7 @@ namespace SiachenGameEngine
 		Attributed::Attributed() : mPrescribedAttributeCount(0)//, prescribedAttributesAssigned(false)
 		{
 			Populate();
+			UpdatePrescribedAttributeCache();
 		}
 
 		//void Attributed::ValidatePrescribedAttribute(const std::string& attributeName)
@@ -54,7 +55,6 @@ namespace SiachenGameEngine
 		{
 			//AddInternalAttribute("this", static_cast<RTTI*>(this), true);
 			AddInternalAttribute("this", static_cast<RTTI*>(this));
-			UpdatePrescribedAttributeCache();
 		}
 
 		void Attributed::AddExternalAttribute(const std::string& attributeName, const std::int32_t* externalAttribute, std::uint32_t numberOfValues/*, bool isPrescribedAttribute*/)
@@ -106,13 +106,11 @@ namespace SiachenGameEngine
 		{
 			CacheHashmapType::Iterator it = sPrescribedAttributeCache.Find(TypeIdInstance());
 
-			//if (it != sPrescribedAttributeCache.end())
-			//{
-			if ((*it).second.Find(attributeName) != (*it).second.end())
+			Vector<std::string>& attributeList = (*it).second;
+			if (attributeList.Find(attributeName) != attributeList.end())
 			{
 				return true;
 			}
-			//}
 			return false;
 		}
 
@@ -122,10 +120,7 @@ namespace SiachenGameEngine
 			{
 				return true;
 			}
-			else
-			{
-				return false;
-			}
+			return false;
 		}
 
 		Containers::Datum& Attributed::AppendAuxillaryAttribute(const std::string& attributeName)
