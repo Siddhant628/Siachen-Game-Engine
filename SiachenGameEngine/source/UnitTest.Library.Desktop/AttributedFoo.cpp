@@ -12,7 +12,7 @@ namespace SiachenGameEngine
 		AttributedFoo::AttributedFoo()
 		{
 			Populate();
-			UpdatePrescribedAttributeCache();
+			UpdatePrescribedAttributeInfo();
 		}
 
 		void AttributedFoo::Populate()

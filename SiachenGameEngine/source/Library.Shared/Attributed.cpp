@@ -16,7 +16,7 @@ namespace SiachenGameEngine
 		Attributed::Attributed() : mPrescribedAttributeCount(0)
 		{
 			Populate();
-			UpdatePrescribedAttributeCache();
+			UpdatePrescribedAttributeInfo();
 		}
 
 
@@ -25,26 +25,27 @@ namespace SiachenGameEngine
 			AddInternalAttribute("this", static_cast<RTTI*>(this));
 		}
 
-		void Attributed::UpdatePrescribedAttributeCache()
+		void Attributed::UpdatePrescribedAttributeInfo()
 		{
+
 			Vector<std::string> attributeList;
 			GetKeys(attributeList);
+			std::uint64_t instanceId = TypeIdInstance();
+
 			// Update prescribed attribute count
 			mPrescribedAttributeCount = attributeList.Size();
-			// Insert <classID, Vector of strings> pair into static hashmap if absent
-			CacheHashmapType::Iterator itCache = sPrescribedAttributeCache.Find(TypeIdInstance());
-			if (itCache == sPrescribedAttributeCache.end())
+
+			// Check if the static hashmap has attribute list for this type
+			if(!sPrescribedAttributeCache.ContainsKey(instanceId))
 			{
-				std::pair<std::uint64_t, Containers::Vector<std::string>> pair(TypeIdInstance(), Vector<std::string>());
+				// Insert <classID, Vector of strings> pair into static hashmap
+				std::pair<std::uint64_t, Containers::Vector<std::string>> pair(instanceId, Vector<std::string>());
 				sPrescribedAttributeCache.Insert(pair);
-				itCache = sPrescribedAttributeCache.Find(TypeIdInstance());
-			}
-			// Fill the prescribed attributes vector if it is empty
-			for (std::uint32_t i = 0; i < mPrescribedAttributeCount; ++i)
-			{
-				std::string attributeName = attributeList.At(i);
-				if ((*itCache).second.Find(attributeName) == (*itCache).second.end())
+				CacheHashmapType::Iterator itCache = sPrescribedAttributeCache.Find(instanceId);
+				// Fill the prescribed attributes vector if it is empty
+				for (std::uint32_t i = 0; i < mPrescribedAttributeCount; ++i)
 				{
+					std::string attributeName = attributeList.At(i);
 					(*itCache).second.PushBack(attributeName);
 				}
 			}

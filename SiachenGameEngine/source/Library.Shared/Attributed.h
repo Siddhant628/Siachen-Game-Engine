@@ -128,9 +128,9 @@ namespace SiachenGameEngine
 			void AddInternalAttribute(const std::string& attributeName, const RTTI* attributeValue);
 
 			/**
-			* Updates the cache hashmap with the attributes present in the scope at the instance it is called. This method should be called as soon as the scope is populated with prescribed attributes.
+			* Updates the prescribed attribute count and static hashmap with the attributes present in the scope at the instance it is called. This method should be called as soon as the scope is populated with prescribed attributes.
 			*/
-			void UpdatePrescribedAttributeCache();
+			void UpdatePrescribedAttributeInfo();
 
 		public:
 			/**

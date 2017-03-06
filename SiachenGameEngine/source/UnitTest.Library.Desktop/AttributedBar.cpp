@@ -13,7 +13,7 @@ namespace SiachenGameEngine
 		AttributedBar::AttributedBar()
 		{
 			Populate();
-			UpdatePrescribedAttributeCache();
+			UpdatePrescribedAttributeInfo();
 		}
 
 		void AttributedBar::Populate()
