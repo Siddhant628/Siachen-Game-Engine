@@ -13,6 +13,9 @@ namespace SiachenGameEngine
 		{
 			foo = new Foo(123);
 			foo2 = new Foo(321);
+			scope = new Scope();
+			(*scope)["Butter"] = "Chicken";
+
 			Populate();
 			UpdatePrescribedAttributeInfo();
 		}
@@ -21,6 +24,7 @@ namespace SiachenGameEngine
 		{
 			delete foo;
 			delete foo2;
+			delete scope;
 		}
 
 		void AttributedBaz::Populate()
@@ -36,6 +40,7 @@ namespace SiachenGameEngine
 			AddInternalAttribute("iVector", glm::vec4());
 			AddInternalAttribute("iMatrix", glm::mat4x4());
 			AddInternalAttribute("iRTTI", foo);
+			
 
 			AddInternalAttribute("iInt", 10);
 			AddInternalAttribute("iFloat", 20.0f);
@@ -43,6 +48,7 @@ namespace SiachenGameEngine
 			AddInternalAttribute("iVector", vec);
 			AddInternalAttribute("iMatrix", mat);
 			AddInternalAttribute("iRTTI", foo2);
+			AddInternalAttribute("iScope", scope);
 
 		}
 	}

@@ -248,12 +248,14 @@ namespace UnitTestLibraryDesktop
 			Assert::IsTrue(baz.IsPrescribedAttribute("iVector"));
 			Assert::IsTrue(baz.IsPrescribedAttribute("iMatrix"));
 			Assert::IsTrue(baz.IsPrescribedAttribute("iRTTI"));
+			Assert::IsTrue(baz.IsPrescribedAttribute("iScope"));
 
 			Assert::AreEqual(baz["iRTTI"].Get<RTTI*>()->As<Foo>()->GetValue(), 321);
+			Assert::IsTrue(baz["iScope"].Get<Scope*>()->Append("Butter").Get<std::string>() == "Chicken");
 
-			Assert::AreEqual(8U, baz.AuxiliaryBegin());
+			Assert::AreEqual(9U, baz.AuxiliaryBegin());
 			baz.AppendAuxiliaryAttribute("AuxiliaryBaz");
-			Assert::AreEqual(8U, baz.AuxiliaryBegin());
+			Assert::AreEqual(9U, baz.AuxiliaryBegin());
 		}
 
 	private:

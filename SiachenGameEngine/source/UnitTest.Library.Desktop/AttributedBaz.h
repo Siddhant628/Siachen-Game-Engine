@@ -23,6 +23,7 @@ namespace SiachenGameEngine
 
 			Foo* foo;
 			Foo* foo2;
+			Scope* scope;
 		public:
 			/**
 			* Default Constructor - Populates the scope with prescribed attributes.

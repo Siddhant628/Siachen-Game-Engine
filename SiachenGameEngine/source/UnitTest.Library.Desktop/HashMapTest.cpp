@@ -1219,42 +1219,6 @@ namespace UnitTestLibraryDesktop
 			Assert::AreEqual(constIt4->second, data);
 		}
 
-		TEST_METHOD(Attributed_Bug)
-		{
-			HashMap<std::string, int32_t> map;
-			map.Insert(std::pair<std::string, std::int32_t>("this",6));
-			map.Insert(std::pair<std::string, std::int32_t>("mInteger", 4));
-			map.Insert(std::pair<std::string, std::int32_t>("iInt", 1));
-			map.Insert(std::pair<std::string, std::int32_t>("iFloat", 5));
-			map.Insert(std::pair<std::string, std::int32_t>("iString", 999));
-			map.Insert(std::pair<std::string, std::int32_t>("iVector", 2));
-			map.Insert(std::pair<std::string, std::int32_t>("iMatrix", 3));
-
-			Assert::AreEqual(map.Size(), 7U);
-
-			HashMap<std::string, int32_t>::Iterator it = map.begin();
-			std::string stringBegin = (*it).first;
-			HashMap<std::string, int32_t>::Iterator end = map.end();
-
-			/*
-				Inserted Index, Searched Position
-
-				iInt-------1------1
-				iVecotor---4------2
-				iMatrix----6------3
-				mInteger---8------4
-				iFloat-----9------5
-				this-------11-----6
-
-				iString----8------?
-			*/
-
-			for (; it != end; ++it)
-			{
-				std::string strings = (*it).first;
-			}
-		}
-
 	private:
 		static _CrtMemState sStartMemState;
 	};
