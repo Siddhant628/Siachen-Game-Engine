@@ -79,7 +79,7 @@ namespace SiachenGameEngine
 					// If iterator to return is found, break
 					if (iteratorToReturn != mOwnerMap->end())
 					{
-						break;
+						return *this;
 					}
 				}
 				++indexInVector;
@@ -103,12 +103,12 @@ namespace SiachenGameEngine
 						break;
 					}
 				}
-				++indexInVector;
 				// If iterator to return is found, break
 				if (iteratorToReturn != mOwnerMap->end())
 				{
 					break;
 				}
+				++indexInVector;
 			}
 			*this = iteratorToReturn;
 			return *this;
@@ -143,7 +143,7 @@ namespace SiachenGameEngine
 						// If incremented to the next key-value pair, break
 						if (iteratorAfterOperation != iteratorBeforeOperation)
 						{
-							break;
+							return iteratorBeforeOperation;
 						}
 				}
 				++indexInVector;
@@ -167,12 +167,12 @@ namespace SiachenGameEngine
 							break;
 						}
 				}
-				++indexInVector;
 				// If incremented to the next key-value pair, break
 				if (iteratorAfterOperation != iteratorBeforeOperation)
 				{
 					break;
 				}
+				++indexInVector;
 			}
 			// If couldn't find any key-value pair, increment to end of the map
 			if(iteratorAfterOperation == iteratorBeforeOperation)

@@ -162,14 +162,11 @@ namespace SiachenGameEngine
 
 		void Attributed::AddInternalAttribute(const std::string& attributeName, Scope* const attributeValue)
 		{
-			Datum& datum = Append(attributeName);
-			if (datum.IsEmpty())
+			Datum* scopeDatum = Find(attributeName);
+			if (scopeDatum == nullptr)
 			{
-				datum.PushBack(attributeValue);
-			}
-			else
-			{
-				datum.Set(attributeValue);
+				Scope& scope = AppendScope(attributeName);
+				scope = *attributeValue;
 			}
 		}
 

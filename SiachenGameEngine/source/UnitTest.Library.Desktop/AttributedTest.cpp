@@ -4,6 +4,8 @@
 #include "Attributed.h"
 #include "AttributedFoo.h"
 #include "AttributedBar.h"
+#include "AttributedBaz.h"
+
 #include "Datum.h"
 #include "Foo.h"
 
@@ -18,10 +20,11 @@ namespace UnitTestLibraryDesktop
 	TEST_CLASS(AttributedTest)
 	{
 	public:
-		TEST_CLASS_INITIALIZE(ClassInitialize)
+		TEST_CLASS_INITIALIZE(Attributed_ClassInitialize)
 		{
 			AttributedFoo foo;
 			AttributedBar bar;
+			AttributedBaz baz;
 		}
 
 		TEST_METHOD_INITIALIZE(Initialize)
@@ -60,7 +63,7 @@ namespace UnitTestLibraryDesktop
 			Assert::IsTrue(bar.IsPrescribedAttribute("mString"));
 			Assert::IsTrue(bar.IsPrescribedAttribute("mVec4"));
 			Assert::IsTrue(bar.IsPrescribedAttribute("mMat4x4"));
-			//Assert::IsTrue(bar.IsPrescribedAttribute("RTTI"));
+			Assert::IsTrue(bar.IsPrescribedAttribute("mRTTI"));
 			Assert::IsFalse(bar.IsPrescribedAttribute("mSomething"));
 
 			bar.AppendAuxiliaryAttribute("AuxiliaryBar");
@@ -86,7 +89,7 @@ namespace UnitTestLibraryDesktop
 			Assert::IsTrue(bar.IsAttribute("mString"));
 			Assert::IsTrue(bar.IsAttribute("mVec4"));
 			Assert::IsTrue(bar.IsAttribute("mMat4x4"));
-			//Assert::IsTrue(bar.IsAttribute("mRTTI"));
+			Assert::IsTrue(bar.IsAttribute("mRTTI"));
 			Assert::IsFalse(bar.IsAttribute("mSomething"));
 
 			bar.AppendAuxiliaryAttribute("AuxiliaryBar");
@@ -112,7 +115,6 @@ namespace UnitTestLibraryDesktop
 			Assert::IsFalse(bar.IsAuxiliaryAttribute("mString"));
 			Assert::IsFalse(bar.IsAuxiliaryAttribute("mVec4"));
 			Assert::IsFalse(bar.IsAuxiliaryAttribute("mMat4x4"));
-			Assert::IsFalse(bar.IsAuxiliaryAttribute("mScope"));
 			Assert::IsFalse(bar.IsAuxiliaryAttribute("mRTTI"));
 			Assert::IsFalse(bar.IsAuxiliaryAttribute("mSomething"));
 
@@ -131,6 +133,8 @@ namespace UnitTestLibraryDesktop
 			Assert::IsFalse(foo.IsAuxiliaryAttribute("AuxiliaryFoo"));
 			foo.AppendAuxiliaryAttribute("AuxiliaryFoo");
 			Assert::IsTrue(foo.IsAuxiliaryAttribute("AuxiliaryFoo"));
+			Assert::IsTrue(foo.IsAttribute("AuxiliaryFoo"));
+			Assert::IsFalse(foo.IsPrescribedAttribute("AuxiliaryFoo"));
 
 			AttributedBar bar;
 
@@ -141,6 +145,8 @@ namespace UnitTestLibraryDesktop
 			Assert::IsFalse(bar.IsAuxiliaryAttribute("AuxiliaryBar"));
 			bar.AppendAuxiliaryAttribute("AuxiliaryBar");
 			Assert::IsTrue(bar.IsAuxiliaryAttribute("AuxiliaryBar"));
+			Assert::IsTrue(bar.IsAttribute("AuxiliaryBar"));
+			Assert::IsFalse(bar.IsPrescribedAttribute("AuxiliaryBar"));
 		}
 
 		TEST_METHOD(Attribute_AuxiliaryBegin)
@@ -228,6 +234,26 @@ namespace UnitTestLibraryDesktop
 			Assert::AreEqual(bar.GetRTTIFoo(), 20);
 
 			bar["mRTTI"].Set(prevFoo);
+		}
+
+		TEST_METHOD(Attributed_AddInternalAttribute)
+		{
+			AttributedBaz baz;
+
+			Assert::IsTrue(baz.IsPrescribedAttribute("this"));
+
+			Assert::IsTrue(baz.IsPrescribedAttribute("iInt"));
+			Assert::IsTrue(baz.IsPrescribedAttribute("iFloat"));
+			Assert::IsTrue(baz.IsPrescribedAttribute("iString"));
+			Assert::IsTrue(baz.IsPrescribedAttribute("iVector"));
+			Assert::IsTrue(baz.IsPrescribedAttribute("iMatrix"));
+			Assert::IsTrue(baz.IsPrescribedAttribute("iRTTI"));
+
+			Assert::AreEqual(baz["iRTTI"].Get<RTTI*>()->As<Foo>()->GetValue(), 321);
+
+			Assert::AreEqual(8U, baz.AuxiliaryBegin());
+			baz.AppendAuxiliaryAttribute("AuxiliaryBaz");
+			Assert::AreEqual(8U, baz.AuxiliaryBegin());
 		}
 
 	private:
