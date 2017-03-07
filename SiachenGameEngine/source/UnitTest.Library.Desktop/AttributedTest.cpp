@@ -214,17 +214,20 @@ namespace UnitTestLibraryDesktop
 			Assert::AreEqual(bar.GetMatrix()[0].x, vec2.x);
 
 			//Updating external RTTI Foos
-			//Foo foo2(20);
-			//RTTI* fooPtr = &foo;
+			Foo foo2(20);
+			RTTI* fooPtr = &foo2;
+
+			Foo* prevFoo = bar["mRTTI"].Get<RTTI*>()->As<Foo>();
 
 			Assert::AreNotEqual(bar["mRTTI"].Get<RTTI*>()->As<Foo>()->GetValue(), 10);
 			bar.SetRTTIFoo(10);
 			Assert::AreEqual(bar["mRTTI"].Get<RTTI*>()->As<Foo>()->GetValue(), 10);
 
-			// TODO Complete test for Foo
-			//Assert::AreNotEqual(bar.GetRTTIFoo(), 20);
-			//bar["mRTTI"].Set(fooPtr);
-			//Assert::AreEqual(bar.GetRTTIFoo(), 20);
+			Assert::AreNotEqual(bar.GetRTTIFoo(), 20);
+			bar["mRTTI"].Set(fooPtr);
+			Assert::AreEqual(bar.GetRTTIFoo(), 20);
+
+			bar["mRTTI"].Set(prevFoo);
 		}
 
 	private:

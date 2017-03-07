@@ -19,7 +19,7 @@ namespace SiachenGameEngine
 			// Copy constructor
 			Foo(const Foo&);
 			// Destructor deallocates the assigned integer
-			~Foo();
+			virtual ~Foo();
 			// Assignment operator
 			Foo& operator=(const Foo&);
 			// Overloaded comparison operator
