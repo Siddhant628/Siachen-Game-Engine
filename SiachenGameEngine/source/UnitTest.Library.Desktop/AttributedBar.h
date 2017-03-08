@@ -40,7 +40,7 @@ namespace SiachenGameEngine
 			/**
 			* Destructor clears and frees all the memory reserved by the vector.
 			*/
-			~AttributedBar();
+			virtual ~AttributedBar();
 			/**
 			* Populate the AttributedBar with prescribed attributes of this class.
 			*/

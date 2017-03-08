@@ -14,26 +14,26 @@ namespace SiachenGameEngine
 	{
 		RTTI_DEFINITIONS(AttributedBar)
 
-		void AttributedBar::DeepCopyAttributedBar(const AttributedBar& rhs)
-		{
-			AttributedFoo::operator=(rhs);
+		//void AttributedBar::DeepCopyAttributedBar(const AttributedBar& rhs)
+		//{
+		//	AttributedFoo::operator=(rhs);
 
-			(*this)["mFloat"].SetStorage(&mFloat, 1U);
-			(*this)["mString"].SetStorage(&mString, 1U);
-			(*this)["mVec4"].SetStorage(&mVec4, 1U);
-			(*this)["mMat4x4"].SetStorage(&mMat4x4, 1U);
+		//	(*this)["mFloat"].SetStorage(&mFloat, 1U);
+		//	(*this)["mString"].SetStorage(&mString, 1U);
+		//	(*this)["mVec4"].SetStorage(&mVec4, 1U);
+		//	(*this)["mMat4x4"].SetStorage(&mMat4x4, 1U);
 
-			mRTTI = new Foo();
-			(*this)["mRTTI"].SetStorage(&mRTTI, 1U);
+		//	mRTTI = new Foo();
+		//	(*this)["mRTTI"].SetStorage(&mRTTI, 1U);
 
-			(*this)["mFloat"].Set(rhs.GetFloat());
-			(*this)["mString"].Set(rhs.GetString());
-			(*this)["mVec4"].Set(rhs.GetVector());
-			(*this)["mMat4x4"].Set(rhs.GetMatrix());
-			(*this)["mRTTI"].Get<RTTI*>()->As<Foo>()->SetValue(rhs.GetRTTIFoo());
+		//	(*this)["mFloat"].Set(rhs.GetFloat());
+		//	(*this)["mString"].Set(rhs.GetString());
+		//	(*this)["mVec4"].Set(rhs.GetVector());
+		//	(*this)["mMat4x4"].Set(rhs.GetMatrix());
+		//	(*this)["mRTTI"].Get<RTTI*>()->As<Foo>()->SetValue(rhs.GetRTTIFoo());
 
-			SetAuxillaryBegin(rhs.AuxiliaryBegin());
-		}
+		//	SetAuxillaryBegin(rhs.AuxiliaryBegin());
+		//}
 
 		AttributedBar::AttributedBar()
 		{
@@ -42,17 +42,45 @@ namespace SiachenGameEngine
 			UpdatePrescribedAttributeInfo();
 		}
 
-		AttributedBar::AttributedBar(const AttributedBar& rhs)
+		AttributedBar::AttributedBar(const AttributedBar& rhs) : AttributedFoo(rhs)
 		{
-			DeepCopyAttributedBar(rhs);
+
+			(*this)["mFloat"].SetStorage(&mFloat, 1U);
+			(*this)["mString"].SetStorage(&mString, 1U);
+			(*this)["mVec4"].SetStorage(&mVec4, 1U);
+			(*this)["mMat4x4"].SetStorage(&mMat4x4, 1U);
+
+			mRTTI = new Foo(rhs.GetRTTIFoo());
+			(*this)["mRTTI"].SetStorage(&mRTTI, 1U);
+
+			(*this)["mFloat"].Set(rhs.GetFloat());
+			(*this)["mString"].Set(rhs.GetString());
+			(*this)["mVec4"].Set(rhs.GetVector());
+			(*this)["mMat4x4"].Set(rhs.GetMatrix());
+
+			SetAuxillaryBegin(rhs.AuxiliaryBegin());
 		}
 
 		AttributedBar& AttributedBar::operator=(const AttributedBar& rhs)
 		{
 			if (this != &rhs)
 			{
-				Clear();
-				DeepCopyAttributedBar(rhs);
+			AttributedFoo::operator=(rhs);
+
+			(*this)["mFloat"].SetStorage(&mFloat, 1U);
+			(*this)["mString"].SetStorage(&mString, 1U);
+			(*this)["mVec4"].SetStorage(&mVec4, 1U);
+			(*this)["mMat4x4"].SetStorage(&mMat4x4, 1U);
+
+			*mRTTI = *rhs.mRTTI;
+			(*this)["mRTTI"].SetStorage(&mRTTI, 1U);
+
+			(*this)["mFloat"].Set(rhs.GetFloat());
+			(*this)["mString"].Set(rhs.GetString());
+			(*this)["mVec4"].Set(rhs.GetVector());
+			(*this)["mMat4x4"].Set(rhs.GetMatrix());
+
+			SetAuxillaryBegin(rhs.AuxiliaryBegin());
 			}
 			return *this;
 		}

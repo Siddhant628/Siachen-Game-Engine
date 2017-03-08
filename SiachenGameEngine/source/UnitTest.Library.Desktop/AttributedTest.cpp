@@ -309,33 +309,33 @@ namespace UnitTestLibraryDesktop
 
 		TEST_METHOD(Attributed_AssignmentOperator)
 		{
-			//// Tests for attributed foo
-			//AttributedFoo foo;
+			// Tests for attributed foo
+			AttributedFoo foo;
 
-			//foo.AppendAuxiliaryAttribute("Butter") = "Chicken";
-			//foo.SetInteger(10);
+			foo.AppendAuxiliaryAttribute("Butter") = "Chicken";
+			foo.SetInteger(10);
 
-			//Assert::IsTrue(foo.IsAuxiliaryAttribute("Butter"));
-			//Assert::AreEqual(foo["mInteger"].Get<std::int32_t>(), 10);
+			Assert::IsTrue(foo.IsAuxiliaryAttribute("Butter"));
+			Assert::AreEqual(foo["mInteger"].Get<std::int32_t>(), 10);
 
-			//AttributedFoo foo2;
-			//foo2.AppendAuxiliaryAttribute("Yellow");
-			//foo2 = foo;
-			//Assert::IsFalse(foo2.IsAuxiliaryAttribute("Yellow"));
+			AttributedFoo foo2;
+			foo2.AppendAuxiliaryAttribute("Yellow");
+			foo2 = foo;
+			Assert::IsFalse(foo2.IsAuxiliaryAttribute("Yellow"));
 
-			//Assert::IsTrue(foo2["Butter"].Get<std::string>() == "Chicken");
-			//Assert::AreEqual(foo.AuxiliaryBegin(), 2U);
+			Assert::IsTrue(foo2["Butter"].Get<std::string>() == "Chicken");
+			Assert::AreEqual(foo.AuxiliaryBegin(), 2U);
 
-			//Assert::IsTrue(foo2.IsAuxiliaryAttribute("Butter"));
-			//Assert::IsTrue(foo2.IsPrescribedAttribute("mInteger"));
-			//Assert::IsFalse(foo2.IsAuxiliaryAttribute("mInteger"));
-			//Assert::IsFalse(foo2.IsPrescribedAttribute("Butter"));
+			Assert::IsTrue(foo2.IsAuxiliaryAttribute("Butter"));
+			Assert::IsTrue(foo2.IsPrescribedAttribute("mInteger"));
+			Assert::IsFalse(foo2.IsAuxiliaryAttribute("mInteger"));
+			Assert::IsFalse(foo2.IsPrescribedAttribute("Butter"));
 
-			//Assert::AreEqual(foo2.GetInteger(), 10);
+			Assert::AreEqual(foo2.GetInteger(), 10);
 
-			//foo2.SetInteger(20);
-			//Assert::AreEqual(foo.GetInteger(), 10);
-			//Assert::AreEqual(foo2.GetInteger(), 20);
+			foo2.SetInteger(20);
+			Assert::AreEqual(foo.GetInteger(), 10);
+			Assert::AreEqual(foo2.GetInteger(), 20);
 
 			// Tests for class derived from attributed foo
 			AttributedBar bar;
@@ -344,20 +344,20 @@ namespace UnitTestLibraryDesktop
 			bar.SetFloat(1.5f);
 
 			AttributedBar bar2;
-			//bar2 = bar;
+			bar2 = bar;
 
-			//Assert::IsTrue(bar2.IsAuxiliaryAttribute("Chicken"));
-			//Assert::AreEqual(bar2.AuxiliaryBegin(), 7U);
+			Assert::IsTrue(bar2.IsAuxiliaryAttribute("Chicken"));
+			Assert::AreEqual(bar2.AuxiliaryBegin(), 7U);
 
-			//Assert::IsTrue(bar2.IsAuxiliaryAttribute("Chicken"));
-			//Assert::IsFalse(bar2.IsPrescribedAttribute("Chicken"));
-			//Assert::IsTrue(bar2.IsPrescribedAttribute("mRTTI"));
-			//Assert::IsFalse(bar2.IsAuxiliaryAttribute("mRTTI"));
+			Assert::IsTrue(bar2.IsAuxiliaryAttribute("Chicken"));
+			Assert::IsFalse(bar2.IsPrescribedAttribute("Chicken"));
+			Assert::IsTrue(bar2.IsPrescribedAttribute("mRTTI"));
+			Assert::IsFalse(bar2.IsAuxiliaryAttribute("mRTTI"));
 
-			//Assert::AreEqual(bar2.GetFloat(), 1.5f);
-			//bar2.SetFloat(3.0f);
-			//Assert::AreEqual(bar2.GetFloat(), 3.0f);
-			//Assert::AreEqual(bar.GetFloat(), 1.5f);
+			Assert::AreEqual(bar2.GetFloat(), 1.5f);
+			bar2.SetFloat(3.0f);
+			Assert::AreEqual(bar2.GetFloat(), 3.0f);
+			Assert::AreEqual(bar.GetFloat(), 1.5f);
 		}
 
 	private:

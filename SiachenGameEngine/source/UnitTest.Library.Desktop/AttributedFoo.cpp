@@ -9,15 +9,15 @@ namespace SiachenGameEngine
 	{
 		RTTI_DEFINITIONS(AttributedFoo)
 
-		void AttributedFoo::DeepCopyAttributedFoo(const AttributedFoo& rhs)
-		{
-			Attributed::operator=(rhs);
+		//void AttributedFoo::DeepCopyAttributedFoo(const AttributedFoo& rhs)
+		//{
+		//	Attributed::operator=(rhs);
 
-			(*this)["mInteger"].SetStorage(&mInteger, 1U);
-			(*this)["mInteger"].Set(rhs.GetInteger());
+		//	(*this)["mInteger"].SetStorage(&mInteger, 1U);
+		//	(*this)["mInteger"].Set(rhs.GetInteger());
 
-			SetAuxillaryBegin(rhs.AuxiliaryBegin());
-		}
+		//	SetAuxillaryBegin(rhs.AuxiliaryBegin());
+		//}
 
 		AttributedFoo::AttributedFoo()
 		{
@@ -25,17 +25,25 @@ namespace SiachenGameEngine
 			UpdatePrescribedAttributeInfo();
 		}
 
-		AttributedFoo::AttributedFoo(const AttributedFoo& rhs)
+		AttributedFoo::AttributedFoo(const AttributedFoo& rhs) : Attributed(rhs)
 		{
-			DeepCopyAttributedFoo(rhs);
+
+			(*this)["mInteger"].SetStorage(&mInteger, 1U);
+			(*this)["mInteger"].Set(rhs.GetInteger());
+
+			SetAuxillaryBegin(rhs.AuxiliaryBegin());
 		}
 
 		AttributedFoo& AttributedFoo::operator=(const AttributedFoo& rhs)
 		{
 			if (this != &rhs)
 			{
-				Clear();
-				DeepCopyAttributedFoo(rhs);
+				Attributed::operator=(rhs);
+
+				(*this)["mInteger"].SetStorage(&mInteger, 1U);
+				(*this)["mInteger"].Set(rhs.GetInteger());
+
+				SetAuxillaryBegin(rhs.AuxiliaryBegin());
 			}
 			return *this;
 		}

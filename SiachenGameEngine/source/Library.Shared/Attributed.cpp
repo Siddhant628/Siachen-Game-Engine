@@ -20,29 +20,37 @@ namespace SiachenGameEngine
 			UpdatePrescribedAttributeInfo();
 		}
 
-		Attributed::Attributed(const Attributed& rhs)
+		Attributed::Attributed(const Attributed& rhs) : Scope(rhs)
 		{
-			DeepCopyAttributed(rhs);
+			//DeepCopyAttributed(rhs);
+
+			(*this)["this"].Set(static_cast<RTTI*>(this));
+			SetAuxillaryBegin(rhs.AuxiliaryBegin());
 		}
 
 		Attributed& Attributed::operator=(const Attributed& rhs)
 		{
 			if (this != &rhs)
 			{
-				Clear();
-				DeepCopyAttributed(rhs);
+				//Clear();
+				//DeepCopyAttributed(rhs);
+				Scope::operator=(rhs);
+
+				(*this)["this"].Set(static_cast<RTTI*>(this));
+
+				SetAuxillaryBegin(rhs.AuxiliaryBegin());
 			}
 			return *this;
 		}
 
-		void Attributed::DeepCopyAttributed(const Attributed& rhs)
-		{
-			Scope::operator=(rhs);
-			
-			(*this)["this"].Set(static_cast<RTTI*>(this));
+		//void Attributed::DeepCopyAttributed(const Attributed& rhs)
+		//{
+		//	Scope::operator=(rhs);
+		//	
+		//	(*this)["this"].Set(static_cast<RTTI*>(this));
 
-			SetAuxillaryBegin(rhs.AuxiliaryBegin());
-		}
+		//	SetAuxillaryBegin(rhs.AuxiliaryBegin());
+		//}
 
 
 		void Attributed::UpdatePrescribedAttributeInfo()
