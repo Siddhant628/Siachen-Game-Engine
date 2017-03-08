@@ -24,8 +24,7 @@ namespace SiachenGameEngine
 			Foo* foo;
 			Foo* foo2;
 			Scope* scope;
-
-			void DeepCopyAttributedBaz(const AttributedBaz& rhs);
+			
 		public:
 			/**
 			* Default Constructor - Populates the scope with prescribed attributes.

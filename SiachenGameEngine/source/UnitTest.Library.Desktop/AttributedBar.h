@@ -20,7 +20,6 @@ namespace SiachenGameEngine
 			glm::mat4x4 mMat4x4;
 			GameplayFramework::RTTI* mRTTI;
 
-			void DeepCopyAttributedBar(const AttributedBar& rhs);
 		public:
 			/**
 			* Default Constructor - Populates the scope with prescribed attributes.

@@ -27,11 +27,6 @@ namespace SiachenGameEngine
 			* The number of prescribed attributes in this Scope.
 			*/
 			std::uint32_t mPrescribedAttributeCount;
-			/*
-			* Preforms a deep copy of a attributed scope into this one.
-			* @param rhs The attributed scope whose deep copy is to be performed.
-			*/
-			void DeepCopyAttributed(const Attributed& rhs);
 		protected:
 			/**
 			* Populate the scope with prescribed attributes of this class.

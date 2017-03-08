@@ -9,17 +9,6 @@ namespace SiachenGameEngine
 	{
 		RTTI_DEFINITIONS(AttributedBaz)
 
-		void AttributedBaz::DeepCopyAttributedBaz(const AttributedBaz& rhs)
-		{
-			Attributed::operator=(rhs);
-
-			foo = new Foo(*rhs.foo);
-			foo2 = new Foo(*rhs.foo2);
-			scope = new Scope(*rhs.scope);
-
-			SetAuxillaryBegin(rhs.AuxiliaryBegin());
-		}
-
 		AttributedBaz::AttributedBaz()
 		{
 			foo = new Foo(123);
@@ -31,17 +20,26 @@ namespace SiachenGameEngine
 			UpdatePrescribedAttributeInfo();
 		}
 
-		AttributedBaz::AttributedBaz(const AttributedBaz& rhs)
+		AttributedBaz::AttributedBaz(const AttributedBaz& rhs) : Attributed(rhs)
 		{
-			DeepCopyAttributedBaz(rhs);
+			foo = new Foo(*rhs.foo);
+			foo2 = new Foo(*rhs.foo2);
+			scope = new Scope(*rhs.scope);
+
+			SetAuxillaryBegin(rhs.AuxiliaryBegin());
 		}
 
 		AttributedBaz & AttributedBaz::operator=(const AttributedBaz& rhs)
 		{
 			if (this != &rhs)
 			{
-				Clear();
-				DeepCopyAttributedBaz(rhs);
+				Attributed::operator=(rhs);
+
+				foo = new Foo(*rhs.foo);
+				foo2 = new Foo(*rhs.foo2);
+				scope = new Scope(*rhs.scope);
+
+				SetAuxillaryBegin(rhs.AuxiliaryBegin());
 			}
 			return *this;
 		}

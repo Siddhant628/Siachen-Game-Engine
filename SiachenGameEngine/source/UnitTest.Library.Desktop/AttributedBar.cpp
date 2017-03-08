@@ -14,27 +14,6 @@ namespace SiachenGameEngine
 	{
 		RTTI_DEFINITIONS(AttributedBar)
 
-		//void AttributedBar::DeepCopyAttributedBar(const AttributedBar& rhs)
-		//{
-		//	AttributedFoo::operator=(rhs);
-
-		//	(*this)["mFloat"].SetStorage(&mFloat, 1U);
-		//	(*this)["mString"].SetStorage(&mString, 1U);
-		//	(*this)["mVec4"].SetStorage(&mVec4, 1U);
-		//	(*this)["mMat4x4"].SetStorage(&mMat4x4, 1U);
-
-		//	mRTTI = new Foo();
-		//	(*this)["mRTTI"].SetStorage(&mRTTI, 1U);
-
-		//	(*this)["mFloat"].Set(rhs.GetFloat());
-		//	(*this)["mString"].Set(rhs.GetString());
-		//	(*this)["mVec4"].Set(rhs.GetVector());
-		//	(*this)["mMat4x4"].Set(rhs.GetMatrix());
-		//	(*this)["mRTTI"].Get<RTTI*>()->As<Foo>()->SetValue(rhs.GetRTTIFoo());
-
-		//	SetAuxillaryBegin(rhs.AuxiliaryBegin());
-		//}
-
 		AttributedBar::AttributedBar()
 		{
 			mRTTI = new Foo(100);
@@ -65,29 +44,29 @@ namespace SiachenGameEngine
 		{
 			if (this != &rhs)
 			{
-			AttributedFoo::operator=(rhs);
+				AttributedFoo::operator=(rhs);
 
-			(*this)["mFloat"].SetStorage(&mFloat, 1U);
-			(*this)["mString"].SetStorage(&mString, 1U);
-			(*this)["mVec4"].SetStorage(&mVec4, 1U);
-			(*this)["mMat4x4"].SetStorage(&mMat4x4, 1U);
+				(*this)["mFloat"].SetStorage(&mFloat, 1U);
+				(*this)["mString"].SetStorage(&mString, 1U);
+				(*this)["mVec4"].SetStorage(&mVec4, 1U);
+				(*this)["mMat4x4"].SetStorage(&mMat4x4, 1U);
 
-			*mRTTI = *rhs.mRTTI;
-			(*this)["mRTTI"].SetStorage(&mRTTI, 1U);
+				*mRTTI = *rhs.mRTTI;
+				(*this)["mRTTI"].SetStorage(&mRTTI, 1U);
 
-			(*this)["mFloat"].Set(rhs.GetFloat());
-			(*this)["mString"].Set(rhs.GetString());
-			(*this)["mVec4"].Set(rhs.GetVector());
-			(*this)["mMat4x4"].Set(rhs.GetMatrix());
+				(*this)["mFloat"].Set(rhs.GetFloat());
+				(*this)["mString"].Set(rhs.GetString());
+				(*this)["mVec4"].Set(rhs.GetVector());
+				(*this)["mMat4x4"].Set(rhs.GetMatrix());
 
-			SetAuxillaryBegin(rhs.AuxiliaryBegin());
+				SetAuxillaryBegin(rhs.AuxiliaryBegin());
 			}
 			return *this;
 		}
 
 		AttributedBar::~AttributedBar()
 		{
-				delete mRTTI;
+			delete mRTTI;
 		}
 
 		void AttributedBar::Populate()
