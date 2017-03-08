@@ -14,7 +14,6 @@ namespace SiachenGameEngine
 			Attributed::operator=(rhs);
 
 			(*this)["mInteger"].SetStorage(&mInteger, 1U);
-
 			(*this)["mInteger"].Set(rhs.GetInteger());
 
 			SetAuxillaryBegin(rhs.AuxiliaryBegin());

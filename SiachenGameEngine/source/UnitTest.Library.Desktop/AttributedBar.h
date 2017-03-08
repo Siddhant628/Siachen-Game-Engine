@@ -21,8 +21,6 @@ namespace SiachenGameEngine
 			GameplayFramework::RTTI* mRTTI;
 
 			void DeepCopyAttributedBar(const AttributedBar& rhs);
-
-			void DontDeleteRTTIFoo();
 		public:
 			/**
 			* Default Constructor - Populates the scope with prescribed attributes.

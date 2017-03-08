@@ -22,22 +22,22 @@ namespace SiachenGameEngine
 			(*this)["mString"].SetStorage(&mString, 1U);
 			(*this)["mVec4"].SetStorage(&mVec4, 1U);
 			(*this)["mMat4x4"].SetStorage(&mMat4x4, 1U);
+
+			mRTTI = new Foo();
 			(*this)["mRTTI"].SetStorage(&mRTTI, 1U);
 
 			(*this)["mFloat"].Set(rhs.GetFloat());
 			(*this)["mString"].Set(rhs.GetString());
 			(*this)["mVec4"].Set(rhs.GetVector());
 			(*this)["mMat4x4"].Set(rhs.GetMatrix());
-			(*this)["mRTTI"].Set(rhs.mRTTI);
+			(*this)["mRTTI"].Get<RTTI*>()->As<Foo>()->SetValue(rhs.GetRTTIFoo());
 
 			SetAuxillaryBegin(rhs.AuxiliaryBegin());
-			
-			DontDeleteRTTIFoo();
 		}
 
 		AttributedBar::AttributedBar()
 		{
-			mRTTI = new Foo();
+			mRTTI = new Foo(100);
 			Populate();
 			UpdatePrescribedAttributeInfo();
 		}
@@ -121,11 +121,6 @@ namespace SiachenGameEngine
 		{
 			Foo* pFoo = mRTTI->As<Foo>();
 			pFoo->SetValue(value);
-		}
-		
-		void AttributedBar::DontDeleteRTTIFoo()
-		{
-				mRTTI = nullptr;
 		}
 	}
 }

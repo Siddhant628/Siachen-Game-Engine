@@ -13,6 +13,10 @@ namespace SiachenGameEngine
 		{
 			Attributed::operator=(rhs);
 
+			foo = new Foo(*rhs.foo);
+			foo2 = new Foo(*rhs.foo2);
+			scope = new Scope(*rhs.scope);
+
 			SetAuxillaryBegin(rhs.AuxiliaryBegin());
 		}
 
