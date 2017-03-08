@@ -249,7 +249,7 @@ namespace SiachenGameEngine
 			return !(operator==(rhs));
 		}
 		
-		void Scope::GetKeys(Vector<std::string>& keysVector)
+		void Scope::GetKeys(Vector<std::string>& keysVector) const
 		{
 			keysVector.Clear();
 

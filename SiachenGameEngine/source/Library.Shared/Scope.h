@@ -151,7 +151,7 @@ namespace SiachenGameEngine
 			* Get the keys present inside the current scope (excluding children scope).
 			* @param keysVector An output parameter which will be a vector of strings (keys).
 			*/
-			void GetKeys(Containers::Vector<std::string>& keysVector);
+			void GetKeys(Containers::Vector<std::string>& keysVector) const;
 		};
 	}
 }

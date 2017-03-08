@@ -9,10 +9,34 @@ namespace SiachenGameEngine
 	{
 		RTTI_DEFINITIONS(AttributedFoo)
 
+		void AttributedFoo::DeepCopyAttributedFoo(const AttributedFoo& rhs)
+		{
+			Attributed::operator=(rhs);
+
+			(*this)["mInteger"].SetStorage(&mInteger, 1U);
+
+			SetAuxillaryBegin(rhs.AuxiliaryBegin());
+		}
+
 		AttributedFoo::AttributedFoo()
 		{
 			Populate();
 			UpdatePrescribedAttributeInfo();
+		}
+
+		AttributedFoo::AttributedFoo(const AttributedFoo& rhs)
+		{
+			DeepCopyAttributedFoo(rhs);
+		}
+
+		AttributedFoo& AttributedFoo::operator=(const AttributedFoo& rhs)
+		{
+			if (this != &rhs)
+			{
+				Clear();
+				DeepCopyAttributedFoo(rhs);
+			}
+			return *this;
 		}
 
 		void AttributedFoo::Populate()

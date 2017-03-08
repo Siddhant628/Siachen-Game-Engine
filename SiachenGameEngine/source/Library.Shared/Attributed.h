@@ -27,12 +27,16 @@ namespace SiachenGameEngine
 			* The number of prescribed attributes in this Scope.
 			*/
 			std::uint32_t mPrescribedAttributeCount;
-
+			/*
+			* Preforms a deep copy of a attributed scope into this one.
+			* @param rhs The attributed scope whose deep copy is to be performed.
+			*/
+			void DeepCopyAttributed(const Attributed& rhs);
 		protected:
 			/**
 			* Populate the scope with prescribed attributes of this class.
 			*/
-			virtual void Populate();
+			virtual void Populate() = 0;
 
 			/**
 			* Add an external attribute to the scope associated with this attributed class object.
@@ -125,6 +129,8 @@ namespace SiachenGameEngine
 			*/
 			void UpdatePrescribedAttributeInfo();
 
+			void SetAuxillaryBegin(std::uint32_t count);
+			
 		public:
 			/**
 			* Default Constructor - Creates an empty scope and populates it with the prescribed attributes.
@@ -134,6 +140,17 @@ namespace SiachenGameEngine
 			* Destructor clears and frees all the memory reserved by the vector.
 			*/
 			virtual ~Attributed() = default;
+			/*
+			* Copy constructor - Performs a deep copy of rhs into this attributed scope.
+			* @param rhs The attributed scope which has to be copied into this.
+			*/
+			Attributed(const Attributed& rhs);
+			/*
+			* Assignment Operator - Performs a deep copy of rhs into this attributed scope.
+			* @param rhs The attributed scope which has to be deep copied into this attributed scope.
+			* @return A reference to a attributed scope with a deep copy of rhs.
+			*/
+			Attributed& operator=(const Attributed& rhs);
 
 			/**
 			* Check whether a string is an attribute.

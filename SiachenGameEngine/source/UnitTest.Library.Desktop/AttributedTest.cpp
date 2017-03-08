@@ -258,6 +258,19 @@ namespace UnitTestLibraryDesktop
 			Assert::AreEqual(9U, baz.AuxiliaryBegin());
 		}
 
+		TEST_METHOD(Attributed_CopyConstructor)
+		{
+			AttributedFoo foo;
+			
+			foo.AppendAuxiliaryAttribute("Butter") = "Chicken";
+			foo.SetInteger(10);
+
+			Assert::IsTrue(foo.IsAuxiliaryAttribute("Butter"));
+			Assert::AreEqual(foo["mInteger"].Get<std::int32_t>(), 10);
+
+			AttributedFoo foo2(foo);
+		}
+
 	private:
 		static _CrtMemState sStartMemState;
 	};

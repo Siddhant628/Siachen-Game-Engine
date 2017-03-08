@@ -110,6 +110,11 @@ namespace SiachenGameEngine
 			return (mSize == 0);
 		}
 
+		bool Datum::IsExternal() const
+		{
+			return mIsExternal;
+		}
+
 		void Datum::Reserve(std::uint32_t newCapacity)
 		{
 			if (mIsExternal)

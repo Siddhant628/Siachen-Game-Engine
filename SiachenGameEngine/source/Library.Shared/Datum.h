@@ -109,6 +109,11 @@ namespace SiachenGameEngine
 			*/
 			bool IsEmpty() const;
 			/**
+			* Check whether a datum is external.
+			* @return True if the datum is external.
+			*/
+			bool IsExternal() const;
+			/**
 			* Reserve a specific amount of memory for the datum and move its data to it.
 			* @param newCapacity The amount of capacity for which the memory has to be reserved.
 			*/

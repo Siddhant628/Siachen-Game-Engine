@@ -15,15 +15,39 @@ namespace SiachenGameEngine
 
 		Attributed::Attributed() : mPrescribedAttributeCount(0)
 		{
-			Populate();
+			AddInternalAttribute("this", static_cast<RTTI*>(this));
+			//Populate();
 			UpdatePrescribedAttributeInfo();
 		}
 
-
-		void Attributed::Populate()
+		Attributed::Attributed(const Attributed& rhs)
 		{
-			AddInternalAttribute("this", static_cast<RTTI*>(this));
+			DeepCopyAttributed(rhs);
 		}
+
+		Attributed& Attributed::operator=(const Attributed& rhs)
+		{
+			if (this != &rhs)
+			{
+				Clear();
+				DeepCopyAttributed(rhs);
+			}
+			return *this;
+		}
+
+		void Attributed::DeepCopyAttributed(const Attributed& rhs)
+		{
+			Scope::operator=(rhs);
+			
+			(*this)["this"].Set(this);
+
+			SetAuxillaryBegin(rhs.AuxiliaryBegin());
+		}
+
+		//void Attributed::Populate()
+		//{
+		//	AddInternalAttribute("this", static_cast<RTTI*>(this));
+		//}
 
 		void Attributed::UpdatePrescribedAttributeInfo()
 		{
@@ -49,6 +73,11 @@ namespace SiachenGameEngine
 					(*itCache).second.PushBack(attributeName);
 				}
 			}
+		}
+
+		void Attributed::SetAuxillaryBegin(std::uint32_t count)
+		{
+			mPrescribedAttributeCount = count;
 		}
 
 

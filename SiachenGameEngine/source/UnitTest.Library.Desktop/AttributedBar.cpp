@@ -14,11 +14,39 @@ namespace SiachenGameEngine
 	{
 		RTTI_DEFINITIONS(AttributedBar)
 
+		void AttributedBar::DeepCopyAttributedBar(const AttributedBar& rhs)
+		{
+			AttributedFoo::operator=(rhs);
+
+			(*this)["mFloat"].SetStorage(&mFloat, 1U);
+			(*this)["mString"].SetStorage(&mString, 1U);
+			(*this)["mVec4"].SetStorage(&mVec4, 1U);
+			(*this)["mMat4x4"].SetStorage(&mMat4x4, 1U);
+			(*this)["mRTTI"].SetStorage(&mRTTI, 1U);
+
+			SetAuxillaryBegin(rhs.AuxiliaryBegin());
+		}
+
 		AttributedBar::AttributedBar()
 		{
 			mRTTI = new Foo();
 			Populate();
 			UpdatePrescribedAttributeInfo();
+		}
+
+		AttributedBar::AttributedBar(const AttributedBar& rhs)
+		{
+			DeepCopyAttributedBar(rhs);
+		}
+
+		AttributedBar& AttributedBar::operator=(const AttributedBar& rhs)
+		{
+			if (this != &rhs)
+			{
+				Clear();
+				DeepCopyAttributedBar(rhs);
+			}
+			return *this;
 		}
 
 		AttributedBar::~AttributedBar()
