@@ -39,15 +39,11 @@ namespace SiachenGameEngine
 		{
 			Scope::operator=(rhs);
 			
-			(*this)["this"].Set(this);
+			(*this)["this"].Set(static_cast<RTTI*>(this));
 
 			SetAuxillaryBegin(rhs.AuxiliaryBegin());
 		}
 
-		//void Attributed::Populate()
-		//{
-		//	AddInternalAttribute("this", static_cast<RTTI*>(this));
-		//}
 
 		void Attributed::UpdatePrescribedAttributeInfo()
 		{

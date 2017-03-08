@@ -9,6 +9,13 @@ namespace SiachenGameEngine
 	{
 		RTTI_DEFINITIONS(AttributedBaz)
 
+		void AttributedBaz::DeepCopyAttributedBaz(const AttributedBaz& rhs)
+		{
+			Attributed::operator=(rhs);
+
+			SetAuxillaryBegin(rhs.AuxiliaryBegin());
+		}
+
 		AttributedBaz::AttributedBaz()
 		{
 			foo = new Foo(123);
@@ -18,6 +25,21 @@ namespace SiachenGameEngine
 
 			Populate();
 			UpdatePrescribedAttributeInfo();
+		}
+
+		AttributedBaz::AttributedBaz(const AttributedBaz& rhs)
+		{
+			DeepCopyAttributedBaz(rhs);
+		}
+
+		AttributedBaz & AttributedBaz::operator=(const AttributedBaz& rhs)
+		{
+			if (this != &rhs)
+			{
+				Clear();
+				DeepCopyAttributedBaz(rhs);
+			}
+			return *this;
 		}
 
 		AttributedBaz::~AttributedBaz()

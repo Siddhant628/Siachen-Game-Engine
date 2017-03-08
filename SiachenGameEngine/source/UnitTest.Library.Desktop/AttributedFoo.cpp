@@ -15,6 +15,8 @@ namespace SiachenGameEngine
 
 			(*this)["mInteger"].SetStorage(&mInteger, 1U);
 
+			(*this)["mInteger"].Set(rhs.GetInteger());
+
 			SetAuxillaryBegin(rhs.AuxiliaryBegin());
 		}
 

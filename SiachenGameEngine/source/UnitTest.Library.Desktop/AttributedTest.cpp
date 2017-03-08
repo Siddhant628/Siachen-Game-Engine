@@ -260,6 +260,7 @@ namespace UnitTestLibraryDesktop
 
 		TEST_METHOD(Attributed_CopyConstructor)
 		{
+			// Tests for attributed foo
 			AttributedFoo foo;
 			
 			foo.AppendAuxiliaryAttribute("Butter") = "Chicken";
@@ -269,6 +270,45 @@ namespace UnitTestLibraryDesktop
 			Assert::AreEqual(foo["mInteger"].Get<std::int32_t>(), 10);
 
 			AttributedFoo foo2(foo);
+
+			Assert::IsTrue(foo2["Butter"].Get<std::string>() == "Chicken");
+			Assert::AreEqual(foo.AuxiliaryBegin(), 2U);
+
+			Assert::IsTrue(foo2.IsAuxiliaryAttribute("Butter"));
+			Assert::IsTrue(foo2.IsPrescribedAttribute("mInteger"));
+			Assert::IsFalse(foo2.IsAuxiliaryAttribute("mInteger"));
+			Assert::IsFalse(foo2.IsPrescribedAttribute("Butter"));
+
+			Assert::AreEqual(foo2.GetInteger(), 10);
+			
+			foo2.SetInteger(20);
+			Assert::AreEqual(foo.GetInteger(), 10);
+			Assert::AreEqual(foo2.GetInteger(), 20);
+
+			// Tests for class derived from attributed foo
+			AttributedBar bar;
+
+			bar.AppendAuxiliaryAttribute("Chicken") = "Tikka";
+			bar.SetFloat(1.5f);
+
+			AttributedBar bar2(bar);
+
+			Assert::IsTrue(bar2.IsAuxiliaryAttribute("Chicken"));
+			Assert::AreEqual(bar2.AuxiliaryBegin(), 7U);
+
+			Assert::IsTrue(bar2.IsAuxiliaryAttribute("Chicken"));
+			Assert::IsFalse(bar2.IsPrescribedAttribute("Chicken"));
+			Assert::IsTrue(bar2.IsPrescribedAttribute("mRTTI"));
+			Assert::IsFalse(bar2.IsAuxiliaryAttribute("mRTTI"));
+
+			Assert::AreEqual(bar2.GetFloat(), 1.5f);
+			bar2.SetFloat(3.0f);
+			Assert::AreEqual(bar2.GetFloat(), 3.0f);
+			Assert::AreEqual(bar.GetFloat(), 1.5f);
+
+			// Tests for class with internal scopes
+
+			AttributedBaz baz;
 		}
 
 	private:

@@ -24,11 +24,25 @@ namespace SiachenGameEngine
 			Foo* foo;
 			Foo* foo2;
 			Scope* scope;
+
+			void DeepCopyAttributedBaz(const AttributedBaz& rhs);
 		public:
 			/**
 			* Default Constructor - Populates the scope with prescribed attributes.
 			*/
 			AttributedBaz();
+			/*
+			* Copy constructor - Performs a deep copy of rhs into this attributed baz.
+			* @param rhs The attributed baz which has to be copied into this.
+			*/
+			AttributedBaz(const AttributedBaz& rhs);
+			/*
+			* Assignment Operator - Performs a deep copy of rhs into this attributed baz.
+			* @param rhs The attributed baz which has to be deep copied into this attributed baz.
+			* @return A reference to a attributed baz with a deep copy of rhs.
+			*/
+			AttributedBaz& operator=(const AttributedBaz& rhs);
+
 			/**
 			* Destructor clears and frees all the memory reserved by the vector.
 			*/

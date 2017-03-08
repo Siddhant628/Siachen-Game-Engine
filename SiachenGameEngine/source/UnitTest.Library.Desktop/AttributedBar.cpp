@@ -24,7 +24,15 @@ namespace SiachenGameEngine
 			(*this)["mMat4x4"].SetStorage(&mMat4x4, 1U);
 			(*this)["mRTTI"].SetStorage(&mRTTI, 1U);
 
+			(*this)["mFloat"].Set(rhs.GetFloat());
+			(*this)["mString"].Set(rhs.GetString());
+			(*this)["mVec4"].Set(rhs.GetVector());
+			(*this)["mMat4x4"].Set(rhs.GetMatrix());
+			(*this)["mRTTI"].Set(rhs.mRTTI);
+
 			SetAuxillaryBegin(rhs.AuxiliaryBegin());
+			
+			DontDeleteRTTIFoo();
 		}
 
 		AttributedBar::AttributedBar()
@@ -51,7 +59,7 @@ namespace SiachenGameEngine
 
 		AttributedBar::~AttributedBar()
 		{
-			delete mRTTI;
+				delete mRTTI;
 		}
 
 		void AttributedBar::Populate()
@@ -113,6 +121,11 @@ namespace SiachenGameEngine
 		{
 			Foo* pFoo = mRTTI->As<Foo>();
 			pFoo->SetValue(value);
+		}
+		
+		void AttributedBar::DontDeleteRTTIFoo()
+		{
+				mRTTI = nullptr;
 		}
 	}
 }

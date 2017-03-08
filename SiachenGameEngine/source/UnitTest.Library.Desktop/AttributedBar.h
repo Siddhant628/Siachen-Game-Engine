@@ -21,6 +21,8 @@ namespace SiachenGameEngine
 			GameplayFramework::RTTI* mRTTI;
 
 			void DeepCopyAttributedBar(const AttributedBar& rhs);
+
+			void DontDeleteRTTIFoo();
 		public:
 			/**
 			* Default Constructor - Populates the scope with prescribed attributes.
@@ -65,7 +67,6 @@ namespace SiachenGameEngine
 			void SetMatrix(glm::mat4x4& matrix);
 
 			void SetRTTIFoo(std::int32_t value);
-
 		};
 	}
 }
