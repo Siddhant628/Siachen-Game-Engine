@@ -11,17 +11,18 @@ namespace SiachenGameEngine
 	namespace GameplayFramework
 	{
 		RTTI_DEFINITIONS(Scope)
-		
+
 		void Scope::DeepCopyScope(const Scope& rhs)
 		{
 			VectorType::Iterator end = rhs.mIndexVector.end();
 			for (VectorType::Iterator it = rhs.mIndexVector.begin(); it != end; ++it)
 			{
-				if ((*it)->second.Type() == DatumType::TableType)
+				Datum& datum = (*it)->second;
+				if (datum.Type() == DatumType::TableType)
 				{
-					for (std::uint32_t index = 0; index < (*it)->second.Size(); ++index)
+					for (std::uint32_t index = 0; index < datum.Size(); ++index)
 					{
-						Scope* scope = new Scope((*it)->second[index]);
+						Scope* scope = new Scope(datum[index]);
 						Adopt(*scope, (*it)->first);
 					}
 				}
@@ -63,9 +64,9 @@ namespace SiachenGameEngine
 
 		Datum& Scope::Append(const std::string& key)
 		{
-			TableType::Iterator it =  mTableHashmap.Find(key);
+			TableType::Iterator it = mTableHashmap.Find(key);
 			// If the pair is not present in the scope
-			if(it == mTableHashmap.end())
+			if (it == mTableHashmap.end())
 			{
 				StringDatumPair pair(key, Datum());
 				// Update the table and vector
@@ -77,23 +78,25 @@ namespace SiachenGameEngine
 
 		Scope& Scope::AppendScope(const std::string& key)
 		{
-			Datum datum;
+			bool pairInserted;
+
+			// Check if a datum of another type is present for the given key
+			TableType::Iterator it = mTableHashmap.Find(key);
+			if ((it != mTableHashmap.end()) && (it->second.Type() != DatumType::TableType))
+			{
+				throw std::runtime_error("Invalid key for appending a scope.");
+			}
 			// Create the scope to append
 			Scope* scope = new Scope;
 			scope->mParent = this;
-			// Check if the key is present in the table
-			TableType::Iterator it = mTableHashmap.Find(key);
-			if(it == mTableHashmap.end())
+			// Try inserting the pair into the scope
+			StringDatumPair pair(key, Datum());
+			it = mTableHashmap.Insert(pair, pairInserted);
+			it->second.PushBack(scope);
+			// Update index vector for the scope
+			if (pairInserted)
 			{
-				datum.PushBack(scope);
-				StringDatumPair pair(key, datum);
-				// Update the table and vector
-				it = mTableHashmap.Insert(pair);
 				mIndexVector.PushBack(&*it);
-			}
-			else
-			{
-				(it->second).PushBack(scope);
 			}
 			return *scope;
 		}
@@ -194,6 +197,13 @@ namespace SiachenGameEngine
 
 		void Scope::Adopt(Scope& childToAdopt, const std::string& nameOfChild)
 		{
+			// Check if nameOfChild is a valid key
+			TableType::Iterator it = mTableHashmap.Find(nameOfChild);
+			if ((it != mTableHashmap.end()) && (it->second.Type() != DatumType::TableType))
+			{
+				throw std::runtime_error("Invalid key for adopting.");
+			}
+			// Prevent user from adopting this scope itself
 			if (this == &childToAdopt)
 			{
 				throw std::runtime_error("Scope cannot adopt itself.");
@@ -206,15 +216,16 @@ namespace SiachenGameEngine
 		void Scope::Clear()
 		{
 			VectorType::Iterator end = mIndexVector.end();
-			
+
 			for (VectorType::Iterator it = mIndexVector.begin(); it != end; ++it)
 			{
-				if ((*it)->second.Type() == DatumType::TableType)
+				Datum& datum = (*it)->second;
+				if (datum.Type() == DatumType::TableType)
 				{
-					std::uint32_t size = (*it)->second.Size();
+					std::uint32_t size = datum.Size();
 					for (std::uint32_t i = 0; i < size; ++i)
 					{
-						delete ((*it)->second).Get<Scope*>(i);
+						delete datum.Get<Scope*>(i);
 					}
 				}
 			}
@@ -248,14 +259,14 @@ namespace SiachenGameEngine
 		{
 			return !(operator==(rhs));
 		}
-		
+
 		void Scope::GetKeys(Vector<std::string>& keysVector) const
 		{
 			keysVector.Clear();
 
 			TableType::Iterator it = mTableHashmap.begin();
 			TableType::Iterator itEnd = mTableHashmap.end();
-			
+
 			for (; it != itEnd; ++it)
 			{
 				keysVector.PushBack((*it).first);

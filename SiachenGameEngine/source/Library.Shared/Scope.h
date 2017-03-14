@@ -11,12 +11,12 @@ namespace SiachenGameEngine
 	namespace GameplayFramework
 	{
 		/*
-		* A scope is a table that creates a dictionary of name-value pairs where Datum objects are the values. 
+		* A scope is a table that creates a dictionary of name-value pairs where Datum objects are the values.
 		*/
 		class Scope : public RTTI
 		{
 			RTTI_DECLARATIONS(Scope, RTTI)
-			
+
 		private:
 
 			typedef std::pair<std::string, Containers::Datum> StringDatumPair;

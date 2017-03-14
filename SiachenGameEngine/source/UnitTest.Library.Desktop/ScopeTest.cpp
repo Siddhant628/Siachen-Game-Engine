@@ -48,16 +48,33 @@ namespace UnitTestLibraryDesktop
 
 		TEST_METHOD(Scope_AppendScope)
 		{
-			std::string stringData = "BabyScope", stringData2 = "IntegerData";
 			Scope scope;
-			std::int32_t intData = 10, intData2 = 20;
 
-			scope.Append(stringData2).PushBack(intData2);
-			scope.AppendScope(stringData).Append(stringData).PushBack(intData);
-			Assert::AreEqual(scope.Append(stringData).Get<Scope*>()->Append(stringData).Get<std::int32_t>(), intData);
+			scope["Health"] = 100;
+			auto appendExpression = [&scope] { scope.AppendScope("Health"); };
+			Assert::ExpectException<std::exception>(appendExpression);
 
-			scope.AppendScope(stringData).Append(stringData).PushBack(intData2);
-			Assert::AreEqual(scope.Append(stringData).Get<Scope*>(1)->Append(stringData).Get<std::int32_t>(), intData2);
+			Scope& scopeRef = scope.AppendScope("ChildScope");
+			scopeRef.Append("Damage1") = 10;
+			Assert::AreEqual(scope.Append("ChildScope").Get<Scope*>()->Append("Damage1").Get<std::int32_t>(), 10);
+
+			Scope& scopeRef2 = scope.AppendScope("ChildScope");
+			scopeRef2.Append("Damage2") = 20;
+			Assert::AreEqual(scope.Append("ChildScope").Get<Scope*>(1)->Append("Damage2").Get<std::int32_t>(), 20);
+
+			Vector<std::string> keys;
+			
+			scopeRef.GetKeys(keys);
+			Assert::AreEqual(keys.Size(), 1U);
+			Assert::IsTrue(keys.At(0) == "Damage1");
+
+			scopeRef2.GetKeys(keys);
+			Assert::AreEqual(keys.Size(), 1U);
+			Assert::IsTrue(keys.At(0) == "Damage2");
+
+			scope.GetKeys(keys);
+			Assert::AreEqual(keys.Size(), 2U);
+			Assert::AreEqual(scope.Append("ChildScope").Size(), 2U);
 		}
 
 		TEST_METHOD(Scope_Find)
@@ -139,6 +156,10 @@ namespace UnitTestLibraryDesktop
 			auto scopeExpression = [&scope, &stringData] {scope.Adopt(scope, stringData); };
 			Assert::ExpectException<std::exception>(scopeExpression);
 
+			Scope scope3;
+			scope3["Integer"] = 10;
+			auto scopeExpression2 = [&scope3, &scope] {scope3.Adopt(scope, "Integer"); };
+			Assert::ExpectException<std::exception>(scopeExpression2);
 		}
 
 		TEST_METHOD(Scope_GetParent)
