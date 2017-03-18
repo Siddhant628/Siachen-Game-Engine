@@ -362,12 +362,6 @@ namespace SiachenGameEngine
 			* @param numberOfElements The number of items in the external array.
 			*/
 			void SetStorage(GameplayFramework::RTTI** externalArray, std::uint32_t numberOfElements);
-			/**
-			* Associate datum with an external array.
-			* @param externalArray A pointer to the memory location where the external array starts.
-			* @param numberOfElements The number of items in the external array.
-			*/
-			void SetStorage(GameplayFramework::Scope** externalArray, std::uint32_t numberOfElements);
 
 			/**
 			* Assignment operator overload - Treats the datum as a scalar and sets its first item, changes the size if required and if possible.

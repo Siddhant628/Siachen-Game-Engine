@@ -102,17 +102,12 @@ namespace UnitTestLibraryDesktop
 
 			Scope scope;
 			scope.Append(stringData).PushBack(intData);
-			Scope* scope1 = &scope;
 
 			Datum scopeDatum;
 			scopeDatum.PushBack(&scope);
 			Datum scopeDatum2(scopeDatum);
 
 			Assert::IsTrue(scopeDatum == scopeDatum2);
-
-			scopeDatum.SetStorage(&scope1, 1);
-			Datum scopeDatum3(scopeDatum);
-			Assert::IsTrue(scopeDatum3 == scopeDatum);
 
 			// Tests for Foo (pointer type)
 
@@ -205,7 +200,6 @@ namespace UnitTestLibraryDesktop
 			// Test for tables
 
 			Scope scope, scope2;
-			Scope* scope1 = &scope;
 			scope.Append(stringData).PushBack(intData);
 
 			Datum scopeDatum;
@@ -213,10 +207,6 @@ namespace UnitTestLibraryDesktop
 			Datum scopeDatum2;
 			scopeDatum2 = scopeDatum;
 			Assert::IsTrue(scopeDatum == scopeDatum2);
-
-			scopeDatum.SetStorage(&scope1, 1);
-			Datum scopeDatum3 = scopeDatum;
-			Assert::IsTrue(scopeDatum == scopeDatum3);
 
 			// Tests for Foo (pointer type)
 
@@ -564,7 +554,6 @@ namespace UnitTestLibraryDesktop
 
 			// Tests for tables
 			Scope scope;
-			Scope* scopePtr = &scope;
 			Datum scopeDatum;
 			scopeDatum.PushBack(&scope);
 
@@ -572,10 +561,6 @@ namespace UnitTestLibraryDesktop
 			Assert::ExpectException<std::exception>(scopeExpression);
 			scopeDatum.Reserve(5);
 			Assert::IsTrue(&scope == scopeDatum.Get<Scope*>());
-
-			scopeDatum.SetStorage(&scopePtr, 1);
-			auto scopeExpression2 = [&scopeDatum] { scopeDatum.Reserve(0); };
-			Assert::ExpectException<std::exception>(scopeExpression2);
 
 			// Tests for Foo (pointer type)
 			Foo foo(10);
@@ -817,15 +802,10 @@ namespace UnitTestLibraryDesktop
 
 			// Tests for tables
 			Scope scope;
-			Scope* scopePtr = &scope;
 			Datum scopeDatum;
 			scopeDatum.PushBack(&scope);
 			scopeDatum.Clear();
 			Assert::IsTrue(scopeDatum.IsEmpty());
-
-			scopeDatum.SetStorage(&scopePtr, 1);
-			auto scopeExpression = [&scopeDatum] { scopeDatum.Clear(); };
-			Assert::ExpectException<std::exception>(scopeExpression);
 
 			// Tests for Foo (pointer type)
 
@@ -996,7 +976,6 @@ namespace UnitTestLibraryDesktop
 			// Tests for tables
 			Scope scope, scope2;
 			scope2["IntegerData"] = 10;
-			Scope* scopePtr = &scope;
 
 			auto scopeExpression = [&pointerDatum, &scope] { pointerDatum.Set(&scope); };
 			Assert::ExpectException<std::exception>(scopeExpression);
@@ -1007,7 +986,6 @@ namespace UnitTestLibraryDesktop
 			scopeDatum.Set(&scope2);
 			Assert::IsTrue(&scope2 == scopeDatum.Get<Scope*>());
 
-			scopeDatum.SetStorage(&scopePtr, 1);
 			auto scopeExpression2 = [&scopeDatum, &scope] { scopeDatum.Set(&scope, 1); };
 			Assert::ExpectException<std::exception>(scopeExpression2);
 
@@ -1602,17 +1580,6 @@ namespace UnitTestLibraryDesktop
 
 			auto matExpression = [&unknownDatum, &matData] { unknownDatum.SetStorage(&matData, 1); };
 			Assert::ExpectException<std::exception>(matExpression);
-
-			// Tests for tables
-			Scope scope;
-			Scope* scopePtr = &scope;
-			Datum scopeDatum;
-			scopeDatum.PushBack(&scope);
-
-			scopeDatum.SetStorage(&scopePtr, 1);
-
-			auto scopeExpression = [&unknownDatum, &scopePtr] { unknownDatum.SetStorage(&scopePtr, 1); };
-			Assert::ExpectException<std::exception>(scopeExpression);
 
 			// Tests for Foo (pointer type)
 

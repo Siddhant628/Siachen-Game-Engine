@@ -690,21 +690,6 @@ namespace SiachenGameEngine
 			mData.r = externalArray;
 		}
 
-		void Datum::SetStorage(GameplayFramework::Scope** externalArray, std::uint32_t numberOfElements)
-		{
-			if (mDatumType != DatumType::TableType || numberOfElements == 0)
-			{
-				throw std::runtime_error("Datum cannot be assigned to an external array.");
-			}
-			// Clear and free the memory allocated to the datum previously
-			if (!mIsExternal) ClearAndFree();
-			// Update member variables
-			mIsExternal = true;
-			mSize = numberOfElements;
-			mCapacity = numberOfElements;
-			mData.sc = externalArray;
-		}
-
 
 		Datum& Datum::operator=(const std::int32_t rhs)
 		{
