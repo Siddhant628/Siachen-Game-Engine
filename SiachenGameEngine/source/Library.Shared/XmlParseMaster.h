@@ -23,11 +23,11 @@ namespace SiachenGameEngine
 				/**
 				* The parse master associated with this object.
 				*/
-				XmlParseMaster* parseMaster;
+				XmlParseMaster* mParseMaster;
 				/**
 				* The depth due to nesting of elements.
 				*/
-				std::uint32_t depth;
+				std::uint32_t mDepth;
 			public:
 				/**
 				* Default Constructor - Initializes values.
@@ -39,13 +39,13 @@ namespace SiachenGameEngine
 				*/
 				virtual SharedData* Clone() = 0;
 				/**
-				* Set the value of the parseMaster.
+				* Set the address of the mParseMaster.
 				* @param The address of the XmlParseMaster to set.
 				*/
 				void SetXmlParseMaster(const XmlParseMaster* xmlParseMaster);
 				/**
-				* Get the value of the parseMaster.
-				* @return The address of the parseMaster.
+				* Get the address of the mParseMaster.
+				* @return The address of the mParseMaster.
 				*/
 				XmlParseMaster* GetXmlParseMaster() const;
 				/**
@@ -62,10 +62,11 @@ namespace SiachenGameEngine
 				*/
 				std::uint32_t Depth() const;
 			};
-			// TODO Understand
+			// TODO Implement
 			XmlParseMaster(SharedData* sharedData);
-			// TODO Understand
+			// TODO Implement. Delete the helpers of the clones since they own them.
 			~XmlParseMaster();
+			// TODO Implement. How would copying work for the XML Parser object since it doesn't have support for it. Making a new one with identical handlers, etc?
 			/**
 			* Make a duplicate of this object which is ready to parse a fresh file. 
 			* @return Address of the duplicate of this object.
@@ -79,13 +80,14 @@ namespace SiachenGameEngine
 			/**
 			* Remove the parsing helper from the helper list.
 			* @param helper A reference to the parsing helper which has to be removed from the helper list.
+			* @return True if the helper was successfully removed from the list.
 			*/
-			void RemoveHelper(const IXmlParseHelper& helper);
-			// TODO Understand 
-			void Parse();
-			// TODO Understand
-			void ParseFromFile();
-			// TODO Understand
+			bool RemoveHelper(const IXmlParseHelper& helper);
+			// TODO Implement 
+			void Parse(const char* buffer, std::uint32_t length);
+			// TODO Implement
+			void ParseFromFile(const std::string& fileName);
+			// TODO Implement
 			const std::string& GetFileName() const;
 			/**
 			* Get the address of associated shared data.
@@ -98,20 +100,40 @@ namespace SiachenGameEngine
 			*/
 			void SetSharedData(const SharedData* sharedData);
 		private:
-			// TODO Check Is it needed? Comment.
-			bool isClone;
+			// TODO Check Needed?
+			bool mIsClone;
 			/**
 			* Shared data associated with this object.
 			*/
-			SharedData* sharedData;
+			SharedData* mSharedData;
+			/**
+			* The name of the file being parsed.
+			*/
+			std::string mFileName;
 			/**
 			* A vector of parsing helpers associated with this object.
 			*/
-			SiachenGameEngine::Containers::Vector<IXmlParseHelper*> helperList;
-			// TODO Understand
-			void StartElementHandler();
-			void EndElementHandler();
-			void CharElementHandler();
+			SiachenGameEngine::Containers::Vector<IXmlParseHelper*> mHelperList;
+
+			/**
+			* Handles the start of an element in XML.
+			* @param userData  A value to be passed to each handler during the parse.
+			* @param element The name of the element in XML.
+			* @param attribute An array of attribute name-value pairs.
+			*/
+			static void StartElementHandler(void* userData, const char* element, const char** attribute);
+			/**
+			* Handles the end of an element in XML.
+			* @param userData  A value to be passed to each handler during the parse.
+			* @param element The name of the element in XML.
+			*/
+			static void EndElementHandler(void* userData, const char* element);
+			/**
+			* Handles the character data in XML.
+			* @param userData  A value to be passed to each handler during the parse.
+			* @param length The number of bytes in the data.
+			*/
+			static void CharElementHandler(void* userData, const char* str, std::int32_t length);
 		};
 	}
 }

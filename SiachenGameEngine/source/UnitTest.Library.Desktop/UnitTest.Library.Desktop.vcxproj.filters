@@ -51,6 +51,9 @@
     <ClCompile Include="AttributedBaz.cpp">
       <Filter>Helper Classes</Filter>
     </ClCompile>
+    <ClCompile Include="XmlParseMasterTest.cpp">
+      <Filter>Test Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Helper Classes">
