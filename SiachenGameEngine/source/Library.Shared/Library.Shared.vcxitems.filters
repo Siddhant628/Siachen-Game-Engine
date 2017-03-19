@@ -7,6 +7,9 @@
     <Filter Include="Gameplay Framework">
       <UniqueIdentifier>{36df8374-6266-4efe-86a1-e54a360887de}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Parsers">
+      <UniqueIdentifier>{2835c6fb-b0af-45b4-9a8a-fc8507931561}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)pch.cpp" />
@@ -21,6 +24,12 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Attributed.cpp">
       <Filter>Gameplay Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)XmlParseMaster.cpp">
+      <Filter>Parsers</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)IXmlParseHelper.cpp">
+      <Filter>Parsers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -45,6 +54,12 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Attributed.h">
       <Filter>Gameplay Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)XmlParseMaster.h">
+      <Filter>Parsers</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)IXmlParseHelper.h">
+      <Filter>Parsers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
