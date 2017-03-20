@@ -40,6 +40,10 @@ namespace SiachenGameEngine
 				*/
 				virtual ~SharedData() = default;
 				/**
+				* Initializes the shared memory object for use/reuse.
+				*/
+				virtual void Initialize();
+				/**
 				* Get a SharedData object with the same internal state as this one, but ready for a fresh file.
 				* @return Address of the cloned SharedData object.
 				*/
@@ -68,9 +72,9 @@ namespace SiachenGameEngine
 				*/
 				std::uint32_t Depth() const;
 			};
-			// TODO Implement
+			
 			XmlParseMaster(SharedData* sharedData);
-			// TODO Implement. Delete the helpers of the clones since they own them.
+			// TODO Delete the helpers of the clones since they own them.
 			~XmlParseMaster();
 			// TODO Implement. How would copying work for the XML Parser object since it doesn't have support for it. Making a new one with identical handlers, etc?
 			/**
@@ -89,11 +93,23 @@ namespace SiachenGameEngine
 			* @return True if the helper was successfully removed from the list.
 			*/
 			bool RemoveHelper(const IXmlParseHelper& helper);
-			// TODO Implement 
+			/**
+			* Parse a character string buffer of a specified length.
+			* @param buffer A character array containing the buffer which has to be parsed.
+			* @param length The number of bytes in the buffer.
+			* @param lastChunk Set to true if this is the last chunk of the data which has to be parsed.
+			*/
 			void Parse(const char* buffer, std::uint32_t length, bool lastChunk);
-			// TODO Implement
+			/**
+			* Parse the file with the given name.
+			* @param fileName Name (with relative path) of the file to be parsed.
+			*/
 			void ParseFromFile(const std::string& fileName);
-			// TODO Implement
+			// TODO Confirm Entire path or relative path?
+			/**
+			* Get the path of the file parsed.
+			* @return Path of the file being parsed.
+			*/
 			const std::string& GetFileName() const;
 			/**
 			* Get the address of associated shared data.
@@ -106,9 +122,13 @@ namespace SiachenGameEngine
 			*/
 			void SetSharedData(const SharedData* sharedData);
 		private:
-			
+			/**
+			* The central data structure for the Expat API.
+			*/
 			XML_Parser mParser;
-			// TODO Check Needed?
+			/**
+			* Whether the master parser is a cloned one.
+			*/
 			bool mIsClone;
 			/**
 			* Shared data associated with this object.

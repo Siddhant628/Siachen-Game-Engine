@@ -213,6 +213,7 @@
     <ClInclude Include="Foo.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="SampleXmlParseHelper.h" />
+    <ClInclude Include="SampleXmlSharedData.h" />
     <ClInclude Include="ToStringTemplates.h" />
   </ItemGroup>
   <ItemGroup>
@@ -234,6 +235,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="SampleXmlParseHelper.cpp" />
+    <ClCompile Include="SampleXmlSharedData.cpp" />
     <ClCompile Include="ScopeTest.cpp" />
     <ClCompile Include="SListIteratorTest.cpp" />
     <ClCompile Include="SListTest.cpp">

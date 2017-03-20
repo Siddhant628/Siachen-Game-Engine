@@ -1,10 +1,13 @@
 #include "pch.h"
 #include "CppUnitTest.h"
 #include "XmlParseMaster.h"
+#include "SampleXmlParseHelper.h"
+#include "SampleXmlSharedData.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 using namespace SiachenGameEngine::Parsers;
+using namespace SiachenGameEngine::HelperClasses;
 
 namespace UnitTestLibraryDesktop
 {
@@ -30,7 +33,20 @@ namespace UnitTestLibraryDesktop
 
 		TEST_METHOD(First)
 		{
+			SampleXmlSharedData sharedData;
+			XmlParseMaster parseMaster(&sharedData);
+
+			SampleXmlParseHelper sampleHelper;
+			sampleHelper.Initialize(&sharedData);
+
+			parseMaster.AddHelper(sampleHelper);
 			
+			parseMaster.ParseFromFile("../../../XmlWithAttributes.xml");
+
+			Assert::IsTrue(sharedData.GetStringPairVector().At(0).first == "Siddhant");
+			Assert::IsTrue(sharedData.GetStringPairVector().At(0).second == "Grover");
+			Assert::IsTrue(sharedData.GetStringPairVector().At(1).first == "Butter");
+			Assert::IsTrue(sharedData.GetStringPairVector().At(1).second == "Chicken");
 		}
 
 	private:

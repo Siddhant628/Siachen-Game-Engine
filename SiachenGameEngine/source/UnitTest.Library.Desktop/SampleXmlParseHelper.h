@@ -1,7 +1,7 @@
 #pragma once
 #include "IXmlParseHelper.h"
 #include "XmlParseMaster.h"
-
+#include "SampleXmlSharedData.h"
 
 namespace SiachenGameEngine
 {
@@ -10,6 +10,9 @@ namespace SiachenGameEngine
 		class SampleXmlParseHelper final : public Parsers::IXmlParseHelper
 		{
 		public:
+			SampleXmlParseHelper();
+
+			~SampleXmlParseHelper() = default;
 			/**
 			* Initializes this helper.
 			*/
@@ -39,6 +42,7 @@ namespace SiachenGameEngine
 			*/
 			virtual IXmlParseHelper* Clone() override;
 		private:
+			SampleXmlSharedData* mSharedData;
 		};
 	}
 }

@@ -10,7 +10,6 @@ namespace SiachenGameEngine
 {
 	namespace Parsers
 	{
-		// TODO Test
 		RTTI_DEFINITIONS(XmlParseMaster::SharedData)
 			
 		XmlParseMaster::XmlParseMaster(SharedData* sharedData) : mSharedData(sharedData), mIsClone(false)
@@ -36,6 +35,11 @@ namespace SiachenGameEngine
 
 		void XmlParseMaster::AddHelper(const IXmlParseHelper& helper)
 		{
+			// Disallow adding of helpers to cloned master parsers
+			if (mIsClone)
+			{
+				return;
+			}
 			IXmlParseHelper* helperToAdd = const_cast<IXmlParseHelper*>(&helper);
 			mHelperList.PushBack(helperToAdd);
 		}
@@ -57,6 +61,9 @@ namespace SiachenGameEngine
 			{
 				done = 0;
 			}
+			// Actual parsing of the file
+			// TODO Confirm Should user be calling this method only? If they are reusing a shared data object. Or have some bool to check if the data empty.
+			//mSharedData->Initialize();
 			if (!XML_Parse(mParser, buffer, length, done))
 			{
 				throw std::runtime_error("Fatal error detected.");
@@ -65,20 +72,18 @@ namespace SiachenGameEngine
 
 		void XmlParseMaster::ParseFromFile(const std::string& fileName)
 		{
-			// TODO Parse or parse from file should be calling the initialize method on the shared data.
 			mFileName = fileName;
 			
 			std::ifstream ifs(fileName);
 			if (!ifs)
 			{
-				// TODO Check and confirm
 				throw std::runtime_error("File doesn't exist.");
 			}
 
 			std::string content;
 			content.assign(std::istreambuf_iterator<char>(ifs), std::istreambuf_iterator<char>());
 			// TODO Confirm
-			std::uint32_t bufferLength = static_cast<std::uint32_t>(content.size()) + 1;
+			std::uint32_t bufferLength = static_cast<std::uint32_t>(content.size());
 			
 			Parse(content.c_str(), bufferLength, true);
 		}
@@ -163,6 +168,12 @@ namespace SiachenGameEngine
 		XmlParseMaster::SharedData::SharedData() : mDepth(0), mParseMaster(nullptr)
 		{
 
+		}
+
+		void XmlParseMaster::SharedData::Initialize()
+		{
+			mParseMaster = nullptr;
+			mDepth = 0;
 		}
 
 		XmlParseMaster::SharedData* XmlParseMaster::SharedData::Clone()

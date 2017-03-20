@@ -1,6 +1,4 @@
-<Class Name = "Prog">
-	<Students>
-		<Student FirstName = "Siddhant" LastName = "Grover"/>
-		<Student FirstName = "Butter" LastName = "Chicken"/>
-	</Students>
+<Class Name = "Programming">
+	<Student FirstName = "Siddhant" LastName = "Grover"/>
+	<Student FirstName = "Butter" LastName = "Chicken"/>
 </Class>

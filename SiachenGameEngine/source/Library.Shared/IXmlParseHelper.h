@@ -14,14 +14,18 @@ namespace SiachenGameEngine
 		class IXmlParseHelper
 		{
 		public:
-			// TODO Comment
-			IXmlParseHelper();
-			// TODO Comment
-			~IXmlParseHelper() =default;
+			/**
+			* Default constructor for the abstract base class.
+			*/
+			IXmlParseHelper() = default;
+			/**
+			* Default destructor for the abstract base class.
+			*/
+			virtual ~IXmlParseHelper() =default;
 			/**
 			* Initializes this helper.
 			*/
-			virtual void Initialize(XmlParseMaster::SharedData* sharedData);
+			virtual void Initialize(XmlParseMaster::SharedData* sharedData) = 0;
 			/**
 			* Attempts to handle the element start.
 			* @param elementName The name of the element.
@@ -46,15 +50,6 @@ namespace SiachenGameEngine
 			* @return A pointer to a duplicate of this helper.
 			*/
 			virtual IXmlParseHelper* Clone() = 0;
-			/**
-			* Get the data shared with the master and other helpers.
-			* @return A pointer to the shared data.
-			*/
-			XmlParseMaster::SharedData* GetSharedData() const;
-
-			// TODO Understand Hint: What qualifier should the destructor have?
-		private:
-			XmlParseMaster::SharedData* mSharedData;
 		};
 	}
 }
