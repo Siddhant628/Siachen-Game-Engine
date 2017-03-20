@@ -1,6 +1,5 @@
 #pragma once
 #include "RTTI.h"
-#include "IXmlParseHelper.h"
 #include"Vector.h"
 #include "expat.h"
 #include "HashMap.h"
@@ -9,6 +8,7 @@ namespace SiachenGameEngine
 {
 	namespace Parsers
 	{
+		class IXmlParseHelper;
 		/**
 		* An XML parser class which wraps Expat functionality for parsing it.
 		*/
@@ -141,7 +141,7 @@ namespace SiachenGameEngine
 			* @param userData  A value to be passed to each handler during the parse.
 			* @param length The number of bytes in the data.
 			*/
-			static void CharElementHandler(void* userData, const char* str, std::int32_t length);
+			static void CharDataHandler(void* userData, const char* str, std::int32_t length);
 			/**
 			* Get the hashmap of attribute name-value pairs from the array of name-value pairs. 
 			* attributePairs An array of name-value pairs, terminated by 0s; names and values are 0 terminated.

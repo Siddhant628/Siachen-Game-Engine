@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 #include "HashMap.h"
+#include "IXmlParseHelper.h"
+#include "XmlParseMaster.h"
 
 namespace SiachenGameEngine
 {
@@ -12,37 +14,47 @@ namespace SiachenGameEngine
 		class IXmlParseHelper
 		{
 		public:
+			// TODO Comment
+			IXmlParseHelper();
+			// TODO Comment
+			~IXmlParseHelper() =default;
 			/**
 			* Initializes this helper.
 			*/
-			virtual void Initialize() = 0;
+			virtual void Initialize(XmlParseMaster::SharedData* sharedData);
 			/**
 			* Attempts to handle the element start.
 			* @param elementName The name of the element.
 			* @param attributeHashmap A hashmap containing attribute name-value pairs.
 			* @return True if the handler does handle this element.
 			*/
-			virtual bool StartElementHandler(const char* elementName, Containers::HashMap<std::string, std::string> attributeHashmap) = 0;
+			virtual bool StartElementHandler(const std::string& elementName, Containers::HashMap<std::string, std::string> attributeHashmap) = 0;
 			/**
 			* Attempts to handle the element end.
 			* @param elementName The name of the element.
 			* @return True if the handler does handle this element.
 			*/
-			virtual bool EndElementHandler(const char* elementName) = 0;
+			virtual bool EndElementHandler(const std::string& elementName) = 0;
 			/**
 			* Given a string buffer of character data, attempt to handle the data.
 			* @param characterData The buffer of data which has to be handled.
 			* @param size The number of bytes in the character data buffer.
-			* @return True if the handler does handle the character data.
 			*/
-			virtual bool CharDataHandler(const char* characterData, std::int32_t size) = 0;
+			virtual void CharDataHandler(const char* characterData, std::uint32_t size) = 0;
 			/**
 			* Makes a duplicate of this helper.
 			* @return A pointer to a duplicate of this helper.
 			*/
 			virtual IXmlParseHelper* Clone() = 0;
+			/**
+			* Get the data shared with the master and other helpers.
+			* @return A pointer to the shared data.
+			*/
+			XmlParseMaster::SharedData* GetSharedData() const;
 
 			// TODO Understand Hint: What qualifier should the destructor have?
+		private:
+			XmlParseMaster::SharedData* mSharedData;
 		};
 	}
 }

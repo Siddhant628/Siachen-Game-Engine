@@ -1,39 +1,40 @@
 #include "pch.h"
 #include "SampleXmlParseHelper.h"
 
+
 namespace SiachenGameEngine
 {
 	namespace HelperClasses
 	{
-		void SampleXmlParseHelper::Initialize()
+		void SampleXmlParseHelper::Initialize(Parsers::XmlParseMaster::SharedData* sharedData)
 		{
-
+			IXmlParseHelper::Initialize(sharedData);
 		}
 
-		bool SampleXmlParseHelper::StartElementHandler(const char* elementName, Containers::HashMap<std::string, std::string> attributeHashmap)
+		bool SampleXmlParseHelper::StartElementHandler(const std::string& elementName, Containers::HashMap<std::string, std::string> attributeHashmap)
 		{
-			if (!strcmp(elementName, "Students"))
+			if (elementName == "Students")
 			{
 				return true;
 			}
-			else if (!strcmp(elementName, "Student"))
+			else if (elementName == "Student")
 			{
+
 				return true;
 			}
 			return false;
 		}
 
-		bool SampleXmlParseHelper::EndElementHandler(const char* elementName)
+		bool SampleXmlParseHelper::EndElementHandler(const std::string& elementName)
 		{
 			elementName;
 			return false;
 		}
 
-		bool SampleXmlParseHelper::CharDataHandler(const char* characterData, std::int32_t size)
+		void SampleXmlParseHelper::CharDataHandler(const char* characterData, std::uint32_t size)
 		{
 			characterData;
 			size;
-			return false;
 		}
 
 		Parsers::IXmlParseHelper* SampleXmlParseHelper::Clone()

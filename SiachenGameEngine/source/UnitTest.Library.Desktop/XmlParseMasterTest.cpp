@@ -30,8 +30,7 @@ namespace UnitTestLibraryDesktop
 
 		TEST_METHOD(First)
 		{
-			XmlParseMaster::SharedData sharedData;
-			XmlParseMaster parseMaster(&sharedData);
+			
 		}
 
 	private:

@@ -1,6 +1,7 @@
 #include "pch.h"
-#include "XmlParseMaster.h"
 #include "expat.h"
+#include "XmlParseMaster.h"
+#include "IXmlParseHelper.h"
 
 #include <utility>
 #include <fstream>
@@ -20,7 +21,7 @@ namespace SiachenGameEngine
 			mParser = XML_ParserCreate(NULL);
 			XML_SetUserData(mParser, this);
 			XML_SetElementHandler(mParser, StartElementHandler, EndElementHandler);
-			XML_SetCharacterDataHandler(mParser, CharElementHandler);
+			XML_SetCharacterDataHandler(mParser, CharDataHandler);
 		}
 
 		XmlParseMaster::~XmlParseMaster()
@@ -64,6 +65,7 @@ namespace SiachenGameEngine
 
 		void XmlParseMaster::ParseFromFile(const std::string& fileName)
 		{
+			// TODO Parse or parse from file should be calling the initialize method on the shared data.
 			mFileName = fileName;
 			
 			std::ifstream ifs(fileName);
@@ -100,13 +102,14 @@ namespace SiachenGameEngine
 		{
 			XmlParseMaster* parser = reinterpret_cast<XmlParseMaster*>(userData);
 			std::uint32_t helperCount = parser->mHelperList.Size();
+			std::string elementString(element);
 
 			Containers::HashMap<std::string, std::string> attributeHashmap;
 
 			for (std::uint32_t i = 0; i < helperCount; ++i)
 			{
 				parser->GetAttributePairHashmap(attribute, attributeHashmap);
-				if (parser->mHelperList.At(i)->StartElementHandler(element, attributeHashmap))
+				if (parser->mHelperList.At(i)->StartElementHandler(elementString, attributeHashmap))
 				{
 					break;
 				}
@@ -117,28 +120,30 @@ namespace SiachenGameEngine
 		{
 			XmlParseMaster* parser = reinterpret_cast<XmlParseMaster*>(userData);
 			std::uint32_t helperCount = parser->mHelperList.Size();
+			std::string elementString(element);
 
 			for (std::uint32_t i = 0; i < helperCount; ++i)
 			{
-				if (parser->mHelperList.At(i)->EndElementHandler(element))
+				if (parser->mHelperList.At(i)->EndElementHandler(elementString))
 				{
 					break;
 				}
 			}
 		}
 
-		void XmlParseMaster::CharElementHandler(void* userData, const char* str, std::int32_t length)
+		// TODO Implement
+		void XmlParseMaster::CharDataHandler(void* userData, const char* str, std::int32_t length)
 		{
 			XmlParseMaster* parser = reinterpret_cast<XmlParseMaster*>(userData);
-			std::uint32_t helperCount = parser->mHelperList.Size();
+			parser;
+			str;
+			length;
+			//std::uint32_t helperCount = parser->mHelperList.Size();
 
-			for (std::uint32_t i = 0; i < helperCount; ++i)
-			{
-				if (parser->mHelperList.At(i)->CharDataHandler(str, length))
-				{
-					break;
-				}
-			}
+			//for (std::uint32_t i = 0; i < helperCount; ++i)
+			//{
+			//	parser->mHelperList.At(i)->CharDataHandler(str, length);
+			//}
 		}
 
 		void XmlParseMaster::GetAttributePairHashmap(const char ** attributePairs, Containers::HashMap<std::string, std::string>& attributeMap)
