@@ -11,7 +11,6 @@ namespace UnitTestLibraryDesktop
 	TEST_CLASS(XmlParseMasterTest)
 	{
 	public:
-
 		TEST_METHOD_INITIALIZE(Initialize)
 		{
 			_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF);
@@ -31,7 +30,8 @@ namespace UnitTestLibraryDesktop
 
 		TEST_METHOD(First)
 		{
-
+			XmlParseMaster::SharedData sharedData;
+			XmlParseMaster parseMaster(&sharedData);
 		}
 
 	private:

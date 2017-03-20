@@ -2,6 +2,8 @@
 #include "RTTI.h"
 #include "IXmlParseHelper.h"
 #include"Vector.h"
+#include "expat.h"
+#include "HashMap.h"
 
 namespace SiachenGameEngine
 {
@@ -10,7 +12,7 @@ namespace SiachenGameEngine
 		/**
 		* An XML parser class which wraps Expat functionality for parsing it.
 		*/
-		class XmlParseMaster
+		class XmlParseMaster final
 		{
 		public:
 			/**
@@ -34,10 +36,14 @@ namespace SiachenGameEngine
 				*/
 				SharedData();
 				/**
+				* Destructor
+				*/
+				virtual ~SharedData() = default;
+				/**
 				* Get a SharedData object with the same internal state as this one, but ready for a fresh file.
 				* @return Address of the cloned SharedData object.
 				*/
-				virtual SharedData* Clone() = 0;
+				virtual SharedData* Clone();
 				/**
 				* Set the address of the mParseMaster.
 				* @param The address of the XmlParseMaster to set.
@@ -84,7 +90,7 @@ namespace SiachenGameEngine
 			*/
 			bool RemoveHelper(const IXmlParseHelper& helper);
 			// TODO Implement 
-			void Parse(const char* buffer, std::uint32_t length);
+			void Parse(const char* buffer, std::uint32_t length, bool lastChunk);
 			// TODO Implement
 			void ParseFromFile(const std::string& fileName);
 			// TODO Implement
@@ -100,6 +106,8 @@ namespace SiachenGameEngine
 			*/
 			void SetSharedData(const SharedData* sharedData);
 		private:
+			
+			XML_Parser mParser;
 			// TODO Check Needed?
 			bool mIsClone;
 			/**
@@ -134,6 +142,12 @@ namespace SiachenGameEngine
 			* @param length The number of bytes in the data.
 			*/
 			static void CharElementHandler(void* userData, const char* str, std::int32_t length);
+			/**
+			* Get the hashmap of attribute name-value pairs from the array of name-value pairs. 
+			* attributePairs An array of name-value pairs, terminated by 0s; names and values are 0 terminated.
+			* attributeMap Output parameter. A hashmap containing all the name value pairs in attributePairs.
+			*/
+			void GetAttributePairHashmap(const char** attributePairs, Containers::HashMap<std::string, std::string>& attributeMap);
 		};
 	}
 }

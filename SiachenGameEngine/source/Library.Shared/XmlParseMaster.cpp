@@ -2,6 +2,7 @@
 #include "XmlParseMaster.h"
 #include "expat.h"
 
+#include <utility>
 #include <fstream>
 
 namespace SiachenGameEngine
@@ -16,15 +17,15 @@ namespace SiachenGameEngine
 			// Initialize variables
 			sharedData->SetXmlParseMaster(this);
 			// Create an Expat object and register call backs
-			XML_Parser parser = XML_ParserCreate(nullptr);
-			XML_SetUserData(parser, this);
-			XML_SetElementHandler(parser, StartElementHandler, EndElementHandler);
-			XML_SetCharacterDataHandler(parser, CharElementHandler);
+			mParser = XML_ParserCreate(NULL);
+			XML_SetUserData(mParser, this);
+			XML_SetElementHandler(mParser, StartElementHandler, EndElementHandler);
+			XML_SetCharacterDataHandler(mParser, CharElementHandler);
 		}
 
 		XmlParseMaster::~XmlParseMaster()
 		{
-
+			XML_ParserFree(mParser);
 		}
 
 		XmlParseMaster* XmlParseMaster::Clone()
@@ -44,6 +45,23 @@ namespace SiachenGameEngine
 			return mHelperList.Remove(helperToRemove);
 		}
 
+		void XmlParseMaster::Parse(const char* buffer, std::uint32_t length, bool lastChunk)
+		{
+			std::int32_t done;
+			if (lastChunk)
+			{
+				done = 1;
+			}
+			else
+			{
+				done = 0;
+			}
+			if (!XML_Parse(mParser, buffer, length, done))
+			{
+				throw std::runtime_error("Fatal error detected.");
+			}
+		}
+
 		void XmlParseMaster::ParseFromFile(const std::string& fileName)
 		{
 			mFileName = fileName;
@@ -57,10 +75,15 @@ namespace SiachenGameEngine
 
 			std::string content;
 			content.assign(std::istreambuf_iterator<char>(ifs), std::istreambuf_iterator<char>());
-
-			std::uint32_t bufferLength = content.size() + 1;
+			// TODO Confirm
+			std::uint32_t bufferLength = static_cast<std::uint32_t>(content.size()) + 1;
 			
-			Parse(content.c_str(), bufferLength);
+			Parse(content.c_str(), bufferLength, true);
+		}
+
+		const std::string & XmlParseMaster::GetFileName() const
+		{
+			return mFileName;
 		}
 
 		XmlParseMaster::SharedData* XmlParseMaster::GetSharedData() const
@@ -78,9 +101,12 @@ namespace SiachenGameEngine
 			XmlParseMaster* parser = reinterpret_cast<XmlParseMaster*>(userData);
 			std::uint32_t helperCount = parser->mHelperList.Size();
 
+			Containers::HashMap<std::string, std::string> attributeHashmap;
+
 			for (std::uint32_t i = 0; i < helperCount; ++i)
 			{
-				if (parser->mHelperList.At(i)->StartElementHandler(element, attribute))
+				parser->GetAttributePairHashmap(attribute, attributeHashmap);
+				if (parser->mHelperList.At(i)->StartElementHandler(element, attributeHashmap))
 				{
 					break;
 				}
@@ -115,9 +141,28 @@ namespace SiachenGameEngine
 			}
 		}
 
+		void XmlParseMaster::GetAttributePairHashmap(const char ** attributePairs, Containers::HashMap<std::string, std::string>& attributeMap)
+		{
+			attributeMap.Clear();
+
+			std::string attributeName;
+			std::string attributeValue;
+			for (std::uint32_t i = 0; attributePairs[i]; i += 2)
+			{
+				attributeName = attributePairs[i];
+				attributeValue = attributePairs[i + 1];
+				attributeMap.Insert(std::make_pair(attributeName, attributeValue));
+			}
+		}
+
 		XmlParseMaster::SharedData::SharedData() : mDepth(0), mParseMaster(nullptr)
 		{
 
+		}
+
+		XmlParseMaster::SharedData* XmlParseMaster::SharedData::Clone()
+		{
+			return nullptr;
 		}
 
 		void XmlParseMaster::SharedData::SetXmlParseMaster(const XmlParseMaster* xmlParseMaster)

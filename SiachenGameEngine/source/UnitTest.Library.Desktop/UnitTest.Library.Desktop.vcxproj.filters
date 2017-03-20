@@ -15,6 +15,9 @@
     <ClInclude Include="AttributedBaz.h">
       <Filter>Helper Classes</Filter>
     </ClInclude>
+    <ClInclude Include="SampleXmlParseHelper.h">
+      <Filter>Helper Classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -53,6 +56,9 @@
     </ClCompile>
     <ClCompile Include="XmlParseMasterTest.cpp">
       <Filter>Test Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="SampleXmlParseHelper.cpp">
+      <Filter>Helper Classes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
