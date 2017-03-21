@@ -12,10 +12,10 @@ namespace SiachenGameEngine
 	{
 		RTTI_DEFINITIONS(XmlParseMaster::SharedData)
 			
-		XmlParseMaster::XmlParseMaster(SharedData* sharedData) : mSharedData(sharedData), mIsClone(false), mCurrentHelper(nullptr)
+		XmlParseMaster::XmlParseMaster(SharedData& sharedData) : mSharedData(&sharedData), mIsClone(false), mCurrentHelper(nullptr)
 		{
 			// Initialize variables
-			sharedData->SetXmlParseMaster(this);
+			sharedData.SetXmlParseMaster(*this);
 			// Create an Expat object and register call backs
 			mParser = XML_ParserCreate(NULL);
 			XML_SetUserData(mParser, this);
@@ -38,12 +38,12 @@ namespace SiachenGameEngine
 			// Disallow adding of helpers to cloned master parsers
 			if (mIsClone)
 			{
-				return;
+				throw std::runtime_error("Cannot add helpers to a cloned parser.");
 			}
 			IXmlParseHelper* helperToAdd = const_cast<IXmlParseHelper*>(&helper);
 			mHelperList.PushBack(helperToAdd);
 			// Initialize the helper added
-			helperToAdd->Initialize(mSharedData);
+			helperToAdd->Initialize(*mSharedData);
 
 		}
 
@@ -88,7 +88,7 @@ namespace SiachenGameEngine
 			Parse(content.c_str(), bufferLength, true);
 		}
 
-		const std::string & XmlParseMaster::GetFileName() const
+		const std::string& XmlParseMaster::GetFileName() const
 		{
 			return mFileName;
 		}
@@ -173,9 +173,9 @@ namespace SiachenGameEngine
 			mDepth = 0;
 		}
 
-		void XmlParseMaster::SharedData::SetXmlParseMaster(const XmlParseMaster* xmlParseMaster)
+		void XmlParseMaster::SharedData::SetXmlParseMaster(XmlParseMaster& xmlParseMaster)
 		{
-			mParseMaster = const_cast<XmlParseMaster*>(xmlParseMaster);
+			mParseMaster = &xmlParseMaster;
 		}
 
 		XmlParseMaster* XmlParseMaster::SharedData::GetXmlParseMaster() const

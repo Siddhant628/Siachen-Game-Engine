@@ -34,11 +34,9 @@ namespace UnitTestLibraryDesktop
 		TEST_METHOD(XmlParseMaster_ParseFileWithAttributes)
 		{
 			SampleXmlSharedData sharedData;
-			XmlParseMaster parseMaster(&sharedData);
+			XmlParseMaster parseMaster(sharedData);
 
 			SampleXmlParseHelper sampleHelper;
-			sampleHelper.Initialize(&sharedData);
-
 			parseMaster.AddHelper(sampleHelper);
 			
 			parseMaster.ParseFromFile("../../../XmlWithAttributes.xml");
@@ -52,11 +50,9 @@ namespace UnitTestLibraryDesktop
 		TEST_METHOD(XmlParseMaster_ParseFileWithoutAttributes)
 		{
 			SampleXmlSharedData sharedData;
-			XmlParseMaster parseMaster(&sharedData);
+			XmlParseMaster parseMaster(sharedData);
 
 			SampleXmlParseHelper sampleHelper;
-			sampleHelper.Initialize(&sharedData);
-
 			parseMaster.AddHelper(sampleHelper);
 
 			parseMaster.ParseFromFile("../../../XmlWithoutAttributes.xml");

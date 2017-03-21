@@ -11,9 +11,9 @@ namespace SiachenGameEngine
 
 		}
 
-		void SampleXmlParseHelper::Initialize(Parsers::XmlParseMaster::SharedData* sharedData)
+		void SampleXmlParseHelper::Initialize(Parsers::XmlParseMaster::SharedData& sharedData)
 		{
-			mSharedData = sharedData->As<SampleXmlSharedData>();
+			mSharedData = (&sharedData)->As<SampleXmlSharedData>();
 			if (!mSharedData)
 			{
 				throw std::runtime_error("Helper cannot use the provided shared data.");

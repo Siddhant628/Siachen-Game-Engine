@@ -21,7 +21,7 @@ namespace SiachenGameEngine
 			/**
 			* Initializes this helper.
 			*/
-			virtual void Initialize(Parsers::XmlParseMaster::SharedData* sharedData) override;
+			virtual void Initialize(Parsers::XmlParseMaster::SharedData& sharedData) override;
 			/**
 			* Attempts to handle the element start.
 			* @param elementName The name of the element.

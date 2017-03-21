@@ -52,7 +52,7 @@ namespace SiachenGameEngine
 				* Set the address of the mParseMaster.
 				* @param The address of the XmlParseMaster to set.
 				*/
-				void SetXmlParseMaster(const XmlParseMaster* xmlParseMaster);
+				void SetXmlParseMaster(XmlParseMaster& xmlParseMaster);
 				/**
 				* Get the address of the mParseMaster.
 				* @return The address of the mParseMaster.
@@ -72,8 +72,11 @@ namespace SiachenGameEngine
 				*/
 				std::uint32_t Depth() const;
 			};
-			
-			XmlParseMaster(SharedData* sharedData);
+			/**
+			* Constructor initializes this object and creates an Expat object with registered callbacks.
+			* @param sharedData Reference to the shared memory that will be used by 
+			*/
+			XmlParseMaster(SharedData& sharedData);
 			// TODO Delete the helpers of the clones since they own them.
 			~XmlParseMaster();
 			// TODO Implement, How would copying work for the XML Parser object since it doesn't have support for it. Making a new one with identical handlers, etc?
