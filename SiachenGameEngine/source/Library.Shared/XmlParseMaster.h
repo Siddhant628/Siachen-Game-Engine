@@ -47,7 +47,7 @@ namespace SiachenGameEngine
 				* Get a SharedData object with the same internal state as this one, but ready for a fresh file.
 				* @return Address of the cloned SharedData object.
 				*/
-				virtual SharedData* Clone();
+				virtual SharedData* Clone() = 0;
 				/**
 				* Set the address of the mParseMaster.
 				* @param The address of the XmlParseMaster to set.
@@ -76,7 +76,7 @@ namespace SiachenGameEngine
 			XmlParseMaster(SharedData* sharedData);
 			// TODO Delete the helpers of the clones since they own them.
 			~XmlParseMaster();
-			// TODO Implement. How would copying work for the XML Parser object since it doesn't have support for it. Making a new one with identical handlers, etc?
+			// TODO Implement, How would copying work for the XML Parser object since it doesn't have support for it. Making a new one with identical handlers, etc?
 			/**
 			* Make a duplicate of this object which is ready to parse a fresh file. 
 			* @return Address of the duplicate of this object.
@@ -105,7 +105,6 @@ namespace SiachenGameEngine
 			* @param fileName Name (with relative path) of the file to be parsed.
 			*/
 			void ParseFromFile(const std::string& fileName);
-			// TODO Confirm Entire path or relative path?
 			/**
 			* Get the path of the file parsed.
 			* @return Path of the file being parsed.

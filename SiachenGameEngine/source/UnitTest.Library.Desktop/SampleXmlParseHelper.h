@@ -10,8 +10,13 @@ namespace SiachenGameEngine
 		class SampleXmlParseHelper final : public Parsers::IXmlParseHelper
 		{
 		public:
+			/**
+			* Default constructor initializes members.
+			*/
 			SampleXmlParseHelper();
-
+			/**
+			* Destructor.
+			*/
 			~SampleXmlParseHelper() = default;
 			/**
 			* Initializes this helper.

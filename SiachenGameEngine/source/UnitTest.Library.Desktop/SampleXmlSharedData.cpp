@@ -14,6 +14,13 @@ namespace SiachenGameEngine
 		{
 			XmlParseMaster::SharedData::Initialize();
 			mStringPairVector.Clear();
+			mCurrentElement = "";
+		}
+
+		// TODO Implement
+		XmlParseMaster::SharedData* SampleXmlSharedData::Clone()
+		{
+			return nullptr;
 		}
 
 		void SampleXmlSharedData::SetCurrentElement(const std::string& elementName)
@@ -30,7 +37,5 @@ namespace SiachenGameEngine
 		{
 			return mStringPairVector;
 		}
-
-		
 	}
 }

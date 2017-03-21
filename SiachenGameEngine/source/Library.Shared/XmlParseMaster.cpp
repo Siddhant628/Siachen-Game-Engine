@@ -42,6 +42,9 @@ namespace SiachenGameEngine
 			}
 			IXmlParseHelper* helperToAdd = const_cast<IXmlParseHelper*>(&helper);
 			mHelperList.PushBack(helperToAdd);
+			// Initialize the helper added
+			helperToAdd->Initialize(mSharedData);
+
 		}
 
 		bool XmlParseMaster::RemoveHelper(const IXmlParseHelper& helper)
@@ -62,8 +65,6 @@ namespace SiachenGameEngine
 				done = 0;
 			}
 			// Actual parsing of the file
-			// TODO Confirm Should user be calling this method only? If they are reusing a shared data object. Or have some bool to check if the data empty.
-			//mSharedData->Initialize();
 			if (!XML_Parse(mParser, buffer, length, done))
 			{
 				throw std::runtime_error("Fatal error detected.");
@@ -79,10 +80,9 @@ namespace SiachenGameEngine
 			{
 				throw std::runtime_error("File doesn't exist.");
 			}
-
 			std::string content;
 			content.assign(std::istreambuf_iterator<char>(ifs), std::istreambuf_iterator<char>());
-			// TODO Confirm
+			
 			std::uint32_t bufferLength = static_cast<std::uint32_t>(content.size());
 			
 			Parse(content.c_str(), bufferLength, true);
@@ -138,7 +138,7 @@ namespace SiachenGameEngine
 			}
 			
 		}
-		// TODO Confirm
+
 		void XmlParseMaster::CharDataHandler(void* userData, const char* str, std::int32_t length)
 		{
 			XmlParseMaster* parser = reinterpret_cast<XmlParseMaster*>(userData);
@@ -171,11 +171,6 @@ namespace SiachenGameEngine
 		{
 			mParseMaster = nullptr;
 			mDepth = 0;
-		}
-
-		XmlParseMaster::SharedData* XmlParseMaster::SharedData::Clone()
-		{
-			return nullptr;
 		}
 
 		void XmlParseMaster::SharedData::SetXmlParseMaster(const XmlParseMaster* xmlParseMaster)

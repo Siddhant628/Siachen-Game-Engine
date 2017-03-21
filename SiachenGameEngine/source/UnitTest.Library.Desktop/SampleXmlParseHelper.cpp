@@ -55,7 +55,6 @@ namespace SiachenGameEngine
 			return false;
 		}
 
-		// TODO Implement
 		void SampleXmlParseHelper::CharDataHandler(const char* characterData, std::uint32_t size)
 		{
 			std::string currentElement = mSharedData->GetCurrentElement();
