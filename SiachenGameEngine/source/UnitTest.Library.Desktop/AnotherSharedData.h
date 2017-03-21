@@ -7,14 +7,19 @@ namespace SiachenGameEngine
 	namespace HelperClasses
 	{
 		/**
-		* A xml shared data class implemented for testing Initialize method of SampleXmlParseHelper.
+		* A concrete shared data class implemented for testing purposes only.
 		*/
 		class AnotherSharedData final : public Parsers::XmlParseMaster::SharedData
 		{
 			RTTI_DECLARATIONS(AnotherSharedData, Parsers::XmlParseMaster::SharedData)
 		public:
+			/**
+			* Default constructor.
+			*/
 			AnotherSharedData() = default;
-
+			/**
+			* Destructor does nothing.
+			*/
 			~AnotherSharedData() = default;
 			/**
 			* Initializes the shared memory object for use/reuse.

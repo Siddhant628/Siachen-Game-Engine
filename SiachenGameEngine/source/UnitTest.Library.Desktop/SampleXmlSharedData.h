@@ -6,12 +6,20 @@ namespace SiachenGameEngine
 {
 	namespace HelperClasses
 	{
+		/**
+		* A concrete shared data class which can be used to store a vector of string pairs.
+		*/
 		class SampleXmlSharedData final : public Parsers::XmlParseMaster::SharedData
 		{
 			RTTI_DECLARATIONS(SampleXmlSharedData, Parsers::XmlParseMaster::SharedData)
 		public:
+			/**
+			* Default constructor.
+			*/
 			SampleXmlSharedData();
-
+			/**
+			* Destructor does nothing.
+			*/
 			~SampleXmlSharedData() = default;
 			/**
 			* Initializes the shared memory object for use/reuse.
@@ -24,7 +32,7 @@ namespace SiachenGameEngine
 			virtual SharedData* Clone() override;
 			/**
 			* Set current element.
-			* @param elementName The name to set.
+			* @param elementName Reference to the string name to set.
 			*/
 			void SetCurrentElement(const std::string& elementName);
 			/**

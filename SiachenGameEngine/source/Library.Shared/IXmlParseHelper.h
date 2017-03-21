@@ -19,7 +19,7 @@ namespace SiachenGameEngine
 			*/
 			IXmlParseHelper() = default;
 			/**
-			* Default destructor for the abstract base class.
+			* Destructor for the abstract base class.
 			*/
 			virtual ~IXmlParseHelper() =default;
 			/**

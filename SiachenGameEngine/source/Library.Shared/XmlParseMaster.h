@@ -16,7 +16,7 @@ namespace SiachenGameEngine
 		{
 		public:
 			/**
-			* Data shared between helper classes and with the master parser. 
+			* An abstract class which will be extended to store data shared between helper classes and with the master parser. 
 			*/
 			class SharedData : public GameplayFramework::RTTI
 			{
@@ -49,12 +49,12 @@ namespace SiachenGameEngine
 				*/
 				virtual SharedData* Clone() = 0;
 				/**
-				* Set the address of the mParseMaster.
-				* @param The address of the XmlParseMaster to set.
+				* Set the pointer value of the mParseMaster.
+				* @param A reference to the XmlParseMaster to set.
 				*/
 				void SetXmlParseMaster(XmlParseMaster& xmlParseMaster);
 				/**
-				* Get the address of the mParseMaster.
+				* Get the address pointed by the mParseMaster.
 				* @return The address of the mParseMaster.
 				*/
 				XmlParseMaster* GetXmlParseMaster() const;
@@ -74,7 +74,7 @@ namespace SiachenGameEngine
 			};
 			/**
 			* Constructor initializes this object and creates an Expat object with registered callbacks.
-			* @param sharedData Reference to the shared memory that will be used by 
+			* @param sharedData Reference to the shared memory that will be used by the parser. 
 			*/
 			XmlParseMaster(SharedData& sharedData);
 			/**
@@ -120,8 +120,8 @@ namespace SiachenGameEngine
 			*/
 			SharedData* GetSharedData() const;
 			/**
-			* Set the address of the associated shared data.
-			* @param sharedData The address of the shared data to associate with this object.
+			* Set the the associated shared data.
+			* @param sharedData A reference to the shared data to associate with this object.
 			*/
 			void SetSharedData(const SharedData& sharedData);
 		private:
@@ -152,26 +152,26 @@ namespace SiachenGameEngine
 
 			/**
 			* Handles the start of an element in XML.
-			* @param userData  A value to be passed to each handler during the parse.
+			* @param userData A value to be passed to each handler during the parse.
 			* @param element The name of the element in XML.
 			* @param attribute An array of attribute name-value pairs.
 			*/
 			static void StartElementHandler(void* userData, const char* element, const char** attribute);
 			/**
 			* Handles the end of an element in XML.
-			* @param userData  A value to be passed to each handler during the parse.
+			* @param userData A value to be passed to each handler during the parse.
 			* @param element The name of the element in XML.
 			*/
 			static void EndElementHandler(void* userData, const char* element);
 			/**
 			* Handles the character data in XML.
-			* @param userData  A value to be passed to each handler during the parse.
+			* @param userData A value to be passed to each handler during the parse.
 			* @param length The number of bytes in the data.
 			*/
 			static void CharDataHandler(void* userData, const char* str, std::int32_t length);
 			/**
 			* Get the hashmap of attribute name-value pairs from the array of name-value pairs. 
-			* attributePairs An array of name-value pairs, terminated by 0s; names and values are 0 terminated.
+			* attributePairs An array of name-value pairs.
 			* attributeMap Output parameter. A hashmap containing all the name value pairs in attributePairs.
 			*/
 			void GetAttributePairHashmap(const char** attributePairs, Containers::HashMap<std::string, std::string>& attributeMap);
