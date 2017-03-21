@@ -9,6 +9,11 @@ namespace SiachenGameEngine
 	namespace HelperClasses
 	{
 		RTTI_DEFINITIONS(SampleXmlSharedData);
+
+		SampleXmlSharedData::SampleXmlSharedData()
+		{
+
+		}
 		
 		void SampleXmlSharedData::Initialize()
 		{
@@ -17,10 +22,21 @@ namespace SiachenGameEngine
 			mCurrentElement = "";
 		}
 
-		// TODO Implement
+		// TODO Confirm
 		XmlParseMaster::SharedData* SampleXmlSharedData::Clone()
 		{
-			return nullptr;
+			SampleXmlSharedData* sharedDataClone = new SampleXmlSharedData();
+			// TODO Should data be cloned
+			sharedDataClone->mStringPairVector = mStringPairVector;
+			sharedDataClone->mCurrentElement = mCurrentElement;
+			// TODO Set mParseMaster and Depth values
+			while (sharedDataClone->Depth() != Depth())
+			{
+				sharedDataClone->IncrementDepth();
+			}
+			sharedDataClone->SetXmlParseMaster(*GetXmlParseMaster());
+
+			return sharedDataClone;
 		}
 
 		void SampleXmlSharedData::SetCurrentElement(const std::string& elementName)

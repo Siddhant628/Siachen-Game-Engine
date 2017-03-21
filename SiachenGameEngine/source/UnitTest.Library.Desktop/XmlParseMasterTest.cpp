@@ -3,6 +3,7 @@
 #include "XmlParseMaster.h"
 #include "SampleXmlParseHelper.h"
 #include "SampleXmlSharedData.h"
+#include "AnotherSharedData.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -61,6 +62,81 @@ namespace UnitTestLibraryDesktop
 			Assert::IsTrue(sharedData.GetStringPairVector().At(0).second == "Grover");
 			Assert::IsTrue(sharedData.GetStringPairVector().At(1).first == "Butter");
 			Assert::IsTrue(sharedData.GetStringPairVector().At(1).second == "Chicken");
+		}
+
+		TEST_METHOD(XmlParseMaster_GettersAndSetters)
+		{
+			SampleXmlSharedData sharedData;
+			XmlParseMaster parseMaster(sharedData);
+
+			SampleXmlParseHelper sampleHelper;
+			parseMaster.AddHelper(sampleHelper);
+
+			parseMaster.ParseFromFile("../../../XmlWithAttributes.xml");
+
+			// Get file name
+			Assert::IsTrue(parseMaster.GetFileName() == "../../../XmlWithAttributes.xml");
+			
+			// Get shared data
+			Assert::IsTrue(parseMaster.GetSharedData() == &sharedData);
+
+			// Set shared data
+			SampleXmlSharedData anotherSharedData;
+			parseMaster.SetSharedData(anotherSharedData);
+			Assert::IsTrue(parseMaster.GetSharedData() == &anotherSharedData);
+		}
+
+		TEST_METHOD(XmlParseMaster_Methods)
+		{
+			// Parse from file which isn't found
+			SampleXmlSharedData sharedData;
+			XmlParseMaster parseMaster(sharedData);
+
+			SampleXmlParseHelper sampleHelper;
+			parseMaster.AddHelper(sampleHelper);
+
+			auto fileExpression = [&parseMaster] {parseMaster.ParseFromFile("NoFile.xml"); };
+			Assert::ExpectException<std::exception>(fileExpression);
+
+			// Adding and removing helpers
+
+			SampleXmlParseHelper sampleHelper2;
+			parseMaster.AddHelper(sampleHelper2);
+			parseMaster.RemoveHelper(sampleHelper);
+
+			parseMaster.ParseFromFile("../../../XmlWithAttributes.xml");
+		}
+
+		TEST_METHOD(XmlParseMaster_IXmlParseHelper)
+		{
+			// Initialize of parse helper
+			AnotherSharedData sharedData;
+			SampleXmlParseHelper parseHelper;
+
+			auto constructorExpression = [&parseHelper, &sharedData] { parseHelper.Initialize(sharedData); };
+			Assert::ExpectException<std::exception>(constructorExpression);
+
+		}
+
+		TEST_METHOD(XmlParseMaster_XmlSharedData)
+		{
+			SampleXmlSharedData sharedData;
+			XmlParseMaster parseMaster(sharedData);
+
+			SampleXmlParseHelper sampleHelper;
+			parseMaster.AddHelper(sampleHelper);
+
+			parseMaster.ParseFromFile("../../../XmlWithAttributes.xml");
+
+			// Get parse master
+			Assert::IsTrue(sharedData.GetXmlParseMaster() == &parseMaster);
+
+			// Initialize shared data
+			Assert::AreEqual(sharedData.GetStringPairVector().Size(), 2U);
+			Assert::IsTrue(sharedData.GetCurrentElement() == "Student");
+			sharedData.Initialize();
+			Assert::AreEqual(sharedData.GetStringPairVector().Size(), 0U);
+			Assert::IsTrue(sharedData.GetCurrentElement() == "");
 		}
 
 	private:

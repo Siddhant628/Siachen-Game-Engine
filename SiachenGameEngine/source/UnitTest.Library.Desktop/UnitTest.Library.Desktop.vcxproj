@@ -207,6 +207,7 @@
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AnotherSharedData.h" />
     <ClInclude Include="AttributedBar.h" />
     <ClInclude Include="AttributedBaz.h" />
     <ClInclude Include="AttributedFoo.h" />
@@ -217,6 +218,7 @@
     <ClInclude Include="ToStringTemplates.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AnotherSharedData.cpp" />
     <ClCompile Include="AttributedBar.cpp" />
     <ClCompile Include="AttributedBaz.cpp" />
     <ClCompile Include="AttributedFoo.cpp" />

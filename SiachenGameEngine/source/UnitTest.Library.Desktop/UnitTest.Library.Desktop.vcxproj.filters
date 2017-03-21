@@ -21,6 +21,9 @@
     <ClInclude Include="SampleXmlSharedData.h">
       <Filter>Helper Classes</Filter>
     </ClInclude>
+    <ClInclude Include="AnotherSharedData.h">
+      <Filter>Helper Classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -64,6 +67,9 @@
       <Filter>Helper Classes</Filter>
     </ClCompile>
     <ClCompile Include="SampleXmlSharedData.cpp">
+      <Filter>Helper Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="AnotherSharedData.cpp">
       <Filter>Helper Classes</Filter>
     </ClCompile>
   </ItemGroup>

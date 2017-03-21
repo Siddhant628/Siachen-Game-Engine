@@ -2,16 +2,19 @@
 #include "expat.h"
 #include "XmlParseMaster.h"
 #include "IXmlParseHelper.h"
+#include "Vector.h"
 
 #include <utility>
 #include <fstream>
+
+using namespace SiachenGameEngine::Containers;
 
 namespace SiachenGameEngine
 {
 	namespace Parsers
 	{
 		RTTI_DEFINITIONS(XmlParseMaster::SharedData)
-			
+
 		XmlParseMaster::XmlParseMaster(SharedData& sharedData) : mSharedData(&sharedData), mIsClone(false), mCurrentHelper(nullptr)
 		{
 			// Initialize variables
@@ -26,11 +29,35 @@ namespace SiachenGameEngine
 		XmlParseMaster::~XmlParseMaster()
 		{
 			XML_ParserFree(mParser);
+
+			if (mIsClone)
+			{
+
+				std::uint32_t size = mHelperList.Size();
+				for (std::uint32_t i = 0; i < size; ++i)
+				{
+					delete mHelperList.At(i);
+				}
+
+				delete mSharedData;
+			}
 		}
 
+		// TODO Confirm
 		XmlParseMaster* XmlParseMaster::Clone()
 		{
-			return nullptr;
+			SharedData* sharedDataClone = mSharedData->Clone();
+			XmlParseMaster* parseMasterClone = new XmlParseMaster(*sharedDataClone);
+
+			std::uint32_t size = mHelperList.Size();
+			for (std::uint32_t i = 0; i < size; ++i)
+			{
+				IXmlParseHelper* helperClone = mHelperList.At(i)->Clone();
+				parseMasterClone->AddHelper(*helperClone);
+			}
+
+			parseMasterClone->mIsClone = true;
+			return parseMasterClone;
 		}
 
 		void XmlParseMaster::AddHelper(const IXmlParseHelper& helper)
@@ -50,7 +77,22 @@ namespace SiachenGameEngine
 		bool XmlParseMaster::RemoveHelper(const IXmlParseHelper& helper)
 		{
 			IXmlParseHelper* helperToRemove = const_cast<IXmlParseHelper*>(&helper);
-			return mHelperList.Remove(helperToRemove);
+			if (!mIsClone)
+			{
+				return mHelperList.Remove(helperToRemove);
+			}
+			// In case the helper is a cloned one, then also deallocate the memory before removing it form the list
+			else
+			{
+				Vector<IXmlParseHelper*>::Iterator it = mHelperList.Find(helperToRemove);
+				if (it != mHelperList.end())
+				{
+					delete *it;
+					mHelperList.Remove(helperToRemove);
+					return true;
+				}
+				return false;
+			}
 		}
 
 		void XmlParseMaster::Parse(const char* buffer, std::uint32_t length, bool lastChunk)
@@ -74,7 +116,7 @@ namespace SiachenGameEngine
 		void XmlParseMaster::ParseFromFile(const std::string& fileName)
 		{
 			mFileName = fileName;
-			
+
 			std::ifstream ifs(fileName);
 			if (!ifs)
 			{
@@ -82,9 +124,9 @@ namespace SiachenGameEngine
 			}
 			std::string content;
 			content.assign(std::istreambuf_iterator<char>(ifs), std::istreambuf_iterator<char>());
-			
+
 			std::uint32_t bufferLength = static_cast<std::uint32_t>(content.size());
-			
+
 			Parse(content.c_str(), bufferLength, true);
 		}
 
@@ -136,7 +178,7 @@ namespace SiachenGameEngine
 					break;
 				}
 			}
-			
+
 		}
 
 		void XmlParseMaster::CharDataHandler(void* userData, const char* str, std::int32_t length)

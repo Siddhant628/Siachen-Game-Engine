@@ -1,11 +1,13 @@
 <Class>
-	<Student>
-		<FirstName>Siddhant</FirstName>
-		<LastName>Grover</LastName>
-	</Student>
-	<Student>
-		<FirstName>Butter</FirstName>
-		<LastName>Chicken</LastName>
-	</Student>
+	<Students>
+		<Student>
+			<FirstName>Siddhant</FirstName>
+			<LastName>Grover</LastName>
+		</Student>
+		<Student>
+			<FirstName>Butter</FirstName>
+			<LastName>Chicken</LastName>
+		</Student>
+	</Students>
 	<Name>Programming</Name>
 </Class>

@@ -10,14 +10,17 @@ namespace SiachenGameEngine
 		{
 			RTTI_DECLARATIONS(SampleXmlSharedData, Parsers::XmlParseMaster::SharedData)
 		public:
-			SampleXmlSharedData() = default;
+			SampleXmlSharedData();
 
 			~SampleXmlSharedData() = default;
 			/**
 			* Initializes the shared memory object for use/reuse.
 			*/
 			virtual void Initialize() override;
-
+			/**
+			* Get a SharedData object with the same internal state as this one, but ready for a fresh file.
+			* @return Address of the cloned SharedData object.
+			*/
 			virtual SharedData* Clone() override;
 			/**
 			* Set current element.

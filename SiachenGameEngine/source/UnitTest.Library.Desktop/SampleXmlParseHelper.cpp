@@ -71,10 +71,13 @@ namespace SiachenGameEngine
 			}
 		}
 
-		// TODO Implement
+		// TODO Confirm
 		Parsers::IXmlParseHelper* SampleXmlParseHelper::Clone()
 		{
-			return nullptr;
+			SampleXmlParseHelper* parseHelper = new SampleXmlParseHelper();
+			parseHelper->mSharedData = mSharedData;
+			
+			return parseHelper;
 		}
 	}
 }

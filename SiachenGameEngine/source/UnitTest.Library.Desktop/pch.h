@@ -8,3 +8,4 @@
 
 // Standard libraries
 #include <cstdint>
+#include "CppUnitTest.h"
