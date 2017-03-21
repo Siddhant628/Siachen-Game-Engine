@@ -18,9 +18,15 @@ namespace SiachenGameEngine
 			*/
 			virtual void Initialize() override;
 
+			void SetCurrentElement(const std::string& elementName);
+
+			const std::string& GetCurrentElement() const;
+
 			Containers::Vector<std::pair<std::string, std::string>>& GetStringPairVector();
 		private:
 			Containers::Vector<std::pair<std::string,std::string>> mStringPairVector;
+
+			std::string mCurrentElement;
 		};
 	}
 }

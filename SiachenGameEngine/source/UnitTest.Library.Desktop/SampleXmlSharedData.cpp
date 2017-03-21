@@ -15,10 +15,22 @@ namespace SiachenGameEngine
 			XmlParseMaster::SharedData::Initialize();
 			mStringPairVector.Clear();
 		}
+
+		void SampleXmlSharedData::SetCurrentElement(const std::string& elementName)
+		{
+			mCurrentElement = elementName;
+		}
 		
+		const std::string & SampleXmlSharedData::GetCurrentElement() const
+		{
+			return mCurrentElement;
+		}
+
 		Containers::Vector<std::pair<std::string, std::string>>& SampleXmlSharedData::GetStringPairVector()
 		{
 			return mStringPairVector;
 		}
+
+		
 	}
 }

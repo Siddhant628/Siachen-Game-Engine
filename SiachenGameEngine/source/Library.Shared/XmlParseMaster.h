@@ -120,7 +120,7 @@ namespace SiachenGameEngine
 			* Set the address of the associated shared data.
 			* @param sharedData The address of the shared data to associate with this object.
 			*/
-			void SetSharedData(const SharedData* sharedData);
+			void SetSharedData(const SharedData& sharedData);
 		private:
 			/**
 			* The central data structure for the Expat API.
@@ -142,6 +142,10 @@ namespace SiachenGameEngine
 			* A vector of parsing helpers associated with this object.
 			*/
 			SiachenGameEngine::Containers::Vector<IXmlParseHelper*> mHelperList;
+			/**
+			* A pointer to the helper which is performing the handling.
+			*/
+			IXmlParseHelper* mCurrentHelper;
 
 			/**
 			* Handles the start of an element in XML.

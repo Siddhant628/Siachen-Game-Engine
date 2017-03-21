@@ -22,17 +22,24 @@ namespace SiachenGameEngine
 
 		bool SampleXmlParseHelper::StartElementHandler(const std::string& elementName, Containers::HashMap<std::string, std::string> attributeHashmap)
 		{
-			if (elementName == "Class")
+			// In case of elements who don't have attributes, or data isn't being retrieved from attributes
+			if (elementName == "Class" || elementName == "FirstName" || elementName == "LastName" || elementName == "Name")
 			{
 				mSharedData->IncrementDepth();
+				mSharedData->SetCurrentElement(elementName);
 				return true;
 			}
+			// In case of a Student element tag
 			else if (elementName == "Student")
 			{
 				mSharedData->IncrementDepth();
-				std::string firstName = attributeHashmap["FirstName"];
-				std::string lastName = attributeHashmap["LastName"];
-				mSharedData->GetStringPairVector().PushBack(std::make_pair(firstName, lastName));
+				mSharedData->SetCurrentElement(elementName);
+				if (attributeHashmap.Size() == 2)
+				{
+					std::string firstName = attributeHashmap["FirstName"];
+					std::string lastName = attributeHashmap["LastName"];
+					mSharedData->GetStringPairVector().PushBack(std::make_pair(firstName, lastName));
+				}
 				return true;
 			}
 			return false;
@@ -40,7 +47,7 @@ namespace SiachenGameEngine
 
 		bool SampleXmlParseHelper::EndElementHandler(const std::string& elementName)
 		{
-			if (elementName == "Class" || elementName == "Student")
+			if (elementName == "Class" || elementName == "Student" || elementName == "FirstName" || elementName == "LastName" || elementName == "Name")
 			{
 				mSharedData->DecrementDepth();
 				return true;
@@ -51,8 +58,18 @@ namespace SiachenGameEngine
 		// TODO Implement
 		void SampleXmlParseHelper::CharDataHandler(const char* characterData, std::uint32_t size)
 		{
-			UNREFERENCED_PARAMETER(characterData);
-			UNREFERENCED_PARAMETER(size);
+			std::string currentElement = mSharedData->GetCurrentElement();
+			if ( currentElement == "FirstName")
+			{
+				std::string firstName(characterData, size);
+				mSharedData->GetStringPairVector().PushBack(make_pair(firstName, ""));
+			}
+			else if(currentElement == "LastName")
+			{
+				std::string lastName(characterData, size);
+				std::uint32_t position = mSharedData->GetStringPairVector().Size() - 1;
+				mSharedData->GetStringPairVector().At(position).second = lastName;
+			}
 		}
 
 		// TODO Implement

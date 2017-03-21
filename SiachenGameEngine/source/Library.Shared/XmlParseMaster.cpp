@@ -12,7 +12,7 @@ namespace SiachenGameEngine
 	{
 		RTTI_DEFINITIONS(XmlParseMaster::SharedData)
 			
-		XmlParseMaster::XmlParseMaster(SharedData* sharedData) : mSharedData(sharedData), mIsClone(false)
+		XmlParseMaster::XmlParseMaster(SharedData* sharedData) : mSharedData(sharedData), mIsClone(false), mCurrentHelper(nullptr)
 		{
 			// Initialize variables
 			sharedData->SetXmlParseMaster(this);
@@ -98,9 +98,9 @@ namespace SiachenGameEngine
 			return mSharedData;
 		}
 
-		void XmlParseMaster::SetSharedData(const SharedData* sharedData)
+		void XmlParseMaster::SetSharedData(const SharedData& sharedData)
 		{
-			mSharedData = const_cast<SharedData*>(sharedData);
+			mSharedData = const_cast<SharedData*>(&sharedData);
 		}
 
 		void XmlParseMaster::StartElementHandler(void* userData, const char* element, const char** attribute)
@@ -116,6 +116,7 @@ namespace SiachenGameEngine
 				parser->GetAttributePairHashmap(attribute, attributeHashmap);
 				if (parser->mHelperList.At(i)->StartElementHandler(elementString, attributeHashmap))
 				{
+					parser->mCurrentHelper = parser->mHelperList.At(i);
 					break;
 				}
 			}
@@ -131,24 +132,20 @@ namespace SiachenGameEngine
 			{
 				if (parser->mHelperList.At(i)->EndElementHandler(elementString))
 				{
+					parser->mCurrentHelper = nullptr;
 					break;
 				}
 			}
+			
 		}
-
-		// TODO Implement
+		// TODO Confirm
 		void XmlParseMaster::CharDataHandler(void* userData, const char* str, std::int32_t length)
 		{
 			XmlParseMaster* parser = reinterpret_cast<XmlParseMaster*>(userData);
-			parser;
-			str;
-			length;
-			//std::uint32_t helperCount = parser->mHelperList.Size();
-
-			//for (std::uint32_t i = 0; i < helperCount; ++i)
-			//{
-			//	parser->mHelperList.At(i)->CharDataHandler(str, length);
-			//}
+			if (parser->mCurrentHelper)
+			{
+				parser->mCurrentHelper->CharDataHandler(str, length);
+			}
 		}
 
 		void XmlParseMaster::GetAttributePairHashmap(const char ** attributePairs, Containers::HashMap<std::string, std::string>& attributeMap)
