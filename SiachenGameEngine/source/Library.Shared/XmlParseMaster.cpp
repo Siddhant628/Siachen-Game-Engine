@@ -43,7 +43,6 @@ namespace SiachenGameEngine
 			}
 		}
 
-		// TODO Confirm
 		XmlParseMaster* XmlParseMaster::Clone()
 		{
 			SharedData* sharedDataClone = mSharedData->Clone();
@@ -56,6 +55,7 @@ namespace SiachenGameEngine
 				parseMasterClone->AddHelper(*helperClone);
 			}
 
+			parseMasterClone->mFileName = mFileName;
 			parseMasterClone->mIsClone = true;
 			return parseMasterClone;
 		}
@@ -69,34 +69,29 @@ namespace SiachenGameEngine
 			}
 			IXmlParseHelper* helperToAdd = const_cast<IXmlParseHelper*>(&helper);
 			mHelperList.PushBack(helperToAdd);
-			// Initialize the helper added
-			helperToAdd->Initialize(*mSharedData);
-
 		}
 
 		bool XmlParseMaster::RemoveHelper(const IXmlParseHelper& helper)
 		{
 			IXmlParseHelper* helperToRemove = const_cast<IXmlParseHelper*>(&helper);
-			if (!mIsClone)
+			if (mIsClone)
 			{
-				return mHelperList.Remove(helperToRemove);
+				throw std::runtime_error("Cannot remove helpers from a cloned parser.");
 			}
-			// In case the helper is a cloned one, then also deallocate the memory before removing it form the list
-			else
-			{
-				Vector<IXmlParseHelper*>::Iterator it = mHelperList.Find(helperToRemove);
-				if (it != mHelperList.end())
-				{
-					delete *it;
-					mHelperList.Remove(helperToRemove);
-					return true;
-				}
-				return false;
-			}
+			return mHelperList.Remove(helperToRemove);
 		}
 
 		void XmlParseMaster::Parse(const char* buffer, std::uint32_t length, bool lastChunk)
 		{
+			// Initialize all the helpers and shared data
+			mSharedData->Initialize();
+			mSharedData->SetXmlParseMaster(*this);
+			std::uint32_t helperCount = mHelperList.Size();
+			for (std::uint32_t i = 0; i < helperCount; ++i)
+			{
+				mHelperList.At(i)->Initialize(*mSharedData);
+			}
+			// Check for last chunk
 			std::int32_t done;
 			if (lastChunk)
 			{

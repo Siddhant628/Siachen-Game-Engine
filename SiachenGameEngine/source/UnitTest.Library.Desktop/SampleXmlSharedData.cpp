@@ -22,14 +22,12 @@ namespace SiachenGameEngine
 			mCurrentElement = "";
 		}
 
-		// TODO Confirm
 		XmlParseMaster::SharedData* SampleXmlSharedData::Clone()
 		{
 			SampleXmlSharedData* sharedDataClone = new SampleXmlSharedData();
-			// TODO Should data be cloned
+			// Clone the state
 			sharedDataClone->mStringPairVector = mStringPairVector;
 			sharedDataClone->mCurrentElement = mCurrentElement;
-			// TODO Set mParseMaster and Depth values
 			while (sharedDataClone->Depth() != Depth())
 			{
 				sharedDataClone->IncrementDepth();

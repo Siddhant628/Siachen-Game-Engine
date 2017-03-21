@@ -71,7 +71,6 @@ namespace SiachenGameEngine
 			}
 		}
 
-		// TODO Confirm
 		Parsers::IXmlParseHelper* SampleXmlParseHelper::Clone()
 		{
 			SampleXmlParseHelper* parseHelper = new SampleXmlParseHelper();

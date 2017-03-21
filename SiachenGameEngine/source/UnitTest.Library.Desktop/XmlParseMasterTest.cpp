@@ -102,7 +102,8 @@ namespace UnitTestLibraryDesktop
 
 			SampleXmlParseHelper sampleHelper2;
 			parseMaster.AddHelper(sampleHelper2);
-			parseMaster.RemoveHelper(sampleHelper);
+			Assert::IsTrue(parseMaster.RemoveHelper(sampleHelper));
+			Assert::IsFalse(parseMaster.RemoveHelper(sampleHelper));
 
 			parseMaster.ParseFromFile("../../../XmlWithAttributes.xml");
 		}
@@ -135,8 +136,41 @@ namespace UnitTestLibraryDesktop
 			Assert::AreEqual(sharedData.GetStringPairVector().Size(), 2U);
 			Assert::IsTrue(sharedData.GetCurrentElement() == "Student");
 			sharedData.Initialize();
+			Assert::AreEqual(sharedData.Depth(), 0U);
 			Assert::AreEqual(sharedData.GetStringPairVector().Size(), 0U);
 			Assert::IsTrue(sharedData.GetCurrentElement() == "");
+		}
+
+		TEST_METHOD(XmlParseMaster_Cloning)
+		{
+			SampleXmlSharedData sharedData;
+			XmlParseMaster parseMaster(sharedData);
+
+			SampleXmlParseHelper sampleHelper;
+			parseMaster.AddHelper(sampleHelper);
+
+			parseMaster.ParseFromFile("../../../XmlWithAttributes.xml");
+
+			XmlParseMaster* parseMasterClone = parseMaster.Clone();
+
+			// Parsing using the clone
+			parseMasterClone->ParseFromFile("../../../XmlWithoutAttributes.xml");
+			SampleXmlSharedData* sharedDataClone = reinterpret_cast<SampleXmlSharedData*>(parseMasterClone->GetSharedData());
+
+			Assert::IsTrue(sharedDataClone->GetStringPairVector().At(0).first == "Siddhant");
+			Assert::IsTrue(sharedDataClone->GetStringPairVector().At(0).second == "Grover");
+			Assert::IsTrue(sharedDataClone->GetStringPairVector().At(1).first == "Butter");
+			Assert::IsTrue(sharedDataClone->GetStringPairVector().At(1).second == "Chicken");
+
+			// Adding helper on a clone
+			auto addExpression = [&parseMasterClone, &sampleHelper] {parseMasterClone->AddHelper(sampleHelper); };
+			Assert::ExpectException<std::runtime_error>(addExpression);
+
+			// Removing helper from a clone
+			auto removeExpression = [&parseMasterClone, &sampleHelper] {parseMasterClone->RemoveHelper(sampleHelper); };
+			Assert::ExpectException<std::runtime_error>(removeExpression);
+
+			delete parseMasterClone;
 		}
 
 	private:

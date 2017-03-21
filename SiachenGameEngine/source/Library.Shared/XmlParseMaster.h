@@ -77,9 +77,10 @@ namespace SiachenGameEngine
 			* @param sharedData Reference to the shared memory that will be used by 
 			*/
 			XmlParseMaster(SharedData& sharedData);
-			// TODO Delete the helpers of the clones since they own them.
+			/**
+			* Destructor deallocated dynamically allocated memory by parser, and for cloned parse masters.
+			*/
 			~XmlParseMaster();
-			// TODO Implement, How would copying work for the XML Parser object since it doesn't have support for it. Making a new one with identical handlers, etc?
 			/**
 			* Make a duplicate of this object which is ready to parse a fresh file. 
 			* @return Address of the duplicate of this object.
@@ -145,7 +146,7 @@ namespace SiachenGameEngine
 			*/
 			SiachenGameEngine::Containers::Vector<IXmlParseHelper*> mHelperList;
 			/**
-			* A pointer to the helper which is performing the handling.
+			* A pointer to the helper which is just handled the start of an element, used to call the appropriate character data handler.
 			*/
 			IXmlParseHelper* mCurrentHelper;
 

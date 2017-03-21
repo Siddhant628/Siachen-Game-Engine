@@ -11,7 +11,7 @@ namespace SiachenGameEngine
 		RTTI_DEFINITIONS(AnotherSharedData)
 		void AnotherSharedData::Initialize()
 		{
-
+			XmlParseMaster::SharedData::Initialize();
 		}
 
 		XmlParseMaster::SharedData* AnotherSharedData::Clone()
