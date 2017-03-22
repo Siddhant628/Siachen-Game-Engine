@@ -35,7 +35,7 @@ namespace SiachenGameEngine
 				else if (mDatumType == DatumType::VectorType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.v[index]);
 				else if (mDatumType == DatumType::MatrixType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.m[index]);
 				else if (mDatumType == DatumType::PointerType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.r[index]);
-				else if (mDatumType == DatumType::TableType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.sc[index]);
+				else if (mDatumType == DatumType::TableType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(*rhs.mData.sc[index]);
 			}
 		}
 
@@ -71,7 +71,7 @@ namespace SiachenGameEngine
 					else if (mDatumType == DatumType::VectorType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.v[index]);
 					else if (mDatumType == DatumType::MatrixType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.m[index]);
 					else if (mDatumType == DatumType::PointerType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.r[index]);
-					else if (mDatumType == DatumType::TableType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(rhs.mData.sc[index]);
+					else if (mDatumType == DatumType::TableType)	for (std::uint32_t index = 0; index < rhs.mSize; ++index)		PushBack(*rhs.mData.sc[index]);
 				}
 			}
 			return *this;
@@ -261,7 +261,7 @@ namespace SiachenGameEngine
 			++mSize;
 		}
 
-		void Datum::PushBack(const GameplayFramework::Scope* data)
+		void Datum::PushBack(const GameplayFramework::Scope& data)
 		{
 			if (mDatumType == DatumType::UnknownType && IsEmpty())
 			{
@@ -275,7 +275,7 @@ namespace SiachenGameEngine
 			{
 				Reserve(mCapacity * 2);
 			}
-			mData.sc[mSize] = const_cast<GameplayFramework::Scope*>(data);
+			mData.sc[mSize] = const_cast<GameplayFramework::Scope*>(&data);
 			++mSize;
 		}
 
@@ -430,7 +430,7 @@ namespace SiachenGameEngine
 			}
 		}
 
-		void Datum::Set(const GameplayFramework::Scope* value, std::uint32_t index)
+		void Datum::Set(const GameplayFramework::Scope& value, std::uint32_t index)
 		{
 			if (mDatumType != DatumType::TableType)
 			{
@@ -438,7 +438,7 @@ namespace SiachenGameEngine
 			}
 			if (mSize > index)
 			{
-				mData.sc[index] = const_cast<GameplayFramework::Scope*>(value);
+				mData.sc[index] = const_cast<GameplayFramework::Scope*>(&value);
 			}
 			else
 			{
@@ -554,13 +554,13 @@ namespace SiachenGameEngine
 			return (mData.r[0]->Equals(rhs));
 		}
 
-		bool Datum::operator==(const GameplayFramework::Scope* rhs) const
+		bool Datum::operator==(const GameplayFramework::Scope& rhs) const
 		{
 			if ((mSize != 1) || (mDatumType != DatumType::TableType))
 			{
 				return false;
 			}
-			return (mData.sc[0]->Equals(rhs));
+			return (mData.sc[0]->Equals(&rhs));
 		}
 
 
@@ -594,7 +594,7 @@ namespace SiachenGameEngine
 			return !operator==(rhs);
 		}
 
-		bool Datum::operator!=(const GameplayFramework::Scope* rhs) const
+		bool Datum::operator!=(const GameplayFramework::Scope& rhs) const
 		{
 			return !(operator==(rhs));
 		}
@@ -793,7 +793,7 @@ namespace SiachenGameEngine
 			return *this;
 		}
 
-		Datum& Datum::operator=(const GameplayFramework::Scope* rhs)
+		Datum& Datum::operator=(const GameplayFramework::Scope& rhs)
 		{
 			if ((mDatumType != DatumType::TableType) && (mDatumType != DatumType::UnknownType))
 			{
@@ -1043,7 +1043,7 @@ namespace SiachenGameEngine
 			return false;
 		}
 
-		bool Datum::Remove(GameplayFramework::Scope* data)
+		bool Datum::Remove(GameplayFramework::Scope& data)
 		{
 			if (mIsExternal || mDatumType != DatumType::TableType)
 			{
@@ -1051,7 +1051,7 @@ namespace SiachenGameEngine
 			}
 			for (std::uint32_t index = 0; index < mSize; ++index)
 			{
-				if (mData.sc[index] == data)
+				if (mData.sc[index] == &data)
 				{
 					GameplayFramework::Scope** destination = mData.sc + index;
 					GameplayFramework::Scope** source = destination + 1;

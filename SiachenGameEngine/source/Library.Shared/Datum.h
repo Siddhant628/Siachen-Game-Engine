@@ -151,9 +151,9 @@ namespace SiachenGameEngine
 			void PushBack(const GameplayFramework::RTTI* data);
 			/**
 			* Push the item at the end of the datum.
-			* @param data The Scope* to be pushed into the datum.
+			* @param data The Scope&& to be pushed into the datum.
 			*/
-			void Datum::PushBack(const GameplayFramework::Scope* data);
+			void Datum::PushBack(const GameplayFramework::Scope& data);
 
 			/**
 			* Pop out the last item of the datum.
@@ -225,7 +225,7 @@ namespace SiachenGameEngine
 			* @param value The value that should be taken by the specific item in the datum.
 			* @param index The index at which the value should be set.
 			*/
-			void Set(const GameplayFramework::Scope* value, std::uint32_t index = 0);
+			void Set(const GameplayFramework::Scope& value, std::uint32_t index = 0);
 
 			/**
 			* Equals operator overloaded to compare two datums.
@@ -281,7 +281,7 @@ namespace SiachenGameEngine
 			* @param rhs The Scope* with which this datum should be compared.
 			* @return True if the two are equal.
 			*/
-			bool Datum::operator==(const GameplayFramework::Scope* rhs) const;
+			bool Datum::operator==(const GameplayFramework::Scope& rhs) const;
 
 			/**
 			* Inequals operator overloaded to compare a scalar datum to an integer.
@@ -324,7 +324,7 @@ namespace SiachenGameEngine
 			* @param rhs The Scope* with which this datum should be compared.
 			* @return True if the two aren't equal.
 			*/
-			bool Datum::operator!=(const GameplayFramework::Scope* rhs) const;
+			bool Datum::operator!=(const GameplayFramework::Scope& rhs) const;
 
 			/**
 			* Associate datum with an external array.
@@ -404,7 +404,7 @@ namespace SiachenGameEngine
 			* @param rhs A Scope* type to assign to the first item.
 			* @return A reference to the datum with the new first item.
 			*/
-			Datum& operator=(const GameplayFramework::Scope* rhs);
+			Datum& operator=(const GameplayFramework::Scope& rhs);
 			/**
 			* Get a specific Scope, associated with a Scope* stored in the datum.
 			* @param index The position of the scope* from which to retrieve.
@@ -467,7 +467,7 @@ namespace SiachenGameEngine
 			* @param data The item to be removed from the datum.
 			* @return True if a successful remove operation occurred.
 			*/
-			bool Remove(GameplayFramework::Scope* data);
+			bool Remove(GameplayFramework::Scope& data);
 		};
 	}
 }

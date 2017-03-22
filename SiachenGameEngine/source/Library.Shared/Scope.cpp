@@ -90,9 +90,8 @@ namespace SiachenGameEngine
 			Scope* scope = new Scope;
 			scope->mParent = this;
 			// Try inserting the pair into the scope
-			StringDatumPair pair(key, Datum());
-			it = mTableHashmap.Insert(pair, pairInserted);
-			it->second.PushBack(scope);
+			it = mTableHashmap.Insert(make_pair(key, Datum()), pairInserted);
+			it->second.PushBack(*scope);
 			// Update index vector for the scope
 			if (pairInserted)
 			{
@@ -183,7 +182,7 @@ namespace SiachenGameEngine
 				{
 					if ((it->second).Type() == DatumType::TableType)
 					{
-						if ((it->second).Remove(this))
+						if ((it->second).Remove(*this))
 						{
 							mParent = nullptr;
 							valueToReturn = true;
@@ -210,7 +209,7 @@ namespace SiachenGameEngine
 			}
 			childToAdopt.Orphan();
 			childToAdopt.mParent = this;
-			Append(nameOfChild).PushBack(&childToAdopt);
+			Append(nameOfChild).PushBack(childToAdopt);
 		}
 
 		void Scope::Clear()
