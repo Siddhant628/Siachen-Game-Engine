@@ -20,7 +20,7 @@ namespace SiachenGameEngine
 			}
 		}
 
-		bool SampleXmlParseHelper::StartElementHandler(const std::string& elementName, Containers::HashMap<std::string, std::string> attributeHashmap)
+		bool SampleXmlParseHelper::StartElementHandler(const std::string& elementName, const Containers::HashMap<std::string, std::string>& attributeHashmap)
 		{
 			// In case of elements who don't have attributes, or data isn't being retrieved from attributes
 			if (elementName == "Class" || elementName == "FirstName" || elementName == "LastName" || elementName == "Name")

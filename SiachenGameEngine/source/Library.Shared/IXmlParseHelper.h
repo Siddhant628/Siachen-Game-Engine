@@ -21,7 +21,7 @@ namespace SiachenGameEngine
 			/**
 			* Destructor for the abstract base class.
 			*/
-			virtual ~IXmlParseHelper() =default;
+			virtual ~IXmlParseHelper() = default;
 			/**
 			* Deleted copy constructor.
 			*/
@@ -40,7 +40,7 @@ namespace SiachenGameEngine
 			* @param attributeHashmap A hashmap containing attribute name-value pairs.
 			* @return True if the handler does handle this element.
 			*/
-			virtual bool StartElementHandler(const std::string& elementName, Containers::HashMap<std::string, std::string> attributeHashmap) = 0;
+			virtual bool StartElementHandler(const std::string& elementName, const Containers::HashMap<std::string, std::string>& attributeHashmap) = 0;
 			/**
 			* Attempts to handle the element end.
 			* @param elementName The name of the element.

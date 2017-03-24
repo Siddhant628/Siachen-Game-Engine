@@ -238,7 +238,10 @@ namespace SiachenGameEngine
 
 		void XmlParseMaster::SharedData::DecrementDepth()
 		{
-			--mDepth;
+			if (mDepth > 0)
+			{
+				--mDepth;
+			}
 		}
 
 		std::uint32_t XmlParseMaster::SharedData::Depth() const

@@ -1,23 +1,18 @@
 #pragma once
 #include "IXmlParseHelper.h"
-#include "XmlParseMaster.h"
-#include "SampleXmlSharedData.h"
+#include "XmlSharedDataTable.h"
 
 namespace SiachenGameEngine
 {
-	namespace HelperClasses
+	namespace Parsers
 	{
-		class SampleXmlParseHelper final : public Parsers::IXmlParseHelper
+		class XmlParseHelperTable final : IXmlParseHelper
 		{
 		public:
-			/**
-			* Default constructor initializes members.
-			*/
-			SampleXmlParseHelper();
-			/**
-			* Destructor.
-			*/
-			~SampleXmlParseHelper() = default;
+			// TODO Implement
+			XmlParseHelperTable() = default;
+			// TODO Implement
+			~XmlParseHelperTable() = default;
 			/**
 			* Initializes this helper.
 			*/
@@ -47,7 +42,7 @@ namespace SiachenGameEngine
 			*/
 			virtual IXmlParseHelper* Clone() override;
 		private:
-			SampleXmlSharedData* mSharedData;
+			XmlSharedDataTable* mSharedData;
 		};
 	}
 }
