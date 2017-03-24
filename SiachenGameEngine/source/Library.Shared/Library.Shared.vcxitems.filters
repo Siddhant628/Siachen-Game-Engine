@@ -34,6 +34,12 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)XmlSharedDataTable.cpp">
       <Filter>Parsers</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)XmlParseHelperInteger.cpp">
+      <Filter>Parsers</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)IXmlParseHelper.cpp">
+      <Filter>Parsers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)SList.h">
@@ -68,6 +74,9 @@
       <Filter>Parsers</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)XmlSharedDataTable.h">
+      <Filter>Parsers</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)XmlParseHelperInteger.h">
       <Filter>Parsers</Filter>
     </ClInclude>
   </ItemGroup>

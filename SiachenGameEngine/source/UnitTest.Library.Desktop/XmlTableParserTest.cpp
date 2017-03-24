@@ -4,6 +4,7 @@
 #include "XmlSharedDataTable.h"
 
 #include "XmlParseHelperTable.h"
+#include "XmlParseHelperInteger.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace SiachenGameEngine::Parsers;
@@ -41,6 +42,12 @@ namespace UnitTestLibraryDesktop
 			parseMaster.ParseFromFile("../../../XmlWithTable.xml");
 
 			Assert::AreEqual(sharedData.Depth(), 0U);
+
+			//XmlParseHelperInteger integerHelper;
+			//parseMaster.AddHelper(integerHelper);
+
+			parseMaster.ParseFromFile("../../../XmlWithTable.xml");
+			
 		}
 
 	private:

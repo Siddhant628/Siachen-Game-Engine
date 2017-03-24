@@ -58,6 +58,11 @@ namespace SiachenGameEngine
 			* @return A pointer to a duplicate of this helper.
 			*/
 			virtual IXmlParseHelper* Clone() = 0;
+		protected:
+			/**
+			* Validates if the attributes acquired from a start element have all the necessary attributes.
+			*/
+			void ValidateAttributeHashmap(const Containers::HashMap<std::string, std::string>& attributeHashmap) const;
 		};
 	}
 }

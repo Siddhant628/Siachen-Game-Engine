@@ -13,6 +13,7 @@ namespace SiachenGameEngine
 		{
 			// TODO Check if required
 			friend class XmlParseHelperTable;
+			friend class XmlParseHelperInteger;
 			RTTI_DECLARATIONS(XmlSharedDataTable, XmlParseMaster::SharedData)
 		public:
 			/**

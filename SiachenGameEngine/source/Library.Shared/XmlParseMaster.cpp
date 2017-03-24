@@ -15,15 +15,9 @@ namespace SiachenGameEngine
 	{
 		RTTI_DEFINITIONS(XmlParseMaster::SharedData)
 
-		XmlParseMaster::XmlParseMaster(SharedData& sharedData) : mSharedData(&sharedData), mIsClone(false), mCurrentHelper(nullptr)
+		XmlParseMaster::XmlParseMaster(SharedData& sharedData) : mParser(XML_ParserCreate(NULL)) , mSharedData(&sharedData), mIsClone(false), mCurrentHelper(nullptr)
 		{
-			// Initialize variables
 			sharedData.SetXmlParseMaster(*this);
-			// Create an Expat object and register call backs
-			mParser = XML_ParserCreate(NULL);
-			XML_SetUserData(mParser, this);
-			XML_SetElementHandler(mParser, StartElementHandler, EndElementHandler);
-			XML_SetCharacterDataHandler(mParser, CharDataHandler);
 		}
 
 		XmlParseMaster::~XmlParseMaster()
@@ -85,14 +79,7 @@ namespace SiachenGameEngine
 
 		void XmlParseMaster::Parse(const char* buffer, std::uint32_t length, bool lastChunk)
 		{
-			// Initialize all the helpers and shared data
-			mSharedData->Initialize();
-			mSharedData->SetXmlParseMaster(*this);
-			std::uint32_t helperCount = mHelperList.Size();
-			for (std::uint32_t i = 0; i < helperCount; ++i)
-			{
-				mHelperList.At(i)->Initialize(*mSharedData);
-			}
+			ResetParseMaster();
 			// Check for last chunk
 			std::int32_t done;
 			if (lastChunk)
@@ -122,6 +109,7 @@ namespace SiachenGameEngine
 			std::string content;
 			content.assign(std::istreambuf_iterator<char>(ifs), std::istreambuf_iterator<char>());
 			Parse(content.c_str(), static_cast<std::uint32_t>(content.size()), true);
+			ifs.close();
 		}
 
 		const std::string& XmlParseMaster::GetFileName() const
@@ -203,6 +191,23 @@ namespace SiachenGameEngine
 				attributeName = attributePairs[i];
 				attributeValue = attributePairs[i + 1];
 				attributeMap.Insert(std::make_pair(attributeName, attributeValue));
+			}
+		}
+
+		void XmlParseMaster::ResetParseMaster()
+		{
+			// Reset the parser
+			XML_ParserReset(mParser, nullptr);
+			XML_SetUserData(mParser, this);
+			XML_SetElementHandler(mParser, StartElementHandler, EndElementHandler);
+			XML_SetCharacterDataHandler(mParser, CharDataHandler);
+			// Initialize all the helpers and shared data
+			mSharedData->Initialize();
+			mSharedData->SetXmlParseMaster(*this);
+			std::uint32_t helperCount = mHelperList.Size();
+			for (std::uint32_t i = 0; i < helperCount; ++i)
+			{
+				mHelperList.At(i)->Initialize(*mSharedData);
 			}
 		}
 

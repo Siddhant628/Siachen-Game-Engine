@@ -183,6 +183,10 @@ namespace SiachenGameEngine
 			* attributeMap Output parameter. A hashmap containing all the name value pairs in attributePairs.
 			*/
 			void GetAttributePairHashmap(const char** attributePairs, Containers::HashMap<std::string, std::string>& attributeMap);
+			/**
+			* Resets the parser master, all the helpers associated with it, and the shared data.
+			*/
+			void ResetParseMaster();
 		};
 	}
 }

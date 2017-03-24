@@ -7,6 +7,11 @@ namespace SiachenGameEngine
 {
 	namespace Parsers
 	{
+		XmlParseHelperTable::XmlParseHelperTable() : mSharedData(nullptr)
+		{
+
+		}
+
 		void XmlParseHelperTable::Initialize(XmlParseMaster::SharedData& sharedData)
 		{
 			mSharedData = sharedData.As<XmlSharedDataTable>();
@@ -36,7 +41,16 @@ namespace SiachenGameEngine
 		
 		bool XmlParseHelperTable::EndElementHandler(const std::string& elementName)
 		{
-			return (elementName == "Scope");
+			if (elementName == "Scope")
+			{
+				//Scope* parent = mSharedData->mScope->GetParent();
+				//if (parent)
+				//{
+				//	mSharedData->mScope = parent;
+				//}
+				return true;
+			}
+			return false;
 		}
 
 		void XmlParseHelperTable::CharDataHandler(const char* characterData, std::uint32_t size)
@@ -47,7 +61,10 @@ namespace SiachenGameEngine
 
 		IXmlParseHelper* XmlParseHelperTable::Clone()
 		{
-			return nullptr;
+			XmlParseHelperTable* parseHelper = new XmlParseHelperTable();
+			parseHelper->mSharedData = mSharedData;
+
+			return parseHelper;
 		}
 	}
 }

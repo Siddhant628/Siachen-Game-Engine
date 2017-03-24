@@ -21,6 +21,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RTTI.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Scope.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)XmlParseHelperInteger.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)XmlSharedDataTable.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SList.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Vector.h" />
@@ -43,6 +44,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Scope.cpp">
       <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)IXmlParseHelper.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)XmlParseHelperInteger.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)XmlSharedDataTable.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)XmlParseHelperTable.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)XmlParseMaster.cpp">

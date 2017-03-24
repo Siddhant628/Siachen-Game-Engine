@@ -6,19 +6,19 @@ namespace SiachenGameEngine
 {
 	namespace Parsers
 	{
-		class XmlParseHelperTable final : public IXmlParseHelper
+		class XmlParseHelperInteger final : public IXmlParseHelper
 		{
 		public:
 			/**
 			* Default constructor initializes values.
 			*/
-			XmlParseHelperTable();
+			XmlParseHelperInteger();
 			// TODO Implement
-			~XmlParseHelperTable() = default;
+			~XmlParseHelperInteger() = default;
 			/**
 			* Initializes this helper.
 			*/
-			virtual void Initialize(Parsers::XmlParseMaster::SharedData& sharedData) override;
+			virtual void Initialize(XmlParseMaster::SharedData& sharedData) override;
 			/**
 			* Attempts to handle the element start.
 			* @param elementName The name of the element.
@@ -45,6 +45,7 @@ namespace SiachenGameEngine
 			virtual IXmlParseHelper* Clone() override;
 		private:
 			XmlSharedDataTable* mSharedData;
+
 		};
 	}
 }
