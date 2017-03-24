@@ -6,7 +6,7 @@ namespace SiachenGameEngine
 {
 	namespace Parsers
 	{
-		class XmlParseHelperTable final : IXmlParseHelper
+		class XmlParseHelperTable final : public IXmlParseHelper
 		{
 		public:
 			// TODO Implement

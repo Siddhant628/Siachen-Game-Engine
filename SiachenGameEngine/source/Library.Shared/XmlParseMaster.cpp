@@ -121,10 +121,7 @@ namespace SiachenGameEngine
 			}
 			std::string content;
 			content.assign(std::istreambuf_iterator<char>(ifs), std::istreambuf_iterator<char>());
-
-			std::uint32_t bufferLength = static_cast<std::uint32_t>(content.size());
-
-			Parse(content.c_str(), bufferLength, true);
+			Parse(content.c_str(), static_cast<std::uint32_t>(content.size()), true);
 		}
 
 		const std::string& XmlParseMaster::GetFileName() const
@@ -174,8 +171,6 @@ namespace SiachenGameEngine
 			std::uint32_t helperCount = parser->mHelperList.Size();
 			std::string elementString(element);
 
-			parser->GetSharedData()->DecrementDepth();
-
 			for (std::uint32_t i = 0; i < helperCount; ++i)
 			{
 				if (parser->mHelperList.At(i)->EndElementHandler(elementString))
@@ -184,7 +179,8 @@ namespace SiachenGameEngine
 					break;
 				}
 			}
-
+			// TODO Confirm if depth decrement should be happening after
+			parser->GetSharedData()->DecrementDepth();
 		}
 
 		void XmlParseMaster::CharDataHandler(void* userData, const char* str, std::int32_t length)

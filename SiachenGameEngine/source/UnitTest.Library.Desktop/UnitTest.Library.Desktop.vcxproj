@@ -248,6 +248,7 @@
     </ClCompile>
     <ClCompile Include="VectorTest.cpp" />
     <ClCompile Include="XmlParseMasterTest.cpp" />
+    <ClCompile Include="XmlTableParserTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Library.Desktop\Library.Desktop.vcxproj">

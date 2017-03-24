@@ -41,8 +41,8 @@ namespace SiachenGameEngine
 
 		void XmlParseHelperTable::CharDataHandler(const char* characterData, std::uint32_t size)
 		{
-			size;
-			characterData;
+			UNREFERENCED_PARAMETER(characterData);
+			UNREFERENCED_PARAMETER(size);
 		}
 
 		IXmlParseHelper* XmlParseHelperTable::Clone()
