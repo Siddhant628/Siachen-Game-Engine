@@ -25,14 +25,12 @@ namespace SiachenGameEngine
 			// In case of elements who don't have attributes, or data isn't being retrieved from attributes
 			if (elementName == "Class" || elementName == "FirstName" || elementName == "LastName" || elementName == "Name")
 			{
-				mSharedData->IncrementDepth();
 				mSharedData->SetCurrentElement(elementName);
 				return true;
 			}
 			// In case of a Student element tag
 			else if (elementName == "Student")
 			{
-				mSharedData->IncrementDepth();
 				mSharedData->SetCurrentElement(elementName);
 				if (attributeHashmap.Size() == 2)
 				{
@@ -49,7 +47,6 @@ namespace SiachenGameEngine
 		{
 			if (elementName == "Class" || elementName == "Student" || elementName == "FirstName" || elementName == "LastName" || elementName == "Name")
 			{
-				mSharedData->DecrementDepth();
 				return true;
 			}
 			return false;

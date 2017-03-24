@@ -78,6 +78,14 @@ namespace SiachenGameEngine
 			*/
 			XmlParseMaster(SharedData& sharedData);
 			/**
+			* Deleted copy constructor.
+			*/
+			XmlParseMaster(const XmlParseMaster& rhs) = delete;
+			/**
+			* Deleted assignment operator.
+			*/
+			XmlParseMaster& operator=(const XmlParseMaster& rhs) = delete;
+			/**
 			* Destructor deallocated dynamically allocated memory by parser, and for cloned parse masters.
 			*/
 			~XmlParseMaster();
@@ -90,13 +98,13 @@ namespace SiachenGameEngine
 			* Add the parsing helper to the helper list.
 			* @param helper A reference to the parsing helper which has to be added to the helper list.
 			*/
-			void AddHelper(const IXmlParseHelper& helper);
+			void AddHelper(IXmlParseHelper& helper);
 			/**
 			* Remove the parsing helper from the helper list.
 			* @param helper A reference to the parsing helper which has to be removed from the helper list.
 			* @return True if the helper was successfully removed from the list.
 			*/
-			bool RemoveHelper(const IXmlParseHelper& helper);
+			bool RemoveHelper(IXmlParseHelper& helper);
 			/**
 			* Parse a character string buffer of a specified length.
 			* @param buffer A character array containing the buffer which has to be parsed.
@@ -123,7 +131,7 @@ namespace SiachenGameEngine
 			* Set the the associated shared data.
 			* @param sharedData A reference to the shared data to associate with this object.
 			*/
-			void SetSharedData(const SharedData& sharedData);
+			void SetSharedData(SharedData& sharedData);
 		private:
 			/**
 			* The central data structure for the Expat API.

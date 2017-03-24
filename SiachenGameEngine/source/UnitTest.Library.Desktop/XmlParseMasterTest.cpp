@@ -101,6 +101,10 @@ namespace UnitTestLibraryDesktop
 			// Adding and removing helpers
 
 			SampleXmlParseHelper sampleHelper2;
+
+			auto addExpression = [&parseMaster, &sampleHelper]{parseMaster.AddHelper(sampleHelper);};
+			Assert::ExpectException<std::exception>(addExpression);
+
 			parseMaster.AddHelper(sampleHelper2);
 			Assert::IsTrue(parseMaster.RemoveHelper(sampleHelper));
 			Assert::IsFalse(parseMaster.RemoveHelper(sampleHelper));
@@ -169,6 +173,11 @@ namespace UnitTestLibraryDesktop
 			// Removing helper from a clone
 			auto removeExpression = [&parseMasterClone, &sampleHelper] {parseMasterClone->RemoveHelper(sampleHelper); };
 			Assert::ExpectException<std::runtime_error>(removeExpression);
+
+			SampleXmlSharedData someSharedData;
+
+			auto sharedDataExpression = [&parseMasterClone, &someSharedData]{parseMasterClone->SetSharedData(someSharedData);};
+			Assert::ExpectException<std::runtime_error>(sharedDataExpression);
 
 			delete parseMasterClone;
 		}

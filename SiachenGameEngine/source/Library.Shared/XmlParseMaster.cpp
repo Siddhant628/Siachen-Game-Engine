@@ -60,25 +60,27 @@ namespace SiachenGameEngine
 			return parseMasterClone;
 		}
 
-		void XmlParseMaster::AddHelper(const IXmlParseHelper& helper)
+		void XmlParseMaster::AddHelper(IXmlParseHelper& helper)
 		{
 			// Disallow adding of helpers to cloned master parsers
 			if (mIsClone)
 			{
 				throw std::runtime_error("Cannot add helpers to a cloned parser.");
 			}
-			IXmlParseHelper* helperToAdd = const_cast<IXmlParseHelper*>(&helper);
-			mHelperList.PushBack(helperToAdd);
+			if (mHelperList.Find(&helper) != mHelperList.end())
+			{
+				throw std::runtime_error("Cannot add the same helper twice.");
+			}
+			mHelperList.PushBack(&helper);
 		}
 
-		bool XmlParseMaster::RemoveHelper(const IXmlParseHelper& helper)
+		bool XmlParseMaster::RemoveHelper(IXmlParseHelper& helper)
 		{
-			IXmlParseHelper* helperToRemove = const_cast<IXmlParseHelper*>(&helper);
 			if (mIsClone)
 			{
 				throw std::runtime_error("Cannot remove helpers from a cloned parser.");
 			}
-			return mHelperList.Remove(helperToRemove);
+			return mHelperList.Remove(&helper);
 		}
 
 		void XmlParseMaster::Parse(const char* buffer, std::uint32_t length, bool lastChunk)
@@ -135,9 +137,14 @@ namespace SiachenGameEngine
 			return mSharedData;
 		}
 
-		void XmlParseMaster::SetSharedData(const SharedData& sharedData)
+		void XmlParseMaster::SetSharedData(SharedData& sharedData)
 		{
-			mSharedData = const_cast<SharedData*>(&sharedData);
+			// TODO Ask Paul that allowing deletion seems ugly as now user will have to heap allocate the other shared data.
+			if (mIsClone)
+			{
+				throw std::runtime_error("Cannot update the shared data of the clone.");
+			}
+			mSharedData = &sharedData;
 		}
 
 		void XmlParseMaster::StartElementHandler(void* userData, const char* element, const char** attribute)
@@ -147,6 +154,8 @@ namespace SiachenGameEngine
 			std::string elementString(element);
 
 			Containers::HashMap<std::string, std::string> attributeHashmap;
+
+			parser->GetSharedData()->IncrementDepth();
 
 			for (std::uint32_t i = 0; i < helperCount; ++i)
 			{
@@ -164,6 +173,8 @@ namespace SiachenGameEngine
 			XmlParseMaster* parser = reinterpret_cast<XmlParseMaster*>(userData);
 			std::uint32_t helperCount = parser->mHelperList.Size();
 			std::string elementString(element);
+
+			parser->GetSharedData()->DecrementDepth();
 
 			for (std::uint32_t i = 0; i < helperCount; ++i)
 			{

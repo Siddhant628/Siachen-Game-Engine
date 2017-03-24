@@ -23,6 +23,14 @@ namespace SiachenGameEngine
 			*/
 			virtual ~IXmlParseHelper() =default;
 			/**
+			* Deleted copy constructor.
+			*/
+			IXmlParseHelper(const IXmlParseHelper& rhs) = delete;
+			/**
+			* Deleted assignment operator.
+			*/
+			IXmlParseHelper& operator=(const IXmlParseHelper& rhs) = delete;
+			/**
 			* Initializes this helper.
 			*/
 			virtual void Initialize(XmlParseMaster::SharedData& sharedData) = 0;
