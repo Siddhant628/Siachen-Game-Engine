@@ -11,9 +11,6 @@ namespace SiachenGameEngine
 		*/
 		class XmlSharedDataTable final : public XmlParseMaster::SharedData
 		{
-			// TODO Check if required
-			friend class XmlParseHelperTable;
-			friend class XmlParseHelperInteger;
 			RTTI_DECLARATIONS(XmlSharedDataTable, XmlParseMaster::SharedData)
 		public:
 			/**
@@ -34,13 +31,9 @@ namespace SiachenGameEngine
 			* @return Address of the cloned SharedData object.
 			*/
 			virtual SharedData* Clone() override;
-			// TODO Confirm Making the scope public
 			/**
-			* A scope which will contain all the data parsed from the XML.
+			* A pointer to the table which will get populated as a result of parsing.
 			*/
-			GameplayFramework::Scope* GetSharedScope() const;
-		private:
-			// TODO Confirm Private / Public?
 			GameplayFramework::Scope* mScope;
 
 

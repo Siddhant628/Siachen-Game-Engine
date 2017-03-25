@@ -3,11 +3,14 @@
 #include "XmlParseMaster.h"
 #include "XmlSharedDataTable.h"
 
+#include "Scope.h"
+
 #include "XmlParseHelperTable.h"
-#include "XmlParseHelperInteger.h"
+#include "XmlParseHelperPrimitives.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace SiachenGameEngine::Parsers;
+using namespace SiachenGameEngine::Containers;
 
 namespace UnitTestLibraryDesktop
 {
@@ -31,23 +34,26 @@ namespace UnitTestLibraryDesktop
 			}
 		}
 
-		TEST_METHOD(XmlTableParserTest_BaseScope)
+		TEST_METHOD(XmlTableParserTest_Primitives)
 		{
 			XmlSharedDataTable sharedData;
 			XmlParseMaster parseMaster(sharedData);
 
 			XmlParseHelperTable tableHelper;
+			XmlParseHelperPrimitives primitiveHelper;
 			parseMaster.AddHelper(tableHelper);
+			parseMaster.AddHelper(primitiveHelper);
 
 			parseMaster.ParseFromFile("../../../XmlWithTable.xml");
 
-			Assert::AreEqual(sharedData.Depth(), 0U);
-
-			//XmlParseHelperInteger integerHelper;
-			//parseMaster.AddHelper(integerHelper);
-
-			parseMaster.ParseFromFile("../../../XmlWithTable.xml");
-			
+			std::int32_t int1 = (*sharedData.mScope)["Child1"][0]["Int1"].Get<std::int32_t>();
+			Assert::AreEqual(int1, 10);
+			std::int32_t intArray1 = (*sharedData.mScope)["Child2"][0]["IntArray"].Get<std::int32_t>();
+			Assert::AreEqual(intArray1, 20);
+			std::int32_t intArray2 = (*sharedData.mScope)["Child2"][0]["IntArray"].Get<std::int32_t>(1);
+			Assert::AreEqual(intArray2, 30);
+			std::int32_t int2 = (*sharedData.mScope)["Child2"][1]["Int2"].Get<std::int32_t>();
+			Assert::AreEqual(int2, 40);
 		}
 
 	private:

@@ -1,5 +1,12 @@
 <Scope Name = "Parent">
-<Integer Name = "SomeInteger" Value = "10"/>
-<Integer Name = "IntegerArray" Value = "20"/>
-<Integer Name = "IntegerArray" Value = "30"/>
+	<Scope Name = "Child1">
+		<Integer Name = "Int1" Value = "10"/>
+	</Scope>
+	<Scope Name = "Child2">
+		<Integer Name = "IntArray" Value = "20"/>
+		<Integer Name = "IntArray" Value = "30"/>
+	</Scope>
+	<Scope Name = "Child2">
+		<Integer Name = "Int2" Value = "40"/>
+	</Scope>
 </Scope>

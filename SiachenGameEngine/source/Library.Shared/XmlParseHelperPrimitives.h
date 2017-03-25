@@ -6,15 +6,18 @@ namespace SiachenGameEngine
 {
 	namespace Parsers
 	{
-		class XmlParseHelperInteger final : public IXmlParseHelper
+		/**
+		* A XML parsing helper which can parse primitives such as integers, floats and strings
+		*/
+		class XmlParseHelperPrimitives final : public IXmlParseHelper
 		{
 		public:
 			/**
 			* Default constructor initializes values.
 			*/
-			XmlParseHelperInteger();
+			XmlParseHelperPrimitives();
 			// TODO Implement
-			~XmlParseHelperInteger() = default;
+			~XmlParseHelperPrimitives() = default;
 			/**
 			* Initializes this helper.
 			*/

@@ -21,7 +21,6 @@ namespace SiachenGameEngine
 
 		void XmlSharedDataTable::Initialize()
 		{
-			// TODO Check
 			Parent::Initialize();
 			delete mScope;
 			mScope = nullptr;
@@ -29,12 +28,13 @@ namespace SiachenGameEngine
 
 		XmlParseMaster::SharedData* XmlSharedDataTable::Clone()
 		{
-			return nullptr;
-		}
-
-		GameplayFramework::Scope* XmlSharedDataTable::GetSharedScope() const
-		{
-			return mScope;
+			XmlSharedDataTable* clonedSharedData = nullptr;
+			if (mScope)
+			{
+				clonedSharedData = new XmlSharedDataTable();
+				clonedSharedData->mScope = new Scope(*mScope);
+			}
+			return clonedSharedData;
 		}
 	}
 }

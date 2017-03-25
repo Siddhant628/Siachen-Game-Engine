@@ -25,14 +25,20 @@ namespace SiachenGameEngine
 		{
 			if (elementName == "Scope")
 			{
+				// Return if there is no attribute name
+				if (!attributeHashmap.ContainsKey("Name"))
+				{
+					return false;
+				}
+				// In case a scope has to be appended
 				if (!mSharedData->mScope)
 				{
 					mSharedData->mScope = new Scope();
 				}
 				else
 				{
-					// TODO In case of a nested scope.
-					attributeHashmap;
+					Scope& appendedScope = mSharedData->mScope->AppendScope(attributeHashmap["Name"]);
+					mSharedData->mScope = &appendedScope;
 				}
 				return true;
 			}
@@ -43,11 +49,11 @@ namespace SiachenGameEngine
 		{
 			if (elementName == "Scope")
 			{
-				//Scope* parent = mSharedData->mScope->GetParent();
-				//if (parent)
-				//{
-				//	mSharedData->mScope = parent;
-				//}
+				Scope* parent = mSharedData->mScope->GetParent();
+				if (parent)
+				{
+					mSharedData->mScope = parent;
+				}
 				return true;
 			}
 			return false;
