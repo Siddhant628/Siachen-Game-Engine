@@ -109,9 +109,10 @@ namespace SiachenGameEngine
 			* Parse a character string buffer of a specified length.
 			* @param buffer A character array containing the buffer which has to be parsed.
 			* @param length The number of bytes in the buffer.
+			* @param firstChunk Set to true if this is the first chunk of the data which has to be parsed.
 			* @param lastChunk Set to true if this is the last chunk of the data which has to be parsed.
 			*/
-			void Parse(const char* buffer, std::uint32_t length, bool firstChunk, bool lastChunk);
+			void Parse(const char* buffer, std::uint32_t length, bool firstChunk = true, bool lastChunk = true);
 			/**
 			* Parse the file with the given name.
 			* @param fileName Name (with relative path) of the file to be parsed.
