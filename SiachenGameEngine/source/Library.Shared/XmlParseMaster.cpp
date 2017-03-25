@@ -77,9 +77,12 @@ namespace SiachenGameEngine
 			return mHelperList.Remove(&helper);
 		}
 
-		void XmlParseMaster::Parse(const char* buffer, std::uint32_t length, bool lastChunk)
+		void XmlParseMaster::Parse(const char* buffer, std::uint32_t length, bool firstChunk, bool lastChunk)
 		{
-			ResetParseMaster();
+			if (firstChunk)
+			{
+				ResetParseMaster();
+			}
 			// Check for last chunk
 			std::int32_t done;
 			if (lastChunk)
@@ -108,7 +111,7 @@ namespace SiachenGameEngine
 			}
 			std::string content;
 			content.assign(std::istreambuf_iterator<char>(ifs), std::istreambuf_iterator<char>());
-			Parse(content.c_str(), static_cast<std::uint32_t>(content.size()), true);
+			Parse(content.c_str(), static_cast<std::uint32_t>(content.size()), true, true);
 			ifs.close();
 		}
 
@@ -124,7 +127,6 @@ namespace SiachenGameEngine
 
 		void XmlParseMaster::SetSharedData(SharedData& sharedData)
 		{
-			// TODO Ask Paul that allowing deletion seems ugly as now user will have to heap allocate the other shared data.
 			if (mIsClone)
 			{
 				throw std::runtime_error("Cannot update the shared data of the clone.");

@@ -111,7 +111,7 @@ namespace SiachenGameEngine
 			* @param length The number of bytes in the buffer.
 			* @param lastChunk Set to true if this is the last chunk of the data which has to be parsed.
 			*/
-			void Parse(const char* buffer, std::uint32_t length, bool lastChunk);
+			void Parse(const char* buffer, std::uint32_t length, bool firstChunk, bool lastChunk);
 			/**
 			* Parse the file with the given name.
 			* @param fileName Name (with relative path) of the file to be parsed.

@@ -212,7 +212,7 @@ namespace UnitTestLibraryDesktop
 
 			parseMaster.ParseFromFile("../../../XmlWithTableInvalid.xml");
 
-			// Invalid enteries as strings
+			// Invalid entries as strings
 			Assert::AreEqual((*sharedData.mScope)["InvalidVector"].Size(), 0U);
 			Assert::AreEqual((*sharedData.mScope)["InvalidMatrix"].Size(), 0U);
 		}
