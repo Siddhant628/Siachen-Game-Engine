@@ -45,12 +45,23 @@ namespace SiachenGameEngine
 					return true;
 				}
 			}
+			else if (elementName == "String")
+			{
+				if (attributeHashmap.ContainsKey("Name") && attributeHashmap.ContainsKey("Value"))
+				{
+					std::string value = attributeHashmap["Value"];
+					std::string name = attributeHashmap["Name"];
+					// Update the shared data scope
+					(*mSharedData->mScope)[name].PushBack(value);
+					return true;
+				}
+			}
 			return false;
 		}
 
 		bool XmlParseHelperPrimitives::EndElementHandler(const std::string& elementName)
 		{
-			return (elementName == "Integer");
+			return (elementName == "Integer" || elementName == "Float" || elementName == "String");
 		}
 
 		void XmlParseHelperPrimitives::CharDataHandler(const char* characterData, std::uint32_t size)
@@ -63,7 +74,6 @@ namespace SiachenGameEngine
 		{
 			XmlParseHelperPrimitives* parseHelper = new XmlParseHelperPrimitives();
 			parseHelper->mSharedData = mSharedData;
-
 			return parseHelper;
 		}
 	}

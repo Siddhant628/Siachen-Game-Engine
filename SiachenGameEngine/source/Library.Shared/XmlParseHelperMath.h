@@ -7,19 +7,19 @@ namespace SiachenGameEngine
 	namespace Parsers
 	{
 		/**
-		* A XML parsing helper which can parse primitives such as integers, floats and strings
+		* An XML parsing helper which can parse math structs like vectors and matrices.
 		*/
-		class XmlParseHelperPrimitives final : public IXmlParseHelper
+		class XmlParseHelperMath final : public IXmlParseHelper
 		{
 		public:
 			/**
 			* Default constructor initializes values.
 			*/
-			XmlParseHelperPrimitives();
+			XmlParseHelperMath();
 			/**
 			* Destructor.
 			*/
-			~XmlParseHelperPrimitives() = default;
+			~XmlParseHelperMath() = default;
 			/**
 			* Initializes this helper.
 			*/
@@ -50,7 +50,6 @@ namespace SiachenGameEngine
 			virtual IXmlParseHelper* Clone() override;
 		private:
 			XmlSharedDataTable* mSharedData;
-
 		};
 	}
 }
