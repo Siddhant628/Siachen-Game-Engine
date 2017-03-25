@@ -69,7 +69,6 @@ namespace SiachenGameEngine
 		{
 			XmlParseHelperTable* parseHelper = new XmlParseHelperTable();
 			parseHelper->mSharedData = mSharedData;
-
 			return parseHelper;
 		}
 	}

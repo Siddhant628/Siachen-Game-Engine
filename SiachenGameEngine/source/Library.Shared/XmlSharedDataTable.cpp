@@ -28,10 +28,9 @@ namespace SiachenGameEngine
 
 		XmlParseMaster::SharedData* XmlSharedDataTable::Clone()
 		{
-			XmlSharedDataTable* clonedSharedData = nullptr;
+			XmlSharedDataTable* clonedSharedData = new XmlSharedDataTable();;
 			if (mScope)
-			{
-				clonedSharedData = new XmlSharedDataTable();
+			{				
 				clonedSharedData->mScope = new Scope(*mScope);
 			}
 			return clonedSharedData;

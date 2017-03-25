@@ -13,7 +13,6 @@ namespace SiachenGameEngine
 			* Default constructor initializes values.
 			*/
 			XmlParseHelperTable();
-			// TODO Implement
 			~XmlParseHelperTable() = default;
 			/**
 			* Initializes this helper.

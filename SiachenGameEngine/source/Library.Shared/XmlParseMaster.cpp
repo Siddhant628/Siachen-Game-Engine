@@ -167,7 +167,6 @@ namespace SiachenGameEngine
 					break;
 				}
 			}
-			// TODO Confirm if depth decrement should be happening after
 			parser->GetSharedData()->DecrementDepth();
 		}
 
