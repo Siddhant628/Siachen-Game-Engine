@@ -75,6 +75,9 @@
     <ClCompile Include="XmlTableParserTest.cpp">
       <Filter>Test Classes</Filter>
     </ClCompile>
+    <ClCompile Include="FactoryTest.cpp">
+      <Filter>Test Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Helper Classes">

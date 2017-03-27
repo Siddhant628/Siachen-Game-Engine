@@ -224,6 +224,7 @@
     <ClCompile Include="AttributedFoo.cpp" />
     <ClCompile Include="AttributedTest.cpp" />
     <ClCompile Include="DatumTest.cpp" />
+    <ClCompile Include="FactoryTest.cpp" />
     <ClCompile Include="Foo.cpp" />
     <ClCompile Include="HashMapTest.cpp" />
     <ClCompile Include="pch.cpp">

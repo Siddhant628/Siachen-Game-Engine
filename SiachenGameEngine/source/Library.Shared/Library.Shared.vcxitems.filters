@@ -82,6 +82,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)XmlParseHelperMath.h">
       <Filter>Parsers</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Factory.h">
+      <Filter>Gameplay Framework</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)SList.inl">
@@ -95,6 +98,9 @@
     </None>
     <None Include="$(MSBuildThisFileDirectory)Datum.inl">
       <Filter>Containers</Filter>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Factory.inl">
+      <Filter>Gameplay Framework</Filter>
     </None>
   </ItemGroup>
 </Project>
