@@ -15,11 +15,6 @@ namespace UnitTestLibraryDesktop
 	TEST_CLASS(FactoryTest)
 	{
 	public:
-		TEST_CLASS_INITIALIZE(Initialize_FactoryTest)
-		{
-			ConcreteFactory(RTTI, Foo);
-		}
-
 		TEST_METHOD_INITIALIZE(Initialize)
 		{
 			_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF);
@@ -39,7 +34,15 @@ namespace UnitTestLibraryDesktop
 
 		TEST_METHOD(Factory_First)
 		{
-			ConcreteFactory(RTTI, Foo);
+			FooFactory foo;
+			Assert::IsTrue(foo.ClassName() == "Foo");
+
+			RTTI* productRTTI = Factory<RTTI>::Create("Foo");
+			Assert::IsNotNull(productRTTI);
+			
+			Assert::IsTrue(productRTTI->Is("Foo"));
+
+			delete productRTTI;
 		}
 
 	private:

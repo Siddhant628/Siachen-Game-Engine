@@ -1,5 +1,6 @@
 #pragma once
 #include "RTTI.h"
+#include "Factory.h"
 // A helper class which contains a pointer to an integer which is dynamically allocated when an object is instantiated
 // This class is made with the intention to perform unit testing using user defined types
 
@@ -36,5 +37,7 @@ namespace SiachenGameEngine
 		private:
 			int32_t* mIntegerPointer;
 		};
+
+		ConcreteFactory(GameplayFramework::RTTI, Foo);
 	}
 }

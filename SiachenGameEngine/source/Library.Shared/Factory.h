@@ -1,5 +1,6 @@
 #pragma once
 #include "HashMap.h"
+#include "assert.h"
 
 namespace SiachenGameEngine
 {
@@ -36,6 +37,10 @@ namespace SiachenGameEngine
 			* @return The address of the concrete product.
 			*/
 			static AbstractProductT* Create(const std::string& className);
+
+			static typename Containers::HashMap<std::string, Factory<AbstractProductT>*>::Iterator begin();
+
+			static typename Containers::HashMap<std::string, Factory<AbstractProductT>*>::Iterator end();
 		protected:
 			/**
 			* Add a concrete factory to the list of factories for this abstract factory.
@@ -49,27 +54,23 @@ namespace SiachenGameEngine
 			static void Remove(Factory<AbstractProductT>& factoryToRemove);
 		private:
 			static Containers::HashMap<std::string, Factory<AbstractProductT>*> mFactoryTable;
-
-			// TODO Write begin()
-			// TODO Write end()
 		};
 	}
-
-
-#define ConcreteFactory(AbstractProductT, ConcreteProductT)								\
-	class ConcreteProductT##Factory : public Factory<AbstractProductT>					\
-	{																					\
-	public:																				\
-		ConcreteProductT##Factory() { Add(*this); }										\
-		~ConcreteProductT##Factory() { Remove(*this); }									\
-		virtual std::string ClassName() const override { return (#ConcreteProductT); }	\
-		virtual AbstractProductT* Create() override										\
-		{																				\
-			AbstractProductT* product = new ConcreteProductT();							\
-			/*assert(product != nullptr);*/												\
-			return product;																\
-		}																				\
-	};
 }
+
+#define ConcreteFactory(AbstractProductT, ConcreteProductT)															\
+	class ConcreteProductT##Factory : public SiachenGameEngine::GameplayFramework::Factory<AbstractProductT>		\
+	{																												\
+	public:																											\
+		ConcreteProductT##Factory() { Add(*this); }																	\
+		~ConcreteProductT##Factory() { Remove(*this); }																\
+		virtual std::string ClassName() const override { return (#ConcreteProductT); }								\
+		virtual AbstractProductT* Create() override																	\
+		{																											\
+			AbstractProductT* product = new ConcreteProductT();														\
+			assert(product != nullptr);																				\
+			return product;																							\
+		}																											\
+	};
 
 #include "Factory.inl"
