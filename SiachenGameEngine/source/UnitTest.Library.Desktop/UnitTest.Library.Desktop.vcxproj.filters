@@ -24,6 +24,12 @@
     <ClInclude Include="AnotherSharedData.h">
       <Filter>Helper Classes</Filter>
     </ClInclude>
+    <ClInclude Include="AbstractProductBar.h">
+      <Filter>Helper Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="ConcreteProductBar.h">
+      <Filter>Test Classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -77,6 +83,9 @@
     </ClCompile>
     <ClCompile Include="FactoryTest.cpp">
       <Filter>Test Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="ConcreteProductBar.cpp">
+      <Filter>Helper Classes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
