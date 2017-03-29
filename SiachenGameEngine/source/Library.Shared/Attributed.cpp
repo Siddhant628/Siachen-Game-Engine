@@ -209,12 +209,15 @@ namespace SiachenGameEngine
 
 		bool Attributed::IsPrescribedAttribute(const std::string& attributeName) const
 		{
-			CacheHashmapType::Iterator it = sPrescribedAttributeCache.Find(TypeIdInstance());
-
-			Vector<std::string>& attributeList = (*it).second;
-			if (attributeList.Find(attributeName) != attributeList.end())
+			if (IsAttribute(attributeName))
 			{
-				return true;
+				CacheHashmapType::Iterator it = sPrescribedAttributeCache.Find(TypeIdInstance());
+
+				Vector<std::string>& attributeList = (*it).second;
+				if (attributeList.Find(attributeName) != attributeList.end())
+				{
+					return true;
+				}
 			}
 			return false;
 		}

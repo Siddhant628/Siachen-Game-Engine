@@ -360,6 +360,26 @@ namespace UnitTestLibraryDesktop
 			Assert::AreEqual(bar.GetFloat(), 1.5f);
 		}
 
+		TEST_METHOD(Attributed_NestedAttributes)
+		{
+			Scope* bar = new AttributedBar();
+			AttributedBaz baz;
+
+			baz.Adopt(*bar, "AttributedBar");
+		}
+
+		TEST_METHOD(Attributed_RTTI)
+		{
+			RTTI* barAsRTTI = new AttributedBar;
+
+			Assert::IsTrue(barAsRTTI->Is("AttributedBar"));
+			Assert::IsTrue(barAsRTTI->Is(AttributedBar::TypeIdClass()));
+			Assert::IsNotNull(barAsRTTI->As<AttributedBar>());
+			Assert::IsNotNull(barAsRTTI->QueryInterface(AttributedBar::TypeIdClass()));
+
+			delete barAsRTTI;
+		}
+
 	private:
 		static _CrtMemState sStartMemState;
 	};
