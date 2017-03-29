@@ -23,10 +23,10 @@ namespace SiachenGameEngine
 		
 		bool XmlParseHelperTable::StartElementHandler(const std::string& elementName, const Containers::HashMap<std::string, std::string>& attributeHashmap)
 		{
-			if (elementName == "Scope")
+			if (elementName == "scope")
 			{
 				// Return if there is no attribute name
-				if (!attributeHashmap.ContainsKey("Name"))
+				if (!attributeHashmap.ContainsKey("name"))
 				{
 					return false;
 				}
@@ -37,7 +37,7 @@ namespace SiachenGameEngine
 				}
 				else
 				{
-					Scope& appendedScope = mSharedData->mScope->AppendScope(attributeHashmap["Name"]);
+					Scope& appendedScope = mSharedData->mScope->AppendScope(attributeHashmap["name"]);
 					mSharedData->mScope = &appendedScope;
 				}
 				return true;
@@ -47,7 +47,7 @@ namespace SiachenGameEngine
 		
 		bool XmlParseHelperTable::EndElementHandler(const std::string& elementName)
 		{
-			if (elementName == "Scope")
+			if (elementName == "scope")
 			{
 				Scope* parent = mSharedData->mScope->GetParent();
 				if (parent)

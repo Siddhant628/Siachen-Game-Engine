@@ -23,34 +23,34 @@ namespace SiachenGameEngine
 
 		bool XmlParseHelperPrimitives::StartElementHandler(const std::string& elementName, const HashMap<std::string, std::string>& attributeHashmap)
 		{
-			if (elementName == "Integer")
+			if (elementName == "integer")
 			{
-				if (attributeHashmap.ContainsKey("Name") && attributeHashmap.ContainsKey("Value"))
+				if (attributeHashmap.ContainsKey("name") && attributeHashmap.ContainsKey("value"))
 				{
-					std::int32_t value = std::stoi(attributeHashmap["Value"]);
-					std::string name = attributeHashmap["Name"];
+					std::int32_t value = std::stoi(attributeHashmap["value"]);
+					std::string name = attributeHashmap["name"];
 					// Update the shared data scope
 					(*mSharedData->mScope)[name].PushBack(value);
 					return true;
 				}
 			}
-			else if (elementName == "Float")
+			else if (elementName == "float")
 			{
-				if (attributeHashmap.ContainsKey("Name") && attributeHashmap.ContainsKey("Value"))
+				if (attributeHashmap.ContainsKey("name") && attributeHashmap.ContainsKey("value"))
 				{
-					std::float_t value = std::stof(attributeHashmap["Value"]);
-					std::string name = attributeHashmap["Name"];
+					std::float_t value = std::stof(attributeHashmap["value"]);
+					std::string name = attributeHashmap["name"];
 					// Update the shared data scope
 					(*mSharedData->mScope)[name].PushBack(value);
 					return true;
 				}
 			}
-			else if (elementName == "String")
+			else if (elementName == "string")
 			{
-				if (attributeHashmap.ContainsKey("Name") && attributeHashmap.ContainsKey("Value"))
+				if (attributeHashmap.ContainsKey("name") && attributeHashmap.ContainsKey("value"))
 				{
-					std::string value = attributeHashmap["Value"];
-					std::string name = attributeHashmap["Name"];
+					std::string value = attributeHashmap["value"];
+					std::string name = attributeHashmap["name"];
 					// Update the shared data scope
 					(*mSharedData->mScope)[name].PushBack(value);
 					return true;
@@ -61,7 +61,7 @@ namespace SiachenGameEngine
 
 		bool XmlParseHelperPrimitives::EndElementHandler(const std::string& elementName)
 		{
-			return (elementName == "Integer" || elementName == "Float" || elementName == "String");
+			return (elementName == "integer" || elementName == "float" || elementName == "string");
 		}
 
 		void XmlParseHelperPrimitives::CharDataHandler(const char* characterData, std::uint32_t size)

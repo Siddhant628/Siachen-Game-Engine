@@ -22,13 +22,13 @@ namespace SiachenGameEngine
 
 		bool XmlParseHelperMath::StartElementHandler(const std::string& elementName, const Containers::HashMap<std::string, std::string>& attributeHashmap)
 		{
-			if (elementName == "Vector")
+			if (elementName == "vector")
 			{
-				if (attributeHashmap.ContainsKey("Name") && attributeHashmap.ContainsKey("Value"))
+				if (attributeHashmap.ContainsKey("name") && attributeHashmap.ContainsKey("value"))
 				{
-					std::string name = attributeHashmap["Name"];
+					std::string name = attributeHashmap["name"];
 					
-					std::string value = attributeHashmap["Value"];
+					std::string value = attributeHashmap["value"];
 					value = "vec4" + value;
 
 					Datum& datum = (*mSharedData->mScope)[name];
@@ -43,13 +43,13 @@ namespace SiachenGameEngine
 					return true;
 				}
 			}
-			else if (elementName == "Matrix")
+			else if (elementName == "matrix")
 			{
-				if (attributeHashmap.ContainsKey("Name") && attributeHashmap.ContainsKey("Value"))
+				if (attributeHashmap.ContainsKey("name") && attributeHashmap.ContainsKey("value"))
 				{
-					std::string name = attributeHashmap["Name"];
+					std::string name = attributeHashmap["name"];
 
-					std::string value = attributeHashmap["Value"];
+					std::string value = attributeHashmap["value"];
 					value = "mat4x4" + value;
 
 					Datum& datum = (*mSharedData->mScope)[name];
@@ -70,7 +70,7 @@ namespace SiachenGameEngine
 
 		bool XmlParseHelperMath::EndElementHandler(const std::string & elementName)
 		{
-			return (elementName == "Vector" || elementName == "Matrix");
+			return (elementName == "vector" || elementName == "matrix");
 		}
 
 		void XmlParseHelperMath::CharDataHandler(const char* characterData, std::uint32_t size)

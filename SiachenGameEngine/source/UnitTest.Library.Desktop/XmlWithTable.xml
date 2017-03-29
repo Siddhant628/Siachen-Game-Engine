@@ -1,24 +1,24 @@
-<Scope Name = "Parent">
-	<Vector Name = "Vector1" Value = "(1.0,2.0,3.0,4.0)"/>
-	<Scope Name = "Child1">
-		<Integer Name = "Int1" Value = "10"/>
-		<String Name = "String1" Value = "One"/>
-	</Scope>
-	<Scope Name = "Child2">
-		<Integer Name = "IntArray" Value = "20"/>
-		<Integer Name = "IntArray" Value = "30"/>
-		<Float Name = "FloatValue" Value = "1.5"/>
-	</Scope>
-	<Scope Name = "Child2">
-		<Integer Name = "Int2" Value = "40"/>
-		<Float Name = "FloatValue" Value = "2.5"/>
-		<String Name = "StringArray" Value = "Two"/>
-		<String Name = "StringArray" Value = "Three"/>
-		<Vector Name = "VectorArray" Value = "(1.0,2.0,3.0,0.0)"/>
-		<Vector Name = "VectorArray" Value = "(2.0,2.0,3.0,0.0)"/>
-	</Scope>
-	<Float Name = "FloatArray" Value = "1.5"/>
-	<Float Name = "FloatArray" Value = "2.5"/>
-	<Matrix Name = "MatrixArray" Value = "((1.0,2.0,3.0,4.0),(1.0,2.0,3.0,4.0),(1.0,2.0,3.0,4.0),(1.0,2.0,3.0,4.0))"/>
-	<Matrix Name = "MatrixArray" Value = "((1.0,2.0,3.0,0.0),(1.0,2.0,3.0,0.0),(1.0,2.0,3.0,0.0),(1.0,2.0,3.0,0.0))"/>
-</Scope>
+<scope name = "Parent">
+	<vector name = "Vector1" value = "(1.0,2.0,3.0,4.0)"/>
+	<scope name = "Child1">
+		<integer name = "Int1" value = "10"/>
+		<string name = "String1" value = "One"/>
+	</scope>
+	<scope name = "Child2">
+		<integer name = "IntArray" value = "20"/>
+		<integer name = "IntArray" value = "30"/>
+		<float name = "FloatValue" value = "1.5"/>
+	</scope>
+	<scope name = "Child2">
+		<integer name = "Int2" value = "40"/>
+		<float name = "FloatValue" value = "2.5"/>
+		<string name = "StringArray" value = "Two"/>
+		<string name = "StringArray" value = "Three"/>
+		<vector name = "VectorArray" value = "(1.0,2.0,3.0,0.0)"/>
+		<vector name = "VectorArray" value = "(2.0,2.0,3.0,0.0)"/>
+	</scope>
+	<float name = "FloatArray" value = "1.5"/>
+	<float name = "FloatArray" value = "2.5"/>
+	<matrix name = "MatrixArray" value = "((1.0,2.0,3.0,4.0),(1.0,2.0,3.0,4.0),(1.0,2.0,3.0,4.0),(1.0,2.0,3.0,4.0))"/>
+	<matrix name = "MatrixArray" value = "((1.0,2.0,3.0,0.0),(1.0,2.0,3.0,0.0),(1.0,2.0,3.0,0.0),(1.0,2.0,3.0,0.0))"/>
+</scope>

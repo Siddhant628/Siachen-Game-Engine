@@ -1,5 +1,5 @@
-<Scope Name = "ValidScope">
-	<Vector Name = "InvalidVector" Value = "(1.0,2.0,3.0)"/>
-	<Matrix Name = "InvalidMatrix" Value = "((1.0,2.0,3.0,4.0),(1.0,2.0,3.0,4.0),(1.0,2.0,3.0,4.0))"/>
+<scope name = "ValidScope">
+	<vector name = "InvalidVector" value = "(1.0,2.0,3.0)"/>
+	<matrix name = "InvalidMatrix" value = "((1.0,2.0,3.0,4.0),(1.0,2.0,3.0,4.0),(1.0,2.0,3.0,4.0))"/>
 	<InvalidTag></InvalidTag>
-</Scope>
+</scope>
