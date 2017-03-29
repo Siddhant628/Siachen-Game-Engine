@@ -111,8 +111,7 @@
       <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
     </Link>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>XCOPY "$(ProjectDir)data" "$(OutputPath)" /Y /S</Command>
     </PostBuildEvent>
     <PreLinkEvent>
       <Command>xcopy "$(SolutionDir)..\external\Expat\lib\$(Platform)\$(Configuration)\Expat.pdb" "$(ProjectDir)bin\$(Platform)\$(Configuration)\" /Y</Command>
@@ -135,8 +134,7 @@
       <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
     </Link>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>XCOPY "$(ProjectDir)data" "$(OutputPath)" /Y /S</Command>
     </PostBuildEvent>
     <PreLinkEvent>
       <Command>xcopy "$(SolutionDir)..\external\Expat\lib\$(Platform)\$(Configuration)\Expat.pdb" "$(ProjectDir)bin\$(Platform)\$(Configuration)\" /Y</Command>
@@ -170,8 +168,7 @@
       <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
     </ProjectReference>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>XCOPY "$(ProjectDir)data" "$(OutputPath)" /Y /S</Command>
     </PostBuildEvent>
     <PreLinkEvent>
       <Command>xcopy "$(SolutionDir)..\external\Expat\lib\$(Platform)\$(Configuration)\Expat.pdb" "$(ProjectDir)bin\$(Platform)\$(Configuration)\" /Y</Command>
@@ -199,8 +196,7 @@
       <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
     </Link>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>XCOPY "$(ProjectDir)data" "$(OutputPath)" /Y /S</Command>
     </PostBuildEvent>
     <PreLinkEvent>
       <Command>xcopy "$(SolutionDir)..\external\Expat\lib\$(Platform)\$(Configuration)\Expat.pdb" "$(ProjectDir)bin\$(Platform)\$(Configuration)\" /Y</Command>

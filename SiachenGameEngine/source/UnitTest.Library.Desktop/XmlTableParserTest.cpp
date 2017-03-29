@@ -49,7 +49,7 @@ namespace UnitTestLibraryDesktop
 			parseMaster.AddHelper(tableHelper);
 			parseMaster.AddHelper(primitiveHelper);
 
-			parseMaster.ParseFromFile("../../../XmlWithTable.xml");
+			parseMaster.ParseFromFile("XmlWithTable.xml");
 
 			// Test for integers
 			std::int32_t int1 = (*sharedData.mScope)["Child1"][0]["Int1"].Get<std::int32_t>();
@@ -93,7 +93,7 @@ namespace UnitTestLibraryDesktop
 			parseMaster.AddHelper(primitiveHelper);
 			parseMaster.AddHelper(mathHelper);
 
-			parseMaster.ParseFromFile("../../../XmlWithTable.xml");
+			parseMaster.ParseFromFile("XmlWithTable.xml");
 
 			// Test for vectors
 			glm::vec4 vec1 = (*sharedData.mScope)["Vector1"].Get<glm::vec4>();
@@ -123,11 +123,11 @@ namespace UnitTestLibraryDesktop
 			parseMaster.AddHelper(primitiveHelper);
 			parseMaster.AddHelper(mathHelper);
 
-			parseMaster.ParseFromFile("../../../XmlWithTable.xml");
+			parseMaster.ParseFromFile("XmlWithTable.xml");
 
 			XmlParseMaster* clonedParseMaster = parseMaster.Clone();
 
-			clonedParseMaster->ParseFromFile("../../../XmlWithTable.xml");
+			clonedParseMaster->ParseFromFile("XmlWithTable.xml");
 
 			//Random tests
 			XmlSharedDataTable& sharedData = *(reinterpret_cast<XmlSharedDataTable*>(clonedParseMaster->GetSharedData()));
@@ -210,7 +210,7 @@ namespace UnitTestLibraryDesktop
 			parseMaster.AddHelper(primitiveHelper);
 			parseMaster.AddHelper(mathHelper);
 
-			parseMaster.ParseFromFile("../../../XmlWithTableInvalid.xml");
+			parseMaster.ParseFromFile("XmlWithTableInvalid.xml");
 
 			// Invalid entries as strings
 			Assert::AreEqual((*sharedData.mScope)["InvalidVector"].Size(), 0U);

@@ -40,7 +40,7 @@ namespace UnitTestLibraryDesktop
 			SampleXmlParseHelper sampleHelper;
 			parseMaster.AddHelper(sampleHelper);
 			
-			parseMaster.ParseFromFile("../../../XmlWithAttributes.xml");
+			parseMaster.ParseFromFile("XmlWithAttributes.xml");
 
 			Assert::IsTrue(sharedData.GetStringPairVector().At(0).first == "Siddhant");
 			Assert::IsTrue(sharedData.GetStringPairVector().At(0).second == "Grover");
@@ -56,7 +56,7 @@ namespace UnitTestLibraryDesktop
 			SampleXmlParseHelper sampleHelper;
 			parseMaster.AddHelper(sampleHelper);
 
-			parseMaster.ParseFromFile("../../../XmlWithoutAttributes.xml");
+			parseMaster.ParseFromFile("XmlWithoutAttributes.xml");
 
 			Assert::IsTrue(sharedData.GetStringPairVector().At(0).first == "Siddhant");
 			Assert::IsTrue(sharedData.GetStringPairVector().At(0).second == "Grover");
@@ -72,10 +72,10 @@ namespace UnitTestLibraryDesktop
 			SampleXmlParseHelper sampleHelper;
 			parseMaster.AddHelper(sampleHelper);
 
-			parseMaster.ParseFromFile("../../../XmlWithAttributes.xml");
+			parseMaster.ParseFromFile("XmlWithAttributes.xml");
 
 			// Get file name
-			Assert::IsTrue(parseMaster.GetFileName() == "../../../XmlWithAttributes.xml");
+			Assert::IsTrue(parseMaster.GetFileName() == "XmlWithAttributes.xml");
 			
 			// Get shared data
 			Assert::IsTrue(parseMaster.GetSharedData() == &sharedData);
@@ -109,7 +109,7 @@ namespace UnitTestLibraryDesktop
 			Assert::IsTrue(parseMaster.RemoveHelper(sampleHelper));
 			Assert::IsFalse(parseMaster.RemoveHelper(sampleHelper));
 
-			parseMaster.ParseFromFile("../../../XmlWithAttributes.xml");
+			parseMaster.ParseFromFile("XmlWithAttributes.xml");
 		}
 
 		TEST_METHOD(XmlParseMaster_IXmlParseHelper)
@@ -131,7 +131,7 @@ namespace UnitTestLibraryDesktop
 			SampleXmlParseHelper sampleHelper;
 			parseMaster.AddHelper(sampleHelper);
 
-			parseMaster.ParseFromFile("../../../XmlWithAttributes.xml");
+			parseMaster.ParseFromFile("XmlWithAttributes.xml");
 
 			// Get parse master
 			Assert::IsTrue(sharedData.GetXmlParseMaster() == &parseMaster);
@@ -153,12 +153,12 @@ namespace UnitTestLibraryDesktop
 			SampleXmlParseHelper sampleHelper;
 			parseMaster.AddHelper(sampleHelper);
 
-			parseMaster.ParseFromFile("../../../XmlWithAttributes.xml");
+			parseMaster.ParseFromFile("XmlWithAttributes.xml");
 
 			XmlParseMaster* parseMasterClone = parseMaster.Clone();
 
 			// Parsing using the clone
-			parseMasterClone->ParseFromFile("../../../XmlWithoutAttributes.xml");
+			parseMasterClone->ParseFromFile("XmlWithoutAttributes.xml");
 			SampleXmlSharedData* sharedDataClone = reinterpret_cast<SampleXmlSharedData*>(parseMasterClone->GetSharedData());
 
 			Assert::IsTrue(sharedDataClone->GetStringPairVector().At(0).first == "Siddhant");
