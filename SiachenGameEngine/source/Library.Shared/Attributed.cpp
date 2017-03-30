@@ -16,7 +16,6 @@ namespace SiachenGameEngine
 		Attributed::Attributed() : mPrescribedAttributeCount(0)
 		{
 			AddInternalAttribute("this", static_cast<RTTI*>(this));
-			//Populate();
 			UpdatePrescribedAttributeInfo();
 		}
 
