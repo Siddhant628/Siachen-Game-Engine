@@ -18,7 +18,7 @@ namespace SiachenGameEngine
 		public:
 			Sector();
 
-			~Sector() = default;
+			virtual ~Sector() = default;
 
 			virtual void Populate() override;
 

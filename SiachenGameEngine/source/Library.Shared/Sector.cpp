@@ -17,6 +17,7 @@ namespace SiachenGameEngine
 			Populate();
 			UpdatePrescribedAttributeInfo();
 			mEntityDatum = Find("entities");
+			assert(mEntityDatum != nullptr);
 		}
 
 		void Sector::Populate()

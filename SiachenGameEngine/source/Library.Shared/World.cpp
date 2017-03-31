@@ -10,11 +10,16 @@ namespace SiachenGameEngine
 	{
 		RTTI_DEFINITIONS(World)
 
-		World::World() : mSectorDatum(nullptr)
+		World::World(const std::string& worldName) : mSectorDatum(nullptr), mWorldName(worldName)
 		{
+			if (worldName == "")
+			{
+				throw std::runtime_error("The world must have a name.");
+			}
 			Populate();
 			UpdatePrescribedAttributeInfo();
 			mSectorDatum = Find("sectors");
+			assert(mSectorDatum != nullptr);
 		}
 
 		void World::Populate()
@@ -43,9 +48,10 @@ namespace SiachenGameEngine
 			return *mSectorDatum;
 		}
 
-		Sector* World::CreateSector()
+		Sector* World::CreateSector(const std::string& sectorName)
 		{
 			Sector* sectorCreated = new Sector();
+			sectorCreated->SetName(sectorName);
 			AdoptSector(*sectorCreated);
 			return sectorCreated;
 		}

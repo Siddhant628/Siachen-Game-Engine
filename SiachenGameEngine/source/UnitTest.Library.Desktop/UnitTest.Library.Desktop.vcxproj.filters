@@ -27,8 +27,11 @@
     <ClInclude Include="AbstractProductBar.h">
       <Filter>Helper Classes</Filter>
     </ClInclude>
+    <ClInclude Include="EntityFoo.h">
+      <Filter>Helper Classes</Filter>
+    </ClInclude>
     <ClInclude Include="ConcreteProductBar.h">
-      <Filter>Test Classes</Filter>
+      <Filter>Helper Classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -86,6 +89,12 @@
     </ClCompile>
     <ClCompile Include="ConcreteProductBar.cpp">
       <Filter>Helper Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityFoo.cpp">
+      <Filter>Helper Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityTest.cpp">
+      <Filter>Test Classes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

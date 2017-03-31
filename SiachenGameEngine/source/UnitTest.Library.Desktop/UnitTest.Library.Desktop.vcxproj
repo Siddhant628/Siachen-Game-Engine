@@ -209,6 +209,7 @@
     <ClInclude Include="AttributedBaz.h" />
     <ClInclude Include="AttributedFoo.h" />
     <ClInclude Include="ConcreteProductBar.h" />
+    <ClInclude Include="EntityFoo.h" />
     <ClInclude Include="Foo.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="SampleXmlParseHelper.h" />
@@ -223,6 +224,8 @@
     <ClCompile Include="AttributedTest.cpp" />
     <ClCompile Include="ConcreteProductBar.cpp" />
     <ClCompile Include="DatumTest.cpp" />
+    <ClCompile Include="EntityFoo.cpp" />
+    <ClCompile Include="EntityTest.cpp" />
     <ClCompile Include="FactoryTest.cpp" />
     <ClCompile Include="Foo.cpp" />
     <ClCompile Include="HashMapTest.cpp" />

@@ -6,7 +6,7 @@ namespace SiachenGameEngine
 {
 	namespace GameplayFramework
 	{
-		class World : public Attributed
+		class World final : public Attributed
 		{
 			RTTI_DECLARATIONS(World, Attributed)
 		private:
@@ -14,9 +14,9 @@ namespace SiachenGameEngine
 
 			Containers::Datum* mSectorDatum;
 		public:
-			World();
+			World(const std::string& worldName);
 
-			~World() = default;
+			virtual ~World() = default;
 
 			virtual void Populate() override;
 
@@ -28,7 +28,7 @@ namespace SiachenGameEngine
 
 			Containers::Datum& Sectors();
 			// TODO Confirm
-			Sector* CreateSector();
+			Sector* CreateSector(const std::string& sectorName);
 
 			void Update(WorldState& worldState);
 		};
