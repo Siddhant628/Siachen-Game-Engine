@@ -32,7 +32,6 @@ namespace SiachenGameEngine
 			void SetGameTime();
 			// TODO Implement
 			void GetGameTime();
-			// TODO Confirm if the state is public
 		};
 	}
 }

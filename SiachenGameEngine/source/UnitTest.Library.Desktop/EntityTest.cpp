@@ -98,23 +98,87 @@ namespace UnitTestLibraryDesktop
 			world.Update(worldState);
 		}
 
-		TEST_METHOD(Entity_First)
+		TEST_METHOD(Entity_Sector_NameMethods)
 		{
-			World world("firstWorld");
+			World world("world");
+			Sector* sector1 = world.CreateSector("sector1");
+			Sector* sector2 = world.CreateSector("sector2");
+
+			Assert::IsTrue(sector1->Name() == "sector1");
+			Assert::IsTrue(sector2->Name() == "sector2");
+		
+			sector1->SetName("newName1");
+			sector2->SetName("newName2");
+
+			Assert::IsTrue(sector1->Name() == "newName1");
+			Assert::IsTrue(sector2->Name() == "newName2");
+		}
+
+		TEST_METHOD(Entity_Sector_EntityMethods)
+		{
+			World world("world");
 			EntityFooFactory entityFooFactory;
 
-			Sector* sector =  world.CreateSector("firstSector");
-			Entity* entity = sector->CreateEntity("EntityFoo", "firstEntity");
+			Sector* sector1 = world.CreateSector("sector1");
+			Sector* sector2 = world.CreateSector("sector2");
+			Entity* entity1 = sector1->CreateEntity("EntityFoo", "entity1");
+
+			// Entities()
+			Assert::AreEqual(sector1->Entities().Size(), 1U);
+			Assert::IsTrue(sector2->Entities().IsEmpty());
+			Assert::IsTrue(sector1->Entities().Get<Scope*>() == entity1);
+
+			// CreateEntity()
+			Entity* entity2 = sector1->CreateEntity("EntityFoo", "entity2");
+
+			Assert::AreEqual(sector1->Entities().Size(), 2U);
+			Assert::IsTrue(sector1->Entities().Get<Scope*>(1) == entity2);
+
+			// AdoptEntity()
+			Entity* entity3 = new EntityFoo();
+			(static_cast<EntityFoo*>(entity3))->mInt = 10;
+			(static_cast<EntityFoo*>(entity3))->mFloat = 100.0f;
+
+			sector1->AdoptEntity(*entity3);
+
+			Assert::AreEqual(static_cast<EntityFoo*>(sector1->Entities().Get<Scope*>(2))->mInt, 10);
+			Assert::AreEqual(static_cast<EntityFoo*>(sector1->Entities().Get<Scope*>(2))->mFloat, 100.0f);
+		}
+
+		TEST_METHOD(Entity_Sector_GetWorld)
+		{
+			World world("world");
+
+			Sector* sector1 = world.CreateSector("sector1");
+			Assert::IsTrue(sector1->GetWorld() == &world);
+		}
+
+		TEST_METHOD(Entity_NameMethods)
+		{
+			World world("world");
+			EntityFooFactory entityFooFactory;
+
+			Sector* sector1 = world.CreateSector("sector1");
+			Entity* entity1 = sector1->CreateEntity("EntityFoo", "entity1");
+
+			//Name()
+			Assert::IsTrue(entity1->Name() == "entity1");
+			Assert::IsTrue(entity1->Append("name").Get<std::string>() == "entity1");
 			
-			Assert::IsTrue(world.Sectors().Get<Scope*>() == sector);
-			Assert::IsTrue(&world.Sectors() == world.Find("sectors"));
+			//SetName()
+			entity1->SetName("newName1");
+			Assert::IsTrue(entity1->Name() == "newName1");
+		}
+		
+		TEST_METHOD(Entity_GetSector)
+		{
+			World world("world");
+			EntityFooFactory entityFooFactory;
 
-			Assert::IsTrue(entity->Is(EntityFoo::TypeIdClass()));
-			(static_cast<EntityFoo*>(entity))->mInt = 10;
-			(static_cast<EntityFoo*>(entity))->mFloat = 20.0f;
+			Sector* sector1 = world.CreateSector("sector1");
+			Entity* entity1 = sector1->CreateEntity("EntityFoo", "entity1");
 
-			Assert::AreEqual(static_cast<EntityFoo*>(static_cast<Sector*>(world.Sectors().Get<Scope*>())->Entities().Get<Scope*>())->mInt, 10);
-			Assert::AreEqual(static_cast<EntityFoo*>(static_cast<Sector*>(world.Sectors().Get<Scope*>())->Entities().Get<Scope*>())->mFloat, 20.0f);
+			Assert::IsTrue(entity1->GetSector() == sector1);
 		}
 
 	private:
