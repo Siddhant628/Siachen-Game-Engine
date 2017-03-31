@@ -2,12 +2,14 @@
 #include "CppUnitTest.h"
 #include "World.h"
 #include "EntityFoo.h"
+#include "Datum.h"
 
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 using namespace SiachenGameEngine::GameplayFramework;
 using namespace SiachenGameEngine::HelperClasses;
+using namespace SiachenGameEngine::Containers;
 
 namespace UnitTestLibraryDesktop
 {
@@ -37,6 +39,63 @@ namespace UnitTestLibraryDesktop
 				_CrtMemDumpStatistics(&diffMemState);
 				Assert::Fail(L"Memory Leaks!");
 			}
+		}
+
+		TEST_METHOD(Entity_World_NameMethods)
+		{
+			auto constructorExpression = [] {World invalidWorld(""); };
+			Assert::ExpectException<std::runtime_error>(constructorExpression);
+
+			World world("world");
+
+			// Name()
+			Assert::IsTrue(world.Name() == "world");
+			Assert::IsTrue(world["name"].Get<std::string>() == "world");
+			
+			// SetName()
+			world.SetName("newName");
+
+			Assert::IsTrue(world.Name() == "newName");
+			Assert::IsTrue(world["name"].Get<std::string>() == "newName");
+		}
+
+		TEST_METHOD(Entity_World_SectorMethods)
+		{
+			World world("world");
+
+			Assert::IsTrue(world.Sectors().IsEmpty());
+			Assert::IsTrue(world.Sectors().Type() == DatumType::TableType);
+
+			// CreateSector()
+			Sector* sector1 = world.CreateSector("sector1");
+			Assert::AreEqual(world.Sectors().Size(), 1U);
+
+			// AdoptSector()
+			Sector* sector2 = new Sector();
+			sector2->SetName("sector2");
+			world.AdoptSector(*sector2);
+			
+			// Sectors()
+			Assert::AreEqual(world.Sectors().Size(), 2U);
+
+			Assert::IsTrue(sector1 == world.Sectors().Get<Scope*>());
+			Assert::IsTrue(sector2 == world.Sectors().Get<Scope*>(1));
+			Assert::IsTrue(sector1 == world.Find("sectors")->Get<Scope*>());
+			Assert::IsTrue(sector2 == world.Find("sectors")->Get<Scope*>(1));
+		}
+
+		TEST_METHOD(Entity_World_Update)
+		{
+			World world("world");
+			WorldState worldState;
+			EntityFooFactory entityFooFactory;
+
+			Sector* sector1 = world.CreateSector("sector1");
+			world.CreateSector("sector2");
+
+			sector1->CreateEntity("EntityFoo", "entity1");
+
+			world.Update(worldState);
 		}
 
 		TEST_METHOD(Entity_First)

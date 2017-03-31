@@ -45,6 +45,7 @@ namespace SiachenGameEngine
 
 		Datum& World::Sectors()
 		{
+			assert(mSectorDatum == Find("sectors"));
 			return *mSectorDatum;
 		}
 

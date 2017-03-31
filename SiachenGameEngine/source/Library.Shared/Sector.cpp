@@ -38,6 +38,7 @@ namespace SiachenGameEngine
 
 		Datum& Sector::Entities()
 		{
+			assert(mEntityDatum == Find("entities"));
 			return *mEntityDatum;
 		}
 
