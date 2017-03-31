@@ -1,4 +1,5 @@
 #pragma once
+#include "GameTime.h"
 
 namespace SiachenGameEngine
 {
@@ -6,6 +7,8 @@ namespace SiachenGameEngine
 	{
 		class WorldState final
 		{
+		private:
+			Library::GameTime mGameTime;
 		public:
 			/**
 			* Address of the World being processed.
@@ -28,10 +31,16 @@ namespace SiachenGameEngine
 			* Default constructor initializes values.
 			*/
 			WorldState();
-			// TODO Implement
-			void SetGameTime();
-			// TODO Implement
-			void GetGameTime();
+			/**
+			* Set the game time.
+			* @param gameTime The game time to be set in the world state.
+			*/
+			void SetGameTime(const Library::GameTime& gameTime);
+			/**
+			* Get the game time.
+			* @return The game time object for the current world state.
+			*/
+			const Library::GameTime& GetGameTime() const;
 		};
 	}
 }

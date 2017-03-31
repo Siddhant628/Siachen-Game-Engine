@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "WorldState.h"
 
+using namespace SiachenGameEngine::Library;
+
 namespace SiachenGameEngine
 {
 	namespace GameplayFramework
@@ -10,14 +12,16 @@ namespace SiachenGameEngine
 
 		}
 
-		void WorldState::SetGameTime()
+		void WorldState::SetGameTime(const Library::GameTime& gameTime)
 		{
-
+			mGameTime = gameTime;
 		}
 
-		void WorldState::GetGameTime()
+		const GameTime& WorldState::GetGameTime() const
 		{
-
+			return mGameTime;
 		}
+
+
 	}
 }
