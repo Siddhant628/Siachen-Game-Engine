@@ -31,17 +31,15 @@ namespace SiachenGameEngine
 
 		Sector* Entity::GetSector() const
 		{
+			assert(GetParent()->Is(Sector::TypeIdClass()));
 			return static_cast<Sector*>(GetParent());
 		}
 
-		void Entity::SetSector(Sector& sector)
+		void Entity::Update(WorldState& worldState)
 		{
-			sector.Adopt(*this, mEntityName);
-		}
-
-		void Entity::Update(const WorldState& worldState)
-		{
-			UNREFERENCED_PARAMETER(worldState);
+			worldState.mEntity = this;
+			
+			worldState.mEntity = nullptr;
 		}
 	}
 }

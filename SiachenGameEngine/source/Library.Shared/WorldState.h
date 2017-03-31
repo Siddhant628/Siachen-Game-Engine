@@ -8,16 +8,6 @@ namespace SiachenGameEngine
 		{
 		public:
 			/**
-			* Default constructor initializes values.
-			*/
-			WorldState();
-			// TODO Implement
-			void SetGameTime();
-			// TODO Implement
-			void GetGameTime();
-			// TODO Confirm if the state is public
-		private:
-			/**
 			* Address of the World being processed.
 			*/
 			class World* mWorld;
@@ -33,6 +23,16 @@ namespace SiachenGameEngine
 			* Address of the Action being processed.
 			*/
 			class Action* mAction;
+		public:
+			/**
+			* Default constructor initializes values.
+			*/
+			WorldState();
+			// TODO Implement
+			void SetGameTime();
+			// TODO Implement
+			void GetGameTime();
+			// TODO Confirm if the state is public
 		};
 	}
 }

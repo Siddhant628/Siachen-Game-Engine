@@ -6,31 +6,27 @@ namespace SiachenGameEngine
 {
 	namespace GameplayFramework
 	{
-		// TODO Check if forward declare is enough.
 		class Sector;
 
 		class Entity : public Attributed
 		{
 			RTTI_DECLARATIONS(Entity, Attributed)
-
+		private:
+			std::string mEntityName;
 		public:
 			Entity();
 
 			virtual ~Entity() = default;
 		
-			void Populate() override;
+			virtual void Populate() override;
 
 			const std::string& Name() const;
 
 			void SetName(const std::string& entityName);
-			// TODO Implement, check if type cast is required
+			// TODO Confirm assert
 			Sector* GetSector() const;
-			// TODO Implement
-			void SetSector(Sector& sector);
 
-			void Update(const WorldState& worldState);
-		private:
-			std::string mEntityName;
+			void Update(WorldState& worldState);
 		};
 	}
 }

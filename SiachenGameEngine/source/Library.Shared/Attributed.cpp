@@ -37,6 +37,7 @@ namespace SiachenGameEngine
 			return *this;
 		}
 
+
 		void Attributed::UpdatePrescribedAttributeInfo()
 		{
 
@@ -198,6 +199,16 @@ namespace SiachenGameEngine
 			{
 				datum.Set(attributeValue);
 			}
+		}
+
+		void Attributed::AddInternalAttribute(const std::string& attributeName, DatumType datumType)
+		{
+			if (datumType == DatumType::UnknownType)
+			{
+				throw std::runtime_error("Unknown type cannot be inserted into the datum.");
+			}
+			Datum& datum = Append(attributeName);
+			datum.SetType(datumType);
 		}
 
 
