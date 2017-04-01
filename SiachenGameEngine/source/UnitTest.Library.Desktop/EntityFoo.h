@@ -8,6 +8,7 @@ namespace SiachenGameEngine
 	{
 		class EntityFoo : public GameplayFramework::Entity
 		{
+		RTTI_DECLARATIONS(EntityFoo, Entity)
 		public:
 			std::int32_t mInt;
 			std::float_t mFloat;

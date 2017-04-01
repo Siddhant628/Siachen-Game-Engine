@@ -96,6 +96,9 @@
     <ClCompile Include="EntityTest.cpp">
       <Filter>Test Classes</Filter>
     </ClCompile>
+    <ClCompile Include="EntityParsingTest.cpp">
+      <Filter>Test Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Helper Classes">

@@ -3,7 +3,7 @@
 #include "World.h"
 #include "EntityFoo.h"
 #include "Datum.h"
-
+#include "Foo.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -179,6 +179,61 @@ namespace UnitTestLibraryDesktop
 			Entity* entity1 = sector1->CreateEntity("EntityFoo", "entity1");
 
 			Assert::IsTrue(entity1->GetSector() == sector1);
+		}
+
+		TEST_METHOD(Entity_RTTI)
+		{
+			// Entity
+			RTTI* entity = new Entity;
+
+			Assert::IsTrue(entity->Is("Entity"));
+			Assert::IsFalse(entity->Is("Foo"));
+			Assert::IsTrue(entity->Is(Entity::TypeIdClass()));
+			Assert::IsFalse(entity->Is(Foo::TypeIdClass()));
+			Assert::IsNotNull(entity->As<Entity>());
+			Assert::IsNull(entity->As<Foo>());
+			Assert::IsNotNull(entity->QueryInterface(Entity::TypeIdClass()));
+			Assert::IsNull(entity->QueryInterface(Foo::TypeIdClass()));
+			delete entity;
+
+			// Sector
+			RTTI* sector = new Sector;
+
+			Assert::IsTrue(sector->Is("Sector"));
+			Assert::IsFalse(sector->Is("Foo"));
+			Assert::IsTrue(sector->Is(Sector::TypeIdClass()));
+			Assert::IsFalse(sector->Is(Foo::TypeIdClass()));
+			Assert::IsNotNull(sector->As<Sector>());
+			Assert::IsNull(sector->As<Foo>());
+			Assert::IsNotNull(sector->QueryInterface(Sector::TypeIdClass()));
+			Assert::IsNull(sector->QueryInterface(Foo::TypeIdClass()));
+			delete sector;
+
+			//World
+			RTTI* world = new World("World");
+
+			Assert::IsTrue(world->Is("World"));
+			Assert::IsFalse(world->Is("Foo"));
+			Assert::IsTrue(world->Is(World::TypeIdClass()));
+			Assert::IsFalse(world->Is(Foo::TypeIdClass()));
+			Assert::IsNotNull(world->As<World>());
+			Assert::IsNull(world->As<Foo>());
+			Assert::IsNotNull(world->QueryInterface(World::TypeIdClass()));
+			Assert::IsNull(world->QueryInterface(Foo::TypeIdClass()));
+			delete world;
+
+			// EntityFoo
+			RTTI* entityFoo = new EntityFoo;
+
+			Assert::IsTrue(entityFoo->Is("EntityFoo"));
+			Assert::IsFalse(entityFoo->Is("Foo"));
+			Assert::IsTrue(entityFoo->Is(EntityFoo::TypeIdClass()));
+			Assert::IsFalse(entityFoo->Is(Foo::TypeIdClass()));
+			Assert::IsNotNull(entityFoo->As<EntityFoo>());
+			Assert::IsNull(entityFoo->As<Foo>());
+			Assert::IsNotNull(entityFoo->QueryInterface(EntityFoo::TypeIdClass()));
+			Assert::IsNull(entityFoo->QueryInterface(Foo::TypeIdClass()));
+			delete entityFoo;
 		}
 
 	private:

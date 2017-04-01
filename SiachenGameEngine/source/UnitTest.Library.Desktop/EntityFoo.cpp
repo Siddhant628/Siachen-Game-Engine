@@ -5,6 +5,7 @@ namespace SiachenGameEngine
 {
 	namespace HelperClasses
 	{
+		RTTI_DEFINITIONS(EntityFoo)
 		EntityFoo::EntityFoo() : mInt(0), mFloat(0.0f)
 		{
 			Populate();

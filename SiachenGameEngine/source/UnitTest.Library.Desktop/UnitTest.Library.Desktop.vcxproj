@@ -225,6 +225,7 @@
     <ClCompile Include="ConcreteProductBar.cpp" />
     <ClCompile Include="DatumTest.cpp" />
     <ClCompile Include="EntityFoo.cpp" />
+    <ClCompile Include="EntityParsingTest.cpp" />
     <ClCompile Include="EntityTest.cpp" />
     <ClCompile Include="FactoryTest.cpp" />
     <ClCompile Include="Foo.cpp" />
