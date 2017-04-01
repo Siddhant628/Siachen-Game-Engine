@@ -1,7 +1,6 @@
+#include "pch.h"
 #include "XmlSharedDataWorld.h"
-#include "World.h"
-#include "Sector.h"
-#include "Entity.h"
+#include "Attributed.h"
 
 using namespace SiachenGameEngine::Parsers;
 using namespace SiachenGameEngine::GameplayFramework;
@@ -12,21 +11,21 @@ namespace SiachenGameEngine
 	{
 		RTTI_DEFINITIONS(XmlSharedDataWorld)
 
-		XmlSharedDataWorld::XmlSharedDataWorld() : mCurrentWorld(nullptr), mCurrentSector(nullptr), mCurrentEntity(nullptr)
+		XmlSharedDataWorld::XmlSharedDataWorld() : mCurrentScope(nullptr)
 		{
 
 		}
 
 		XmlSharedDataWorld::~XmlSharedDataWorld()
 		{
-			delete mCurrentWorld;
+			delete mCurrentScope;
 		}
 
 		void XmlSharedDataWorld::Initialize()
 		{
 			Parent::Initialize();
-			delete mCurrentWorld;
-			mCurrentWorld = nullptr;
+			delete mCurrentScope;
+			mCurrentScope = nullptr;
 		}
 
 		XmlParseMaster::SharedData* XmlSharedDataWorld::Clone()

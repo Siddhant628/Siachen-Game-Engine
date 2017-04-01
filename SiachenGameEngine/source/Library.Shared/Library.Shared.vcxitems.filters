@@ -67,6 +67,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)XmlParseHelperWorld.cpp">
       <Filter>Parsers</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)XmlParseHelperWorldPrimitives.cpp">
+      <Filter>Parsers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)SList.h">
@@ -134,6 +137,9 @@
       <Filter>Parsers</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)XmlParseHelperWorld.h">
+      <Filter>Parsers</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)XmlParseHelperWorldPrimitives.h">
       <Filter>Parsers</Filter>
     </ClInclude>
   </ItemGroup>

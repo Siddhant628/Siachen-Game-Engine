@@ -1,0 +1,15 @@
+<world name = "World1">
+	<sector name = "Sector1">
+		<entity class = "EntityFoo" name = "entity1">
+			<float name = "float" value = "10.0"/>
+		</entity>
+		<entity class = "EntityFoo" name = "entity2">
+			<integer name = "integer" value = "20"/>
+		</entity>
+	</sector>
+	<sector name = "Sector2">
+		<entity class = "EntityFoo" name = "entity3">
+			<integer name = "integer" value = "30"/>
+		</entity>	
+	</sector>
+</world>

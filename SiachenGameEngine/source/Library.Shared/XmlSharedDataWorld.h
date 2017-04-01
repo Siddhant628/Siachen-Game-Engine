@@ -1,9 +1,7 @@
 #pragma once
 #include "XmlParseMaster.h"
 #include "Scope.h"
-#include "World.h"
-#include "Sector.h"
-#include "Entity.h"
+#include "Attributed.h"
 
 namespace SiachenGameEngine
 {
@@ -35,17 +33,9 @@ namespace SiachenGameEngine
 			virtual SharedData* Clone() override;
 		public:
 			/**
-			* A pointer to the current world which is being processed.
+			* A pointer to the current scope which is being processed.
 			*/
-			GameplayFramework::World* mCurrentWorld;
-			/**
-			* A pointer to the current sector which is being processed.
-			*/
-			GameplayFramework::Sector* mCurrentSector;
-			/**
-			* A pointer to the current entity which is being processed.
-			*/
-			GameplayFramework::Entity* mCurrentEntity;
+			GameplayFramework::Attributed* mCurrentScope;
 		};
 	}
 }

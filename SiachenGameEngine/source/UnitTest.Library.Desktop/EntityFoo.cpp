@@ -5,7 +5,7 @@ namespace SiachenGameEngine
 {
 	namespace HelperClasses
 	{
-		EntityFoo::EntityFoo()
+		EntityFoo::EntityFoo() : mInt(0), mFloat(0.0f)
 		{
 			Populate();
 			UpdatePrescribedAttributeInfo();

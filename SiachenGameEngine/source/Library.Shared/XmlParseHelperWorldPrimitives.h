@@ -7,19 +7,19 @@ namespace SiachenGameEngine
 	namespace Parsers
 	{
 		/**
-		* A XML parsing helper which can parse a world, its sectors and entities.
+		* A XML parsing helper which can parse primitives that come inside the world.
 		*/
-		class XmlParseHelperWorld final : public IXmlParseHelper
+		class XmlParseHelperWorldPrimitives final : public IXmlParseHelper
 		{
 		public:
 			/**
 			* Default constructor initializes values.
 			*/
-			XmlParseHelperWorld();
+			XmlParseHelperWorldPrimitives();
 			/**
 			* Destructor.
 			*/
-			~XmlParseHelperWorld() = default;
+			~XmlParseHelperWorldPrimitives() = default;
 			/**
 			* Initializes this helper.
 			*/
