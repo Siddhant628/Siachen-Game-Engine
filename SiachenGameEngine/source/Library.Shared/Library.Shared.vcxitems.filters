@@ -61,6 +61,12 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)GameTime.cpp">
       <Filter>Misc</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)XmlSharedDataWorld.cpp">
+      <Filter>Parsers</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)XmlParseHelperWorld.cpp">
+      <Filter>Parsers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)SList.h">
@@ -123,6 +129,12 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)GameTime.h">
       <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)XmlSharedDataWorld.h">
+      <Filter>Parsers</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)XmlParseHelperWorld.h">
+      <Filter>Parsers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

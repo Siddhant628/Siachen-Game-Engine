@@ -30,11 +30,13 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)WorldState.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)XmlParseHelperMath.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)XmlParseHelperPrimitives.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)XmlParseHelperWorld.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)XmlSharedDataTable.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SList.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Vector.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)XmlParseHelperTable.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)XmlParseMaster.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)XmlSharedDataWorld.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Attributed.cpp">
@@ -72,11 +74,13 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)XmlParseHelperMath.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)XmlParseHelperPrimitives.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)XmlParseHelperWorld.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)XmlSharedDataTable.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)XmlParseHelperTable.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)XmlParseMaster.cpp">
       <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)XmlSharedDataWorld.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)Datum.inl" />
