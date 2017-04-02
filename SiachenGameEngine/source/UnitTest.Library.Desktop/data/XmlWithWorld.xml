@@ -1,13 +1,21 @@
 <world name = "World1">
 	<sector name = "Sector1">
 		<entity class = "EntityFoo" name = "entity1">
-			<float name = "float" value = "10.0"/>
-			<integer name = "integer" value = "20"/>
+			<float name = "float" value = "10.0" index = "0"/>
+			<integer name = "integer" value = "20" index = "0"/>
 		</entity>
 	</sector>
 	<sector name = "Sector2">
 		<entity class = "EntityFoo" name = "entity2">
 			<integer name = "integer" value = "30"/>
-		</entity>	
+			<integer name = "InternalInteger" value = "40"/>
+			<float name = "float" value = "40.0"/>
+			<float name = "InternalFloat" value = "50.0"/>
+		</entity>
+		<entity class = "EntityFoo" name = "entity3">
+			<string name = "string" value = "first" index = "0"/>
+			<string name = "string" value = "changed"/>
+			<string name = "InternalString" value = "additional"/>
+		</entity>
 	</sector>
 </world>

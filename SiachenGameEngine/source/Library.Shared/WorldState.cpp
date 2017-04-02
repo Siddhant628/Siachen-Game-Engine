@@ -11,17 +11,5 @@ namespace SiachenGameEngine
 		{
 
 		}
-
-		void WorldState::SetGameTime(const Library::GameTime& gameTime)
-		{
-			mGameTime = gameTime;
-		}
-
-		const GameTime& WorldState::GetGameTime() const
-		{
-			return mGameTime;
-		}
-
-
 	}
 }

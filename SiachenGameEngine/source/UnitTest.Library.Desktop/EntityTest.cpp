@@ -4,12 +4,14 @@
 #include "EntityFoo.h"
 #include "Datum.h"
 #include "Foo.h"
+#include "GameClock.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 using namespace SiachenGameEngine::GameplayFramework;
 using namespace SiachenGameEngine::HelperClasses;
 using namespace SiachenGameEngine::Containers;
+using namespace SiachenGameEngine::Library;
 
 namespace UnitTestLibraryDesktop
 {
@@ -179,6 +181,27 @@ namespace UnitTestLibraryDesktop
 			Entity* entity1 = sector1->CreateEntity("EntityFoo", "entity1");
 
 			Assert::IsTrue(entity1->GetSector() == sector1);
+		}
+
+		TEST_METHOD(Entity_GameTime)
+		{
+			World world("world");
+			WorldState worldState;
+			EntityFooFactory entityFooFactory;
+
+			Sector* sector1 = world.CreateSector("sector1");
+			world.CreateSector("sector2");
+
+			sector1->CreateEntity("EntityFoo", "entity1");
+
+			// Testing game time.
+			GameClock gameClock;
+			for (std::uint32_t i = 0; i < 10; ++i)
+			{
+				world.Update(worldState);
+				gameClock.UpdateGameTime(worldState.mGameTime);
+				worldState.mGameTime;
+			}
 		}
 
 		TEST_METHOD(Entity_RTTI)

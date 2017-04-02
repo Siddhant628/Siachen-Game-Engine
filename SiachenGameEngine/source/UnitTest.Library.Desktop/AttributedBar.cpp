@@ -76,6 +76,7 @@ namespace SiachenGameEngine
 			AddExternalAttribute("mVec4", &mVec4, 1U);
 			AddExternalAttribute("mMat4x4", &mMat4x4, 1U);
 			AddExternalAttribute("mRTTI", &mRTTI, 1U);
+			AddInternalAttribute("EmptyIntDatum", Containers::DatumType::IntegerType);
 		}
 
 		std::float_t AttributedBar::GetFloat() const

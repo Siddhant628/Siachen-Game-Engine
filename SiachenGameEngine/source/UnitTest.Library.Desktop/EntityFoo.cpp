@@ -6,7 +6,7 @@ namespace SiachenGameEngine
 	namespace HelperClasses
 	{
 		RTTI_DEFINITIONS(EntityFoo)
-		EntityFoo::EntityFoo() : mInt(0), mFloat(0.0f)
+		EntityFoo::EntityFoo() : mInt(0), mFloat(0.0f), mString()
 		{
 			Populate();
 			UpdatePrescribedAttributeInfo();
@@ -16,6 +16,7 @@ namespace SiachenGameEngine
 		{
 			AddExternalAttribute("integer", &mInt, 1U);
 			AddExternalAttribute("float", &mFloat, 1U);
+			AddExternalAttribute("string", &mString, 1U);
 		}
 	}
 }

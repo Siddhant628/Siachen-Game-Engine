@@ -159,9 +159,9 @@ namespace UnitTestLibraryDesktop
 
 			AttributedBar bar;
 
-			Assert::AreEqual(7U, bar.AuxiliaryBegin());
+			Assert::AreEqual(8U, bar.AuxiliaryBegin());
 			bar.AppendAuxiliaryAttribute("AuxiliaryBar");
-			Assert::AreEqual(7U, bar.AuxiliaryBegin());
+			Assert::AreEqual(8U, bar.AuxiliaryBegin());
 		}
 
 		TEST_METHOD(Attributed_UpdatingValues)
@@ -256,6 +256,13 @@ namespace UnitTestLibraryDesktop
 			Assert::AreEqual(9U, baz.AuxiliaryBegin());
 			baz.AppendAuxiliaryAttribute("AuxiliaryBaz");
 			Assert::AreEqual(9U, baz.AuxiliaryBegin());
+
+			// Testing add internal attribute for the overload which takes a datum type and inserts an empty datum of that type.
+			AttributedBar bar;
+
+			Assert::IsTrue(bar.IsPrescribedAttribute("EmptyIntDatum"));
+			Assert::IsTrue(bar["EmptyIntDatum"].IsEmpty());
+			Assert::IsTrue(bar["EmptyIntDatum"].Type() == DatumType::IntegerType);
 		}
 
 		TEST_METHOD(Attributed_CopyConstructor)
@@ -294,7 +301,7 @@ namespace UnitTestLibraryDesktop
 			AttributedBar bar2(bar);
 
 			Assert::IsTrue(bar2.IsAuxiliaryAttribute("Chicken"));
-			Assert::AreEqual(bar2.AuxiliaryBegin(), 7U);
+			Assert::AreEqual(bar2.AuxiliaryBegin(), 8U);
 
 			Assert::IsTrue(bar2.IsAuxiliaryAttribute("Chicken"));
 			Assert::IsFalse(bar2.IsPrescribedAttribute("Chicken"));
@@ -347,7 +354,7 @@ namespace UnitTestLibraryDesktop
 			bar2 = bar;
 
 			Assert::IsTrue(bar2.IsAuxiliaryAttribute("Chicken"));
-			Assert::AreEqual(bar2.AuxiliaryBegin(), 7U);
+			Assert::AreEqual(bar2.AuxiliaryBegin(), 8U);
 
 			Assert::IsTrue(bar2.IsAuxiliaryAttribute("Chicken"));
 			Assert::IsFalse(bar2.IsPrescribedAttribute("Chicken"));

@@ -4,6 +4,7 @@
 #include "XmlSharedDataWorld.h"
 #include "XmlParseHelperWorld.h"
 #include "XmlParseHelperWorldPrimitives.h"
+#include "SampleXmlSharedData.h"
 
 #include "World.h"
 #include "Sector.h"
@@ -82,8 +83,20 @@ namespace UnitTestLibraryDesktop
 			Assert::AreEqual(entity2->Append("integer").Get<std::int32_t>(), 30);
 			Assert::IsTrue(entity2->Name() == "entity2");
 
+			// Testing for a newly inserted integer
+			Assert::AreEqual(entity2->Append("InternalInteger").Get<std::int32_t>(), 40);
+
 			Assert::IsTrue(static_cast<Sector*>(datum.Get<Scope*>())->Name() == "Sector1");
 			Assert::IsTrue(static_cast<Sector*>(datum.Get<Scope*>(1))->Name() == "Sector2");
+
+			Assert::AreEqual(entity2->Append("float").Get<std::float_t>(), 40.0f);
+			Assert::AreEqual(entity2->Append("InternalFloat").Get<std::float_t>(), 50.0f);
+
+			// Testing for strings
+			Entity* entity3 = static_cast<Entity*>((static_cast<Sector*>(datum.Get<Scope*>(1)))->Entities().Get<Scope*>(1));
+			Assert::IsTrue(static_cast<EntityFoo*>(entity3)->mString == "changed");
+			Assert::IsTrue(entity3->Append("InternalString").Get<std::string>() == "additional");
+			Assert::IsTrue(entity3->Name() == "entity3");
 		}
 
 		TEST_METHOD(EntityParsing_FileClone)
@@ -122,6 +135,12 @@ namespace UnitTestLibraryDesktop
 			Assert::IsTrue(static_cast<Sector*>(datum.Get<Scope*>())->Name() == "Sector1");
 			Assert::IsTrue(static_cast<Sector*>(datum.Get<Scope*>(1))->Name() == "Sector2");
 
+			// Testing for strings
+			Entity* entity3 = static_cast<Entity*>((static_cast<Sector*>(datum.Get<Scope*>(1)))->Entities().Get<Scope*>(1));
+			Assert::IsTrue(static_cast<EntityFoo*>(entity3)->mString == "changed");
+			Assert::IsTrue(entity3->Append("InternalString").Get<std::string>() == "additional");
+			Assert::IsTrue(entity3->Name() == "entity3");
+
 			delete clonedParseMaster;
 		}
 
@@ -138,6 +157,21 @@ namespace UnitTestLibraryDesktop
 			Assert::IsNotNull(sharedData->QueryInterface(XmlSharedDataWorld::TypeIdClass()));
 			Assert::IsNull(sharedData->QueryInterface(EntityFoo::TypeIdClass()));
 			delete sharedData;
+		}
+
+		TEST_METHOD(EntityParsing_Helpers)
+		{
+			SampleXmlSharedData sharedData;
+
+			XmlParseHelperWorld worldHelper;
+			XmlParseHelperWorldPrimitives worldPrimitivesHelpers;
+
+			auto expression1 = [&worldHelper, &sharedData] {worldHelper.Initialize(sharedData); };
+			Assert::ExpectException<std::runtime_error>(expression1);
+
+
+			auto expression2 = [&worldPrimitivesHelpers, &sharedData] {worldPrimitivesHelpers.Initialize(sharedData); };
+			Assert::ExpectException<std::runtime_error>(expression2);
 		}
 
 	private:

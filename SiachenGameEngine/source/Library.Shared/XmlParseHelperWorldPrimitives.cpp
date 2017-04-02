@@ -29,10 +29,14 @@ namespace SiachenGameEngine
 		{
 			if (elementName == "integer")
 			{
-				if (attributeHashmap.ContainsKey("name") && attributeHashmap.ContainsKey("value"))
+				assert(attributeHashmap.ContainsKey("name") && attributeHashmap.ContainsKey("value"));
+				Datum& datum = mSharedData->mCurrentScope->Append(attributeHashmap["name"]);
+				if (attributeHashmap.ContainsKey("index"))
 				{
-					std::string name = attributeHashmap["name"];
-					Datum& datum = mSharedData->mCurrentScope->Append(name);
+					datum.Set(std::stoi(attributeHashmap["value"]), std::stoi(attributeHashmap["index"]));
+				}
+				else
+				{
 					if (datum.IsExternal())
 					{
 						datum.Set(std::stoi(attributeHashmap["value"]));
@@ -41,25 +45,50 @@ namespace SiachenGameEngine
 					{
 						datum.PushBack(std::stoi(attributeHashmap["value"]));
 					}
-					return true;
 				}
+				return true;
 			}
 			else if (elementName == "float")
 			{
-				if (attributeHashmap.ContainsKey("name") && attributeHashmap.ContainsKey("value"))
+				assert(attributeHashmap.ContainsKey("name") && attributeHashmap.ContainsKey("value"));
+				Datum& datum = mSharedData->mCurrentScope->Append(attributeHashmap["name"]);
+				if (attributeHashmap.ContainsKey("index"))
 				{
-					std::string name = attributeHashmap["name"];
-					Datum& datum = mSharedData->mCurrentScope->Append(name);
+					datum.Set(std::stof(attributeHashmap["value"]), std::stoi(attributeHashmap["index"]));
+				}
+				else
+				{
 					if (datum.IsExternal())
-					{ 
+					{
 						datum.Set(std::stof(attributeHashmap["value"]));
 					}
 					else
 					{
 						datum.PushBack(std::stof(attributeHashmap["value"]));
 					}
-					return true;
 				}
+				return true;
+			}
+			else if (elementName == "string")
+			{
+				assert(attributeHashmap.ContainsKey("name") && attributeHashmap.ContainsKey("value"));
+				Datum& datum = mSharedData->mCurrentScope->Append(attributeHashmap["name"]);
+				if (attributeHashmap.ContainsKey("index"))
+				{
+					datum.Set(attributeHashmap["value"], std::stoi(attributeHashmap["index"]));
+				}
+				else
+				{
+					if (datum.IsExternal())
+					{
+						datum.Set(attributeHashmap["value"]);
+					}
+					else
+					{
+						datum.PushBack(attributeHashmap["value"]);
+					}
+				}
+				return true;
 			}
 			return false;
 		}

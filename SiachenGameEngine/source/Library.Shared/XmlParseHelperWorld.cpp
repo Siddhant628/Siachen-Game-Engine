@@ -43,6 +43,7 @@ namespace SiachenGameEngine
 				if (attributeHashmap.ContainsKey("name"))
 				{
 					Sector* sector = static_cast<World*>(mSharedData->mCurrentScope)->CreateSector(attributeHashmap["name"]);
+					assert(sector != nullptr);
 					mSharedData->mCurrentScope = sector;
 					return true;
 				}
