@@ -13,6 +13,7 @@ namespace SiachenGameEngine
 			std::int32_t mInt;
 			std::float_t mFloat;
 			std::string mString;
+			glm::vec4 mVector;
 		public:
 			EntityFoo();
 			~EntityFoo() = default;

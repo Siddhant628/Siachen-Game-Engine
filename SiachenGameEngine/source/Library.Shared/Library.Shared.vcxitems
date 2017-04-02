@@ -31,6 +31,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)XmlParseHelperMath.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)XmlParseHelperPrimitives.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)XmlParseHelperWorld.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)XmlParseHelperWorldMath.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)XmlParseHelperWorldPrimitives.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)XmlSharedDataTable.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SList.h" />
@@ -78,6 +79,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)XmlParseHelperWorld.cpp">
       <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)XmlParseHelperWorldMath.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)XmlParseHelperWorldPrimitives.cpp">
       <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>

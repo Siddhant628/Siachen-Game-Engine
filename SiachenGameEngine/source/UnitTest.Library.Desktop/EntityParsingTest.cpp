@@ -4,6 +4,7 @@
 #include "XmlSharedDataWorld.h"
 #include "XmlParseHelperWorld.h"
 #include "XmlParseHelperWorldPrimitives.h"
+#include "XmlParseHelperWorldMath.h"
 #include "SampleXmlSharedData.h"
 
 #include "World.h"
@@ -58,8 +59,10 @@ namespace UnitTestLibraryDesktop
 
 			XmlParseHelperWorld worldHelper;
 			XmlParseHelperWorldPrimitives worldPrimitivesHelpers;
+			XmlParseHelperWorldMath worldMathHelpers;
 			parseMaster.AddHelper(worldHelper);
 			parseMaster.AddHelper(worldPrimitivesHelpers);
+			parseMaster.AddHelper(worldMathHelpers);
 
 			EntityFooFactory entityFooFactory;
 
@@ -97,6 +100,13 @@ namespace UnitTestLibraryDesktop
 			Assert::IsTrue(static_cast<EntityFoo*>(entity3)->mString == "changed");
 			Assert::IsTrue(entity3->Append("InternalString").Get<std::string>() == "additional");
 			Assert::IsTrue(entity3->Name() == "entity3");
+		
+			// Testing for vectors
+			Entity* entity4 = static_cast<Entity*>((static_cast<Sector*>(datum.Get<Scope*>(1)))->Entities().Get<Scope*>(2));
+			Assert::IsTrue(static_cast<EntityFoo*>(entity4)->mVector == glm::vec4(2.0f,2.0f,3.0f,0.0f));
+			Assert::IsTrue(entity4->Append("InternalVector").Get<glm::vec4>() == glm::vec4(3.0f, 2.0f, 3.0f, 0.0f));
+			Assert::IsTrue(entity4->Name() == "entity4");
+
 		}
 
 		TEST_METHOD(EntityParsing_FileClone)
@@ -106,8 +116,10 @@ namespace UnitTestLibraryDesktop
 
 			XmlParseHelperWorld worldHelper;
 			XmlParseHelperWorldPrimitives worldPrimitivesHelpers;
+			XmlParseHelperWorldMath worldMathHelpers;
 			parseMaster.AddHelper(worldHelper);
 			parseMaster.AddHelper(worldPrimitivesHelpers);
+			parseMaster.AddHelper(worldMathHelpers);
 
 			EntityFooFactory entityFooFactory;
 
@@ -140,6 +152,12 @@ namespace UnitTestLibraryDesktop
 			Assert::IsTrue(static_cast<EntityFoo*>(entity3)->mString == "changed");
 			Assert::IsTrue(entity3->Append("InternalString").Get<std::string>() == "additional");
 			Assert::IsTrue(entity3->Name() == "entity3");
+
+			// Testing for vectors
+			Entity* entity4 = static_cast<Entity*>((static_cast<Sector*>(datum.Get<Scope*>(1)))->Entities().Get<Scope*>(2));
+			Assert::IsTrue(static_cast<EntityFoo*>(entity4)->mVector == glm::vec4(2.0f, 2.0f, 3.0f, 0.0f));
+			Assert::IsTrue(entity4->Append("InternalVector").Get<glm::vec4>() == glm::vec4(3.0f, 2.0f, 3.0f, 0.0f));
+			Assert::IsTrue(entity4->Name() == "entity4");
 
 			delete clonedParseMaster;
 		}

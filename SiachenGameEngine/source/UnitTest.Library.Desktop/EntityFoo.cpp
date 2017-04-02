@@ -17,6 +17,7 @@ namespace SiachenGameEngine
 			AddExternalAttribute("integer", &mInt, 1U);
 			AddExternalAttribute("float", &mFloat, 1U);
 			AddExternalAttribute("string", &mString, 1U);
+			AddExternalAttribute("vector", &mVector, 1U);
 		}
 	}
 }
