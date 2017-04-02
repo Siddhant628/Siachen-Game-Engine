@@ -14,6 +14,7 @@ namespace SiachenGameEngine
 			std::float_t mFloat;
 			std::string mString;
 			glm::vec4 mVector;
+			glm::mat4x4 mMatrix;
 		public:
 			EntityFoo();
 			~EntityFoo() = default;

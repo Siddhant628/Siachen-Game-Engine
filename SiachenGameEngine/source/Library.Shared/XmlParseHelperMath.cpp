@@ -38,7 +38,6 @@ namespace SiachenGameEngine
 					if (!datum.SetFromString(value, index))
 					{
 						datum.PopBack();
-						return false;
 					}
 					return true;
 				}
@@ -59,7 +58,6 @@ namespace SiachenGameEngine
 					if (!datum.SetFromString(value, index))
 					{
 						datum.PopBack();
-						return false;
 					}
 					return true;
 				}

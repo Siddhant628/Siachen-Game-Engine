@@ -19,13 +19,13 @@
 		</entity>
 		<entity class = "EntityFoo" name = "entity4">
 			<vector name = "vector" value = "(1.0,2.0,3.0,0.0)" index = "0"/>
-			<vector name = "vector" value = "(2.0,2.0,3.0,0.0)"/>
-			<vector name = "InternalVector" value = "(3.0,2.0,3.0,0.0)"/>
+			<vector name = "vector" value = "(2.0,2.0,3.0)"/>
+			<vector name = "InternalVector" value = "(3.0,2.0,3.0)"/>
 		</entity>
 		<entity class = "EntityFoo" name = "entity5">
 			<matrix name = "matrix" value = "((1.0,2.0,3.0,4.0),(1.0,2.0,3.0,4.0),(1.0,2.0,3.0,4.0),(1.0,2.0,3.0,4.0))" index = "0"/>
-			<matrix name = "matrix" value = "((2.0,2.0,3.0,4.0),(1.0,2.0,3.0,4.0),(1.0,2.0,3.0,4.0),(1.0,2.0,3.0,4.0))"/>
-			<matrix name = "InternalMatrix" value = "((3.0,2.0,3.0,4.0),(1.0,2.0,3.0,4.0),(1.0,2.0,3.0,4.0),(1.0,2.0,3.0,4.0))"/>
+			<matrix name = "matrix" value = "((2.0,2.0,3.0,4.0),(1.0,2.0,3.0,4.0),(1.0,2.0,3.0,4.0)"/>
+			<matrix name = "InternalMatrix" value = "((2.0,2.0,3.0,4.0),(1.0,2.0,3.0,4.0),(1.0,2.0,3.0,4.0),(1.0,2.0))"/>
 		</entity>
 		
 	</sector>

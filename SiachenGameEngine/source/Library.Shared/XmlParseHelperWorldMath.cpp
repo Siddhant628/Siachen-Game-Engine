@@ -53,7 +53,37 @@ namespace SiachenGameEngine
 						if (!datum.SetFromString(value, index))
 						{
 							datum.PopBack();
-							return false;
+						}
+					}
+				}
+				return true;
+			}
+			else if (elementName == "matrix")
+			{
+				assert(attributeHashmap.ContainsKey("name") && attributeHashmap.ContainsKey("value"));
+				Datum& datum = mSharedData->mCurrentScope->Append(attributeHashmap["name"]);
+				// Transform matrix into a parsable string
+				std::string value = attributeHashmap["value"];
+				value = "mat4x4" + value;
+				// In case user passes an index to set at
+				if (attributeHashmap.ContainsKey("index"))
+				{
+					datum.SetFromString(value, std::stoi(attributeHashmap["index"]));
+				}
+				// In case user doesn't pass any index for insert
+				else
+				{
+					if (datum.IsExternal())
+					{
+						datum.SetFromString(value);
+					}
+					else
+					{
+						std::uint32_t index = datum.Size();
+						datum.PushBack(glm::mat4x4());
+						if (!datum.SetFromString(value, index))
+						{
+							datum.PopBack();
 						}
 					}
 				}
