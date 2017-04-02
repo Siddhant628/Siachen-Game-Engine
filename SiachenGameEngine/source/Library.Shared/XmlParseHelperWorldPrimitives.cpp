@@ -95,7 +95,7 @@ namespace SiachenGameEngine
 
 		bool XmlParseHelperWorldPrimitives::EndElementHandler(const std::string& elementName)
 		{
-			return (elementName == "integer" || elementName == "float");
+			return (elementName == "integer" || elementName == "float" || elementName == "string");
 		}
 
 		void XmlParseHelperWorldPrimitives::CharDataHandler(const char* characterData, std::uint32_t size)
