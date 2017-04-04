@@ -30,6 +30,10 @@ namespace SiachenGameEngine
 			* @param worldState A reference to the current world state.
 			*/
 			virtual void Update(WorldState& worldState) override;
+			/**
+			* Get a reference to the datum containing the actions.
+			*/
+			Containers::Datum& GetActionList() const;
 		private:
 			static const std::string sActionList;
 		};

@@ -37,5 +37,10 @@ namespace SiachenGameEngine
 
 			worldState.mAction = GetParent()->As<Action>();
 		}
+
+		Datum& ActionList::GetActionList() const
+		{
+			return *Find(sActionList);
+		}
 	}
 }
