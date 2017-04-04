@@ -18,14 +18,14 @@ namespace SiachenGameEngine
 			}
 			Populate();
 			UpdatePrescribedAttributeInfo();
-			mSectorDatum = Find("sectors");
-			assert(mSectorDatum != nullptr);
+
 		}
 
 		void World::Populate()
 		{
 			AddExternalAttribute("name", &mWorldName, 1U);
-			AddInternalAttribute("sectors", DatumType::TableType);
+			mSectorDatum = &AddInternalAttribute("sectors", DatumType::TableType);
+			assert(mSectorDatum != nullptr);
 		}
 
 		const std::string& World::Name() const

@@ -21,6 +21,7 @@ namespace SiachenGameEngine
 		public:
 			EntityFoo();
 			~EntityFoo() = default;
+			// TODO Can be changed to parents method
 			virtual void Update(GameplayFramework::WorldState& worldState) override;
 		};
 

@@ -201,7 +201,7 @@ namespace SiachenGameEngine
 			}
 		}
 
-		void Attributed::AddInternalAttribute(const std::string& attributeName, DatumType datumType)
+		Datum& Attributed::AddInternalAttribute(const std::string& attributeName, DatumType datumType)
 		{
 			if (datumType == DatumType::UnknownType)
 			{
@@ -209,6 +209,7 @@ namespace SiachenGameEngine
 			}
 			Datum& datum = Append(attributeName);
 			datum.SetType(datumType);
+			return datum;
 		}
 
 

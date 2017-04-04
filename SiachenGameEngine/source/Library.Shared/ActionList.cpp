@@ -6,11 +6,13 @@ namespace SiachenGameEngine
 {
 	namespace GameplayFramework
 	{
+		const std::string sActionList = "actionList";
+
 		RTTI_DEFINITIONS(ActionList)
 
 		void ActionList::Populate()
 		{
-			AddInternalAttribute("actionList", DatumType::TableType);
+			AddInternalAttribute(sActionList, DatumType::TableType);
 		}
 
 		ActionList::ActionList()
@@ -23,7 +25,7 @@ namespace SiachenGameEngine
 		{
 			worldState.mAction = this;
 
-			Datum& actionList = Append("actionList");
+			Datum& actionList = Append(sActionList);
 			std::uint32_t listSize = actionList.Size();
 			for (std::uint32_t it = 0; it < listSize; ++it)
 			{
@@ -32,7 +34,7 @@ namespace SiachenGameEngine
 				action->Update(worldState);
 			}
 
-			worldState.mAction = nullptr;
+			worldState.mAction = GetParent()->As<Action>();
 		}
 	}
 }

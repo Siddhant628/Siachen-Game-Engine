@@ -122,8 +122,9 @@ namespace SiachenGameEngine
 			* Add a datum as an internal attribute to this scope.
 			* @param attributeName The name of the attribute which has to be appended to the scope.
 			* @param datumType The type of the datum which has to be appended to the scope.
+			* @return A reference to the inserted datum.
 			*/
-			void AddInternalAttribute(const std::string& attributeName, Containers::DatumType datumType);
+			Containers::Datum& AddInternalAttribute(const std::string& attributeName, Containers::DatumType datumType);
 
 			/**
 			* Updates the prescribed attribute count and static hashmap with the attributes present in the scope at the instance it is called. This method should be called as soon as the scope is populated with prescribed attributes.

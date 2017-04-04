@@ -16,14 +16,13 @@ namespace SiachenGameEngine
 		{
 			Populate();
 			UpdatePrescribedAttributeInfo();
-			mEntityDatum = Find("entities");
-			assert(mEntityDatum != nullptr);
 		}
 
 		void Sector::Populate()
 		{
 			AddExternalAttribute("name", &mSectorName, 1U);
-			AddInternalAttribute("entities", DatumType::TableType);
+			mEntityDatum = &AddInternalAttribute("entities", DatumType::TableType);
+			assert(mEntityDatum != nullptr);
 		}
 
 		const std::string& Sector::Name() const

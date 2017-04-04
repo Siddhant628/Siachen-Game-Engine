@@ -30,6 +30,8 @@ namespace SiachenGameEngine
 			* @param worldState A reference to the current world state.
 			*/
 			virtual void Update(WorldState& worldState) override;
+		private:
+			static const std::string sActionList;
 		};
 	}
 }

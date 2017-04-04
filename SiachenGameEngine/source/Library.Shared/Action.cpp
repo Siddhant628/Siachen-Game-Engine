@@ -26,7 +26,5 @@ namespace SiachenGameEngine
 		{
 			mActionName = actionName;
 		}
-
-
 	}
 }
