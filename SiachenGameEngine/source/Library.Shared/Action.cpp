@@ -4,6 +4,8 @@ namespace SiachenGameEngine
 {
 	namespace GameplayFramework
 	{
+		RTTI_DEFINITIONS(Action)
+
 		void Action::Populate()
 		{
 			AddExternalAttribute("name", &mActionName, 1U);

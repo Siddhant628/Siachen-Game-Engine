@@ -30,6 +30,10 @@ namespace SiachenGameEngine
 			* Default constructor initializes values.
 			*/
 			WorldState();
+			/**
+			* Desturctor.
+			*/
+			~WorldState() = default;
 		};
 	}
 }
