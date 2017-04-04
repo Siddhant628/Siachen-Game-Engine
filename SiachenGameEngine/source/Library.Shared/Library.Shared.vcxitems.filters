@@ -79,6 +79,12 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ActionList.cpp">
       <Filter>Gameplay Framework</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ActionCreateAction.cpp">
+      <Filter>Gameplay Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ActionIf.cpp">
+      <Filter>Gameplay Framework</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)SList.h">
@@ -158,6 +164,12 @@
       <Filter>Gameplay Framework</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ActionList.h">
+      <Filter>Gameplay Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ActionCreateAction.h">
+      <Filter>Gameplay Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ActionIf.h">
       <Filter>Gameplay Framework</Filter>
     </ClInclude>
   </ItemGroup>
