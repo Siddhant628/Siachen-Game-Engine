@@ -73,6 +73,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)XmlParseHelperWorldMath.cpp">
       <Filter>Parsers</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Action.cpp">
+      <Filter>Gameplay Framework</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)SList.h">
@@ -147,6 +150,9 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)XmlParseHelperWorldMath.h">
       <Filter>Parsers</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Action.h">
+      <Filter>Gameplay Framework</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

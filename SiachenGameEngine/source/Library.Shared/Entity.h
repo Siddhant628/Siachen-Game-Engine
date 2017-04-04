@@ -19,6 +19,11 @@ namespace SiachenGameEngine
 			* Name of this entity.
 			*/
 			std::string mEntityName;
+		protected:
+			/**
+			* Populate the scope with prescribed attributes of this class.
+			*/
+			virtual void Populate() override;
 		public:
 			/**
 			* Default constructor - Populates the prescribed attributes.
@@ -29,17 +34,13 @@ namespace SiachenGameEngine
 			*/
 			virtual ~Entity() = default;
 			/**
-			* Populate the scope with prescribed attributes of this class.
-			*/
-			virtual void Populate() override;
-			/**
 			* Get the name of the Entity.
 			* @return The name of the Entity as a string.
 			*/
 			const std::string& Name() const;
 			/**
 			* Set the name of the Entity.
-			* @param worldName The name (string) which has to be set as the name of the Entity.
+			* @param entityName The name (string) which has to be set as the name of the Entity.
 			*/
 			void SetName(const std::string& entityName);
 			/**
@@ -51,7 +52,7 @@ namespace SiachenGameEngine
 			* Updates the entity.
 			* @param worldState A reference to the current world state.
 			*/
-			void Update(WorldState& worldState);
+			virtual void Update(WorldState& worldState);
 		};
 	}
 }

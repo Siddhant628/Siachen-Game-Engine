@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "EntityFoo.h"
+#include "WorldState.h"
 
 namespace SiachenGameEngine
 {
@@ -19,6 +20,13 @@ namespace SiachenGameEngine
 			AddExternalAttribute("string", &mString, 1U);
 			AddExternalAttribute("vector", &mVector, 1U);
 			AddExternalAttribute("matrix", &mMatrix, 1U);
+		}
+
+		void EntityFoo::Update(GameplayFramework::WorldState& worldState)
+		{
+			worldState.mEntity = this;
+
+			worldState.mEntity = nullptr;
 		}
 	}
 }
