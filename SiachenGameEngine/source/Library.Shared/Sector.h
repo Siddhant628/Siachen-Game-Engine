@@ -1,6 +1,7 @@
 #pragma once
 #include "Attributed.h"
 #include "Entity.h"
+#include "Action.h"
 
 namespace SiachenGameEngine
 {
@@ -22,6 +23,10 @@ namespace SiachenGameEngine
 			* A pointer to the datum containing pointers to the entities within this sector.
 			*/
 			Containers::Datum* mEntityDatum;
+			/**
+			* A pointer to actions contained within this Sector.
+			*/
+			Containers::Datum* mActionDatum;
 		public:
 			/**
 			* Default constructor - Populates the prescribed attributes.
@@ -72,6 +77,25 @@ namespace SiachenGameEngine
 			* @param worldState A reference to the current world state.
 			*/
 			void Update(WorldState& worldState);
+			/**
+			* Get the datum containing pointers to actions.
+			* @return A reference to the actions datum.
+			*/
+			Containers::Datum& Actions();
+			/**
+			* Create an Action using the Action factory and adopts it into this Sector.
+			* @param className The name of the Action class which has to be instantiated.
+			* @param instanceName The name that the new Action class object will take.
+			* @return A pointer to the created Action.
+			*/
+			Action* CreateAction(const std::string& className, const std::string& instanceName);
+			/**
+			* Adopt a Action into this Sector's scope.
+			* @param action The Action which has to be adopted.
+			*/
+			void AdoptAction(Action& action);
+		private:
+			const static std::string sActions;
 		};
 	}
 }
