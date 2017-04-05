@@ -7,7 +7,7 @@ namespace SiachenGameEngine
 {
 	namespace GameplayFramework
 	{
-		const std::string sActionList = "actions";
+		const std::string ActionList::sActionList = "actions";
 
 		RTTI_DEFINITIONS(ActionList)
 
@@ -26,7 +26,7 @@ namespace SiachenGameEngine
 		{
 			worldState.mAction = this;
 
-			Datum& actionList = Append(sActionList);
+			Datum& actionList = *mActionDatum;
 			std::uint32_t listSize = actionList.Size();
 			for (std::uint32_t it = 0; it < listSize; ++it)
 			{

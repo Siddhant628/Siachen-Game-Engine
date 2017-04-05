@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ActionFoo.h"
+#include <Windows.h>
 
 namespace SiachenGameEngine
 {
@@ -21,7 +22,11 @@ namespace SiachenGameEngine
 		void ActionFoo::Update(GameplayFramework::WorldState& worldState)
 		{
 			worldState.mAction = this;
-			OutputDebugString((LPCWSTR)mString.c_str());
+
+			char str[10];
+			sprintf_s(str, "%s", mString.c_str());
+			OutputDebugString(str);
+			
 			worldState.mAction = GetParent()->As<Action>();
 		}
 	}
