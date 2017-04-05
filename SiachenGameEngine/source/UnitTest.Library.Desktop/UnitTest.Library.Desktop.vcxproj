@@ -219,6 +219,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ActionFoo.cpp" />
+    <ClCompile Include="ActionParsingTest.cpp" />
     <ClCompile Include="ActionTest.cpp" />
     <ClCompile Include="AnotherSharedData.cpp" />
     <ClCompile Include="AttributedBar.cpp" />

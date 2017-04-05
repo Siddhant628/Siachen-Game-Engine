@@ -33,8 +33,11 @@ namespace SiachenGameEngine
 			}
 			else
 			{
-				assert(Actions().Get<Scope*>(1)->Is(Action::TypeIdClass()));
-				static_cast<Action*>(Actions().Get<Scope*>(1))->Update(worldState);
+				if (Actions().Size() > 1U)
+				{
+					assert(Actions().Get<Scope*>(1)->Is(Action::TypeIdClass()));
+					static_cast<Action*>(Actions().Get<Scope*>(1))->Update(worldState);
+				}
 			}
 
 			worldState.mAction = GetParent()->As<Action>();

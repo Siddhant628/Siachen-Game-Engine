@@ -1,0 +1,12 @@
+<world name = "World1">
+	<action class = "ActionList" name = "list">
+		<action class = "ActionFoo" name = "foo1" />
+		<action class = "ActionFoo" name = "foo2" />
+	</action>
+	<sector name = "Sector1">
+		<action class = "ActionFoo" name = "foo3" />
+		<entity class = "EntityFoo" name = "entity5">
+			<action class = "ActionFoo" name = "foo4" />
+		</entity>
+	</sector>
+</world>
