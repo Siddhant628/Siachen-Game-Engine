@@ -1,23 +1,15 @@
 #pragma once
-#include "Action.h"
+#include "ActionList.h"
 #include "Factory.h"
 
 namespace SiachenGameEngine
 {
 	namespace GameplayFramework
 	{
-		class ActionIf : public Action
+		class ActionIf : public ActionList
 		{
-			RTTI_DECLARATIONS(ActionIf, Action)
+			RTTI_DECLARATIONS(ActionIf, ActionList)
 		private:
-			/**
-			* A pointer to the datum containing pointers to the action which is executed if condition is true.
-			*/
-			Containers::Datum* mThenDatum;
-			/**
-			* A pointer to the datum containing pointers to the action which is executed if condition is false.
-			*/
-			Containers::Datum* mElseDatum;
 			/**
 			* An integer representing the condition which determines which branch to follow.
 			*/
@@ -45,8 +37,6 @@ namespace SiachenGameEngine
 			/**
 			* Strings corresponding to keys in this scope.
 			*/
-			const static std::string sThen;
-			const static std::string sElse;
 			const static std::string sCondition;
 		};
 		ConcreteFactory(SiachenGameEngine::GameplayFramework::Action, ActionIf)

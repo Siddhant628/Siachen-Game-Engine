@@ -4,6 +4,7 @@
 #include "Action.h"
 #include "ActionList.h"
 #include "ActionFoo.h"
+#include "ActionIf.h"
 
 #include "World.h"
 #include "EntityFoo.h"
@@ -20,7 +21,6 @@ namespace UnitTestLibraryDesktop
 	TEST_CLASS(ActionTest)
 	{
 	public:
-
 		TEST_CLASS_INITIALIZE(Action_Initialize)
 		{
 			World world("World");
@@ -29,7 +29,7 @@ namespace UnitTestLibraryDesktop
 			ActionFoo aFoo;
 			EntityFoo eFoo;
 			ActionList list;
-			//ActionListFactory alFactory;
+			ActionIf aIf;
 		}
 
 		TEST_METHOD_INITIALIZE(Initialize)
@@ -118,6 +118,71 @@ namespace UnitTestLibraryDesktop
 			WorldState worldState;
 			world.CreateSector("Sector1");
 			world.Update(worldState);
+		}
+
+		TEST_METHOD(Action_Sector)
+		{
+			World world("World1");
+			ActionFooFactory aFooFactory;
+			EntityFooFactory eFooFactory;
+
+			Sector* sector1 = world.CreateSector("Sector1");
+			// CreateAction()
+			sector1->CreateAction("ActionFoo", "foo1");
+			sector1->CreateAction("ActionFoo", "foo2");
+			// Actions(), Populate()
+			Assert::IsTrue(static_cast<ActionFoo*>(sector1->Append("actions").Get<Scope*>())->Name() == "foo1");
+			Assert::IsTrue(static_cast<ActionFoo*>(sector1->Append("actions").Get<Scope*>(1))->Name() == "foo2");
+			Assert::IsTrue(&sector1->Actions() == &sector1->Append("actions"));
+			// Update()
+			static_cast<ActionFoo*>(sector1->Append("actions").Get<Scope*>())->mString = "One";
+			static_cast<ActionFoo*>(sector1->Append("actions").Get<Scope*>(1))->mString = "Two";
+			WorldState worldState;
+			sector1->Update(worldState);
+		}
+
+		TEST_METHOD(Action_Entity)
+		{
+			World world("World1");
+			ActionFooFactory aFooFactory;
+			EntityFooFactory eFooFactory;
+
+			Sector* sector1 = world.CreateSector("Sector1");
+			Entity* entity1 = sector1->CreateEntity("EntityFoo", "eFoo1");
+			// CreateAction()
+			entity1->CreateAction("ActionFoo", "foo1");
+			entity1->CreateAction("ActionFoo", "foo2");
+			// Actions(), Populate()
+			Assert::IsTrue(static_cast<ActionFoo*>(entity1->Append("actions").Get<Scope*>())->Name() == "foo1");
+			Assert::IsTrue(static_cast<ActionFoo*>(entity1->Append("actions").Get<Scope*>(1))->Name() == "foo2");
+			Assert::IsTrue(&entity1->Actions() == &entity1->Append("actions"));
+			// Update()
+			static_cast<ActionFoo*>(entity1->Append("actions").Get<Scope*>())->mString = "One";
+			static_cast<ActionFoo*>(entity1->Append("actions").Get<Scope*>(1))->mString = "Two";
+			WorldState worldState;
+			entity1->Update(worldState);
+		}
+
+		TEST_METHOD(Action_ActionIf)
+		{
+			WorldState worldState;
+			World world("World1");
+			ActionFooFactory aFooFactory;
+			EntityFooFactory eFooFactory;
+			ActionIfFactory actionIfFactory;
+
+			ActionIf* firstIf = static_cast<ActionIf*>(world.CreateAction("ActionIf", "firstIf"));
+			ActionFoo* aThen = static_cast<ActionFoo*>(firstIf->CreateAction("ActionFoo", "foo1"));
+			ActionFoo* aElse = static_cast<ActionFoo*>(firstIf->CreateAction("ActionFoo", "foo2"));
+			aThen->mString = "Then";
+			aElse->mString = "Else";
+
+			// Prints then to output window
+			firstIf->Append("condition").Set(1);
+			firstIf->Update(worldState);
+			// Prints else to output window
+			firstIf->Append("condition").Set(0);
+			firstIf->Update(worldState);
 		}
 
 	private:

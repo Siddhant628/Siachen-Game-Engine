@@ -24,9 +24,7 @@ namespace SiachenGameEngine
 
 		void EntityFoo::Update(GameplayFramework::WorldState& worldState)
 		{
-			worldState.mEntity = this;
-
-			worldState.mEntity = nullptr;
+			Entity::Update(worldState);
 		}
 	}
 }

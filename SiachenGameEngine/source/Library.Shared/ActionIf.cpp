@@ -7,16 +7,12 @@ namespace SiachenGameEngine
 {
 	namespace GameplayFramework
 	{
-		const std::string sThen = "then";
-		const std::string sElse = "else";
-		const std::string sCondition = "condition";
+		const std::string ActionIf::sCondition = "condition";
 
 		RTTI_DEFINITIONS(ActionIf)
 
 		void ActionIf::Populate()
 		{
-			mThenDatum = &AddInternalAttribute(sThen, DatumType::TableType);
-			mElseDatum = &AddInternalAttribute(sElse, DatumType::TableType);
 			AddExternalAttribute(sCondition, &mCondition, 1U);
 		}
 
@@ -32,15 +28,13 @@ namespace SiachenGameEngine
 
 			if (mCondition)
 			{
-				assert(mThenDatum == Find(sThen));
-				assert(mThenDatum->Get<Scope*>()->Is(Action::TypeIdClass()));
-				static_cast<Action*>(mThenDatum->Get<Scope*>())->Update(worldState);
+				assert(Actions().Get<Scope*>()->Is(Action::TypeIdClass()));
+				static_cast<Action*>(Actions().Get<Scope*>())->Update(worldState);
 			}
 			else
 			{
-				assert(mElseDatum == Find(sElse));
-				assert(mElseDatum->Get<Scope*>()->Is(Action::TypeIdClass()));
-				static_cast<Action*>(mElseDatum->Get<Scope*>())->Update(worldState);
+				assert(Actions().Get<Scope*>(1)->Is(Action::TypeIdClass()));
+				static_cast<Action*>(Actions().Get<Scope*>(1))->Update(worldState);
 			}
 
 			worldState.mAction = GetParent()->As<Action>();
