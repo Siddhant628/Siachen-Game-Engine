@@ -16,6 +16,7 @@
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Action.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ActionCreateAction.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ActionDestroyAction.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ActionIf.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ActionList.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Attributed.h" />
@@ -51,6 +52,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ActionCreateAction.cpp">
       <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ActionDestroyAction.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ActionIf.cpp">
       <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>

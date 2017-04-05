@@ -6,22 +6,14 @@ namespace SiachenGameEngine
 {
 	namespace GameplayFramework
 	{
-		class ActionCreateAction : public Action
+		class ActionDestroyAction : public Action
 		{
-			RTTI_DECLARATIONS(ActionCreateAction, Action)
+			RTTI_DECLARATIONS(ActionDestroyAction, Action)
 		private:
 			/**
-			* The name of the class which has to be created.
+			* The name of the action to delete.
 			*/
-			std::string mClassName;
-			/**
-			* The name to be given to the instance of the Action object created.
-			*/
-			std::string mInstanceName;
-			/**
-			* Creates the action class object. 
-			*/
-			Action* CreateAction();
+			std::string mActionName;
 		protected:
 			/**
 			* Populate the scope with prescribed attributes of this class.
@@ -31,13 +23,13 @@ namespace SiachenGameEngine
 			/**
 			* Default constructor - Populates the prescribed attributes.
 			*/
-			ActionCreateAction();
+			ActionDestroyAction();
 			/**
 			* Destructor.
 			*/
-			~ActionCreateAction() = default;
+			~ActionDestroyAction() = default;
 			/**
-			* Creates the appropriate Action class object.
+			* Destroys the appropriate Action.
 			* @param worldState A reference to the current world state.
 			*/
 			virtual void Update(WorldState& worldState) override;
@@ -45,9 +37,8 @@ namespace SiachenGameEngine
 			/**
 			* Strings corresponding to keys in this scope.
 			*/
-			static const std::string sClassName;
-			static const std::string sInstanceName;
+			static const std::string sActionName;
 		};
-		ActionFactory(ActionCreateAction)
+		ActionFactory(ActionDestroyAction)
 	}
 }

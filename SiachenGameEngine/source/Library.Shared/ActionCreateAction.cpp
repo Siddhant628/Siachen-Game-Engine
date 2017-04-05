@@ -20,8 +20,8 @@ namespace SiachenGameEngine
 
 		void ActionCreateAction::Populate()
 		{
-			mClassDatum = &AddInternalAttribute(sClassName, DatumType::StringType);
-			mNameDatum = &AddInternalAttribute(sInstanceName, DatumType::StringType);
+			AddExternalAttribute(sClassName, &mClassName, 1U);
+			AddExternalAttribute(sInstanceName, &mInstanceName, 1U);
 		}
 
 		ActionCreateAction::ActionCreateAction()
@@ -33,15 +33,12 @@ namespace SiachenGameEngine
 		Action* ActionCreateAction::CreateAction()
 		{
 			// Create the action
-			std::string className = mClassDatum->Get<std::string>();
-			std::string instanceName = mNameDatum->Get<std::string>();
-			Action* createdAction = Factory<Action>::Create(className);
-			// Set the name of instance
-			createdAction->SetName(instanceName);
+			Action* createdAction = Factory<Action>::Create(mClassName);
+			createdAction->SetName(mInstanceName);
 			// Adopt action under the appropriate parent
 			if (GetParent()->Is(ActionList::TypeIdClass()))
 			{
-				static_cast<ActionList*>(GetParent())->GetActionList().PushBack(createdAction);
+				static_cast<ActionList*>(GetParent())->AdoptAction(*createdAction);
 			}
 			else if(GetParent()->Is(Entity::TypeIdClass()))
 			{

@@ -13,7 +13,7 @@ namespace SiachenGameEngine
 
 		void ActionList::Populate()
 		{
-			AddInternalAttribute(sActionList, DatumType::TableType);
+			mActionDatum = &AddInternalAttribute(sActionList, DatumType::TableType);
 		}
 
 		ActionList::ActionList()
@@ -38,9 +38,15 @@ namespace SiachenGameEngine
 			worldState.mAction = GetParent()->As<Action>();
 		}
 
-		Datum& ActionList::GetActionList() const
+		Datum& ActionList::Actions() const
 		{
-			return *Find(sActionList);
+			assert(mActionDatum == Find(sActionList));
+			return *mActionDatum;
+		}
+
+		void ActionList::AdoptAction(Action& action)
+		{
+			Adopt(action, sActionList);
 		}
 	}
 }
