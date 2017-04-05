@@ -7,7 +7,7 @@ namespace SiachenGameEngine
 {
 	namespace GameplayFramework
 	{
-		const std::string sActionList = "actionList";
+		const std::string sActionList = "actions";
 
 		RTTI_DEFINITIONS(ActionList)
 

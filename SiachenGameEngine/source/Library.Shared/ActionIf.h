@@ -19,9 +19,9 @@ namespace SiachenGameEngine
 			*/
 			Containers::Datum* mElseDatum;
 			/**
-			* A pointer to the datum containing the condition.
+			* An integer representing the condition which determines which branch to follow.
 			*/
-			Containers::Datum* mConditionDatum;
+			std::int32_t mCondition;
 		protected:
 			/**
 			* Populate the scope with prescribed attributes of this class.

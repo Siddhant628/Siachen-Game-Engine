@@ -38,6 +38,7 @@ namespace SiachenGameEngine
 			* Strings corresponding to keys in this scope.
 			*/
 			static const std::string sActionName;
+			static const std::string sActions;
 		};
 		ActionFactory(ActionDestroyAction)
 	}

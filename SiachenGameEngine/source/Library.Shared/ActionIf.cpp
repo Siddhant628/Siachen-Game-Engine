@@ -17,7 +17,7 @@ namespace SiachenGameEngine
 		{
 			mThenDatum = &AddInternalAttribute(sThen, DatumType::TableType);
 			mElseDatum = &AddInternalAttribute(sElse, DatumType::TableType);
-			mConditionDatum = &AddInternalAttribute(sCondition, DatumType::IntegerType);
+			AddExternalAttribute(sCondition, &mCondition, 1U);
 		}
 
 		ActionIf::ActionIf()
@@ -30,7 +30,7 @@ namespace SiachenGameEngine
 		{
 			worldState.mAction = this;
 
-			if (mConditionDatum->Get<std::int32_t>())
+			if (mCondition)
 			{
 				assert(mThenDatum == Find(sThen));
 				assert(mThenDatum->Get<Scope*>()->Is(Action::TypeIdClass()));
