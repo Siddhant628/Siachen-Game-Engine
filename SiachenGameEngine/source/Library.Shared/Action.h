@@ -49,6 +49,3 @@ namespace SiachenGameEngine
 		};
 	}
 }
-
-// TODO Test
-#define ActionFactory(ConcreteActionT) ConcreteFactory(SiachenGameEngine::GameplayFramework::Action, ConcreteActionT)

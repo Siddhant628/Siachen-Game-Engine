@@ -33,6 +33,9 @@
     <ClInclude Include="ConcreteProductBar.h">
       <Filter>Helper Classes</Filter>
     </ClInclude>
+    <ClInclude Include="ActionFoo.h">
+      <Filter>Helper Classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -97,6 +100,12 @@
       <Filter>Test Classes</Filter>
     </ClCompile>
     <ClCompile Include="EntityParsingTest.cpp">
+      <Filter>Test Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionFoo.cpp">
+      <Filter>Helper Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionTest.cpp">
       <Filter>Test Classes</Filter>
     </ClCompile>
   </ItemGroup>

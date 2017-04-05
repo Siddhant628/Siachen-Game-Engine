@@ -49,7 +49,6 @@ namespace SiachenGameEngine
 			const static std::string sElse;
 			const static std::string sCondition;
 		};
-		// TODO Test
-		ActionFactory(ActionIf)
+		ConcreteFactory(SiachenGameEngine::GameplayFramework::Action, ActionIf)
 	}
 }

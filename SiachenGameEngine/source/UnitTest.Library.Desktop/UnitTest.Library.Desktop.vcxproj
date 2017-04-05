@@ -204,6 +204,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AbstractProductBar.h" />
+    <ClInclude Include="ActionFoo.h" />
     <ClInclude Include="AnotherSharedData.h" />
     <ClInclude Include="AttributedBar.h" />
     <ClInclude Include="AttributedBaz.h" />
@@ -217,6 +218,8 @@
     <ClInclude Include="ToStringTemplates.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ActionFoo.cpp" />
+    <ClCompile Include="ActionTest.cpp" />
     <ClCompile Include="AnotherSharedData.cpp" />
     <ClCompile Include="AttributedBar.cpp" />
     <ClCompile Include="AttributedBaz.cpp" />

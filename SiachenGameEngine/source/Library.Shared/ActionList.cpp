@@ -48,5 +48,17 @@ namespace SiachenGameEngine
 		{
 			Adopt(action, sActionList);
 		}
+		
+		Action* ActionList::CreateAction(const std::string& className, const std::string& instanceName)
+		{
+			Action* actionCreated = Factory<Action>::Create(className);
+
+			if (actionCreated)
+			{
+				actionCreated->SetName(instanceName);
+				AdoptAction(*actionCreated);
+			}
+			return actionCreated;
+		}
 	}
 }

@@ -40,6 +40,6 @@ namespace SiachenGameEngine
 			static const std::string sActionName;
 			static const std::string sActions;
 		};
-		ActionFactory(ActionDestroyAction)
+		ConcreteFactory(SiachenGameEngine::GameplayFramework::Action, ActionDestroyAction)
 	}
 }

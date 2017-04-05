@@ -1,5 +1,6 @@
 #pragma once
 #include "Action.h"
+#include "Factory.h"
 
 namespace SiachenGameEngine
 {
@@ -44,8 +45,16 @@ namespace SiachenGameEngine
 			* @param action The Action which has to be adopted.
 			*/
 			void AdoptAction(Action& action);
+			/**
+			* Create an Action using the Action factory and adopts it into this Entity.
+			* @param className The name of the Action class which has to be instantiated.
+			* @param instanceName The name that the new Action class object will take.
+			* @return A pointer to the created Action.
+			*/
+			Action* CreateAction(const std::string& className, const std::string& instanceName);
 		private:
 			static const std::string sActionList;
 		};
+		ConcreteFactory(SiachenGameEngine::GameplayFramework::Action, ActionList)
 	}
 }

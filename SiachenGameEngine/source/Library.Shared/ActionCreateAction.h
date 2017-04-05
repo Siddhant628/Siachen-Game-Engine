@@ -48,6 +48,7 @@ namespace SiachenGameEngine
 			static const std::string sClassName;
 			static const std::string sInstanceName;
 		};
-		ActionFactory(ActionCreateAction)
+		
+		ConcreteFactory(SiachenGameEngine::GameplayFramework::Action, ActionCreateAction)
 	}
 }
