@@ -88,6 +88,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ActionDestroyAction.cpp">
       <Filter>Gameplay Framework</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)XmlParseHelperActionIf.cpp">
+      <Filter>Parsers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)SList.h">
@@ -177,6 +180,9 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ActionDestroyAction.h">
       <Filter>Gameplay Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)XmlParseHelperActionIf.h">
+      <Filter>Parsers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

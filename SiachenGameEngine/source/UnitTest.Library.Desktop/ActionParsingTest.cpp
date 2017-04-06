@@ -8,6 +8,7 @@
 
 #include "XmlSharedDataWorld.h"
 #include "XmlParseHelperWorld.h"
+#include "XmlParseHelperActionIf.h"
 
 #include "World.h"
 #include "EntityFoo.h"
@@ -33,7 +34,7 @@ namespace UnitTestLibraryDesktop
 			ActionFoo aFoo;
 			EntityFoo eFoo;
 			ActionList list;
-			ActionIf aIf;
+			ActionIf actionIf;
 		}
 
 		TEST_METHOD_INITIALIZE(Initialize)
@@ -99,6 +100,55 @@ namespace UnitTestLibraryDesktop
 
 			Entity* entity1 = static_cast<Entity*>(sector1->Entities().Get<Scope*>());
 			Assert::IsTrue(static_cast<ActionFoo*>(entity1->Actions().Get<Scope*>())->Name() == "foo4");
+		}
+
+		TEST_METHOD(ActionParsing_ActionsIf)
+		{
+			XmlSharedDataWorld sharedData;
+			XmlParseMaster parseMaster(sharedData);
+
+			XmlParseHelperWorld worldHelper;
+			XmlParseHelperActionIf actionIfHelper;
+			parseMaster.AddHelper(worldHelper);
+			parseMaster.AddHelper(actionIfHelper);
+
+			ActionFooFactory aFooFactory;
+			EntityFooFactory eFooFactory;
+			ActionIfFactory aIfFactory;
+			ActionListFactory aListFactory;
+
+			parseMaster.ParseFromFile("XmlWithActionIf.xml");
+			World* world = static_cast<World*>(sharedData.mCurrentScope);
+			
+			// ActionIf inside World
+			ActionIf* actionIf1 = static_cast<ActionIf*>(world->Actions().Get<Scope*>());
+			
+			Assert::IsTrue(static_cast<ActionIf*>(world->Actions().Get<Scope*>())->Name() == "if1");
+			Assert::IsTrue(static_cast<ActionIf*>(world->Actions().Get<Scope*>())->Append("condition").Get<std::int32_t>() == 1);
+			Assert::IsTrue(static_cast<ActionFoo*>(actionIf1->Actions().Get<Scope*>())->Name() == "thenFoo1");
+			Assert::IsTrue(static_cast<ActionFoo*>(actionIf1->Actions().Get<Scope*>(1))->Name() == "elseFoo1");
+
+			static_cast<ActionFoo*>(actionIf1->Actions().Get<Scope*>())->mString = "Then1\n";
+			static_cast<ActionFoo*>(actionIf1->Actions().Get<Scope*>(1))->mString = "Else1\n";
+			
+			// ActionIf inside Sector
+			Sector* sector1 = static_cast<Sector*>(world->Sectors().Get<Scope*>());
+			ActionIf* actionIf2 = static_cast<ActionIf*>(sector1->Actions().Get<Scope*>());
+			static_cast<ActionFoo*>(actionIf2->Actions().Get<Scope*>())->mString = "Then2\n";
+			static_cast<ActionFoo*>(actionIf2->Actions().Get<Scope*>(1))->mString = "Else2\n";
+
+			// ActionIf inside Entity
+			Entity* entity1 = static_cast<Entity*>(sector1->Entities().Get<Scope*>());
+			ActionIf* actionIf3 = static_cast<ActionIf*>(entity1->Actions().Get<Scope*>());
+			static_cast<ActionFoo*>(actionIf3->Actions().Get<Scope*>())->mString = "Then3\n";
+			static_cast<ActionFoo*>(actionIf3->Actions().Get<Scope*>(1))->mString = "Else3\n";
+
+			//ActionIf* actionIf4 = static_cast<ActionIf*>(static_cast<ActionList*>(world->Actions().Get<Scope*>())->Actions().Get<Scope*>());
+			//static_cast<ActionFoo*>(actionIf4->Actions().Get<Scope*>())->mString = "Then4\n";
+			//static_cast<ActionFoo*>(actionIf4->Actions().Get<Scope*>(1))->mString = "Else4\n";
+
+			WorldState worldState;
+			world->Update(worldState);
 		}
 
 	private:

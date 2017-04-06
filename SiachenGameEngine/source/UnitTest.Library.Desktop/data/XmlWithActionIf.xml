@@ -1,0 +1,24 @@
+<world name = "World1">
+	<if condition = "1" name = "if1">
+		<then class = "ActionFoo" name = "thenFoo1"/>
+		<else class = "ActionFoo" name = "elseFoo1"/>
+	</if>
+	<sector name = "Sector1">
+		<if condition = "0" name = "if2">
+			<then class = "ActionFoo" name = "thenFoo2"/>
+			<else class = "ActionFoo" name = "elseFoo2"/>
+		</if>
+		<entity class = "EntityFoo" name = "entity5">
+			<if condition = "0" name = "if3">
+				<then class = "ActionFoo" name = "thenFoo3"/>
+				<else class = "ActionFoo" name = "elseFoo3"/>
+			</if>
+		</entity>
+	</sector>
+	<action class = "ActionList" name = "list">
+		<if condition = "1" name = "if4">
+			<then class = "ActionFoo" name = "thenFoo4"/>
+			<else class = "ActionFoo" name = "elseFoo4"/>
+		</if>
+	</action>
+</world>
