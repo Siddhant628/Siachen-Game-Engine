@@ -13,8 +13,8 @@ namespace SiachenGameEngine
 {
 	namespace GameplayFramework
 	{
-		const std::string sClassName = "className";
-		const std::string sInstanceName = "instanceName";
+		const std::string ActionCreateAction::sClassName = "className";
+		const std::string ActionCreateAction::sInstanceName = "instanceName";
 
 		RTTI_DEFINITIONS(ActionCreateAction)
 
@@ -30,11 +30,11 @@ namespace SiachenGameEngine
 			UpdatePrescribedAttributeInfo();
 		}
 
-		Action* ActionCreateAction::CreateAction()
+		Action* ActionCreateAction::CreateAction(const std::string& className, const std::string& instanceName)
 		{
 			// Create the action
-			Action* createdAction = Factory<Action>::Create(mClassName);
-			createdAction->SetName(mInstanceName);
+			Action* createdAction = Factory<Action>::Create(className);
+			createdAction->SetName(instanceName);
 			// Adopt action under the appropriate parent
 			if (GetParent()->Is(ActionList::TypeIdClass()))
 			{
@@ -58,7 +58,7 @@ namespace SiachenGameEngine
 		void ActionCreateAction::Update(WorldState& worldState)
 		{
 			worldState.mAction = this;
-			CreateAction();
+			CreateAction(mClassName, mInstanceName);
 			worldState.mAction = GetParent()->As<Action>();
 		}
 	}

@@ -19,9 +19,12 @@ namespace SiachenGameEngine
 			*/
 			std::string mInstanceName;
 			/**
-			* Creates the action class object. 
+			* Create an Action using the Action factory and adopts it into the parents scope.
+			* @param className The name of the Action class which has to be instantiated.
+			* @param instanceName The name that the new Action class object will take.
+			* @return A pointer to the created Action.
 			*/
-			Action* CreateAction();
+			Action* CreateAction(const std::string& className, const std::string& instanceName);
 		protected:
 			/**
 			* Populate the scope with prescribed attributes of this class.

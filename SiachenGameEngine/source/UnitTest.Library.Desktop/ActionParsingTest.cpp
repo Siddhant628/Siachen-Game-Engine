@@ -5,10 +5,12 @@
 #include "ActionList.h"
 #include "ActionFoo.h"
 #include "ActionIf.h"
+#include "ActionCreateAction.h"
 
 #include "XmlSharedDataWorld.h"
 #include "XmlParseHelperWorld.h"
 #include "XmlParseHelperActionIf.h"
+#include "XmlParseHelperActionObjects.h"
 #include "SampleXmlSharedData.h"
 
 #include "World.h"
@@ -36,6 +38,7 @@ namespace UnitTestLibraryDesktop
 			EntityFoo eFoo;
 			ActionList list;
 			ActionIf actionIf;
+			ActionCreateAction aCreateAction;
 		}
 
 		TEST_METHOD_INITIALIZE(Initialize)
@@ -207,13 +210,83 @@ namespace UnitTestLibraryDesktop
 			delete clonedParseMaster;
 		}
 
+		TEST_METHOD(ActionParsing_ActionCreateAction)
+		{
+			XmlSharedDataWorld sharedData;
+			XmlParseMaster parseMaster(sharedData);
+
+			XmlParseHelperWorld worldHelper;
+			XmlParseHelperActionIf actionIfHelper;
+			XmlParseHelperActionObjects objectsHelper;
+			parseMaster.AddHelper(worldHelper);
+			parseMaster.AddHelper(actionIfHelper);
+			parseMaster.AddHelper(objectsHelper);
+
+			ActionFooFactory aFooFactory;
+			EntityFooFactory eFooFactory;
+			ActionIfFactory aIfFactory;
+			ActionListFactory aListFactory;
+			ActionCreateActionFactory aCreateActionFactory;
+
+			parseMaster.ParseFromFile("XmlWithActionCreate.xml");
+			World* world = static_cast<World*>(sharedData.mCurrentScope);
+
+			WorldState worldState;
+			Assert::AreEqual(world->Actions().Size(), 1U);
+			world->Update(worldState);
+			Assert::AreEqual(world->Actions().Size(), 2U);
+
+			ActionFoo* foo = world->Actions().Get<Scope*>(1)->As<ActionFoo>();
+			Assert::IsNotNull(foo);
+			Assert::IsTrue(foo->Name() == "foo1");
+		}
+
+		TEST_METHOD(ActionParsing_ActionCreateActionClone)
+		{
+			XmlSharedDataWorld sharedData;
+			XmlParseMaster parseMaster(sharedData);
+
+			XmlParseHelperWorld worldHelper;
+			XmlParseHelperActionIf actionIfHelper;
+			XmlParseHelperActionObjects objectsHelper;
+			parseMaster.AddHelper(worldHelper);
+			parseMaster.AddHelper(actionIfHelper);
+			parseMaster.AddHelper(objectsHelper);
+
+			ActionFooFactory aFooFactory;
+			EntityFooFactory eFooFactory;
+			ActionIfFactory aIfFactory;
+			ActionListFactory aListFactory;
+			ActionCreateActionFactory aCreateActionFactory;
+
+			XmlParseMaster* clonedParseMaster = parseMaster.Clone();
+
+			clonedParseMaster->ParseFromFile("XmlWithActionCreate.xml");
+			World* world = static_cast<World*>(static_cast<XmlSharedDataWorld*>(clonedParseMaster->GetSharedData())->mCurrentScope);
+
+			WorldState worldState;
+			Assert::AreEqual(world->Actions().Size(), 1U);
+			world->Update(worldState);
+			Assert::AreEqual(world->Actions().Size(), 2U);
+
+			ActionFoo* foo = world->Actions().Get<Scope*>(1)->As<ActionFoo>();
+			Assert::IsNotNull(foo);
+			Assert::IsTrue(foo->Name() == "foo1");
+
+			delete clonedParseMaster;
+		}
+
 		TEST_METHOD(ActionParsing_HelperInitialize)
 		{
 			SampleXmlSharedData sharedData;
 			XmlParseHelperActionIf ifHelper;
+			XmlParseHelperActionObjects objectsHelper;
 
 			auto expression1 = [&ifHelper, &sharedData] {ifHelper.Initialize(sharedData); };
 			Assert::ExpectException<std::runtime_error>(expression1);
+
+			auto expression2 = [&objectsHelper, &sharedData] {objectsHelper.Initialize(sharedData); };
+			Assert::ExpectException<std::runtime_error>(expression2);
 		}
 
 	private:

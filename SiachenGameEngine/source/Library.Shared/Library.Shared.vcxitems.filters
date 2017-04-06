@@ -91,6 +91,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)XmlParseHelperActionIf.cpp">
       <Filter>Parsers</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)XmlParseHelperActionObjects.cpp">
+      <Filter>Parsers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)SList.h">
@@ -182,6 +185,9 @@
       <Filter>Gameplay Framework</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)XmlParseHelperActionIf.h">
+      <Filter>Parsers</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)XmlParseHelperActionObjects.h">
       <Filter>Parsers</Filter>
     </ClInclude>
   </ItemGroup>
