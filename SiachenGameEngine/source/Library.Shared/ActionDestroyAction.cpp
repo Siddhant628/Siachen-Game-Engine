@@ -10,12 +10,12 @@ namespace SiachenGameEngine
 {
 	namespace GameplayFramework
 	{
-		const std::string sActionName = "actionName";
-		const std::string sActions = "actions";
+		const std::string ActionDestroyAction::sActionName = "actionName";
+		const std::string ActionDestroyAction::sActions = "actions";
 
 		RTTI_DEFINITIONS(ActionDestroyAction)
 
-		void ActionDestroyAction::Populate()
+			void ActionDestroyAction::Populate()
 		{
 			AddExternalAttribute(sActionName, &mActionName, 1U);
 		}
@@ -32,18 +32,21 @@ namespace SiachenGameEngine
 
 			Scope* parent = GetParent();
 			Datum* datum = nullptr;
-			datum = &parent->Append(sActions);
-			assert(datum != nullptr);
-			// Remove the action from the datum and destroy it.
-			std::uint32_t size = datum->Size();
-			for (std::uint32_t it = 0; it < size; ++it)
+
+			while (parent != nullptr)
 			{
-				if (static_cast<Action*>(datum->Get<Scope*>(it))->Name() == mActionName)
+				assert(parent->Find(sActions) != nullptr);
+				datum = &parent->Append(sActions);
+				std::uint32_t size = datum->Size();
+				for (std::uint32_t it = 0; it < size; ++it)
 				{
-					Scope* removedAction = datum->Get<Scope*>(it);
-					datum->Remove(removedAction);
-					delete removedAction;
+					if (static_cast<Action*>(datum->Get<Scope*>(it))->Name() == mActionName)
+					{
+						Action* removedAction = static_cast<Action*>(datum->Get<Scope*>(it));
+						worldState.mWorld->AddToActionDestroyQueue(*removedAction);
+					}
 				}
+				parent = parent->GetParent();
 			}
 
 			worldState.mAction = GetParent()->As<Action>();

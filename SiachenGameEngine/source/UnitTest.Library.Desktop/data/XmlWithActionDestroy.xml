@@ -1,0 +1,12 @@
+<world name = "World1">
+	<action class = "ActionFoo" name = "foo1" />
+	<sector name = "Sector1">
+		<actiondestroy name = "destroy1" instance = "foo1"/>
+		<action class = "ActionFoo" name = "foo2" />
+		<actiondestroy name = "destroy2" instance = "foo2"/>
+		<entity class = "EntityFoo" name = "entity5">
+			<action class = "ActionFoo" name = "foo3" />
+			<actiondestroy name = "destroy3" instance = "foo3"/>
+		</entity>
+	</sector>
+</world>

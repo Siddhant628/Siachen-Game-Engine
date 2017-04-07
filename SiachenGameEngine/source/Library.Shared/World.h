@@ -1,6 +1,7 @@
 #pragma once
 #include "Attributed.h"
 #include "Sector.h"
+#include "Vector.h"
 
 namespace SiachenGameEngine
 {
@@ -25,6 +26,14 @@ namespace SiachenGameEngine
 			* A pointer to actions contained within this World.
 			*/
 			Containers::Datum* mActionDatum;
+			/**
+			* Actions queued for deletion at the end of update.
+			*/
+			Containers::Vector<Action*> mActionDeleteQueue;
+			/**
+			* Delete all the actions waiting in the queue for deletion.
+			*/
+			void HandleActionDestroyQueue();
 		public:
 			/**
 			* Default constructor - Populates the prescribed attributes.
@@ -86,6 +95,11 @@ namespace SiachenGameEngine
 			* @param action The Action which has to be adopted.
 			*/
 			void AdoptAction(Action& action);
+			/**
+			* Add an action for deletion to the delete queue.
+			* @param action The action which has to be deleted.
+			*/
+			void AddToActionDestroyQueue(Action& action);
 		private:
 			const static std::string sActions;
 		};

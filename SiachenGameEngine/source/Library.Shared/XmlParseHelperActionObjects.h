@@ -1,13 +1,14 @@
 #pragma once
 #include "IXmlParseHelper.h"
 #include "XmlSharedDataWorld.h"
+#include "Action.h"
 
 namespace SiachenGameEngine
 {
 	namespace Parsers
 	{
 		/**
-		* A XML parsing helper which can parse primitives such as integers, floats and strings
+		* A XML parsing helper which can parse ActionCreateAction and ActionDestroyAction. It can handle instantiation and destruction of action objects.
 		*/
 		class XmlParseHelperActionObjects final : public IXmlParseHelper
 		{
@@ -49,6 +50,10 @@ namespace SiachenGameEngine
 			*/
 			virtual IXmlParseHelper* Clone() override;
 		private:
+			GameplayFramework::Action* GetActionObject(const std::string& className, const std::string& instanceName);
+			/**
+			* A pointer to the shared data.
+			*/
 			XmlSharedDataWorld* mSharedData;
 
 		};

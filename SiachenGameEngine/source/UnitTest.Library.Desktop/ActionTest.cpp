@@ -6,6 +6,7 @@
 #include "ActionFoo.h"
 #include "ActionIf.h"
 #include "ActionCreateAction.h"
+#include "ActionDestroyAction.h"
 
 #include "World.h"
 #include "EntityFoo.h"
@@ -31,6 +32,8 @@ namespace UnitTestLibraryDesktop
 			EntityFoo eFoo;
 			ActionList list;
 			ActionIf aIf;
+			ActionCreateAction aCreate;
+			ActionDestroyAction aDestroy;
 		}
 
 		TEST_METHOD_INITIALIZE(Initialize)
@@ -204,6 +207,27 @@ namespace UnitTestLibraryDesktop
 
 			Assert::IsTrue(world.Actions().Get<Scope*>(1)->Is(ActionFoo::TypeIdClass()));
 			Assert::IsTrue(static_cast<ActionFoo*>(world.Actions().Get<Scope*>(1))->Name() == "foo1");
+		}
+
+		TEST_METHOD(Action_DestroyAction)
+		{
+			WorldState worldState;
+			World world("World1");
+			ActionFooFactory aFooFactory;
+			EntityFooFactory eFooFactory;
+			ActionDestroyActionFactory aDestroyFactory;
+
+			world.CreateAction("ActionFoo", "foo1");
+			ActionDestroyAction* destroy = static_cast<ActionDestroyAction*>(world.CreateAction("ActionDestroyAction", "destroy1"));
+			destroy->Append("actionName").Set("foo1");
+
+			Assert::AreEqual(world.Actions().Size(), 2U);
+			Assert::IsTrue(world.Actions().Get<Scope*>(1) == destroy);
+
+			world.Update(worldState);
+
+			Assert::AreEqual(world.Actions().Size(), 1U);
+			Assert::IsTrue(world.Actions().Get<Scope*>(0) == destroy);
 		}
 
 	private:

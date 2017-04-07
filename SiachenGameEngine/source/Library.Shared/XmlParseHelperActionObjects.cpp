@@ -5,6 +5,7 @@
 #include "ActionList.h"
 #include "ActionIf.h"
 #include "ActionCreateAction.h"
+#include "ActionDestroyAction.h"
 
 #include "World.h"
 #include "Entity.h"
@@ -37,22 +38,7 @@ namespace SiachenGameEngine
 			{
 				assert(attributeHashmap.ContainsKey("name") && attributeHashmap.ContainsKey("class") && attributeHashmap.ContainsKey("instance"));
 				Action* action = nullptr;
-				if (mSharedData->mCurrentScope->Is(Entity::TypeIdClass()))
-				{
-					action = static_cast<Entity*>(mSharedData->mCurrentScope)->CreateAction("ActionCreateAction", attributeHashmap["name"]);
-				}
-				else if (mSharedData->mCurrentScope->Is(Sector::TypeIdClass()))
-				{
-					action = static_cast<Sector*>(mSharedData->mCurrentScope)->CreateAction("ActionCreateAction", attributeHashmap["name"]);
-				}
-				else if (mSharedData->mCurrentScope->Is(World::TypeIdClass()))
-				{
-					action = static_cast<World*>(mSharedData->mCurrentScope)->CreateAction("ActionCreateAction", attributeHashmap["name"]);
-				}
-				else if (mSharedData->mCurrentScope->Is(ActionList::TypeIdClass()))
-				{
-					action = static_cast<ActionList*>(mSharedData->mCurrentScope)->CreateAction("ActionCreateAction", attributeHashmap["name"]);
-				}
+				action = GetActionObject("ActionCreateAction", attributeHashmap["name"]);
 				assert(action != nullptr);
 				mSharedData->mCurrentScope = action;
 				static_cast<ActionCreateAction*>(action)->Append("className").Set(attributeHashmap["class"]);
@@ -60,12 +46,22 @@ namespace SiachenGameEngine
 
 				return true;
 			}
+
+			if (elementName == "actiondestroy")
+			{
+				assert(attributeHashmap.ContainsKey("name") && attributeHashmap.ContainsKey("instance"));
+				Action* action = nullptr;
+				action = GetActionObject("ActionDestroyAction", attributeHashmap["name"]);
+				assert(action != nullptr);
+				mSharedData->mCurrentScope = action;
+				static_cast<ActionDestroyAction*>(action)->Append("actionName").Set(attributeHashmap["instance"]);
+			}
 			return false;
 		}
 
 		bool XmlParseHelperActionObjects::EndElementHandler(const std::string& elementName)
 		{
-			if (elementName == "actioncreate")
+			if (elementName == "actioncreate" || elementName == "actiondestroy")
 			{
 				Attributed* parent = static_cast<Attributed*>(mSharedData->mCurrentScope->GetParent());
 				if (parent)
@@ -87,6 +83,28 @@ namespace SiachenGameEngine
 		{
 			XmlParseHelperActionObjects* parseHelper = new XmlParseHelperActionObjects();
 			return parseHelper;
+		}
+
+		Action* XmlParseHelperActionObjects::GetActionObject(const std::string& className, const std::string& instanceName)
+		{
+			Action* action = nullptr;
+			if (mSharedData->mCurrentScope->Is(Entity::TypeIdClass()))
+			{
+				action = static_cast<Entity*>(mSharedData->mCurrentScope)->CreateAction(className, instanceName);
+			}
+			else if (mSharedData->mCurrentScope->Is(Sector::TypeIdClass()))
+			{
+				action = static_cast<Sector*>(mSharedData->mCurrentScope)->CreateAction(className, instanceName);
+			}
+			else if (mSharedData->mCurrentScope->Is(World::TypeIdClass()))
+			{
+				action = static_cast<World*>(mSharedData->mCurrentScope)->CreateAction(className, instanceName);
+			}
+			else if (mSharedData->mCurrentScope->Is(ActionList::TypeIdClass()))
+			{
+				action = static_cast<ActionList*>(mSharedData->mCurrentScope)->CreateAction(className, instanceName);
+			}
+			return action;
 		}
 	}
 }

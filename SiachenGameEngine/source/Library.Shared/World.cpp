@@ -13,6 +13,20 @@ namespace SiachenGameEngine
 
 		RTTI_DEFINITIONS(World)
 
+		void World::HandleActionDestroyQueue()
+		{
+			Vector<Action*>::Iterator it = mActionDeleteQueue.begin();
+			Vector<Action*>::Iterator end = mActionDeleteQueue.end();
+
+			for (; it != end; ++it)
+			{
+				Action* actionToDelete = *it;
+				actionToDelete->Orphan();
+				delete actionToDelete;
+			}
+			mActionDeleteQueue.Clear();
+		}
+
 		World::World(const std::string& worldName) : mSectorDatum(nullptr), mWorldName(worldName)
 		{
 			if (worldName == "")
@@ -80,7 +94,8 @@ namespace SiachenGameEngine
 				assert(mSectorDatum->Get<Scope*>(it)->Is(Sector::TypeIdClass()));
 				static_cast<Sector*>(mSectorDatum->Get<Scope*>(it))->Update(worldState);
 			}
-
+			// Handle actions waiting for deletion
+			HandleActionDestroyQueue();
 			worldState.mWorld = nullptr;
 		}
 		
@@ -105,6 +120,11 @@ namespace SiachenGameEngine
 		void World::AdoptAction(Action& action)
 		{
 			Adopt(action, sActions);
+		}
+		
+		void World::AddToActionDestroyQueue(Action& action)
+		{
+			mActionDeleteQueue.PushBack(&action);
 		}
 	}
 }

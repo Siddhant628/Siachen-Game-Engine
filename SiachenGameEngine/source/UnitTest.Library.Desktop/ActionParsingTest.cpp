@@ -6,6 +6,7 @@
 #include "ActionFoo.h"
 #include "ActionIf.h"
 #include "ActionCreateAction.h"
+#include "ActionDestroyAction.h"
 
 #include "XmlSharedDataWorld.h"
 #include "XmlParseHelperWorld.h"
@@ -39,6 +40,7 @@ namespace UnitTestLibraryDesktop
 			ActionList list;
 			ActionIf actionIf;
 			ActionCreateAction aCreateAction;
+			ActionDestroyAction aDestroyAction;
 		}
 
 		TEST_METHOD_INITIALIZE(Initialize)
@@ -277,6 +279,90 @@ namespace UnitTestLibraryDesktop
 			Assert::IsNotNull(foo);
 			Assert::IsTrue(foo->Name() == "foo1");
 
+			Sector* sector = static_cast<Sector*>(world->Sectors().Get<Scope*>());
+			Assert::IsTrue(static_cast<ActionFoo*>(sector->Actions().Get<Scope*>(1))->Name() == "foo2");
+
+			Entity* entity = static_cast<Entity*>(sector->Entities().Get<Scope*>());
+			Assert::IsTrue(static_cast<ActionFoo*>(entity->Actions().Get<Scope*>(1))->Name() == "foo3");
+
+			delete clonedParseMaster;
+		}
+
+		TEST_METHOD(ActionParsing_ActionDestroyAction)
+		{
+			XmlSharedDataWorld sharedData;
+			XmlParseMaster parseMaster(sharedData);
+
+			XmlParseHelperWorld worldHelper;
+			XmlParseHelperActionIf actionIfHelper;
+			XmlParseHelperActionObjects objectsHelper;
+			parseMaster.AddHelper(worldHelper);
+			parseMaster.AddHelper(actionIfHelper);
+			parseMaster.AddHelper(objectsHelper);
+
+			ActionFooFactory aFooFactory;
+			EntityFooFactory eFooFactory;
+			ActionListFactory aListFactory;
+			ActionCreateActionFactory aCreateActionFactory;
+			ActionDestroyActionFactory aDestroyActionFactory;
+
+			parseMaster.ParseFromFile("XmlWithActionDestroy.xml");
+			World* world = static_cast<World*>(sharedData.mCurrentScope);
+			Sector* sector = static_cast<Sector*>(world->Sectors().Get<Scope*>());
+			Entity* entity = static_cast<Entity*>(sector->Entities().Get<Scope*>());
+
+			Assert::AreEqual(world->Actions().Size(), 1U);
+			Assert::AreEqual(sector->Actions().Size(), 3U);
+			Assert::AreEqual(entity->Actions().Size(), 2U);
+			Assert::IsTrue(static_cast<ActionDestroyAction*>(sector->Actions().Get<Scope*>(2))->Name() == "destroy2");
+
+			WorldState worldState;
+			world->Update(worldState);
+
+			Assert::AreEqual(world->Actions().Size(), 0U);
+			Assert::AreEqual(sector->Actions().Size(), 2U);
+			Assert::AreEqual(entity->Actions().Size(), 1U);
+			Assert::IsTrue(static_cast<ActionDestroyAction*>(sector->Actions().Get<Scope*>(1))->Name() == "destroy2");
+		}
+
+		TEST_METHOD(ActionParsing_ActionDestroyActionClone)
+		{
+			XmlSharedDataWorld sharedData;
+			XmlParseMaster parseMaster(sharedData);
+
+			XmlParseHelperWorld worldHelper;
+			XmlParseHelperActionIf actionIfHelper;
+			XmlParseHelperActionObjects objectsHelper;
+			parseMaster.AddHelper(worldHelper);
+			parseMaster.AddHelper(actionIfHelper);
+			parseMaster.AddHelper(objectsHelper);
+
+			ActionFooFactory aFooFactory;
+			EntityFooFactory eFooFactory;
+			ActionListFactory aListFactory;
+			ActionCreateActionFactory aCreateActionFactory;
+			ActionDestroyActionFactory aDestroyActionFactory;
+
+			XmlParseMaster* clonedParseMaster = parseMaster.Clone();
+
+			clonedParseMaster->ParseFromFile("XmlWithActionDestroy.xml");
+			World* world = static_cast<World*>(static_cast<XmlSharedDataWorld*>(clonedParseMaster->GetSharedData())->mCurrentScope);
+			Sector* sector = static_cast<Sector*>(world->Sectors().Get<Scope*>());
+			Entity* entity = static_cast<Entity*>(sector->Entities().Get<Scope*>());
+
+			Assert::AreEqual(world->Actions().Size(), 1U);
+			Assert::AreEqual(sector->Actions().Size(), 3U);
+			Assert::AreEqual(entity->Actions().Size(), 2U);
+			Assert::IsTrue(static_cast<ActionDestroyAction*>(sector->Actions().Get<Scope*>(2))->Name() == "destroy2");
+
+			WorldState worldState;
+			world->Update(worldState);
+
+			Assert::AreEqual(world->Actions().Size(), 0U);
+			Assert::AreEqual(sector->Actions().Size(), 2U);
+			Assert::AreEqual(entity->Actions().Size(), 1U);
+			Assert::IsTrue(static_cast<ActionDestroyAction*>(sector->Actions().Get<Scope*>(1))->Name() == "destroy2");
+		
 			delete clonedParseMaster;
 		}
 
