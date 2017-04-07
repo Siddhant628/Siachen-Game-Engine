@@ -232,13 +232,17 @@ namespace UnitTestLibraryDesktop
 			World* world = static_cast<World*>(sharedData.mCurrentScope);
 
 			WorldState worldState;
-			Assert::AreEqual(world->Actions().Size(), 1U);
 			world->Update(worldState);
-			Assert::AreEqual(world->Actions().Size(), 2U);
-
+			
 			ActionFoo* foo = world->Actions().Get<Scope*>(1)->As<ActionFoo>();
 			Assert::IsNotNull(foo);
 			Assert::IsTrue(foo->Name() == "foo1");
+
+			Sector* sector = static_cast<Sector*>(world->Sectors().Get<Scope*>());
+			Assert::IsTrue(static_cast<ActionFoo*>(sector->Actions().Get<Scope*>(1))->Name() == "foo2");
+
+			Entity* entity = static_cast<Entity*>(sector->Entities().Get<Scope*>());
+			Assert::IsTrue(static_cast<ActionFoo*>(entity->Actions().Get<Scope*>(1))->Name() == "foo3");
 		}
 
 		TEST_METHOD(ActionParsing_ActionCreateActionClone)

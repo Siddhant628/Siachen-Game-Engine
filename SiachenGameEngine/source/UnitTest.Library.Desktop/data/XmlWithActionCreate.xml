@@ -1,9 +1,9 @@
 <world name = "World1">
 	<actioncreate name = "creater1" class = "ActionFoo" instance = "foo1"/>
 	<sector name = "Sector1">
-		<actioncreate name = "creater1" class = "ActionFoo" instance = "foo2"/>
+		<actioncreate name = "creater2" class = "ActionFoo" instance = "foo2"/>
 		<entity class = "EntityFoo" name = "entity5">
-			<actioncreate name = "creater1" class = "ActionFoo" instance = "foo3"/>
+			<actioncreate name = "creater3" class = "ActionFoo" instance = "foo3"/>
 		</entity>
 	</sector>
 </world>

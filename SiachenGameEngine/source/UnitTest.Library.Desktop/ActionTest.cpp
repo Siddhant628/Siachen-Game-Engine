@@ -5,6 +5,7 @@
 #include "ActionList.h"
 #include "ActionFoo.h"
 #include "ActionIf.h"
+#include "ActionCreateAction.h"
 
 #include "World.h"
 #include "EntityFoo.h"
@@ -183,6 +184,26 @@ namespace UnitTestLibraryDesktop
 			// Prints else to output window
 			firstIf->Append("condition").Set(0);
 			firstIf->Update(worldState);
+		}
+
+		TEST_METHOD(Action_CreateAction)
+		{
+			WorldState worldState;
+			World world("World1");
+			ActionFooFactory aFooFactory;
+			EntityFooFactory eFooFactory;
+			ActionCreateActionFactory aCreateActionFactory;
+
+			ActionCreateAction* actionCreate = static_cast<ActionCreateAction*>(world.CreateAction("ActionCreateAction", "firstActionCreate"));
+			actionCreate->Append("className").Set("ActionFoo");
+			actionCreate->Append("instanceName").Set("foo1");
+
+			Assert::AreEqual(world.Actions().Size(), 1U);
+			world.Update(worldState);
+			Assert::AreEqual(world.Actions().Size(), 2U);
+
+			Assert::IsTrue(world.Actions().Get<Scope*>(1)->Is(ActionFoo::TypeIdClass()));
+			Assert::IsTrue(static_cast<ActionFoo*>(world.Actions().Get<Scope*>(1))->Name() == "foo1");
 		}
 
 	private:
