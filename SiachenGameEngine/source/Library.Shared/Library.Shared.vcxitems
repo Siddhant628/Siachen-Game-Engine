@@ -72,7 +72,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Entity.cpp">
       <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)EventPublisher.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)EventPublisher.cpp">
+      <PrecompiledHeader>Use</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)GameClock.cpp">
       <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>

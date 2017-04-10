@@ -2,7 +2,7 @@
 
 namespace SiachenGameEngine
 {
-	namespace GameplayFramework
+	namespace Events
 	{
 		class EventPublisher;
 		/**

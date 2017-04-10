@@ -8,25 +8,24 @@
 
 namespace SiachenGameEngine
 {
-	namespace GameplayFramework
+	namespace Events
 	{
 		/**
-		* An abstract base class for concrete events.
+		* An abstract base class for concrete events, it provides the necessary common interface for all the events.
 		*/
-		class EventPublisher : public RTTI
+		class EventPublisher : public GameplayFramework::RTTI
 		{
-			RTTI_DECLARATIONS(EventPublisher, RTTI)
+			RTTI_DECLARATIONS(EventPublisher, GameplayFramework::RTTI)
 		private:
 			typedef std::chrono::high_resolution_clock::time_point TimePoint;
-			typedef std::chrono::duration<std::int64_t, std::milli> MillisecondsDuration;
+			typedef std::chrono::milliseconds MillisecondsDuration;
+			
 			// TODO Check default constructed values
 			/**
 			* The time at which this event was enqueued.
 			*/
 			TimePoint mTimeEnqueued;
 			// TODO Check default constructed values
-			// TODO Comment
-
 			/**
 			* The time after being enqueued after which this event would expire.
 			*/
@@ -35,20 +34,30 @@ namespace SiachenGameEngine
 			* Whether the event should be deleted once it is published.
 			*/
 			bool mDeleteOnPublish;
+			/**
+			* List of subscribers for this event.
+			*/
+			Containers::Vector<EventSubscriber*>* mSubscribers;
 
 		public:
+			// TODO Copy and move semantics
+
 			/**
 			* Constructor.
 			* @param subscribers A list of subscribers for this event.
 			* @param deleteAfterPublish Set to true in order to delete the event object once the event has been published.
 			*/
-			EventPublisher(const Containers::Vector<EventSubscriber*>& subscribers, bool deleteAfterPublish);
+			EventPublisher(Containers::Vector<EventSubscriber*>& subscribers, bool deleteAfterPublish);
 			/**
 			* Destructor.
 			*/
 			virtual ~EventPublisher() = default;
-			// TODO Copy and move semantics
-			// TODO Comment
+			
+			/**
+			* Set the time at which this event was enqueued. Also, optionally, set the delay after which it should be delivered.
+			* @param enqueueTime The time at which the event was enqueued.
+			* @param delay The time after being enqueued after which this event should expire.
+			*/
 			void SetTime(const TimePoint& enqueueTime, const MillisecondsDuration& delay = std::chrono::milliseconds(0));
 			/**
 			* Get the time when this event was enqueued.
@@ -74,7 +83,7 @@ namespace SiachenGameEngine
 			* Get whether the event should be deleted after publishing.
 			* @return True if the event should be deleted after publishing.
 			*/
-			bool DeleteAfterPublishing() const;
+			const bool DeleteAfterPublishing() const;
 		};
 	}
 }

@@ -1,17 +1,21 @@
 #include "pch.h"
 #include "EventPublisher.h"
+#include "EventSubscriber.h"
+
+#include "Vector.h"
+#include "assert.h"
 
 using namespace SiachenGameEngine::Containers;
 using namespace std::chrono;
 
 namespace SiachenGameEngine
 {
-	namespace GameplayFramework
+	namespace Events
 	{
-		EventPublisher::EventPublisher(const Vector<EventSubscriber*>& subscribers, bool deleteAfterPublish)
+		EventPublisher::EventPublisher(Vector<EventSubscriber*>& subscribers, bool deleteAfterPublish) : mDeleteOnPublish(false), mSubscribers(nullptr)
 		{
-			subscribers;
-			deleteAfterPublish;
+			mSubscribers = &subscribers;
+			mDeleteOnPublish = deleteAfterPublish;
 		}
 
 		void EventPublisher::SetTime(const TimePoint& enqueueTime, const MillisecondsDuration& delay /**  = std::chrono::milliseconds(0) **/)
@@ -25,7 +29,7 @@ namespace SiachenGameEngine
 			return mTimeEnqueued;
 		}
 
-		const std::chrono::duration<std::int64_t, std::milli>& EventPublisher::Delay() const
+		const std::chrono::milliseconds& EventPublisher::Delay() const
 		{
 			return mDelay;
 		}
@@ -37,10 +41,16 @@ namespace SiachenGameEngine
 
 		void EventPublisher::Deliver()
 		{
-
+			assert(mSubscribers != nullptr);
+			Vector<EventSubscriber*>::Iterator it = mSubscribers->begin();
+			Vector<EventSubscriber*>::Iterator end = mSubscribers->end();
+			for (; it != end; ++it)
+			{
+				(*it)->Notify(*this);
+			}
 		}
 
-		bool EventPublisher::DeleteAfterPublishing() const
+		const bool EventPublisher::DeleteAfterPublishing() const
 		{
 			return mDeleteOnPublish;
 		}

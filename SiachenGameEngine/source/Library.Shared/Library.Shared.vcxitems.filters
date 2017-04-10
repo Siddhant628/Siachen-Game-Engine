@@ -13,6 +13,9 @@
     <Filter Include="Misc">
       <UniqueIdentifier>{61f8481b-b317-4910-a606-5e92a244e4fc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Events">
+      <UniqueIdentifier>{fdf15f37-9b5d-47ac-b8ea-8813ccadc6fd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)pch.cpp" />
@@ -95,7 +98,7 @@
       <Filter>Parsers</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)EventPublisher.cpp">
-      <Filter>Gameplay Framework</Filter>
+      <Filter>Events</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -194,10 +197,10 @@
       <Filter>Parsers</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)EventSubscriber.h">
-      <Filter>Gameplay Framework</Filter>
+      <Filter>Events</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)EventPublisher.h">
-      <Filter>Gameplay Framework</Filter>
+      <Filter>Events</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
