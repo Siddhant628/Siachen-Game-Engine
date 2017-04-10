@@ -94,6 +94,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)XmlParseHelperActionObjects.cpp">
       <Filter>Parsers</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)EventPublisher.cpp">
+      <Filter>Gameplay Framework</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)SList.h">
@@ -189,6 +192,12 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)XmlParseHelperActionObjects.h">
       <Filter>Parsers</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)EventSubscriber.h">
+      <Filter>Gameplay Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)EventPublisher.h">
+      <Filter>Gameplay Framework</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
