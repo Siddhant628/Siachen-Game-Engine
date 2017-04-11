@@ -78,7 +78,7 @@ namespace SiachenGameEngine
 			/**
 			* Notify all the subscribers about the event.
 			*/
-			void Deliver();
+			void Deliver() const;
 			/**
 			* Get whether the event should be deleted after publishing.
 			* @return True if the event should be deleted after publishing.

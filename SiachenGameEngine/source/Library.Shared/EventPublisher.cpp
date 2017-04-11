@@ -39,7 +39,7 @@ namespace SiachenGameEngine
 			return (currentTime > (mTimeEnqueued + mDelay));
 		}
 
-		void EventPublisher::Deliver()
+		void EventPublisher::Deliver() const
 		{
 			assert(mSubscribers != nullptr);
 			Vector<EventSubscriber*>::Iterator it = mSubscribers->begin();

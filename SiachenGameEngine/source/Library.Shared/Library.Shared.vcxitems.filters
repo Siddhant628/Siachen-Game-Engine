@@ -100,6 +100,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)EventPublisher.cpp">
       <Filter>Events</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)EventQueue.cpp">
+      <Filter>Events</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)SList.h">
@@ -203,6 +206,9 @@
       <Filter>Events</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Event.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)EventQueue.h">
       <Filter>Events</Filter>
     </ClInclude>
   </ItemGroup>
