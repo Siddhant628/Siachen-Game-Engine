@@ -1,12 +1,20 @@
 #pragma once
 #include "Event.h"
+#include "Vector.h"
+
 
 namespace SiachenGameEngine
 {
 	namespace Events
 	{
 		template <typename PayloadT>
-		Event::Event(const PayloadT& messageObject, bool deleteAfterPublishing) : EventPublisher(mSubscribers, deleteAfterPublishing), mMessage(&messageObject)
+		Containers::Vector<EventSubscriber*> Event<PayloadT>::mSubscribers;
+
+		template <typename PayloadT>
+		RTTI_DEFINITIONS(Event<PayloadT>)
+
+		template <typename PayloadT>
+		Event<PayloadT>::Event(const PayloadT& messageObject, bool deleteAfterPublishing) : EventPublisher(mSubscribers, deleteAfterPublishing), mMessage(&messageObject)
 		{
 
 		}

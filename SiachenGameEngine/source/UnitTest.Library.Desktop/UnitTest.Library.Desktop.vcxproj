@@ -231,6 +231,7 @@
     <ClCompile Include="EntityFoo.cpp" />
     <ClCompile Include="EntityParsingTest.cpp" />
     <ClCompile Include="EntityTest.cpp" />
+    <ClCompile Include="EventTest.cpp" />
     <ClCompile Include="FactoryTest.cpp" />
     <ClCompile Include="Foo.cpp" />
     <ClCompile Include="HashMapTest.cpp" />

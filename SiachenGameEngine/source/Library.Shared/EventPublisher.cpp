@@ -12,7 +12,7 @@ namespace SiachenGameEngine
 {
 	namespace Events
 	{
-		EventPublisher::EventPublisher(Vector<EventSubscriber*>& subscribers, bool deleteAfterPublish) : mDeleteOnPublish(false), mSubscribers(nullptr)
+		EventPublisher::EventPublisher(const Vector<EventSubscriber*>& subscribers, bool deleteAfterPublish) : mDeleteOnPublish(false), mSubscribers(nullptr)
 		{
 			mSubscribers = &subscribers;
 			mDeleteOnPublish = deleteAfterPublish;

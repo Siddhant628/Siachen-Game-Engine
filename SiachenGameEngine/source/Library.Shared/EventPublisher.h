@@ -37,9 +37,9 @@ namespace SiachenGameEngine
 			/**
 			* List of subscribers for this event.
 			*/
-			Containers::Vector<EventSubscriber*>* mSubscribers;
+			const Containers::Vector<EventSubscriber*>* mSubscribers;
 
-		public:
+		protected:
 			// TODO Copy and move semantics
 
 			/**
@@ -47,7 +47,8 @@ namespace SiachenGameEngine
 			* @param subscribers A list of subscribers for this event.
 			* @param deleteAfterPublish Set to true in order to delete the event object once the event has been published.
 			*/
-			EventPublisher(Containers::Vector<EventSubscriber*>& subscribers, bool deleteAfterPublish);
+			EventPublisher(const Containers::Vector<EventSubscriber*>& subscribers, bool deleteAfterPublish);
+		public:
 			/**
 			* Destructor.
 			*/
