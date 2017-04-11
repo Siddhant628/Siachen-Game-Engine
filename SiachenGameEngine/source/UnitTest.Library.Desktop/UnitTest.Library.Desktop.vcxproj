@@ -212,6 +212,7 @@
     <ClInclude Include="ConcreteProductBar.h" />
     <ClInclude Include="EntityFoo.h" />
     <ClInclude Include="Foo.h" />
+    <ClInclude Include="FooSubscriber.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="SampleXmlParseHelper.h" />
     <ClInclude Include="SampleXmlSharedData.h" />
@@ -234,6 +235,7 @@
     <ClCompile Include="EventTest.cpp" />
     <ClCompile Include="FactoryTest.cpp" />
     <ClCompile Include="Foo.cpp" />
+    <ClCompile Include="FooSubscriber.cpp" />
     <ClCompile Include="HashMapTest.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

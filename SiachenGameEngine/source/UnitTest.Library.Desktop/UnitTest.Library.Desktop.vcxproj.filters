@@ -36,6 +36,9 @@
     <ClInclude Include="ActionFoo.h">
       <Filter>Helper Classes</Filter>
     </ClInclude>
+    <ClInclude Include="FooSubscriber.h">
+      <Filter>Helper Classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -113,6 +116,9 @@
     </ClCompile>
     <ClCompile Include="EventTest.cpp">
       <Filter>Test Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="FooSubscriber.cpp">
+      <Filter>Helper Classes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

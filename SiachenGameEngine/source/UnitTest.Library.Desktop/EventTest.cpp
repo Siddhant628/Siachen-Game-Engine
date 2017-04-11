@@ -1,9 +1,14 @@
 #include "pch.h"
 #include "CppUnitTest.h"
+
 #include "Event.h"
 
+#include "Foo.h"
+
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+
 using namespace SiachenGameEngine::Events;
+using namespace SiachenGameEngine::HelperClasses;
 
 namespace UnitTestLibraryDesktop
 {
@@ -30,8 +35,8 @@ namespace UnitTestLibraryDesktop
 
 		TEST_METHOD(EventFirst)
 		{
-			std::int32_t integer;
-			Event<std::int32_t> event(integer, false);
+			Foo foo(10);
+			Event<Foo> event(foo, false);
 		}
 
 	private:
