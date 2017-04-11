@@ -22,6 +22,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Attributed.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Datum.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Entity.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Event.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EventPublisher.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EventSubscriber.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Factory.h" />
@@ -123,6 +124,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)Datum.inl" />
+    <None Include="$(MSBuildThisFileDirectory)Event.inl" />
     <None Include="$(MSBuildThisFileDirectory)Factory.inl" />
     <None Include="$(MSBuildThisFileDirectory)HashMap.inl" />
     <None Include="$(MSBuildThisFileDirectory)SList.inl" />

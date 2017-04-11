@@ -202,6 +202,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)EventPublisher.h">
       <Filter>Events</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Event.h">
+      <Filter>Events</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)SList.inl">
@@ -218,6 +221,9 @@
     </None>
     <None Include="$(MSBuildThisFileDirectory)Factory.inl">
       <Filter>Gameplay Framework</Filter>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Event.inl">
+      <Filter>Events</Filter>
     </None>
   </ItemGroup>
 </Project>
