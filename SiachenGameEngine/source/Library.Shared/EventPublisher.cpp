@@ -17,6 +17,24 @@ namespace SiachenGameEngine
 
 		}
 
+		EventPublisher::EventPublisher(EventPublisher&& rhs) : mTimeEnqueued(std::move(rhs.mTimeEnqueued)), mDelay(std::move(rhs.mDelay)), mSubscribers(rhs.mSubscribers), mDeleteOnPublish(rhs.mDeleteOnPublish)
+		{
+			rhs.mSubscribers = nullptr;
+		}
+
+		EventPublisher& EventPublisher::operator=(EventPublisher&& rhs)
+		{
+			if (this != &rhs)
+			{
+				mTimeEnqueued = std::move(rhs.mTimeEnqueued);
+				mDelay = std::move(rhs.mDelay);
+				mSubscribers = rhs.mSubscribers;
+				mDeleteOnPublish = rhs.mDeleteOnPublish;
+				rhs.mSubscribers = nullptr;
+			}
+			return *this;
+		}
+
 		void EventPublisher::SetTime(const TimePoint& enqueueTime, const MillisecondsDuration& delay /**  = std::chrono::milliseconds(0) **/)
 		{
 			mTimeEnqueued = enqueueTime;

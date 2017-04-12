@@ -16,7 +16,15 @@ namespace SiachenGameEngine
 			*/
 			PayloadT mMessage;
 		public:
-			// TODO Copy and move semantics
+			/**
+			* Copy constructor.
+			*/
+			Event(const Event& rhs) = default;
+			/**
+			* Move constructor.
+			*/
+			Event(Event&& rhs);
+			Event& operator=(Event&& rhs);
 
 			/**
 			* Constructor.

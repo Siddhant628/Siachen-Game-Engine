@@ -21,6 +21,11 @@ namespace SiachenGameEngine
 			mIntegerPointer = new int32_t(*(obj.mIntegerPointer));
 		}
 
+		Foo::Foo(Foo&& rhs) : mIntegerPointer(rhs.mIntegerPointer)
+		{
+			rhs.mIntegerPointer = nullptr;
+		}
+
 		Foo::~Foo()
 		{
 			delete mIntegerPointer;
@@ -29,6 +34,17 @@ namespace SiachenGameEngine
 		Foo& Foo::operator=(const Foo& rhs)
 		{
 			*mIntegerPointer = *(rhs.mIntegerPointer);
+			return *this;
+		}
+
+		Foo& Foo::operator=(Foo&& rhs)
+		{
+			if (this != &rhs)
+			{
+				delete mIntegerPointer;
+				mIntegerPointer = rhs.mIntegerPointer;
+				rhs.mIntegerPointer = nullptr;
+			}
 			return *this;
 		}
 

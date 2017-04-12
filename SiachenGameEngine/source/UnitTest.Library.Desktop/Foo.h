@@ -19,10 +19,14 @@ namespace SiachenGameEngine
 			Foo(int32_t);
 			// Copy constructor
 			Foo(const Foo&);
+			// Move constructor
+			Foo(Foo&& rhs);
 			// Destructor deallocates the assigned integer
 			virtual ~Foo();
 			// Assignment operator
 			Foo& operator=(const Foo&);
+			// Move Assignment operator
+			Foo& operator=(Foo&& rhs);
 			// Overloaded comparison operator
 			bool operator==(const Foo&) const;
 			// Get the integer value stored at mIntegerPointer

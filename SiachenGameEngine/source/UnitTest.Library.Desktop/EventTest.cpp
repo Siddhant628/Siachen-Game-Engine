@@ -273,6 +273,34 @@ namespace UnitTestLibraryDesktop
 			Event<Foo>::UnsubscribeAll();
 		}
 
+		TEST_METHOD(Event_MoveSemantics)
+		{
+			FooSubscriber fooSub1, fooSub2;
+			Event<Foo>::Subscribe(fooSub1);
+			Event<Foo>::Subscribe(fooSub2);
+
+			Foo foo1(1), foo2(2);
+			Event<Foo> event1(foo1, false);
+			Event<Foo> event2(foo2, false);
+			
+			EventQueue queue;
+
+			// Move constructor
+			Event<Foo> event3 = std::move(event1);
+			
+			queue.Send(event3);
+			Assert::IsTrue(fooSub1.mInteger == 1);
+
+			// Move assignment
+			Event<Foo> event4(foo1, false);
+			event4 = std::move(event2);
+			
+			queue.Send(event4);
+			Assert::IsTrue(fooSub1.mInteger == 2);
+
+			Event<Foo>::UnsubscribeAll();
+		}
+
 		TEST_METHOD(Event_RTTI)
 		{
 			Foo foo1(1);

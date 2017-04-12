@@ -43,9 +43,19 @@ namespace SiachenGameEngine
 			* @param deleteAfterPublish Set to true in order to delete the event object once the event has been published.
 			*/
 			EventPublisher(const Containers::Vector<EventSubscriber*>& subscribers, bool deleteAfterPublish);
-		public:
-			// TODO Copy and move semantics
-
+			/**
+			* Copy constructor.
+			*/
+			EventPublisher(const EventPublisher& rhs) = default;
+			/**
+			* Move constructor.
+			*/
+			EventPublisher(EventPublisher&& rhs);
+			/**
+			* Move assignment operator.
+			*/
+			EventPublisher& operator=(EventPublisher&& rhs);
+		public:			
 			/**
 			* Destructor.
 			*/
