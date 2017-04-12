@@ -2,6 +2,7 @@
 #include "CppUnitTest.h"
 
 #include "Event.h"
+#include "EventQueue.h"
 
 #include "Foo.h"
 #include "FooSubscriber.h"
@@ -152,6 +153,122 @@ namespace UnitTestLibraryDesktop
 			Assert::IsTrue(event2->DeleteAfterPublishing());
 
 			delete event2;
+		}
+
+		TEST_METHOD(EventQueue_Empty)
+		{
+			FooSubscriber fooSub1, fooSub2;
+			Event<Foo>::Subscribe(fooSub1);
+			Event<Foo>::Subscribe(fooSub2);
+
+			Foo foo1(1);
+			Event<Foo> event1(foo1, false);
+
+			EventQueue queue;
+			GameTime gameTime;
+
+			Assert::IsTrue(queue.IsEmpty());
+			queue.Enqueue(event1, gameTime, milliseconds(1000));
+			Assert::IsTrue(event1.Delay() == milliseconds(1000));
+			Assert::IsFalse(queue.IsEmpty());
+
+			Event<Foo>::UnsubscribeAll();
+		}
+
+		TEST_METHOD(EventQueue_Size)
+		{
+			FooSubscriber fooSub1, fooSub2;
+			Event<Foo>::Subscribe(fooSub1);
+			Event<Foo>::Subscribe(fooSub2);
+
+			Foo foo1(1);
+			Event<Foo> event1(foo1, false);
+
+			EventQueue queue;
+			GameTime gameTime;
+
+			Assert::IsTrue(queue.Size() == 0U);
+			queue.Enqueue(event1, gameTime, milliseconds(1000));
+			Assert::IsTrue(queue.Size() == 1U);
+
+			Event<Foo>::UnsubscribeAll();
+		}
+
+		TEST_METHOD(EventQueue_Send)
+		{
+			FooSubscriber fooSub1, fooSub2;
+			Event<Foo>::Subscribe(fooSub1);
+			Event<Foo>::Subscribe(fooSub2);
+
+			Foo foo1(1);
+			Event<Foo> event1(foo1, false);
+
+			Assert::AreEqual(0, fooSub1.mInteger);
+			Assert::AreEqual(0, fooSub2.mInteger);
+
+			EventQueue queue;
+			queue.Send(event1);
+
+			Assert::AreEqual(1, fooSub1.mInteger);
+			Assert::AreEqual(1, fooSub2.mInteger);
+
+			Event<Foo>::UnsubscribeAll();
+		}
+
+		TEST_METHOD(EventQueue_Clear)
+		{
+			FooSubscriber fooSub1, fooSub2;
+			Event<Foo>::Subscribe(fooSub1);
+			Event<Foo>::Subscribe(fooSub2);
+
+			Foo foo1(1);
+			Event<Foo> event1(foo1, false);
+			Foo foo2(2);
+			Event<Foo>* event2 = new Event<Foo>(foo2, true);
+
+			GameTime gameTime;
+			EventQueue queue;
+			queue.Enqueue(event1, gameTime, milliseconds(1000));
+			queue.Enqueue(*event2, gameTime, milliseconds(1000));
+
+			Event<Foo>::UnsubscribeAll();
+		}
+
+		TEST_METHOD(EventQueue_Update)
+		{
+			FooSubscriber fooSub1, fooSub2;
+			Event<Foo>::Subscribe(fooSub1);
+			Event<Foo>::Subscribe(fooSub2);
+
+			Foo foo1(1);
+			Event<Foo>* event1 = new Event<Foo>(foo1, true);
+			Foo foo2(2);
+			Event<Foo> event2(foo2, false);
+
+			GameTime gameTime;
+			EventQueue queue;
+
+			queue.Enqueue(*event1, gameTime, milliseconds(1000));
+			queue.Enqueue(event2, gameTime, milliseconds(2000));
+			
+			Assert::AreEqual(queue.Size(), 2U);
+			queue.Update(gameTime);
+			Assert::AreEqual(0, fooSub1.mInteger);
+			Assert::AreEqual(0, fooSub2.mInteger);
+			
+			gameTime.SetCurrentTime(gameTime.CurrentTime() + milliseconds(1000));
+			queue.Update(gameTime);
+			Assert::AreEqual(queue.Size(), 1U);
+			Assert::AreEqual(1, fooSub1.mInteger);
+			Assert::AreEqual(1, fooSub2.mInteger);
+
+			gameTime.SetCurrentTime(gameTime.CurrentTime() + milliseconds(1000));
+			queue.Update(gameTime);
+			Assert::AreEqual(queue.Size(), 0U);
+			Assert::AreEqual(2, fooSub1.mInteger);
+			Assert::AreEqual(2, fooSub2.mInteger);
+
+			Event<Foo>::UnsubscribeAll();
 		}
 
 	private:

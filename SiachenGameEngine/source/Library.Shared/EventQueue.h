@@ -23,7 +23,7 @@ namespace SiachenGameEngine
 			/**
 			* Destructor.
 			*/
-			~EventQueue() = default;
+			~EventQueue();
 			/**
 			* Enqueue an event which has to be handled.
 			* @param publisher The actual event object which has to be delivered.
@@ -36,15 +36,11 @@ namespace SiachenGameEngine
 			* @param The event object which has to be delivered.
 			*/
 			void Send(const EventPublisher& publisher) const;
-			// TODO Perform the deletion of the publisher based on the conditions
-			// TODO Sort and remove the expired events
-			
 			/**
 			* Publish any queued events which have expired.
 			* @param gameTime The game time object which is used to check which events have expired.
 			*/
 			void Update(const Library::GameTime& gameTime);
-			// TODO Implement
 			/**
 			* Clear the event queue.
 			*/

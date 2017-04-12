@@ -10,6 +10,11 @@ namespace SiachenGameEngine
 {
 	namespace Events
 	{
+		EventQueue::~EventQueue()
+		{
+			Clear();
+		}
+
 		void EventQueue::Enqueue(EventPublisher& publisher, const Library::GameTime& gameTime, const MillisecondsDuration& delay /** = std::chrono::milliseconds(0) **/)
 		{
 			publisher.SetTime(gameTime.CurrentTime(), delay);
@@ -38,7 +43,10 @@ namespace SiachenGameEngine
 					delete publisher;
 				}
 			}
-			mQueue.Remove(expiredIt, end);
+			if (expiredIt != end)
+			{
+				mQueue.Remove(expiredIt, end);
+			}
 		}
 
 		void EventQueue::Clear()
@@ -56,12 +64,12 @@ namespace SiachenGameEngine
 			}
 			mQueue.ClearAndFree();
 		}
-		
+
 		bool EventQueue::IsEmpty()
 		{
 			return mQueue.IsEmpty();
 		}
-		
+
 		std::uint32_t EventQueue::Size() const
 		{
 			return mQueue.Size();
