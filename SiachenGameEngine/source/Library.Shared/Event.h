@@ -14,7 +14,7 @@ namespace SiachenGameEngine
 			/**
 			* A pointer to the actual message object.
 			*/
-			const PayloadT* mMessage;
+			PayloadT mMessage;
 		public:
 			// TODO Copy and move semantics
 

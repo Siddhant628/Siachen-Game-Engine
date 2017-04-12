@@ -11,10 +11,7 @@ namespace SiachenGameEngine
 		Containers::Vector<EventSubscriber*> Event<PayloadT>::mSubscribers;
 
 		template <typename PayloadT>
-		RTTI_DEFINITIONS(Event<PayloadT>)
-
-		template <typename PayloadT>
-		Event<PayloadT>::Event(const PayloadT& messageObject, bool deleteAfterPublishing) : EventPublisher(mSubscribers, deleteAfterPublishing), mMessage(&messageObject)
+		Event<PayloadT>::Event(const PayloadT& messageObject, bool deleteAfterPublishing) : EventPublisher(mSubscribers, deleteAfterPublishing), mMessage(messageObject)
 		{
 
 		}
@@ -34,13 +31,16 @@ namespace SiachenGameEngine
 		template<typename PayloadT>
 		void Event<PayloadT>::UnsubscribeAll()
 		{
-			mSubscribers.Clear();
+			mSubscribers.ClearAndFree();
 		}
 
 		template<typename PayloadT>
 		const PayloadT& Event<PayloadT>::Message() const
 		{
-			return *mMessage;
+			return mMessage;
 		}
+
+		template <typename PayloadT>
+		RTTI_DEFINITIONS(Event<PayloadT>)
 	}
 }

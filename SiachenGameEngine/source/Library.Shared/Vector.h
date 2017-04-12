@@ -133,7 +133,7 @@ namespace SiachenGameEngine
 			/**
 			* An Iterator for the Vector container, each object is associated with a specific index in a specific vector.
 			*/
-			class Iterator
+			class Iterator : public  std::iterator<std::forward_iterator_tag, T>
 			{
 				friend class Vector;
 			public:

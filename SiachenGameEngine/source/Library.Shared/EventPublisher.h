@@ -20,12 +20,10 @@ namespace SiachenGameEngine
 			typedef std::chrono::high_resolution_clock::time_point TimePoint;
 			typedef std::chrono::milliseconds MillisecondsDuration;
 			
-			// TODO Check default constructed values
 			/**
 			* The time at which this event was enqueued.
 			*/
 			TimePoint mTimeEnqueued;
-			// TODO Check default constructed values
 			/**
 			* The time after being enqueued after which this event would expire.
 			*/
@@ -38,10 +36,7 @@ namespace SiachenGameEngine
 			* List of subscribers for this event.
 			*/
 			const Containers::Vector<EventSubscriber*>* mSubscribers;
-
 		protected:
-			// TODO Copy and move semantics
-
 			/**
 			* Constructor.
 			* @param subscribers A list of subscribers for this event.
@@ -49,6 +44,8 @@ namespace SiachenGameEngine
 			*/
 			EventPublisher(const Containers::Vector<EventSubscriber*>& subscribers, bool deleteAfterPublish);
 		public:
+			// TODO Copy and move semantics
+
 			/**
 			* Destructor.
 			*/

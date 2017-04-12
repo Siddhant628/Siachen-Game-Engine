@@ -2,6 +2,8 @@
 #include "EventQueue.h"
 #include "Vector.h"
 
+#include <algorithm>
+
 using namespace SiachenGameEngine::Containers;
 
 namespace SiachenGameEngine
@@ -23,20 +25,36 @@ namespace SiachenGameEngine
 		{
 			Vector<EventPublisher*>::Iterator it = mQueue.begin();
 			Vector<EventPublisher*>::Iterator end = mQueue.end();
+			Vector<EventPublisher*>::Iterator expiredIt;
 
-			for (; it != end; ++it)
+			expiredIt = std::partition(it, end, [&gameTime](EventPublisher* publisher) {return !publisher->IsExpired(gameTime.CurrentTime()); });
+
+			for (it = expiredIt; it != end; ++it)
 			{
-				EventPublisher* publisher = (*it);
-				if (publisher->IsExpired(gameTime.CurrentTime()))
+				EventPublisher* publisher = *it;
+				publisher->Deliver();
+				if (publisher->DeleteAfterPublishing())
 				{
-					publisher->Deliver();
+					delete publisher;
 				}
 			}
+			mQueue.Remove(expiredIt, end);
 		}
 
 		void EventQueue::Clear()
 		{
+			Vector<EventPublisher*>::Iterator it = mQueue.begin();
+			Vector<EventPublisher*>::Iterator end = mQueue.end();
 
+			for (; it != end; ++it)
+			{
+				EventPublisher* publisher = *it;
+				if (publisher->DeleteAfterPublishing())
+				{
+					delete publisher;
+				}
+			}
+			mQueue.ClearAndFree();
 		}
 		
 		bool EventQueue::IsEmpty()

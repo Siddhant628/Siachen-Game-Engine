@@ -45,7 +45,6 @@ namespace SiachenGameEngine
 			*/
 			void Update(const Library::GameTime& gameTime);
 			// TODO Implement
-
 			/**
 			* Clear the event queue.
 			*/

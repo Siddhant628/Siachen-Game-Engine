@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "FooSubscriber.h"
 #include "Foo.h"
+#include "Event.h"
 
 namespace SiachenGameEngine
 {
@@ -13,10 +14,10 @@ namespace SiachenGameEngine
 
 		void FooSubscriber::Notify(const Events::EventPublisher& eventObject)
 		{
-			Foo* object = eventObject.As<Foo>();
+			Events::Event<Foo>* object = eventObject.As<Events::Event<Foo>>();
 			if (object)
 			{
-				mInteger = object->GetValue();
+				mInteger = object->Message().GetValue();
 			}
 		}
 	}

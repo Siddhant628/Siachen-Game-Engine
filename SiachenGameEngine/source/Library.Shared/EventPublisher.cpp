@@ -12,10 +12,9 @@ namespace SiachenGameEngine
 {
 	namespace Events
 	{
-		EventPublisher::EventPublisher(const Vector<EventSubscriber*>& subscribers, bool deleteAfterPublish) : mDeleteOnPublish(false), mSubscribers(nullptr)
+		EventPublisher::EventPublisher(const Vector<EventSubscriber*>& subscribers, bool deleteAfterPublish) : mDeleteOnPublish(deleteAfterPublish), mSubscribers(&subscribers), mDelay(std::chrono::milliseconds(0))
 		{
-			mSubscribers = &subscribers;
-			mDeleteOnPublish = deleteAfterPublish;
+
 		}
 
 		void EventPublisher::SetTime(const TimePoint& enqueueTime, const MillisecondsDuration& delay /**  = std::chrono::milliseconds(0) **/)
@@ -36,7 +35,7 @@ namespace SiachenGameEngine
 
 		bool EventPublisher::IsExpired(const TimePoint& currentTime) const
 		{
-			return (currentTime > (mTimeEnqueued + mDelay));
+			return (currentTime >= (mTimeEnqueued + mDelay));
 		}
 
 		void EventPublisher::Deliver() const
