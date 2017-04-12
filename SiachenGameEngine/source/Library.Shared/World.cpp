@@ -79,6 +79,9 @@ namespace SiachenGameEngine
 		void World::Update(WorldState& worldState)
 		{
 			worldState.mWorld = this;
+			// Update the events for the world.
+			mWorldEventQueue.Update(worldState.mGameTime);
+
 			// Call update on contained actions
 			Datum& actionDatum = *mActionDatum;
 			std::uint32_t size = actionDatum.Size();

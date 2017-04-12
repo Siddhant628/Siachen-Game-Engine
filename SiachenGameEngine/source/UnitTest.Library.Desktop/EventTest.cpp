@@ -14,6 +14,8 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace SiachenGameEngine::Events;
 using namespace SiachenGameEngine::HelperClasses;
 using namespace SiachenGameEngine::Library;
+using namespace SiachenGameEngine::GameplayFramework;
+
 using namespace std::chrono;
 
 namespace UnitTestLibraryDesktop
@@ -269,6 +271,28 @@ namespace UnitTestLibraryDesktop
 			Assert::AreEqual(2, fooSub2.mInteger);
 
 			Event<Foo>::UnsubscribeAll();
+		}
+
+		TEST_METHOD(Event_RTTI)
+		{
+			Foo foo1(1);
+			RTTI* event1 = new Event<Foo>(foo1, false);
+			RTTI* event2 = new Event<int>(1, false);
+
+			Assert::IsTrue(event1->Is(Event<Foo>::TypeIdClass()));
+			Assert::IsFalse(event2->Is(Event<Foo>::TypeIdClass()));
+			
+			Assert::IsTrue(event1->Is("Event"));
+			Assert::IsFalse(foo1.Is("Event"));
+
+			Assert::IsNotNull(event1->As<Event<Foo>>());
+			Assert::IsNull(event2->As<Event<Foo>>());
+
+			Assert::IsNotNull(event1->QueryInterface(Event<Foo>::TypeIdClass()));
+			Assert::IsNull(event2->QueryInterface(Event<Foo>::TypeIdClass()));
+
+			delete event1;
+			delete event2;
 		}
 
 	private:

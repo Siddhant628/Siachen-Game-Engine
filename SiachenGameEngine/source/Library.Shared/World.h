@@ -2,6 +2,7 @@
 #include "Attributed.h"
 #include "Sector.h"
 #include "Vector.h"
+#include "EventQueue.h"
 
 namespace SiachenGameEngine
 {
@@ -30,6 +31,10 @@ namespace SiachenGameEngine
 			* Actions queued for deletion at the end of update.
 			*/
 			Containers::Vector<Action*> mActionDeleteQueue;
+			/**
+			* A queue of events for the world.
+			*/
+			Events::EventQueue mWorldEventQueue;
 			/**
 			* Delete all the actions waiting in the queue for deletion.
 			*/
