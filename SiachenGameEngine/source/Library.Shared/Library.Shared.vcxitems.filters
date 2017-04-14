@@ -103,6 +103,12 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)EventQueue.cpp">
       <Filter>Events</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)EventMessageAttributed.cpp">
+      <Filter>Events</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ReactionAttributed.cpp">
+      <Filter>Gameplay Framework</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)SList.h">
@@ -210,6 +216,15 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)EventQueue.h">
       <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Reaction.h">
+      <Filter>Gameplay Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)EventMessageAttributed.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ReactionAttributed.h">
+      <Filter>Gameplay Framework</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

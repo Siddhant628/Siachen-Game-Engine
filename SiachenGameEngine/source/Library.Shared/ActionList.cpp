@@ -40,7 +40,7 @@ namespace SiachenGameEngine
 
 		Datum& ActionList::Actions() const
 		{
-			//assert(mActionDatum == Find(sActionList));
+			assert(mActionDatum == Find(sActionList));
 			return *mActionDatum;
 		}
 
