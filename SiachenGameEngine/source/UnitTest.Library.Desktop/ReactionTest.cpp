@@ -11,6 +11,7 @@
 #include "XmlParseHelperEvents.h"
 #include "XmlParseHelperWorldPrimitives.h"
 #include "SampleXmlParseHelper.h"
+#include "Foo.h"
 
 #include "World.h"
 #include "Event.h"
@@ -209,7 +210,81 @@ namespace UnitTestLibraryDesktop
 
 		TEST_METHOD(Reaction_RTTI)
 		{
+			// Event<EventMessageAttributed>
+			EventMessageAttributed message;
+			RTTI* event1 = new Event<EventMessageAttributed>(message, false);
+			RTTI* event2 = new Event<int>(1, false);
 
+			Assert::IsTrue(event1->Is(Event<EventMessageAttributed>::TypeIdClass()));
+			Assert::IsFalse(event2->Is(Event<EventMessageAttributed>::TypeIdClass()));
+
+			Assert::IsTrue(event1->Is("Event"));
+			Assert::IsFalse(message.Is("Event"));
+
+			Assert::IsNotNull(event1->As<Event<EventMessageAttributed>>());
+			Assert::IsNull(event2->As<Event<EventMessageAttributed>>());
+
+			Assert::IsNotNull(event1->QueryInterface(Event<EventMessageAttributed>::TypeIdClass()));
+			Assert::IsNull(event2->QueryInterface(Event<EventMessageAttributed>::TypeIdClass()));
+
+			delete event1;
+			delete event2;
+
+			// EventMessageAttributed
+			RTTI* eventMessageAttributed = new EventMessageAttributed();
+			RTTI* foo = new Foo();
+
+			Assert::IsTrue(eventMessageAttributed->Is(EventMessageAttributed::TypeIdClass()));
+			Assert::IsFalse(foo->Is(EventMessageAttributed::TypeIdClass()));
+
+			Assert::IsTrue(eventMessageAttributed->Is("EventMessageAttributed"));
+			Assert::IsFalse(foo->Is("EventMessageAttributed"));
+
+			Assert::IsNotNull(eventMessageAttributed->As<EventMessageAttributed>());
+			Assert::IsNull(foo->As<EventMessageAttributed>());
+
+			Assert::IsNotNull(eventMessageAttributed->QueryInterface(EventMessageAttributed::TypeIdClass()));
+			Assert::IsNull(foo->QueryInterface(EventMessageAttributed::TypeIdClass()));
+
+			delete eventMessageAttributed;
+			
+
+			// ReactionAttributed
+			RTTI* reactionAttributed = new ReactionAttributed;
+
+			Assert::IsTrue(reactionAttributed->Is(ReactionAttributed::TypeIdClass()));
+			Assert::IsFalse(foo->Is(ReactionAttributed::TypeIdClass()));
+
+			Assert::IsTrue(reactionAttributed->Is("ReactionAttributed"));
+			Assert::IsFalse(foo->Is("ReactionAttributed"));
+
+			Assert::IsNotNull(reactionAttributed->As<ReactionAttributed>());
+			Assert::IsNull(foo->As<ReactionAttributed>());
+
+			Assert::IsNotNull(reactionAttributed->QueryInterface(ReactionAttributed::TypeIdClass()));
+			Assert::IsNull(foo->QueryInterface(ReactionAttributed::TypeIdClass()));
+
+			delete reactionAttributed;
+			
+			// ActionEvent
+			RTTI* actionEvent = new ActionEvent;
+
+			Assert::IsTrue(actionEvent->Is(ActionEvent::TypeIdClass()));
+			Assert::IsFalse(foo->Is(ActionEvent::TypeIdClass()));
+
+			Assert::IsTrue(actionEvent->Is("ActionEvent"));
+			Assert::IsFalse(foo->Is("ActionEvent"));
+
+			Assert::IsNotNull(actionEvent->As<ActionEvent>());
+			Assert::IsNull(foo->As<ActionEvent>());
+
+			Assert::IsNotNull(actionEvent->QueryInterface(ActionEvent::TypeIdClass()));
+			Assert::IsNull(foo->QueryInterface(ActionEvent::TypeIdClass()));
+
+			delete actionEvent;
+
+			delete foo;
+			Event<EventMessageAttributed>::UnsubscribeAll();
 		}
 
 	private:

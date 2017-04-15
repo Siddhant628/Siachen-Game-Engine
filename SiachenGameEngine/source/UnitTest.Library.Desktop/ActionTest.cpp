@@ -12,6 +12,7 @@
 #include "EntityFoo.h"
 #include "Factory.h"
 #include "RTTI.h"
+#include "Foo.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -228,6 +229,97 @@ namespace UnitTestLibraryDesktop
 
 			Assert::AreEqual(world.Actions().Size(), 1U);
 			Assert::IsTrue(world.Actions().Get<Scope*>(0) == destroy);
+		}
+
+		TEST_METHOD(Action_RTTI)
+		{
+			// ActionList
+			RTTI* actionList = new ActionList;
+			RTTI* foo = new Foo;
+
+			Assert::IsTrue(actionList->Is(ActionList::TypeIdClass()));
+			Assert::IsFalse(foo->Is(ActionList::TypeIdClass()));
+
+			Assert::IsTrue(actionList->Is("ActionList"));
+			Assert::IsFalse(foo->Is("ActionList"));
+
+			Assert::IsNotNull(actionList->As<ActionList>());
+			Assert::IsNull(foo->As<ActionList>());
+
+			Assert::IsNotNull(actionList->QueryInterface(ActionList::TypeIdClass()));
+			Assert::IsNull(foo->QueryInterface(ActionList::TypeIdClass()));
+
+			delete actionList;
+
+			// ActionIf
+			RTTI* actionIf = new ActionIf;
+
+			Assert::IsTrue(actionIf->Is(ActionIf::TypeIdClass()));
+			Assert::IsFalse(foo->Is(ActionIf::TypeIdClass()));
+
+			Assert::IsTrue(actionIf->Is("ActionIf"));
+			Assert::IsFalse(foo->Is("ActionIf"));
+
+			Assert::IsNotNull(actionIf->As<ActionIf>());
+			Assert::IsNull(foo->As<ActionIf>());
+
+			Assert::IsNotNull(actionIf->QueryInterface(ActionIf::TypeIdClass()));
+			Assert::IsNull(foo->QueryInterface(ActionIf::TypeIdClass()));
+
+			delete actionIf;
+
+			// ActionCreateAction
+			RTTI* actionCreateAction = new ActionCreateAction;
+
+			Assert::IsTrue(actionCreateAction->Is(ActionCreateAction::TypeIdClass()));
+			Assert::IsFalse(foo->Is(ActionCreateAction::TypeIdClass()));
+
+			Assert::IsTrue(actionCreateAction->Is("ActionCreateAction"));
+			Assert::IsFalse(foo->Is("ActionCreateAction"));
+
+			Assert::IsNotNull(actionCreateAction->As<ActionCreateAction>());
+			Assert::IsNull(foo->As<ActionCreateAction>());
+
+			Assert::IsNotNull(actionCreateAction->QueryInterface(ActionCreateAction::TypeIdClass()));
+			Assert::IsNull(foo->QueryInterface(ActionCreateAction::TypeIdClass()));
+
+			delete actionCreateAction;
+
+			// ActionDestroyAction
+			RTTI* actionDestroyAction = new ActionDestroyAction;
+
+			Assert::IsTrue(actionDestroyAction->Is(ActionDestroyAction::TypeIdClass()));
+			Assert::IsFalse(foo->Is(ActionDestroyAction::TypeIdClass()));
+
+			Assert::IsTrue(actionDestroyAction->Is("ActionDestroyAction"));
+			Assert::IsFalse(foo->Is("ActionDestroyAction"));
+
+			Assert::IsNotNull(actionDestroyAction->As<ActionDestroyAction>());
+			Assert::IsNull(foo->As<ActionDestroyAction>());
+
+			Assert::IsNotNull(actionDestroyAction->QueryInterface(ActionDestroyAction::TypeIdClass()));
+			Assert::IsNull(foo->QueryInterface(ActionDestroyAction::TypeIdClass()));
+
+			delete actionDestroyAction;
+
+			// ActionFoo
+			RTTI* actionFoo = new ActionFoo;
+
+			Assert::IsTrue(actionFoo->Is(ActionFoo::TypeIdClass()));
+			Assert::IsFalse(foo->Is(ActionFoo::TypeIdClass()));
+
+			Assert::IsTrue(actionFoo->Is("ActionFoo"));
+			Assert::IsFalse(foo->Is("ActionFoo"));
+
+			Assert::IsNotNull(actionFoo->As<ActionFoo>());
+			Assert::IsNull(foo->As<ActionFoo>());
+
+			Assert::IsNotNull(actionFoo->QueryInterface(ActionFoo::TypeIdClass()));
+			Assert::IsNull(foo->QueryInterface(ActionFoo::TypeIdClass()));
+
+			delete actionFoo;
+
+			delete foo;
 		}
 
 	private:
