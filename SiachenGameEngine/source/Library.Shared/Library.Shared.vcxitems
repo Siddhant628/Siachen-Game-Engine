@@ -43,6 +43,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)WorldState.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)XmlParseHelperActionIf.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)XmlParseHelperActionObjects.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)XmlParseHelperEvents.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)XmlParseHelperMath.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)XmlParseHelperPrimitives.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)XmlParseHelperWorld.h" />
@@ -122,6 +123,9 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)XmlParseHelperActionObjects.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)XmlParseHelperEvents.cpp">
+      <PrecompiledHeader>Use</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)XmlParseHelperMath.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)XmlParseHelperPrimitives.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)XmlParseHelperWorld.cpp">

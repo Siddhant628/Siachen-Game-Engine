@@ -115,6 +115,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Reaction.cpp">
       <Filter>Gameplay Framework</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)XmlParseHelperEvents.cpp">
+      <Filter>Parsers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)SList.h">
@@ -234,6 +237,9 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ActionEvent.h">
       <Filter>Gameplay Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)XmlParseHelperEvents.h">
+      <Filter>Parsers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

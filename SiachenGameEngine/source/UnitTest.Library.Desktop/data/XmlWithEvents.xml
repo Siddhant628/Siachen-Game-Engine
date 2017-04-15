@@ -1,0 +1,8 @@
+<world name = "World1">
+	<actionevent name = "firstAction" subtype = "subtype1" delay = "5000">
+		<integer name = "integerData" value = "30"/>
+	</actionevent>
+	<sector name = "Sector1">
+	</sector>
+	<reaction name = "firstReaction" subtypes = "subtype1" class = "ReactionAttributed"/>
+</world>
