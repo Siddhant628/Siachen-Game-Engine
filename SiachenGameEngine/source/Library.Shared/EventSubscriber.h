@@ -11,8 +11,11 @@ namespace SiachenGameEngine
 		class EventSubscriber
 		{
 		public:
-			virtual void Notify(const EventPublisher& eventObject) = 0;
 			virtual ~EventSubscriber() = default;
+			/**
+			* The receiver of the event which takes the event object as a parameter.
+			*/
+			virtual void Notify(const EventPublisher& eventObject) = 0;
 		};
 	}
 }

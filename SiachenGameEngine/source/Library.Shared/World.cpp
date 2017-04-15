@@ -129,5 +129,9 @@ namespace SiachenGameEngine
 		{
 			mActionDeleteQueue.PushBack(&action);
 		}
+		Events::EventQueue& World::GetQueue()
+		{
+			return mWorldEventQueue;
+		}
 	}
 }

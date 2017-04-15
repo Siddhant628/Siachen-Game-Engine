@@ -109,6 +109,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ReactionAttributed.cpp">
       <Filter>Gameplay Framework</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ActionEvent.cpp">
+      <Filter>Gameplay Framework</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)SList.h">
@@ -224,6 +227,9 @@
       <Filter>Events</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ReactionAttributed.h">
+      <Filter>Gameplay Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ActionEvent.h">
       <Filter>Gameplay Framework</Filter>
     </ClInclude>
   </ItemGroup>

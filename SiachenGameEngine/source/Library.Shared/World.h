@@ -105,6 +105,10 @@ namespace SiachenGameEngine
 			* @param action The action which has to be deleted.
 			*/
 			void AddToActionDestroyQueue(Action& action);
+			/**
+			* Get the event queue contained in the world.
+			*/
+			Events::EventQueue& GetQueue();
 		private:
 			const static std::string sActions;
 		};
