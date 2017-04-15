@@ -35,7 +35,10 @@ namespace SiachenGameEngine
 				action->Update(worldState);
 			}
 
-			worldState.mAction = GetParent()->As<Action>();
+			if (GetParent() != nullptr)
+			{
+				worldState.mAction = GetParent()->As<Action>();
+			}
 		}
 
 		Datum& ActionList::Actions() const

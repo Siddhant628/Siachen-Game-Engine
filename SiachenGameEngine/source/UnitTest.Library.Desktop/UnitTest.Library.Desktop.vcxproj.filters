@@ -120,6 +120,9 @@
     <ClCompile Include="FooSubscriber.cpp">
       <Filter>Helper Classes</Filter>
     </ClCompile>
+    <ClCompile Include="ReactionTest.cpp">
+      <Filter>Test Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Helper Classes">

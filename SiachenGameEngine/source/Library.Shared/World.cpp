@@ -79,6 +79,7 @@ namespace SiachenGameEngine
 		void World::Update(WorldState& worldState)
 		{
 			worldState.mWorld = this;
+			mWorldState = &worldState;
 			// Update the events for the world.
 			mWorldEventQueue.Update(worldState.mGameTime);
 
@@ -129,9 +130,15 @@ namespace SiachenGameEngine
 		{
 			mActionDeleteQueue.PushBack(&action);
 		}
+
 		Events::EventQueue& World::GetQueue()
 		{
 			return mWorldEventQueue;
+		}
+
+		WorldState& World::GetWorldState()
+		{
+			return *mWorldState;
 		}
 	}
 }

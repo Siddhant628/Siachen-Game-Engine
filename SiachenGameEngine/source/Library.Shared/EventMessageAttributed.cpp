@@ -10,7 +10,7 @@ namespace SiachenGameEngine
 			AddExternalAttribute("subtype", &mSubtype, 1U);
 		}
 
-		EventMessageAttributed::EventMessageAttributed()
+		EventMessageAttributed::EventMessageAttributed() : mWorld(nullptr)
 		{
 			Populate();
 			UpdatePrescribedAttributeInfo();
@@ -33,6 +33,10 @@ namespace SiachenGameEngine
 
 		const GameplayFramework::World& EventMessageAttributed::GetWorld() const
 		{
+			if (mWorld == nullptr)
+			{
+				throw std::runtime_error("A world hasn't been assigned to this message.");
+			}
 			return *mWorld;
 		}
 	

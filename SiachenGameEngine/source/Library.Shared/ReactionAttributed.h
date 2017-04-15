@@ -7,7 +7,7 @@ namespace SiachenGameEngine
 {
 	namespace GameplayFramework
 	{
-		class ReactionAttributed : public Reaction
+		class ReactionAttributed final : public Reaction
 		{
 			RTTI_DECLARATIONS(ReactionAttributed, Reaction)
 		private:
@@ -30,8 +30,6 @@ namespace SiachenGameEngine
 			*/
 			virtual void Populate() override;
 		public:
-			// TODO Object registered to event in constructor
-
 			/**
 			* Populate the scope with prescribed attributes.
 			*/
@@ -41,7 +39,6 @@ namespace SiachenGameEngine
 			*/
 			~ReactionAttributed();
 			// TODO Make a copy of scope types?
-			// TODO Call the update method
 			/**
 			* The receiver of the event which takes the event object as a parameter.
 			*/

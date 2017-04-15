@@ -18,8 +18,6 @@ namespace SiachenGameEngine
 		public:
 
 		};
-
-		RTTI_DEFINITIONS(Reaction)
 	}
 }
 

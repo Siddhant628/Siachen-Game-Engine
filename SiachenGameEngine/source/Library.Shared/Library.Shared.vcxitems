@@ -102,6 +102,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Reaction.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ReactionAttributed.cpp">
       <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>

@@ -112,6 +112,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ActionEvent.cpp">
       <Filter>Gameplay Framework</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Reaction.cpp">
+      <Filter>Gameplay Framework</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)SList.h">

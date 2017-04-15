@@ -3,6 +3,7 @@
 #include "Sector.h"
 #include "Vector.h"
 #include "EventQueue.h"
+#include "WorldState.h"
 
 namespace SiachenGameEngine
 {
@@ -35,6 +36,10 @@ namespace SiachenGameEngine
 			* A queue of events for the world.
 			*/
 			Events::EventQueue mWorldEventQueue;
+			/**
+			* A pointer to the current world state.
+			*/
+			WorldState* mWorldState;
 			/**
 			* Delete all the actions waiting in the queue for deletion.
 			*/
@@ -107,8 +112,14 @@ namespace SiachenGameEngine
 			void AddToActionDestroyQueue(Action& action);
 			/**
 			* Get the event queue contained in the world.
+			* @return A reference the event queue contained in this world.
 			*/
 			Events::EventQueue& GetQueue();
+			/**
+			* Get a pointer to the world state object.
+			* @return A pointer to the world state object.
+			*/
+			WorldState& GetWorldState();
 		private:
 			const static std::string sActions;
 		};

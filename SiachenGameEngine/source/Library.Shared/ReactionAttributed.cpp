@@ -34,7 +34,7 @@ namespace SiachenGameEngine
 			mSubtypes = &AddInternalAttribute(sSubtypes, DatumType::StringType);
 		}
 
-		ReactionAttributed::ReactionAttributed()
+		ReactionAttributed::ReactionAttributed() : mSubtypes(nullptr)
 		{
 			Populate();
 			UpdatePrescribedAttributeInfo();
@@ -71,14 +71,10 @@ namespace SiachenGameEngine
 						{
 							destination = *source;
 						}
-						else
-						{
-							// Call destructors on all the scopes.
-							// Create copies of all the scopes and push them into this datum.
-						}
 					}
 				}
-				//Update(attributedMessage.GetWorld().);
+				World* world = const_cast<World*>(&attributedMessage.GetWorld());
+				Update(world->GetWorldState());
 			}
 		}
 
