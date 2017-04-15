@@ -5,6 +5,13 @@
 #include "ReactionAttributed.h"
 #include "ActionEvent.h"
 
+#include "XmlParseMaster.h"
+#include "XmlSharedDataWorld.h"
+#include "XmlParseHelperWorld.h"
+#include "XmlParseHelperEvents.h"
+#include "XmlParseHelperWorldPrimitives.h"
+#include "SampleXmlParseHelper.h"
+
 #include "World.h"
 #include "Event.h"
 
@@ -14,6 +21,8 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 using namespace SiachenGameEngine::Events;
 using namespace SiachenGameEngine::GameplayFramework;
+using namespace SiachenGameEngine::Parsers;
+using namespace SiachenGameEngine::HelperClasses;
 
 namespace UnitTestLibraryDesktop
 {
@@ -23,6 +32,7 @@ namespace UnitTestLibraryDesktop
 		TEST_CLASS_INITIALIZE(Reaction_Initialize)
 		{
 			World world("World");
+			Sector sector;
 
 			EventMessageAttributed message;
 			ActionList action;
@@ -124,6 +134,82 @@ namespace UnitTestLibraryDesktop
 			Assert::AreEqual(reaction.Append("AuxInt").Get<std::int32_t>(), 10);
 
 			Event<EventMessageAttributed>::UnsubscribeAll();
+		}
+
+		TEST_METHOD(Reaction_Parsing)
+		{
+			XmlSharedDataWorld sharedData;
+			XmlParseMaster parseMaster(sharedData);
+
+			XmlParseHelperWorld worldHelper;
+			XmlParseHelperEvents eventsHelper;
+			XmlParseHelperWorldPrimitives xmlParseHelperWorldPrimitives;
+			parseMaster.AddHelper(worldHelper);
+			parseMaster.AddHelper(eventsHelper);
+			parseMaster.AddHelper(xmlParseHelperWorldPrimitives);
+
+			ReactionAttributedFactory reactionAttributedFactory;
+			ActionEventFactory actionEventFactory;
+
+			parseMaster.ParseFromFile("XmlWithEvents.xml");
+			World* world = static_cast<World*>(sharedData.mCurrentScope);
+			
+			WorldState worldState;
+			world->Update(worldState);
+
+			Assert::IsNull(static_cast<ReactionAttributed*>(world->Append("firstReaction").Get<Scope*>())->Find("integerData"));
+			worldState.mGameTime.SetCurrentTime(worldState.mGameTime.CurrentTime() + std::chrono::milliseconds(5000));
+			world->Update(worldState);
+			Assert::IsNotNull(static_cast<ReactionAttributed*>(world->Append("firstReaction").Get<Scope*>())->Find("integerData"));
+			Assert::AreEqual(static_cast<ReactionAttributed*>(world->Append("firstReaction").Get<Scope*>())->Append("integerData").Get<std::int32_t>(), 30);
+
+			Event<EventMessageAttributed>::UnsubscribeAll();
+		}
+
+		TEST_METHOD(Reaction_ParsingClone)
+		{
+			XmlSharedDataWorld sharedData;
+			XmlParseMaster parseMaster(sharedData);
+
+			XmlParseHelperWorld worldHelper;
+			XmlParseHelperEvents eventsHelper;
+			XmlParseHelperWorldPrimitives xmlParseHelperWorldPrimitives;
+			parseMaster.AddHelper(worldHelper);
+			parseMaster.AddHelper(eventsHelper);
+			parseMaster.AddHelper(xmlParseHelperWorldPrimitives);
+
+			ReactionAttributedFactory reactionAttributedFactory;
+			ActionEventFactory actionEventFactory;
+
+			XmlParseMaster* clonedParseMaster = parseMaster.Clone();
+			clonedParseMaster->ParseFromFile("XmlWithEvents.xml");
+			World* world = static_cast<World*>(static_cast<XmlSharedDataWorld*>(clonedParseMaster->GetSharedData())->mCurrentScope);
+
+			WorldState worldState;
+			world->Update(worldState);
+
+			Assert::IsNull(static_cast<ReactionAttributed*>(world->Append("firstReaction").Get<Scope*>())->Find("integerData"));
+			worldState.mGameTime.SetCurrentTime(worldState.mGameTime.CurrentTime() + std::chrono::milliseconds(5000));
+			world->Update(worldState);
+			Assert::IsNotNull(static_cast<ReactionAttributed*>(world->Append("firstReaction").Get<Scope*>())->Find("integerData"));
+			Assert::AreEqual(static_cast<ReactionAttributed*>(world->Append("firstReaction").Get<Scope*>())->Append("integerData").Get<std::int32_t>(), 30);
+
+			Event<EventMessageAttributed>::UnsubscribeAll();
+			delete clonedParseMaster;
+		}
+
+		TEST_METHOD(Reaction_HelperInitialize)
+		{
+			SampleXmlSharedData sharedData;
+			XmlParseHelperEvents eventsHelper;
+
+			auto expression1 = [&eventsHelper, &sharedData] {eventsHelper.Initialize(sharedData); };
+			Assert::ExpectException<std::runtime_error>(expression1);
+		}
+
+		TEST_METHOD(Reaction_RTTI)
+		{
+
 		}
 
 	private:

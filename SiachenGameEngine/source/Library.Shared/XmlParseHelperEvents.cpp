@@ -44,7 +44,6 @@ namespace SiachenGameEngine
 
 				event->Append("subtype").Set(attributeHashmap["subtype"]);
 				event->Append("delay").Set(std::stoi(attributeHashmap["delay"]));
-				event->SetName(attributeHashmap["name"]);
 				return true;
 			}
 			else if (elementName == "reaction")
@@ -56,9 +55,9 @@ namespace SiachenGameEngine
 				mSharedData->mCurrentScope->Adopt(*reaction, attributeHashmap["name"]);
 				mSharedData->mCurrentScope = reaction;
 				
-				reaction->Append("subtypes").PushBack(attributeHashmap["subtype"]);
+				reaction->Append("subtypes").PushBack(attributeHashmap["subtypes"]);
 				reaction->SetName(attributeHashmap["name"]);
-
+				return true;
 			}
 			return false;
 		}
