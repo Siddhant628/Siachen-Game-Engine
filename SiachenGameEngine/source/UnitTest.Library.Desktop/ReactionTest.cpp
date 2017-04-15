@@ -163,6 +163,7 @@ namespace UnitTestLibraryDesktop
 			world->Update(worldState);
 			Assert::IsNotNull(static_cast<ReactionAttributed*>(world->Append("firstReaction").Get<Scope*>())->Find("integerData"));
 			Assert::AreEqual(static_cast<ReactionAttributed*>(world->Append("firstReaction").Get<Scope*>())->Append("integerData").Get<std::int32_t>(), 30);
+			Assert::AreEqual(static_cast<ReactionAttributed*>(world->Append("firstReaction").Get<Scope*>())->Append("integerData2").Get<std::int32_t>(), 60);
 
 			Event<EventMessageAttributed>::UnsubscribeAll();
 		}
