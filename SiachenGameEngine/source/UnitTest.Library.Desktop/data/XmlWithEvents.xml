@@ -6,6 +6,16 @@
 		<actionevent name = "secondAction" subtype = "subtype1" delay = "4000">
 			<integer name = "integerData2" value = "60"/>
 		</actionevent>
+		<entity class = "EntityFoo" name = "firstEntity">
+			<actionevent name = "thirdAction" subtype = "subtype1" delay = "4000">
+				<integer name = "integerData3" value = "90"/>
+			</actionevent>
+		</entity>
 	</sector>
+	<action class = "ActionList" name = "list">
+		<actionevent name = "fourthAction" subtype = "subtype1" delay = "4000">
+			<integer name = "integerData4" value = "120"/>
+		</actionevent>
+	</action>
 	<reaction name = "firstReaction" subtypes = "subtype1" class = "ReactionAttributed"/>
 </world>

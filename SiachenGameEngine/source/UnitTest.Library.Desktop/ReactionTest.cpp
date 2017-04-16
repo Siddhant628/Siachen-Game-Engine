@@ -11,6 +11,8 @@
 #include "XmlParseHelperEvents.h"
 #include "XmlParseHelperWorldPrimitives.h"
 #include "SampleXmlParseHelper.h"
+
+#include "EntityFoo.h"
 #include "Foo.h"
 
 #include "World.h"
@@ -34,6 +36,9 @@ namespace UnitTestLibraryDesktop
 		{
 			World world("World");
 			Sector sector;
+			Entity entity;
+
+			EntityFoo entityFoo;
 
 			EventMessageAttributed message;
 			ActionList action;
@@ -151,6 +156,8 @@ namespace UnitTestLibraryDesktop
 
 			ReactionAttributedFactory reactionAttributedFactory;
 			ActionEventFactory actionEventFactory;
+			EntityFooFactory entityFooFactory;
+			ActionListFactory actionListFactory;
 
 			parseMaster.ParseFromFile("XmlWithEvents.xml");
 			World* world = static_cast<World*>(sharedData.mCurrentScope);
@@ -160,10 +167,17 @@ namespace UnitTestLibraryDesktop
 
 			Assert::IsNull(static_cast<ReactionAttributed*>(world->Append("firstReaction").Get<Scope*>())->Find("integerData"));
 			worldState.mGameTime.SetCurrentTime(worldState.mGameTime.CurrentTime() + std::chrono::milliseconds(5000));
+
+			Assert::IsNull(static_cast<ReactionAttributed*>(world->Append("firstReaction").Get<Scope*>())->Find("integerData1"));
+			Assert::IsNull(static_cast<ReactionAttributed*>(world->Append("firstReaction").Get<Scope*>())->Find("integerData2"));
+			Assert::IsNull(static_cast<ReactionAttributed*>(world->Append("firstReaction").Get<Scope*>())->Find("integerData3"));
+			Assert::IsNull(static_cast<ReactionAttributed*>(world->Append("firstReaction").Get<Scope*>())->Find("integerData4"));
 			world->Update(worldState);
 			Assert::IsNotNull(static_cast<ReactionAttributed*>(world->Append("firstReaction").Get<Scope*>())->Find("integerData"));
 			Assert::AreEqual(static_cast<ReactionAttributed*>(world->Append("firstReaction").Get<Scope*>())->Append("integerData").Get<std::int32_t>(), 30);
 			Assert::AreEqual(static_cast<ReactionAttributed*>(world->Append("firstReaction").Get<Scope*>())->Append("integerData2").Get<std::int32_t>(), 60);
+			Assert::AreEqual(static_cast<ReactionAttributed*>(world->Append("firstReaction").Get<Scope*>())->Append("integerData3").Get<std::int32_t>(), 90);
+			Assert::AreEqual(static_cast<ReactionAttributed*>(world->Append("firstReaction").Get<Scope*>())->Append("integerData4").Get<std::int32_t>(), 120);
 
 			Event<EventMessageAttributed>::UnsubscribeAll();
 		}
@@ -182,6 +196,8 @@ namespace UnitTestLibraryDesktop
 
 			ReactionAttributedFactory reactionAttributedFactory;
 			ActionEventFactory actionEventFactory;
+			EntityFooFactory entityFooFactory;
+			ActionListFactory actionListFactory;
 
 			XmlParseMaster* clonedParseMaster = parseMaster.Clone();
 			clonedParseMaster->ParseFromFile("XmlWithEvents.xml");
@@ -192,9 +208,17 @@ namespace UnitTestLibraryDesktop
 
 			Assert::IsNull(static_cast<ReactionAttributed*>(world->Append("firstReaction").Get<Scope*>())->Find("integerData"));
 			worldState.mGameTime.SetCurrentTime(worldState.mGameTime.CurrentTime() + std::chrono::milliseconds(5000));
+
+			Assert::IsNull(static_cast<ReactionAttributed*>(world->Append("firstReaction").Get<Scope*>())->Find("integerData1"));
+			Assert::IsNull(static_cast<ReactionAttributed*>(world->Append("firstReaction").Get<Scope*>())->Find("integerData2"));
+			Assert::IsNull(static_cast<ReactionAttributed*>(world->Append("firstReaction").Get<Scope*>())->Find("integerData3"));
+			Assert::IsNull(static_cast<ReactionAttributed*>(world->Append("firstReaction").Get<Scope*>())->Find("integerData4"));
 			world->Update(worldState);
 			Assert::IsNotNull(static_cast<ReactionAttributed*>(world->Append("firstReaction").Get<Scope*>())->Find("integerData"));
 			Assert::AreEqual(static_cast<ReactionAttributed*>(world->Append("firstReaction").Get<Scope*>())->Append("integerData").Get<std::int32_t>(), 30);
+			Assert::AreEqual(static_cast<ReactionAttributed*>(world->Append("firstReaction").Get<Scope*>())->Append("integerData2").Get<std::int32_t>(), 60);
+			Assert::AreEqual(static_cast<ReactionAttributed*>(world->Append("firstReaction").Get<Scope*>())->Append("integerData3").Get<std::int32_t>(), 90);
+			Assert::AreEqual(static_cast<ReactionAttributed*>(world->Append("firstReaction").Get<Scope*>())->Append("integerData4").Get<std::int32_t>(), 120);
 
 			Event<EventMessageAttributed>::UnsubscribeAll();
 			delete clonedParseMaster;
