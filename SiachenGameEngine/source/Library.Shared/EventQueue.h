@@ -3,6 +3,8 @@
 #include "Vector.h"
 #include "GameTime.h"
 
+#include <mutex>
+
 namespace SiachenGameEngine
 {
 	namespace Events
@@ -15,6 +17,18 @@ namespace SiachenGameEngine
 			* The actual queue of events which have to be serviced.
 			*/
 			Containers::Vector<EventPublisher*> mQueue;
+			/**
+			* A mutex to lock the queue of subscribers.
+			*/
+			mutable std::mutex mMutex;
+			/**
+			* A vector of events which need to be removed from the heap.
+			*/
+			Containers::Vector<EventPublisher*> mDeleteQueue;
+			/**
+			* 
+			*/
+			void ClearEventDeleteQueue();
 		public:
 			/**
 			* Constructor.
@@ -24,6 +38,11 @@ namespace SiachenGameEngine
 			* Destructor.
 			*/
 			~EventQueue();
+			/**
+			* Removed copy semantics.
+			*/
+			EventQueue(const EventQueue& rhs) = delete;
+			EventQueue& operator=(const EventQueue& rhs) = delete;
 			/**
 			* Enqueue an event which has to be handled.
 			* @param publisher The actual event object which has to be delivered.
@@ -49,7 +68,7 @@ namespace SiachenGameEngine
 			* Check whether the event queue is empty.
 			* @return True if the event queue is empty.
 			*/
-			bool IsEmpty();
+			bool IsEmpty() const;
 			/**
 			* Get the number of events in the event queue.
 			* @return The number of events in the queue as an unsigned integer.
