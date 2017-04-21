@@ -5,6 +5,7 @@
 #include "EventSubscriber.h"
 
 #include <chrono>
+#include <mutex>
 
 namespace SiachenGameEngine
 {
@@ -36,13 +37,17 @@ namespace SiachenGameEngine
 			* List of subscribers for this event.
 			*/
 			const Containers::Vector<EventSubscriber*>* mSubscribers;
+			/**
+			* Mutex associated with a specific Event class, used to lock on the subscriber list.
+			*/
+			std::mutex* mMutex;
 		protected:
 			/**
 			* Constructor.
 			* @param subscribers A list of subscribers for this event.
 			* @param deleteAfterPublish Set to true in order to delete the event object once the event has been published.
 			*/
-			EventPublisher(const Containers::Vector<EventSubscriber*>& subscribers, bool deleteAfterPublish);
+			EventPublisher(const Containers::Vector<EventSubscriber*>& subscribers, bool deleteAfterPublish, std::mutex& mutex);
 			/**
 			* Copy constructor.
 			*/

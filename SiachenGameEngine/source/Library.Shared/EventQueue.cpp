@@ -92,7 +92,8 @@ namespace SiachenGameEngine
 
 				std::for_each(futures.begin(), futures.end(), [](std::future<void>& fut)
 				{
-					fut.get();
+					// TODO Switch to get when handling exceptions
+					fut.wait();
 				});
 			}
 			// Delete the events which were delivered but are still in the heap memory

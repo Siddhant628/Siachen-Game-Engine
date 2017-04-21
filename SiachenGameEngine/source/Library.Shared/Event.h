@@ -1,6 +1,8 @@
 #pragma once
 #include "EventPublisher.h"
 
+#include <mutex>
+
 namespace SiachenGameEngine
 {
 	namespace Events
@@ -15,6 +17,10 @@ namespace SiachenGameEngine
 			* A pointer to the actual message object.
 			*/
 			PayloadT mMessage;
+			/**
+			* Mutex to lock the subscriber list for processing.
+			*/
+			static std::mutex mMutex;
 		public:
 			/**
 			* Copy constructor.

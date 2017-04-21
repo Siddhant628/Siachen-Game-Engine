@@ -2,6 +2,8 @@
 #include "Event.h"
 #include "Vector.h"
 
+#include <mutex>
+
 
 namespace SiachenGameEngine
 {
@@ -28,7 +30,7 @@ namespace SiachenGameEngine
 		}
 
 		template <typename PayloadT>
-		Event<PayloadT>::Event(const PayloadT& messageObject, bool deleteAfterPublishing) : EventPublisher(mSubscribers, deleteAfterPublishing), mMessage(messageObject)
+		Event<PayloadT>::Event(const PayloadT& messageObject, bool deleteAfterPublishing) : EventPublisher(mSubscribers, deleteAfterPublishing, mMutex), mMessage(messageObject)
 		{
 
 		}
@@ -36,18 +38,21 @@ namespace SiachenGameEngine
 		template<typename PayloadT>
 		void Event<PayloadT>::Subscribe(EventSubscriber& subscriber)
 		{
+			std::lock_guard<std::mutex> lck(mMutex);
 			mSubscribers.PushBack(&subscriber);
 		}
 
 		template<typename PayloadT>
 		void Event<PayloadT>::Unsubscribe(EventSubscriber& unsubscriber)
 		{
+			std::lock_guard<std::mutex> lck(mMutex);
 			mSubscribers.Remove(&unsubscriber);
 		}
 
 		template<typename PayloadT>
 		void Event<PayloadT>::UnsubscribeAll()
 		{
+			std::lock_guard<std::mutex> lck(mMutex);
 			mSubscribers.ClearAndFree();
 		}
 
@@ -56,6 +61,9 @@ namespace SiachenGameEngine
 		{
 			return mMessage;
 		}
+
+		template <typename PayloadT>
+		std::mutex Event<PayloadT>::mMutex;
 
 		template <typename PayloadT>
 		RTTI_DEFINITIONS(Event<PayloadT>)

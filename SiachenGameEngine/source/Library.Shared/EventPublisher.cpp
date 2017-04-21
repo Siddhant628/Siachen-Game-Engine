@@ -5,6 +5,10 @@
 #include "Vector.h"
 #include "assert.h"
 
+#include <mutex>
+#include <vector>
+#include <future>
+
 using namespace SiachenGameEngine::Containers;
 using namespace std::chrono;
 
@@ -12,12 +16,12 @@ namespace SiachenGameEngine
 {
 	namespace Events
 	{
-		EventPublisher::EventPublisher(const Vector<EventSubscriber*>& subscribers, bool deleteAfterPublish) : mDeleteOnPublish(deleteAfterPublish), mSubscribers(&subscribers), mDelay(std::chrono::milliseconds(0))
+		EventPublisher::EventPublisher(const Vector<EventSubscriber*>& subscribers, bool deleteAfterPublish, std::mutex& mutex) : mDeleteOnPublish(deleteAfterPublish), mSubscribers(&subscribers), mDelay(std::chrono::milliseconds(0)), mMutex(&mutex)
 		{
 
 		}
 
-		EventPublisher::EventPublisher(EventPublisher&& rhs) : mTimeEnqueued(std::move(rhs.mTimeEnqueued)), mDelay(std::move(rhs.mDelay)), mSubscribers(rhs.mSubscribers), mDeleteOnPublish(rhs.mDeleteOnPublish)
+		EventPublisher::EventPublisher(EventPublisher&& rhs) : mTimeEnqueued(std::move(rhs.mTimeEnqueued)), mDelay(std::move(rhs.mDelay)), mSubscribers(rhs.mSubscribers), mDeleteOnPublish(rhs.mDeleteOnPublish), mMutex(rhs.mMutex)
 		{
 			rhs.mSubscribers = nullptr;
 		}
@@ -29,6 +33,7 @@ namespace SiachenGameEngine
 				mTimeEnqueued = std::move(rhs.mTimeEnqueued);
 				mDelay = std::move(rhs.mDelay);
 				mSubscribers = rhs.mSubscribers;
+				mMutex = rhs.mMutex;
 				mDeleteOnPublish = rhs.mDeleteOnPublish;
 				rhs.mSubscribers = nullptr;
 			}
@@ -59,12 +64,32 @@ namespace SiachenGameEngine
 		void EventPublisher::Deliver() const
 		{
 			assert(mSubscribers != nullptr);
-			Vector<EventSubscriber*>::Iterator it = mSubscribers->begin();
-			Vector<EventSubscriber*>::Iterator end = mSubscribers->end();
+			assert(mMutex != nullptr);
+			// Create a copy of subscriber list in critical section
+			Vector<EventSubscriber*>::Iterator it, end;
+			Vector<EventSubscriber*> copySubscribers;
+
+			{
+				std::lock_guard<std::mutex> lck(*mMutex);
+				copySubscribers = *mSubscribers;
+			}
+			// Iterate over the copy and deliver the event asynchronously
+			it = copySubscribers.begin();
+			end = copySubscribers.end();
+			std::vector<std::future<void>> futures;
+
 			for (; it != end; ++it)
 			{
-				(*it)->Notify(*this);
+				futures.emplace_back(std::async(std::launch::async, [this, it]()
+				{
+					(*it)->Notify(*this);
+				}));
 			}
+			std::for_each(futures.begin(), futures.end(), [](std::future<void>& fut)
+			{
+				// TODO Switch to get when handling exceptions
+				fut.wait();
+			});
 		}
 
 		const bool EventPublisher::DeleteAfterPublishing() const
