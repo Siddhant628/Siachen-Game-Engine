@@ -156,16 +156,16 @@ namespace UnitTestLibraryDesktop
 			EventQueue eventQueue;
 			GameTime gameTime;
 			// Create subscribers
-			FooSubscriber fooSubs[300];
+			FooSubscriber fooSubs[20];
 			vector<EnqueueSubscriber*> enqueueSubs;
-			for (int32_t i = 0; i < 300; ++i)
+			for (int32_t i = 0; i < 20; ++i)
 			{
 				EnqueueSubscriber* subscriber = new EnqueueSubscriber(eventQueue, gameTime);
 				subscriber->mInteger = i;
 				enqueueSubs.push_back(subscriber);
 			}
 			// Subscribe the subscribers
-			for (int32_t i = 0; i < 300; ++i)
+			for (int32_t i = 0; i < 20; ++i)
 			{
 				fooSubs[i].mInteger = i;
 				Event<Foo>::Subscribe(fooSubs[i]);
@@ -173,16 +173,21 @@ namespace UnitTestLibraryDesktop
 				Event<Foo>::Subscribe(*enqueueSubs.at(i));
 			}
 			// Create and enqueue events
-			for (int32_t i = 0; i < 25; ++i)
+			for (int32_t i = 0; i < 30; ++i)
 			{
 				eventQueue.Enqueue(*(new Event<Foo>(Foo(2000), true)), gameTime, std::chrono::milliseconds(0));
 			}
 
 			// Update and check affect on queued subscribers
 			eventQueue.Update(gameTime);
-			for (int32_t i = 0; i < 300; ++i)
+			for (int32_t i = 0; i < 20; ++i)
 			{
 				Assert::AreEqual(enqueueSubs.at(i)->mInteger, 2000);
+			}
+			eventQueue.Update(gameTime);
+			for (int32_t i = 0; i < 20; ++i)
+			{
+				Assert::AreEqual(enqueueSubs.at(i)->mInteger, 1000);
 			}
 
 			// Clear heap
