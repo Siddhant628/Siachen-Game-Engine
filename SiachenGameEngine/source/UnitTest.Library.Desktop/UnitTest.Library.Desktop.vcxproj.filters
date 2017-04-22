@@ -48,6 +48,12 @@
     <ClInclude Include="UnsubscribeAllSubscriber.h">
       <Filter>Helper Classes</Filter>
     </ClInclude>
+    <ClInclude Include="EnqueueSubscriber.h">
+      <Filter>Helper Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="QueueClearSubscriber.h">
+      <Filter>Helper Classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -142,6 +148,12 @@
       <Filter>Helper Classes</Filter>
     </ClCompile>
     <ClCompile Include="UnsubscribeAllSubscriber.cpp">
+      <Filter>Helper Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="EnqueueSubscriber.cpp">
+      <Filter>Helper Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="QueueClearSubscriber.cpp">
       <Filter>Helper Classes</Filter>
     </ClCompile>
   </ItemGroup>

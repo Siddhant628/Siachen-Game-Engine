@@ -210,10 +210,12 @@
     <ClInclude Include="AttributedBaz.h" />
     <ClInclude Include="AttributedFoo.h" />
     <ClInclude Include="ConcreteProductBar.h" />
+    <ClInclude Include="EnqueueSubscriber.h" />
     <ClInclude Include="EntityFoo.h" />
     <ClInclude Include="Foo.h" />
     <ClInclude Include="FooSubscriber.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="QueueClearSubscriber.h" />
     <ClInclude Include="SampleXmlParseHelper.h" />
     <ClInclude Include="SampleXmlSharedData.h" />
     <ClInclude Include="SubscriberSubscriber.h" />
@@ -233,6 +235,7 @@
     <ClCompile Include="AttributedTest.cpp" />
     <ClCompile Include="ConcreteProductBar.cpp" />
     <ClCompile Include="DatumTest.cpp" />
+    <ClCompile Include="EnqueueSubscriber.cpp" />
     <ClCompile Include="EntityFoo.cpp" />
     <ClCompile Include="EntityParsingTest.cpp" />
     <ClCompile Include="EntityTest.cpp" />
@@ -251,6 +254,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="QueueClearSubscriber.cpp" />
     <ClCompile Include="ReactionTest.cpp" />
     <ClCompile Include="SampleXmlParseHelper.cpp" />
     <ClCompile Include="SampleXmlSharedData.cpp" />

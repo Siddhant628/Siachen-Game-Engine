@@ -10,6 +10,8 @@
 #include "UnsubscriberSubscriber.h"
 #include "SubscriberSubscriber.h"
 #include "UnsubscribeAllSubscriber.h"
+#include "EnqueueSubscriber.h"
+#include "QueueClearSubscriber.h"
 
 #include "GameTime.h"
 
@@ -49,10 +51,11 @@ namespace UnitTestLibraryDesktop
 			}
 		}
 
-		TEST_METHOD(Async_Deliver_UnsubscriberSubscriber)
+		TEST_METHOD(Async_Event_Deliver_UnsubscriberSubscriber)
 		{
 			FooSubscriber fooSubs[700];
 			UnsubscriberSubscriber unSubs[350];
+			
 			for (int32_t i = 0; i < 350; ++i)
 			{
 				fooSubs[i].mInteger = i;
@@ -82,10 +85,11 @@ namespace UnitTestLibraryDesktop
 			Event<Foo>::UnsubscribeAll();
 		}
 
-		TEST_METHOD(Async_Deliver_SubscriberSubscriber)
+		TEST_METHOD(Async_Event_Deliver_SubscriberSubscriber)
 		{
 			FooSubscriber fooSubs[700];
 			SubscriberSubscriber subSubs[350];
+			
 			for (int32_t i = 0; i < 350; ++i)
 			{
 				fooSubs[i].mInteger = i;
@@ -115,10 +119,11 @@ namespace UnitTestLibraryDesktop
 			Event<Foo>::UnsubscribeAll();
 		}
 
-		TEST_METHOD(Async_Deliver_UnsubscribeAllSubscriber)
+		TEST_METHOD(Async_Event_Deliver_UnsubscribeAllSubscriber)
 		{
 			FooSubscriber fooSubs[700];
 			UnsubscribeAllSubscriber unSubAllSubs[350];
+			
 			for (int32_t i = 0; i < 350; ++i)
 			{
 				fooSubs[i].mInteger = i;
@@ -145,6 +150,92 @@ namespace UnitTestLibraryDesktop
 				Assert::AreEqual(fooSubs[i].mInteger, 2000);
 			}
 		}
+
+		TEST_METHOD(Async_Queue_Update_Enqueue)
+		{
+			EventQueue eventQueue;
+			GameTime gameTime;
+			// Create subscribers
+			FooSubscriber fooSubs[300];
+			vector<EnqueueSubscriber*> enqueueSubs;
+			for (int32_t i = 0; i < 300; ++i)
+			{
+				EnqueueSubscriber* subscriber = new EnqueueSubscriber(eventQueue, gameTime);
+				subscriber->mInteger = i;
+				enqueueSubs.push_back(subscriber);
+			}
+			// Subscribe the subscribers
+			for (int32_t i = 0; i < 300; ++i)
+			{
+				fooSubs[i].mInteger = i;
+				Event<Foo>::Subscribe(fooSubs[i]);
+				enqueueSubs.at(i)->mInteger = i;
+				Event<Foo>::Subscribe(*enqueueSubs.at(i));
+			}
+			// Create and enqueue events
+			for (int32_t i = 0; i < 25; ++i)
+			{
+				eventQueue.Enqueue(*(new Event<Foo>(Foo(2000), true)), gameTime, std::chrono::milliseconds(0));
+			}
+
+			// Update and check affect on queued subscribers
+			eventQueue.Update(gameTime);
+			for (int32_t i = 0; i < 300; ++i)
+			{
+				Assert::AreEqual(enqueueSubs.at(i)->mInteger, 2000);
+			}
+
+			// Clear heap
+			for_each(enqueueSubs.begin(), enqueueSubs.end(), [](EnqueueSubscriber* subscriber)
+			{
+				delete subscriber;
+			});
+			Event<Foo>::UnsubscribeAll();
+		}
+
+		TEST_METHOD(Async_Queue_Update_Clear)
+		{
+			EventQueue eventQueue;
+			GameTime gameTime;
+			// Create subscribers
+			FooSubscriber fooSubs[300];
+			vector<QueueClearSubscriber*> queueClearSubs;
+			for (int32_t i = 0; i < 300; ++i)
+			{
+				QueueClearSubscriber* subscriber = new QueueClearSubscriber(eventQueue);
+				subscriber->mInteger = i;
+				queueClearSubs.push_back(subscriber);
+			}
+			// Subscribe the subscribers
+			for (int32_t i = 0; i < 300; ++i)
+			{
+				fooSubs[i].mInteger = i;
+				Event<Foo>::Subscribe(fooSubs[i]);
+				queueClearSubs.at(i)->mInteger = i;
+				Event<Foo>::Subscribe(*queueClearSubs.at(i));
+			}
+			// Create and enqueue events
+			for (int32_t i = 0; i < 250; ++i)
+			{
+				eventQueue.Enqueue(*(new Event<Foo>(Foo(2000), true)), gameTime, std::chrono::milliseconds(0));
+			}
+
+			// Update and check affect on queued subscribers
+			eventQueue.Update(gameTime);
+			for (int32_t i = 0; i < 300; ++i)
+			{
+				Assert::AreEqual(queueClearSubs.at(i)->mInteger, 2000);
+			}
+			eventQueue.Update(gameTime);
+
+			// Clear heap
+			for_each(queueClearSubs.begin(), queueClearSubs.end(), [](QueueClearSubscriber* subscriber)
+			{
+				delete subscriber;
+			});
+			Event<Foo>::UnsubscribeAll();
+		}
+
 	private:
 		static _CrtMemState sStartMemState;
 	};
