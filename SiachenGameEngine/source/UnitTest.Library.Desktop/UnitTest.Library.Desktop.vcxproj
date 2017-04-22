@@ -216,13 +216,17 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="SampleXmlParseHelper.h" />
     <ClInclude Include="SampleXmlSharedData.h" />
+    <ClInclude Include="SubscriberSubscriber.h" />
     <ClInclude Include="ToStringTemplates.h" />
+    <ClInclude Include="UnsubscribeAllSubscriber.h" />
+    <ClInclude Include="UnsubscriberSubscriber.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ActionFoo.cpp" />
     <ClCompile Include="ActionParsingTest.cpp" />
     <ClCompile Include="ActionTest.cpp" />
     <ClCompile Include="AnotherSharedData.cpp" />
+    <ClCompile Include="AsyncTest.cpp" />
     <ClCompile Include="AttributedBar.cpp" />
     <ClCompile Include="AttributedBaz.cpp" />
     <ClCompile Include="AttributedFoo.cpp" />
@@ -258,6 +262,9 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="SubscriberSubscriber.cpp" />
+    <ClCompile Include="UnsubscribeAllSubscriber.cpp" />
+    <ClCompile Include="UnsubscriberSubscriber.cpp" />
     <ClCompile Include="VectorTest.cpp" />
     <ClCompile Include="XmlParseMasterTest.cpp" />
     <ClCompile Include="XmlTableParserTest.cpp" />

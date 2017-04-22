@@ -39,6 +39,15 @@
     <ClInclude Include="FooSubscriber.h">
       <Filter>Helper Classes</Filter>
     </ClInclude>
+    <ClInclude Include="UnsubscriberSubscriber.h">
+      <Filter>Helper Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="SubscriberSubscriber.h">
+      <Filter>Helper Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="UnsubscribeAllSubscriber.h">
+      <Filter>Helper Classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -122,6 +131,18 @@
     </ClCompile>
     <ClCompile Include="ReactionTest.cpp">
       <Filter>Test Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="UnsubscriberSubscriber.cpp">
+      <Filter>Helper Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="AsyncTest.cpp">
+      <Filter>Test Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="SubscriberSubscriber.cpp">
+      <Filter>Helper Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="UnsubscribeAllSubscriber.cpp">
+      <Filter>Helper Classes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
